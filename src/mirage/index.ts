@@ -1,3 +1,4 @@
-if (process.env.NODE_ENV === "development") {
-  import("./server").then(({ makeServer }) => makeServer());
+import { makeServer } from "./server";
+if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+  makeServer();
 }

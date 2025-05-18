@@ -10,7 +10,7 @@ export function makeServer() {
       record: Factory.extend({
         date() { return faker.date.recent({ days: 365 }).toISOString(); },
         student() { return faker.person.fullName(); },
-        emotion() { return faker.helpers.arrayElement([1,2,3,4,5]); },
+        emotion() { return faker.number.int({min: 1, max: 5}); },
         comment() { return faker.lorem.sentence({ min: 12, max: 24 }); },
       }),
     },

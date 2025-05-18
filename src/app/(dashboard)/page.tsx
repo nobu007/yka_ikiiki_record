@@ -22,13 +22,19 @@ export default function Page() {
   }, []);
 
   const handleSeed = async () => {
+    if (loading) return;
     setLoading(true);
-    await fetch("/api/seed", {
-      method: "POST",
-      body: JSON.stringify({ students: 25 })
-    });
-    await fetchStats();
-    setLoading(false);
+    try {
+      await fetch("/api/seed", {
+        method: "POST",
+        body: JSON.stringify({ students: 25 })
+      });
+      await fetchStats();
+    } catch (error) {
+      console.error("Error generating data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const demoData = [

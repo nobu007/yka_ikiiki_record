@@ -1,9 +1,16 @@
-import Chart from "react-apexcharts";
+"use client";
+// import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
-import { useState } from "react";
+
+import dynamic from "next/dynamic";
 import { Dropdown } from "../ui/dropdown/Dropdown";
+import { MoreDotIcon } from "@/icons";
+import { useState } from "react";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { MoreDotIcon } from "../../icons";
+// Dynamically import the ReactApexChart component
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 
 export default function MonthlyTarget() {
   const series = [75.55];
@@ -54,6 +61,7 @@ export default function MonthlyTarget() {
     },
     labels: ["Progress"],
   };
+
   const [isOpen, setIsOpen] = useState(false);
 
   function toggleDropdown() {
@@ -63,6 +71,7 @@ export default function MonthlyTarget() {
   function closeDropdown() {
     setIsOpen(false);
   }
+
   return (
     <div className="rounded-2xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-white/[0.03]">
       <div className="px-5 pt-5 bg-white shadow-default rounded-2xl pb-11 dark:bg-gray-900 sm:px-6 sm:pt-6">
@@ -71,13 +80,13 @@ export default function MonthlyTarget() {
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
               Monthly Target
             </h3>
-            <p className="mt-1 text-gray-500 text-theme-sm dark:text-gray-400">
+            <p className="mt-1 font-normal text-gray-500 text-theme-sm dark:text-gray-400">
               Target you’ve set for each month
             </p>
           </div>
           <div className="relative inline-block">
-            <button className="dropdown-toggle" onClick={toggleDropdown}>
-              <MoreDotIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 size-6" />
+            <button onClick={toggleDropdown} className="dropdown-toggle">
+              <MoreDotIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />
             </button>
             <Dropdown
               isOpen={isOpen}
@@ -85,12 +94,14 @@ export default function MonthlyTarget() {
               className="w-40 p-2"
             >
               <DropdownItem
+                tag="a"
                 onItemClick={closeDropdown}
                 className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
               >
                 View More
               </DropdownItem>
               <DropdownItem
+                tag="a"
                 onItemClick={closeDropdown}
                 className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
               >
@@ -100,8 +111,8 @@ export default function MonthlyTarget() {
           </div>
         </div>
         <div className="relative ">
-          <div className="max-h-[330px]" id="chartDarkStyle">
-            <Chart
+          <div className="max-h-[330px]">
+            <ReactApexChart
               options={options}
               series={series}
               type="radialBar"
@@ -114,8 +125,8 @@ export default function MonthlyTarget() {
           </span>
         </div>
         <p className="mx-auto mt-10 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
-          You earn $3287 today, it's higher than last month. Keep up your good
-          work!
+          You earn $3287 today, it&apos;s higher than last month. Keep up your
+          good work!
         </p>
       </div>
 

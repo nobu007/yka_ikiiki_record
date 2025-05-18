@@ -1,4 +1,5 @@
-import { Link } from "react-router";
+import Link from "next/link";
+import React from "react";
 
 interface AlertProps {
   variant: "success" | "error" | "warning" | "info"; // Alert type
@@ -129,7 +130,7 @@ const Alert: React.FC<AlertProps> = ({
 
           {showLink && (
             <Link
-              to={linkHref}
+              href={linkHref}
               className="inline-block mt-3 text-sm font-medium text-gray-500 underline dark:text-gray-400"
             >
               {linkText}

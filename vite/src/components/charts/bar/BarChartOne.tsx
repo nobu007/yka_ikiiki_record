@@ -1,5 +1,13 @@
-import Chart from "react-apexcharts";
+"use client";
+import React from "react";
+
 import { ApexOptions } from "apexcharts";
+
+import dynamic from "next/dynamic";
+// Dynamically import the ReactApexChart component
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 
 export default function BarChartOne() {
   const options: ApexOptions = {
@@ -90,7 +98,12 @@ export default function BarChartOne() {
   return (
     <div className="max-w-full overflow-x-auto custom-scrollbar">
       <div id="chartOne" className="min-w-[1000px]">
-        <Chart options={options} series={series} type="bar" height={180} />
+        <ReactApexChart
+          options={options}
+          series={series}
+          type="bar"
+          height={180}
+        />
       </div>
     </div>
   );

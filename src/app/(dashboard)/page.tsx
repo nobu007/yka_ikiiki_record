@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 
 interface Stats {
@@ -8,6 +9,7 @@ interface Stats {
 }
 
 export default function Page() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<Stats | null>(null);
 
@@ -27,9 +29,10 @@ export default function Page() {
     try {
       await fetch("/api/seed", {
         method: "POST",
-        body: JSON.stringify({ students: 25 })
+        body: JSON.stringify({ students: 25, days: 365 })
       });
       await fetchStats();
+      router.refresh();
     } catch (error) {
       console.error("Error generating data:", error);
     } finally {
@@ -53,9 +56,16 @@ export default function Page() {
         <button
           onClick={handleSeed}
           disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
         >
-          {loading ? "生成中..." : "📊 Demo データ生成"}
+          {loading ? (
+            <>
+              <span className="inline-block animate-spin">⚡</span>
+              生成中...
+            </>
+          ) : (
+            "📊 Demo データ生成"
+          )}
         </button>
       </div>
 

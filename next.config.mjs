@@ -1,0 +1,30 @@
+/** @type {import('next').NextConfig} */
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const nextConfig = {
+  webpack: (config) => {
+    config.resolve.modules = [
+      path.resolve(__dirname, "src"),
+      path.resolve(__dirname, "vite_app/src"),
+      "node_modules",
+    ];
+    return config;
+  },
+  transpilePackages: [
+    "@fullcalendar/core",
+    "@fullcalendar/react",
+    "@fullcalendar/daygrid",
+    "@fullcalendar/timegrid",
+    "@fullcalendar/interaction",
+    "@react-jvectormap/core",
+    "@react-jvectormap/world",
+  ],
+  images: {
+    unoptimized: true,
+  }
+};
+
+export default nextConfig;

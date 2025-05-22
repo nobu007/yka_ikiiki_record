@@ -11,9 +11,13 @@ interface RecordAttributes {
 
 export function makeServer() {
   return createServer({
+    environment: process.env.NODE_ENV ?? "development",
+
     models: {
       record: Model.extend<Partial<RecordAttributes>>({})
     },
+
+    timing: 0, // 即時レスポンス
     factories: {
       record: Factory.extend({
         date() {
@@ -86,23 +90,25 @@ export function makeServer() {
 
       this.get("/stats", (schema) => {
         try {
-          const records = schema.all("record");
+          const records = schema.all("record").models;
           const count = records.length;
 
           if (count === 0) {
-            return { count: 0, avgEmotion: "0.00" };
+            return new Response(200, {}, {
+              count: 0,
+              avgEmotion: "0.00"
+            });
           }
 
-          // 感情値の集計
-          const sum = records.models.reduce((acc, record) => {
-            return acc + record.emotion;
+          // 感情値の集計（attrs経由でアクセス）
+          const sum = records.reduce((acc, record) => {
+            return acc + record.attrs.emotion;
           }, 0);
 
-          const avgEmotion = (sum / count).toFixed(2);
-          return {
+          return new Response(200, {}, {
             count,
-            avgEmotion
-          };
+            avgEmotion: (sum / count).toFixed(2)
+          });
         } catch (error) {
           console.error("Stats error:", error);
           return new Response(500, {}, { error: "Internal server error" });

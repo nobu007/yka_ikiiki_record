@@ -17,10 +17,15 @@ export function makeServer() {
     factories: {
       record: Factory.extend({
         date() {
-          // 日付の範囲を定数として定義
+          // 現在の日付から1年間の範囲を設定
+          const today = new Date();
+          const oneYearLater = new Date();
+          oneYearLater.setFullYear(today.getFullYear() + 1);
+
+          // 日付範囲をISOString形式で保持
           const DATE_RANGE = {
-            from: "2024-04-01",
-            to: "2025-03-31"
+            from: today.toISOString(),
+            to: oneYearLater.toISOString()
           } as const;
 
           return faker.date.between({

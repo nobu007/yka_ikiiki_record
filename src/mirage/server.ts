@@ -9,9 +9,9 @@ interface RecordAttributes {
   comment: string;
 }
 
-export function makeServer() {
+export function makeServer(config?: { environment: string }) {
   return createServer({
-    environment: process.env.NODE_ENV ?? "development",
+    environment: config?.environment ?? process.env.NODE_ENV ?? "development",
 
     models: {
       record: Model.extend<Partial<RecordAttributes>>({})

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { ensureServer } from '@/mirage';
 
 // レコードの型定義
 interface Record {
@@ -17,14 +18,8 @@ export async function GET() {
   try {
     // モックモードの場合のみMirageJSを使用
     if (process.env.NEXT_PUBLIC_MOCK === "true") {
-      if (!globalThis.server?.schema) {
-        return NextResponse.json(
-          { count: 0, avgEmotion: "0.00", error: 'Mock server not initialized' },
-          { status: 200 }
-        );
-      }
-
-      const mockRecords = globalThis.server.schema.all('record').models as Record[];
+      const server = ensureServer();
+      const mockRecords = server.schema.all('record').models as Record[];
 
       if (!mockRecords || !Array.isArray(mockRecords)) {
         return NextResponse.json(
@@ -37,9 +32,6 @@ export async function GET() {
       if (count === 0) {
         return NextResponse.json({ count: 0, avgEmotion: "0.00" }, { status: 200 });
       }
-
-      // デバッグ用にデータを確認
-      console.log('First record:', mockRecords[0]);
 
       const sum = mockRecords.reduce((acc, record) => {
         const emotion = record.attrs?.emotion;

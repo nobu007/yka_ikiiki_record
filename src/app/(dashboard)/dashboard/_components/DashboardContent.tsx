@@ -33,6 +33,11 @@ const DynamicBarChart = dynamic(
 interface Stats {
   count: number;
   avgEmotion: string;
+  monthlyStats?: Array<{
+    month: string;
+    count: number;
+    avgEmotion: string;
+  }>;
 }
 
 interface DashboardContentProps {
@@ -71,14 +76,11 @@ export default function DashboardContent({ initialStats }: DashboardContentProps
     }
   };
 
-  const demoData = [
-    { month: "1月", value: 3.8 },
-    { month: "2月", value: 4.2 },
-    { month: "3月", value: 3.9 },
-    { month: "4月", value: 4.5 },
-    { month: "5月", value: 4.1 },
-    { month: "6月", value: 3.7 }
-  ];
+  // APIデータをグラフ用に変換
+  const chartData = stats.monthlyStats?.map(stat => ({
+    month: stat.month.split('-')[1] + '月',
+    value: Number(stat.avgEmotion)
+  })) ?? [];
 
   return (
     <div className="p-4 space-y-6">
@@ -113,7 +115,13 @@ export default function DashboardContent({ initialStats }: DashboardContentProps
       <div className="bg-white p-4 rounded-lg shadow">
         <h3 className="text-lg font-semibold mb-4">月別平均感情スコア</h3>
         <div className="overflow-x-auto">
-          <DynamicBarChart width={600} height={300} data={demoData} />
+          {chartData.length > 0 ? (
+            <DynamicBarChart width={600} height={300} data={chartData} />
+          ) : (
+            <div className="text-center text-gray-500 py-8">
+              データがありません
+            </div>
+          )}
         </div>
       </div>
     </div>

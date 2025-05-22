@@ -2,10 +2,12 @@ import { NextResponse } from 'next/server';
 
 // レコードの型定義
 interface Record {
-  emotion: number;
-  date: string;
-  student: string;
-  comment: string;
+  attrs: {
+    emotion: number;
+    date: string;
+    student: string;
+    comment: string;
+  };
 }
 
 /** App Router ではキャッシュを防ぐため */
@@ -36,7 +38,19 @@ export async function GET() {
         return NextResponse.json({ count: 0, avgEmotion: "0.00" }, { status: 200 });
       }
 
-      const avgEmotion = (mockRecords.reduce((sum, record) => sum + record.emotion, 0) / count).toFixed(2);
+      // デバッグ用にデータを確認
+      console.log('First record:', mockRecords[0]);
+
+      const sum = mockRecords.reduce((acc, record) => {
+        const emotion = record.attrs?.emotion;
+        if (typeof emotion !== 'number') {
+          console.warn('Invalid emotion value:', emotion);
+          return acc;
+        }
+        return acc + emotion;
+      }, 0);
+
+      const avgEmotion = (sum / count).toFixed(2);
       return NextResponse.json({ count, avgEmotion }, { status: 200 });
     }
 

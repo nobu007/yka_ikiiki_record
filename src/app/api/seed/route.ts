@@ -7,13 +7,38 @@ function ensureMirage() {
   }
 }
 
-export async function POST() {
-  ensureMirage();
+export async function POST(request: Request) {
+  try {
+    ensureMirage();
 
-  // デモ用に 25 名 × 365 日
-  globalThis.server?.createList("record", 25 * 365);
+    if (!globalThis.server) {
+      return NextResponse.json(
+        { error: 'Mock server not initialized' },
+        { status: 500 }
+      );
+    }
 
-  return NextResponse.json({ ok: true }, { status: 201 });
+    // リクエストからパラメータを取得（デフォルト: 25名×365日）
+    const { students = 25, days = 365 } = await request.json();
+    const total = students * days;
+
+    // 既存のレコードを削除
+    globalThis.server.schema.all('record').destroy();
+
+    // 新しいレコードを作成
+    globalThis.server.createList("record", total);
+
+    return NextResponse.json(
+      { ok: true, total, students, days },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error('Seed API Error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
 }
 
 /** App Router ではキャッシュを防ぐため */

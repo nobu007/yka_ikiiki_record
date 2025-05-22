@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server';
 // レコードの型定義
 interface Record {
   emotion: number;
+  date: string;
+  student: string;
+  comment: string;
 }
 
 /** App Router ではキャッシュを防ぐため */
@@ -14,7 +17,7 @@ export async function GET() {
     if (process.env.NEXT_PUBLIC_MOCK === "true") {
       if (!globalThis.server?.schema) {
         return NextResponse.json(
-          { count: 0, avg: 0, error: 'Mock server not initialized' },
+          { count: 0, avgEmotion: "0.00", error: 'Mock server not initialized' },
           { status: 200 }
         );
       }
@@ -23,18 +26,18 @@ export async function GET() {
 
       if (!mockRecords || !Array.isArray(mockRecords)) {
         return NextResponse.json(
-          { count: 0, avg: 0, error: 'No records found' },
+          { count: 0, avgEmotion: "0.00", error: 'No records found' },
           { status: 200 }
         );
       }
 
       const count = mockRecords.length;
       if (count === 0) {
-        return NextResponse.json({ count: 0, avg: 0 }, { status: 200 });
+        return NextResponse.json({ count: 0, avgEmotion: "0.00" }, { status: 200 });
       }
 
-      const avg = mockRecords.reduce((sum, record) => sum + record.emotion, 0) / count;
-      return NextResponse.json({ count, avg }, { status: 200 });
+      const avgEmotion = (mockRecords.reduce((sum, record) => sum + record.emotion, 0) / count).toFixed(2);
+      return NextResponse.json({ count, avgEmotion }, { status: 200 });
     }
 
     // 本番環境では実際のデータベースからデータを取得

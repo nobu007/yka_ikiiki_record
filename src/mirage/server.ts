@@ -67,17 +67,9 @@ export function makeServer() {
           // 既存レコードの削除
           _schema.all("record").destroy();
 
-          // バルク作成用の属性配列を生成
-          const records = Array.from({ length: total }).map(() => ({
-            date: faker.date.between({ from: "2024-04-01", to: "2025-03-31" }).toISOString(),
-            student: faker.person.fullName(),
-            emotion: faker.number.int({min: 1, max: 5}),
-            comment: faker.lorem.sentence({ min: 12, max: 24 })
-          }));
-
-          // バルク作成
-          records.forEach(attrs => {
-            _schema.create("record", attrs);
+          // ファクトリーを使用して指定数のレコードを生成
+          Array.from({ length: total }).forEach(() => {
+            this.create("record");
           });
 
           return new Response(201, {}, { total, students, days });
@@ -89,28 +81,21 @@ export function makeServer() {
 
       this.get("/stats", (schema) => {
         try {
-          const records = schema.all("record").models;
+          const records = schema.all("record");
+          const count = records.length;
 
-          if (records.length === 0) {
+          if (count === 0) {
             return { count: 0, avgEmotion: "0.00" };
           }
 
-          // 感情値の集計とバリデーション
-          let validCount = 0;
-          const sum = records.reduce((acc, record) => {
-            const emotion = record.attrs.emotion;
-            if (typeof emotion === 'number' && emotion >= 1 && emotion <= 5) {
-              validCount++;
-              return acc + emotion;
-            }
-            console.warn('Invalid emotion value:', emotion);
-            return acc;
+          // 感情値の集計
+          const sum = records.models.reduce((acc, record) => {
+            return acc + record.emotion;
           }, 0);
 
-          const avgEmotion = validCount > 0 ? (sum / validCount).toFixed(2) : "0.00";
+          const avgEmotion = (sum / count).toFixed(2);
           return {
-            count: records.length,
-            validCount,
+            count,
             avgEmotion
           };
         } catch (error) {

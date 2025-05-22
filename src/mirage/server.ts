@@ -41,16 +41,12 @@ export function makeServer() {
           return faker.person.fullName();
         },
         emotion() {
-          // 感情値の範囲を定数として定義
-          const EMOTION_RANGE = {
-            min: 1,
-            max: 5
-          } as const;
+          // ベース感情値（1-5）に微細な変動を加える
+          const baseEmotion = faker.number.int({ min: 1, max: 5 });
+          const variation = faker.number.float({ min: -0.2, max: 0.2 });
 
-          return faker.number.int({
-            min: EMOTION_RANGE.min,
-            max: EMOTION_RANGE.max
-          });
+          // 1-5の範囲内に収める
+          return Math.max(1, Math.min(5, baseEmotion + variation));
         },
         comment() {
           return faker.lorem.sentence({ min: 12, max: 24 });
@@ -96,18 +92,49 @@ export function makeServer() {
           if (count === 0) {
             return new Response(200, {}, {
               count: 0,
-              avgEmotion: "0.00"
+              avgEmotion: "0.00",
+              monthlyStats: []
             });
           }
 
-          // 感情値の集計（attrs経由でアクセス）
+          // 感情値の全体平均を計算
           const sum = records.reduce((acc, record) => {
             return acc + record.attrs.emotion;
           }, 0);
 
+          // 月別の統計を計算
+          const monthlyData = new Map();
+
+          records.forEach(record => {
+            const date = new Date(record.attrs.date);
+            const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+
+            if (!monthlyData.has(monthKey)) {
+              monthlyData.set(monthKey, {
+                month: monthKey,
+                count: 0,
+                sum: 0
+              });
+            }
+
+            const monthStats = monthlyData.get(monthKey);
+            monthStats.count++;
+            monthStats.sum += record.attrs.emotion;
+          });
+
+          // 月別平均を計算し、配列に変換
+          const monthlyStats = Array.from(monthlyData.values())
+            .map(({ month, count, sum }) => ({
+              month,
+              avgEmotion: (sum / count).toFixed(2),
+              count
+            }))
+            .sort((a, b) => a.month.localeCompare(b.month));
+
           return new Response(200, {}, {
             count,
-            avgEmotion: (sum / count).toFixed(2)
+            avgEmotion: (sum / count).toFixed(2),
+            monthlyStats
           });
         } catch (error) {
           console.error("Stats error:", error);

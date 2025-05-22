@@ -3,6 +3,8 @@
 # dependencies
 /node_modules
 /vite/node_modules
+/packages/ui/node_modules
+
 /.pnp
 .pnp.*
 .yarn/*

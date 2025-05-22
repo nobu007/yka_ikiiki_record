@@ -5,13 +5,16 @@ interface Record {
   emotion: number;
 }
 
+/** App Router ではキャッシュを防ぐため */
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
-    // 開発環境とテスト環境ではMirageJSを使用
-    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+    // モックモードの場合のみMirageJSを使用
+    if (process.env.NEXT_PUBLIC_MOCK === "true") {
       if (!globalThis.server?.schema) {
         return NextResponse.json(
-          { count: 0, avg: 0, error: 'Development server not initialized' },
+          { count: 0, avg: 0, error: 'Mock server not initialized' },
           { status: 200 }
         );
       }
@@ -20,7 +23,7 @@ export async function GET() {
 
       if (!mockRecords || !Array.isArray(mockRecords)) {
         return NextResponse.json(
-          { count: 0, avg: 0, error: 'No mock records found' },
+          { count: 0, avg: 0, error: 'No records found' },
           { status: 200 }
         );
       }
@@ -36,7 +39,6 @@ export async function GET() {
 
     // 本番環境では実際のデータベースからデータを取得
     // TODO: 本番環境用のデータベースクライアントを実装する
-    // 例: const records = await prisma.records.findMany();
     return NextResponse.json(
       { error: 'Production database not implemented' },
       { status: 501 }

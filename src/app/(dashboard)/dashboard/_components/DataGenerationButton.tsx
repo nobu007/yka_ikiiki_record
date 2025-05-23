@@ -19,7 +19,7 @@ export default function DataGenerationButton({ loading, onGenerate }: DataGenera
             生成中...
           </>
         ) : (
-          "📊 Demo データ生成"
+          "データを生成"
         )}
       </button>
     </div>

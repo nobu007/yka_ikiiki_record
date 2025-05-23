@@ -4,6 +4,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
 import { debounce } from 'lodash';
+import ChartWrapper from './ChartWrapper';
 
 // ApexChartsをクライアントサイドのみでロード
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
@@ -27,7 +28,6 @@ interface DynamicBarChartProps {
   isDark?: boolean;
 }
 
-// メモ化されたチャートコンポーネント
 const DynamicBarChart = memo(function DynamicBarChart({
   data,
   height = 300,
@@ -83,7 +83,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
     },
     colors: ['#4F46E5'],
     dataLabels: {
-      enabled: validData.length <= 20, // データ点が多い場合は無効化
+      enabled: validData.length <= 20,
     },
     xaxis: {
       categories: validData.map(item => item.name),
@@ -97,7 +97,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
         style: {
           colors: isDark ? '#9ca3af' : '#4b5563',
         },
-        rotateAlways: validData.length > 10, // データ点が多い場合は回転
+        rotateAlways: validData.length > 10,
       },
     },
     yaxis: {
@@ -139,7 +139,6 @@ const DynamicBarChart = memo(function DynamicBarChart({
     debounce(() => {
       try {
         // チャートの更新処理
-        // （必要に応じてチャートの参照を保持して更新）
       } catch (e) {
         console.error('Chart update error:', e);
         setError(e instanceof Error ? e : new Error('Failed to update chart'));
@@ -157,73 +156,33 @@ const DynamicBarChart = memo(function DynamicBarChart({
     };
   }, [mounted, debouncedUpdate]);
 
-  if (!mounted) {
-    return (
-      <div
-        style={{ height }}
-        className="w-full flex items-center justify-center"
-        role="status"
-        aria-label="グラフローディング中"
-      >
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div
-        className="w-full flex items-center justify-center text-red-500"
-        role="alert"
-        aria-label="グラフエラー"
-      >
-        <p>グラフの表示中にエラーが発生しました</p>
-      </div>
-    );
-  }
-
-  if (validData.length === 0) {
-    return (
-      <div
-        className="w-full flex items-center justify-center"
-        role="status"
-        aria-label="データなし"
-      >
-        <p className="text-gray-500 dark:text-gray-400">
-          表示するデータがありません
-        </p>
-      </div>
-    );
-  }
-
-  const chartId = `chart-${title?.replace(/\s+/g, '-') ?? 'default'}`;
-
   return (
-    <div
-      className="w-full"
-      role="region"
-      aria-label={title || '統計グラフ'}
+    <ChartWrapper
+      title={title}
+      height={height}
+      isLoading={!mounted}
+      error={error}
+      isDark={isDark}
     >
-      {title && (
-        <h3
-          className={`text-lg font-semibold mb-4 ${
-            isDark ? 'text-gray-100' : 'text-gray-900'
-          }`}
-          id={`${chartId}-title`}
+      {validData.length === 0 ? (
+        <div
+          className="w-full flex items-center justify-center"
+          role="status"
+          aria-label="データなし"
         >
-          {title}
-        </h3>
-      )}
-      <div className="overflow-x-auto">
+          <p className="text-gray-500 dark:text-gray-400">
+            表示するデータがありません
+          </p>
+        </div>
+      ) : (
         <ReactApexChart
           options={options}
           series={series}
           type="bar"
           height={height}
-          aria-labelledby={title ? `${chartId}-title` : undefined}
         />
-      </div>
-    </div>
+      )}
+    </ChartWrapper>
   );
 });
 

@@ -1,20 +1,26 @@
 'use client';
 
-import { useTheme } from 'next-themes';
 import DynamicBarChart, { ChartData } from '@/components/charts/DynamicBarChart';
-import { StatsResponse } from '@/types/api';
+
+interface ChartDataSet {
+  monthly: ChartData[];
+  dayOfWeek: ChartData[];
+  timeOfDay: ChartData[];
+  overview: {
+    count: number;
+    avgEmotion: number;
+  };
+}
 
 interface StatsDisplayProps {
-  stats: StatsResponse;
+  data: ChartDataSet | null;
   isLoading: boolean;
   error: Error | null;
   onRetry: () => void;
+  isDark: boolean;
 }
 
-export default function StatsDisplay({ stats, isLoading, error, onRetry }: StatsDisplayProps) {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === 'dark';
-
+export default function StatsDisplay({ data, isLoading, error, onRetry, isDark }: StatsDisplayProps) {
   const bgColor = isDark ? 'bg-gray-800' : 'bg-white';
   const textColor = isDark ? 'text-gray-200' : 'text-gray-500';
   const headingColor = isDark ? 'text-white' : 'text-gray-900';
@@ -41,23 +47,7 @@ export default function StatsDisplay({ stats, isLoading, error, onRetry }: Stats
     );
   }
 
-  if (!stats) return <p className="text-center">データが見つかりません</p>;
-
-  const monthlyChartData: ChartData[] = stats.monthlyStats.map(stat => ({
-    name: stat.month.split('-')[1] + '月',
-    value: Number(stat.avgEmotion)
-  }));
-
-  const dayOfWeekChartData: ChartData[] = stats.dayOfWeekStats.map(stat => ({
-    name: stat.day,
-    value: Number(stat.avgEmotion)
-  }));
-
-  const timeOfDayChartData: ChartData[] = [
-    { name: '朝（5-11時）', value: Number(stats.timeOfDayStats.morning) },
-    { name: '昼（12-17時）', value: Number(stats.timeOfDayStats.afternoon) },
-    { name: '夜（18-4時）', value: Number(stats.timeOfDayStats.evening) }
-  ];
+  if (!data) return <p className="text-center">データが見つかりません</p>;
 
   return (
     <div className="space-y-6">
@@ -65,54 +55,42 @@ export default function StatsDisplay({ stats, isLoading, error, onRetry }: Stats
       <div className="grid grid-cols-2 gap-4">
         <div className={`p-4 ${bgColor} rounded-lg shadow transition-colors`}>
           <div className={`text-sm ${textColor}`}>総記録数</div>
-          <div className={`text-2xl font-bold ${headingColor}`}>{stats.overview.count}</div>
+          <div className={`text-2xl font-bold ${headingColor}`}>{data.overview.count}</div>
         </div>
         <div className={`p-4 ${bgColor} rounded-lg shadow transition-colors`}>
           <div className={`text-sm ${textColor}`}>平均感情スコア</div>
-          <div className={`text-2xl font-bold ${headingColor}`}>{stats.overview.avgEmotion}</div>
+          <div className={`text-2xl font-bold ${headingColor}`}>{data.overview.avgEmotion}</div>
         </div>
       </div>
 
       {/* 月別グラフ */}
       <div className={`${bgColor} p-4 rounded-lg shadow transition-colors`}>
-        <h3 className={`text-lg font-semibold mb-4 ${headingColor}`}>月別平均感情スコア</h3>
-        <div className="overflow-x-auto">
-          {monthlyChartData.length > 0 ? (
-            <DynamicBarChart
-              height={300}
-              data={monthlyChartData}
-              isDark={isDark}
-            />
-          ) : (
-            <div className={`text-center ${textColor} py-8`}>
-              データがありません
-            </div>
-          )}
-        </div>
+        <DynamicBarChart
+          title="月別平均感情スコア"
+          height={300}
+          data={data.monthly}
+          isDark={isDark}
+        />
       </div>
 
       {/* 曜日別グラフ */}
       <div className={`${bgColor} p-4 rounded-lg shadow transition-colors`}>
-        <h3 className={`text-lg font-semibold mb-4 ${headingColor}`}>曜日別平均感情スコア</h3>
-        <div className="overflow-x-auto">
-          <DynamicBarChart
-            height={300}
-            data={dayOfWeekChartData}
-            isDark={isDark}
-          />
-        </div>
+        <DynamicBarChart
+          title="曜日別平均感情スコア"
+          height={300}
+          data={data.dayOfWeek}
+          isDark={isDark}
+        />
       </div>
 
       {/* 時間帯別グラフ */}
       <div className={`${bgColor} p-4 rounded-lg shadow transition-colors`}>
-        <h3 className={`text-lg font-semibold mb-4 ${headingColor}`}>時間帯別平均感情スコア</h3>
-        <div className="overflow-x-auto">
-          <DynamicBarChart
-            height={300}
-            data={timeOfDayChartData}
-            isDark={isDark}
-          />
-        </div>
+        <DynamicBarChart
+          title="時間帯別平均感情スコア"
+          height={300}
+          data={data.timeOfDay}
+          isDark={isDark}
+        />
       </div>
     </div>
   );

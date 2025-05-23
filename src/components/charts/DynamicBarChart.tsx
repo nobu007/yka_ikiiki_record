@@ -1,11 +1,18 @@
 'use client';
 
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useState } from 'react';
+import { debounce } from 'lodash';
 
+// ApexChartsをクライアントサイドのみでロード
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
+  loading: () => (
+    <div role="status" aria-label="グラフローディング中" className="animate-pulse">
+      <div className="h-64 bg-gray-200 rounded dark:bg-gray-700"></div>
+    </div>
+  ),
 });
 
 export interface ChartData {
@@ -20,22 +27,43 @@ interface DynamicBarChartProps {
   isDark?: boolean;
 }
 
-export default function DynamicBarChart({ data, height = 300, title, isDark = false }: DynamicBarChartProps) {
+// メモ化されたチャートコンポーネント
+const DynamicBarChart = memo(function DynamicBarChart({
+  data,
+  height = 300,
+  title,
+  isDark = false
+}: DynamicBarChartProps) {
   const [mounted, setMounted] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // データのバリデーションと前処理
+  const validData = useMemo(() => {
+    try {
+      return data.map(item => ({
+        name: String(item.name),
+        value: Number(item.value)
+      })).filter(item => !isNaN(item.value));
+    } catch (e) {
+      console.error('Data processing error:', e);
+      return [];
+    }
+  }, [data]);
+
+  // チャートオプションのメモ化
   const options: ApexOptions = useMemo(() => ({
     chart: {
       type: 'bar',
-      height: height,
+      height,
       toolbar: {
         show: false,
       },
       animations: {
-        enabled: true,
+        enabled: window?.matchMedia('(prefers-reduced-motion: no-preference)').matches,
         easing: 'easeinout',
         speed: 800,
         dynamicAnimation: {
@@ -55,10 +83,10 @@ export default function DynamicBarChart({ data, height = 300, title, isDark = fa
     },
     colors: ['#4F46E5'],
     dataLabels: {
-      enabled: false,
+      enabled: validData.length <= 20, // データ点が多い場合は無効化
     },
     xaxis: {
-      categories: data.map(item => item.name),
+      categories: validData.map(item => item.name),
       axisBorder: {
         show: false,
       },
@@ -69,6 +97,7 @@ export default function DynamicBarChart({ data, height = 300, title, isDark = fa
         style: {
           colors: isDark ? '#9ca3af' : '#4b5563',
         },
+        rotateAlways: validData.length > 10, // データ点が多い場合は回転
       },
     },
     yaxis: {
@@ -97,36 +126,107 @@ export default function DynamicBarChart({ data, height = 300, title, isDark = fa
         formatter: (val) => val.toFixed(2),
       },
     },
-  }), [height, data, isDark]);
+  }), [height, validData, isDark]);
 
+  // シリーズデータのメモ化
   const series = useMemo(() => [{
     name: 'スコア',
-    data: data.map(item => item.value),
-  }], [data]);
+    data: validData.map(item => item.value),
+  }], [validData]);
+
+  // デバウンスされたデータ更新
+  const debouncedUpdate = useCallback(
+    debounce(() => {
+      try {
+        // チャートの更新処理
+        // （必要に応じてチャートの参照を保持して更新）
+      } catch (e) {
+        console.error('Chart update error:', e);
+        setError(e instanceof Error ? e : new Error('Failed to update chart'));
+      }
+    }, 250),
+    []
+  );
+
+  useEffect(() => {
+    if (mounted) {
+      debouncedUpdate();
+    }
+    return () => {
+      debouncedUpdate.cancel();
+    };
+  }, [mounted, debouncedUpdate]);
 
   if (!mounted) {
     return (
-      <div style={{ height }} className="w-full flex items-center justify-center">
+      <div
+        style={{ height }}
+        className="w-full flex items-center justify-center"
+        role="status"
+        aria-label="グラフローディング中"
+      >
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
+  if (error) {
+    return (
+      <div
+        className="w-full flex items-center justify-center text-red-500"
+        role="alert"
+        aria-label="グラフエラー"
+      >
+        <p>グラフの表示中にエラーが発生しました</p>
+      </div>
+    );
+  }
+
+  if (validData.length === 0) {
+    return (
+      <div
+        className="w-full flex items-center justify-center"
+        role="status"
+        aria-label="データなし"
+      >
+        <p className="text-gray-500 dark:text-gray-400">
+          表示するデータがありません
+        </p>
+      </div>
+    );
+  }
+
+  const chartId = `chart-${title?.replace(/\s+/g, '-') ?? 'default'}`;
+
   return (
-    <div className="w-full">
+    <div
+      className="w-full"
+      role="region"
+      aria-label={title || '統計グラフ'}
+    >
       {title && (
-        <h3 className={`text-lg font-semibold mb-4 ${
-          isDark ? 'text-gray-100' : 'text-gray-900'
-        }`}>
+        <h3
+          className={`text-lg font-semibold mb-4 ${
+            isDark ? 'text-gray-100' : 'text-gray-900'
+          }`}
+          id={`${chartId}-title`}
+        >
           {title}
         </h3>
       )}
-      <ReactApexChart
-        options={options}
-        series={series}
-        type="bar"
-        height={height}
-      />
+      <div className="overflow-x-auto">
+        <ReactApexChart
+          options={options}
+          series={series}
+          type="bar"
+          height={height}
+          aria-labelledby={title ? `${chartId}-title` : undefined}
+        />
+      </div>
     </div>
   );
-}
+});
+
+DynamicBarChart.displayName = 'DynamicBarChart';
+
+export default DynamicBarChart;

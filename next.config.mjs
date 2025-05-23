@@ -10,6 +10,10 @@ const nextConfig = {
       path.resolve(__dirname, "src"),
       "node_modules",
     ];
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      "@": path.resolve(__dirname, "src"),
+    };
     return config;
   },
   transpilePackages: [

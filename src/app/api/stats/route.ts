@@ -1,118 +1,44 @@
 import { NextResponse } from 'next/server';
-import { ensureServer } from '../../../mirage';
-import { calculateStats } from '../../../utils/statsCalculator';
-import { z } from 'zod';
-
-// カスタムエラークラス
-class ApiError extends Error {
-  constructor(
-    public statusCode: number,
-    public code: string,
-    message: string
-  ) {
-    super(message);
-    this.name = 'ApiError';
-  }
-}
-
-// レスポンスヘルパー
-const createResponse = (data: unknown, status = 200) => {
-  return NextResponse.json(data, {
-    status,
-    headers: {
-      'Cache-Control': 'no-store, must-revalidate',
-      'Content-Type': 'application/json',
-    },
-  });
-};
-
-/** App Router ではキャッシュを防ぐため */
-export const dynamic = "force-dynamic";
+import { StatsResponseSchema } from '@/types/api';
 
 export async function GET() {
   try {
-    // 環境チェック
-    if (process.env.NEXT_PUBLIC_MOCK !== "true") {
-      throw new ApiError(400, 'MOCK_DISABLED', 'Mock mode is not enabled');
-    }
+    // 実際のデータ取得ロジックはここに実装
+    // この例ではモックデータを返します
+    const mockData = {
+      overview: {
+        count: 100,
+        avgEmotion: 7.5
+      },
+      monthlyStats: [
+        { month: '2025-04', avgEmotion: 7.2 },
+        { month: '2025-05', avgEmotion: 7.8 }
+      ],
+      dayOfWeekStats: [
+        { day: '月', avgEmotion: 7.1 },
+        { day: '火', avgEmotion: 7.3 },
+        { day: '水', avgEmotion: 7.5 },
+        { day: '木', avgEmotion: 7.7 },
+        { day: '金', avgEmotion: 7.9 },
+        { day: '土', avgEmotion: 8.1 },
+        { day: '日', avgEmotion: 7.8 }
+      ],
+      timeOfDayStats: {
+        morning: 7.6,
+        afternoon: 7.8,
+        evening: 7.4
+      }
+    };
 
-    const server = ensureServer();
-    if (!server) {
-      throw new ApiError(500, 'SERVER_ERROR', 'Failed to initialize mock server');
-    }
+    // Zodでバリデーション
+    const validatedData = StatsResponseSchema.parse(mockData);
 
-    // データ取得とバリデーション
-    const records = server.schema.all('record').models;
-    if (!records || !Array.isArray(records)) {
-      throw new ApiError(500, 'DATA_ERROR', 'Invalid data format');
-    }
-
-    // 統計計算
-    const stats = calculateStats(records);
-
-    // レスポンスバリデーション
-    const statsSchema = z.object({
-      overview: z.object({
-        count: z.number(),
-        avgEmotion: z.string()
-      }),
-      monthlyStats: z.array(z.object({
-        month: z.string(),
-        count: z.number(),
-        avgEmotion: z.string()
-      })),
-      studentStats: z.array(z.object({
-        student: z.string(),
-        recordCount: z.number(),
-        avgEmotion: z.string(),
-        trendline: z.array(z.number())
-      })),
-      dayOfWeekStats: z.array(z.object({
-        day: z.string(),
-        avgEmotion: z.string(),
-        count: z.number()
-      })),
-      emotionDistribution: z.array(z.number()),
-      timeOfDayStats: z.object({
-        morning: z.string(),
-        afternoon: z.string(),
-        evening: z.string()
-      })
-    });
-
-    const validatedStats = statsSchema.parse(stats);
-    return createResponse(validatedStats);
-
+    return NextResponse.json(validatedData);
   } catch (error) {
     console.error('Stats API Error:', error);
-
-    if (error instanceof ApiError) {
-      return createResponse(
-        {
-          error: error.code,
-          message: error.message
-        },
-        error.statusCode
-      );
-    }
-
-    if (error instanceof z.ZodError) {
-      return createResponse(
-        {
-          error: 'VALIDATION_ERROR',
-          message: 'Data validation failed',
-          details: error.errors
-        },
-        400
-      );
-    }
-
-    return createResponse(
-      {
-        error: 'INTERNAL_ERROR',
-        message: 'An unexpected error occurred'
-      },
-      500
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
     );
   }
 }

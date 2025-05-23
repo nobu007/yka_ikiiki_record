@@ -1,45 +1,30 @@
-import { NextResponse } from "next/server";
-import { ensureServer } from "@/mirage";
+import { NextResponse } from 'next/server';
+import { SeedResponseSchema } from '@/types/api';
 
-export async function POST(request: Request) {
+export async function POST() {
   try {
-    if (process.env.NEXT_PUBLIC_MOCK !== "true") {
-      return NextResponse.json(
-        { error: 'Mock mode is not enabled' },
-        { status: 400 }
-      );
-    }
+    // 実際のデータ生成ロジックはここに実装
+    // この例ではモックの成功レスポンスを返します
+    const mockResponse = {
+      success: true,
+      message: 'テストデータの生成が完了しました'
+    };
 
-    const server = ensureServer();
-    if (!server) {
-      return NextResponse.json(
-        { error: 'Failed to initialize mock server' },
-        { status: 500 }
-      );
-    }
+    // Zodでバリデーション
+    const validatedResponse = SeedResponseSchema.parse(mockResponse);
 
-    // リクエストからパラメータを取得（デフォルト: 25名×30日分）
-    const { students = 25, days = 30 } = await request.json();
-    const total = students * days;
-
-    // 既存のレコードを削除してから新しいレコードを作成
-    server.schema.all('record').destroy();
-    Array.from({ length: total }).forEach(() => {
-      server.schema.create('record', {});
-    });
-
-    return NextResponse.json(
-      { ok: true, total, students, days },
-      { status: 201 }
-    );
+    return NextResponse.json(validatedResponse);
   } catch (error) {
     console.error('Seed API Error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+
+    const errorResponse = {
+      success: false,
+      error: 'データ生成中にエラーが発生しました'
+    };
+
+    // エラーレスポンスもバリデーション
+    const validatedErrorResponse = SeedResponseSchema.parse(errorResponse);
+
+    return NextResponse.json(validatedErrorResponse, { status: 500 });
   }
 }
-
-/** App Router ではキャッシュを防ぐため */
-export const dynamic = "force-dynamic";

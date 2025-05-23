@@ -1,41 +1,40 @@
+import { StatsResponseSchema } from '@/schemas/stats';
 import { NextResponse } from 'next/server';
-import { StatsResponseSchema } from '@/types/api';
 
 export async function GET() {
   try {
-    // 実際のデータ取得ロジックはここに実装
-    // この例ではモックデータを返します
-    const mockData = {
+    // 統計データを取得するロジック（例：DBから取得など）
+    const rawStats = {
       overview: {
         count: 100,
-        avgEmotion: 7.5
+        avgEmotion: 3.5
       },
       monthlyStats: [
-        { month: '2025-04', avgEmotion: 7.2 },
-        { month: '2025-05', avgEmotion: 7.8 }
+        { month: '2025-04', avgEmotion: 3.2 },
+        { month: '2025-05', avgEmotion: 3.8 }
       ],
       dayOfWeekStats: [
-        { day: '月', avgEmotion: 7.1 },
-        { day: '火', avgEmotion: 7.3 },
-        { day: '水', avgEmotion: 7.5 },
-        { day: '木', avgEmotion: 7.7 },
-        { day: '金', avgEmotion: 7.9 },
-        { day: '土', avgEmotion: 8.1 },
-        { day: '日', avgEmotion: 7.8 }
+        { day: '月', avgEmotion: 3.1 },
+        { day: '火', avgEmotion: 3.3 },
+        { day: '水', avgEmotion: 3.5 },
+        { day: '木', avgEmotion: 3.7 },
+        { day: '金', avgEmotion: 3.9 },
+        { day: '土', avgEmotion: 4.1 },
+        { day: '日', avgEmotion: 3.8 }
       ],
       timeOfDayStats: {
-        morning: 7.6,
-        afternoon: 7.8,
-        evening: 7.4
+        morning: 3.6,
+        afternoon: 3.8,
+        evening: 3.4
       }
     };
 
-    // Zodでバリデーション
-    const validatedData = StatsResponseSchema.parse(mockData);
+    // スキーマによる検証
+    const validatedStats = StatsResponseSchema.parse(rawStats);
 
-    return NextResponse.json(validatedData);
+    return NextResponse.json(validatedStats);
   } catch (error) {
-    console.error('Stats API Error:', error);
+    console.error('統計データの取得に失敗しました:', error);
     return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: 500 }

@@ -1,41 +1,40 @@
-import useSWR from 'swr';
-import { StatsResponse, StatsResponseSchema } from '@/types/api';
+import { useState, useCallback } from 'react';
+import useSWR, { KeyedMutator } from 'swr';
+import { StatsResponseSchema, StatsResponse } from '@/schemas/stats';
 
-const RETRY_COUNT = 3;
-const RETRY_INTERVAL = 1000;
-const REFRESH_INTERVAL = 30000; // 30秒
-
-async function fetcher(url: string): Promise<StatsResponse> {
+const fetcher = async (url: string): Promise<StatsResponse> => {
   const response = await fetch(url);
-
   if (!response.ok) {
-    const error = new Error(`Error ${response.status}: ${await response.text()}`);
-    error.name = 'FetchError';
-    throw error;
+    throw new Error('APIリクエストに失敗しました');
   }
-
   const data = await response.json();
-  // Zodでバリデーション
   return StatsResponseSchema.parse(data);
-}
+};
 
 export function useStatsFetch() {
-  const { data, error, isLoading, mutate } = useSWR<StatsResponse>(
-    '/api/stats',
-    fetcher,
-    {
-      refreshInterval: REFRESH_INTERVAL,
-      onErrorRetry: (error, key, config, revalidate, { retryCount = 0 }) => {
-        if (retryCount >= RETRY_COUNT) return;
-        setTimeout(() => revalidate({ retryCount: retryCount + 1 }), RETRY_INTERVAL);
-      }
+  const [error, setError] = useState<Error | null>(null);
+
+  const {
+    data: stats,
+    error: swrError,
+    isLoading,
+    mutate
+  } = useSWR<StatsResponse>('/api/stats', fetcher, {
+    onError: (err) => {
+      console.error('統計データの取得に失敗しました:', err);
+      setError(err instanceof Error ? err : new Error('不明なエラーが発生しました'));
     }
-  );
+  });
+
+  const refetch: KeyedMutator<StatsResponse> = useCallback(() => {
+    setError(null);
+    return mutate();
+  }, [mutate]);
 
   return {
-    stats: data,
-    error,
+    stats,
+    error: error || swrError,
     isLoading,
-    refetch: mutate
+    refetch
   };
 }

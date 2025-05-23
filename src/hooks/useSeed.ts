@@ -1,35 +1,28 @@
 import { useState, useCallback } from 'react';
-import { SeedResponse, SeedResponseSchema } from '@/types/api';
 
 export function useSeed() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const generate = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
     try {
+      setIsLoading(true);
+      setError(null);
+
       const response = await fetch('/api/seed', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: 'POST'
       });
 
-      const data = await response.json();
-      // Zodでバリデーション
-      const result = SeedResponseSchema.parse(data);
-
-      if (!result.success) {
-        throw new Error(result.error || 'データ生成に失敗しました');
+      if (!response.ok) {
+        throw new Error('データ生成に失敗しました');
       }
 
-      return result;
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error('データ生成中にエラーが発生しました');
-      setError(error);
-      throw error;
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      console.error('データ生成エラー:', e);
+      setError(e instanceof Error ? e : new Error('不明なエラーが発生しました'));
+      throw e;
     } finally {
       setIsLoading(false);
     }

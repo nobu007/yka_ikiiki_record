@@ -7,7 +7,12 @@ declare global {
 
 /** 常に同じサーバーインスタンスを返す */
 export function ensureServer() {
-  if (!globalThis.mirageServer) {
+  // API Routes用のサーバーサイドチェック
+  const isServer = typeof window === 'undefined';
+  const isApiRoute = process.env.NEXT_RUNTIME === 'nodejs';
+
+  // クライアントサイド または APIルート の場合のみサーバーを初期化
+  if ((isServer && isApiRoute || !isServer) && !globalThis.mirageServer) {
     globalThis.mirageServer = makeServer({ environment: "development" });
   }
   return globalThis.mirageServer;

@@ -33,6 +33,7 @@
     "flatpickr": "^4.6.13",
     "miragejs": "^0.1.48",
     "next": "^13.5.6",
+    "next-themes": "^0.4.6",
     "react": "^18.3.1",
     "react-apexcharts": "^1.7.0",
     "react-dom": "^18.3.1",

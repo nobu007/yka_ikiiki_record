@@ -11,6 +11,12 @@ export async function POST(request: Request) {
     }
 
     const server = ensureServer();
+    if (!server) {
+      return NextResponse.json(
+        { error: 'Failed to initialize mock server' },
+        { status: 500 }
+      );
+    }
 
     // リクエストからパラメータを取得（デフォルト: 25名×365日）
     const { students = 25, days = 365 } = await request.json();

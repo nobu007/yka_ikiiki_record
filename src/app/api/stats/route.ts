@@ -19,6 +19,12 @@ export async function GET() {
     // モックモードの場合のみMirageJSを使用
     if (process.env.NEXT_PUBLIC_MOCK === "true") {
       const server = ensureServer();
+      if (!server) {
+        return NextResponse.json(
+          { error: 'Failed to initialize mock server' },
+          { status: 500 }
+        );
+      }
       const mockRecords = server.schema.all('record').models as Record[];
 
       if (!mockRecords || !Array.isArray(mockRecords)) {

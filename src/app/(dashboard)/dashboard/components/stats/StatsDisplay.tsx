@@ -1,61 +1,23 @@
 'use client';
 
-import useSWR from 'swr';
-import { useCallback, useMemo } from 'react';
 import { useTheme } from 'next-themes';
-import { Stats } from '@/types/stats';
 import DynamicBarChart, { ChartData } from '@/components/charts/DynamicBarChart';
+import { Stats } from '@/types/stats';
 
-const fetcher = (url: string) =>
-  fetch(url).then(async res => {
-    if (!res.ok) {
-      const error = new Error(`Error ${res.status}: ${await res.text()}`);
-      error.name = 'FetchError';
-      throw error;
-    }
-    return res.json();
-  });
+interface StatsDisplayProps {
+  stats: Stats;
+  isLoading: boolean;
+  error: Error | null;
+  onRetry: () => void;
+}
 
-const RETRY_COUNT = 3;
-const RETRY_INTERVAL = 1000;
-
-export default function StatsDisplay() {
+export default function StatsDisplay({ stats, isLoading, error, onRetry }: StatsDisplayProps) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
 
-  const { data: stats, error, isLoading, mutate } = useSWR<Stats>(
-    '/api/stats',
-    fetcher,
-    {
-      refreshInterval: 30000, // 30秒ごとに自動更新
-      onErrorRetry: (error, key, config, revalidate, { retryCount = 0 }) => {
-        if (retryCount >= RETRY_COUNT) return;
-        setTimeout(() => revalidate({ retryCount: retryCount + 1 }), RETRY_INTERVAL);
-      }
-    }
-  );
-
-  const retryFetch = useCallback(() => {
-    mutate();
-  }, [mutate]);
-
-  const monthlyChartData: ChartData[] = useMemo(() =>
-    stats?.monthlyStats.map(stat => ({
-      name: stat.month.split('-')[1] + '月',
-      value: Number(stat.avgEmotion)
-    })) ?? [], [stats?.monthlyStats]);
-
-  const dayOfWeekChartData: ChartData[] = useMemo(() =>
-    stats?.dayOfWeekStats.map(stat => ({
-      name: stat.day,
-      value: Number(stat.avgEmotion)
-    })) ?? [], [stats?.dayOfWeekStats]);
-
-  const timeOfDayChartData: ChartData[] = useMemo(() => [
-    { name: '朝（5-11時）', value: Number(stats?.timeOfDayStats.morning ?? 0) },
-    { name: '昼（12-17時）', value: Number(stats?.timeOfDayStats.afternoon ?? 0) },
-    { name: '夜（18-4時）', value: Number(stats?.timeOfDayStats.evening ?? 0) }
-  ], [stats?.timeOfDayStats]);
+  const bgColor = isDark ? 'bg-gray-800' : 'bg-white';
+  const textColor = isDark ? 'text-gray-200' : 'text-gray-500';
+  const headingColor = isDark ? 'text-white' : 'text-gray-900';
 
   if (isLoading) {
     return (
@@ -70,7 +32,7 @@ export default function StatsDisplay() {
       <div className="text-center p-4">
         <p className="text-red-500 mb-4">エラーが発生しました: {error.message}</p>
         <button
-          onClick={retryFetch}
+          onClick={onRetry}
           className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/80 transition-colors"
         >
           再試行
@@ -81,9 +43,21 @@ export default function StatsDisplay() {
 
   if (!stats) return <p className="text-center">データが見つかりません</p>;
 
-  const bgColor = isDark ? 'bg-gray-800' : 'bg-white';
-  const textColor = isDark ? 'text-gray-200' : 'text-gray-500';
-  const headingColor = isDark ? 'text-white' : 'text-gray-900';
+  const monthlyChartData: ChartData[] = stats?.monthlyStats.map(stat => ({
+    name: stat.month.split('-')[1] + '月',
+    value: Number(stat.avgEmotion)
+  })) ?? [];
+
+  const dayOfWeekChartData: ChartData[] = stats?.dayOfWeekStats.map(stat => ({
+    name: stat.day,
+    value: Number(stat.avgEmotion)
+  })) ?? [];
+
+  const timeOfDayChartData: ChartData[] = [
+    { name: '朝（5-11時）', value: Number(stats?.timeOfDayStats.morning ?? 0) },
+    { name: '昼（12-17時）', value: Number(stats?.timeOfDayStats.afternoon ?? 0) },
+    { name: '夜（18-4時）', value: Number(stats?.timeOfDayStats.evening ?? 0) }
+  ];
 
   return (
     <div className="space-y-6">

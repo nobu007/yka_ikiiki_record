@@ -1,5 +1,5 @@
-import DashboardContent from './_components/DashboardContent';
+import DashboardContainer from './containers/DashboardContainer';
 
 export default function DashboardPage() {
-  return <DashboardContent />;
+  return <DashboardContainer />;
 }

@@ -2,10 +2,10 @@
 
 import { useEffect } from 'react';
 import useDataGeneration from '@/hooks/useDataGeneration';
-import DataGenerationButton from './DataGenerationButton';
-import StatsDisplay from './StatsDisplay';
+import DataGenerationButton from '../components/buttons/DataGenerationButton';
+import StatsContainer from './StatsContainer';
 
-export default function DashboardContent() {
+export default function DashboardContainer() {
   const { generate, isLoading, error } = useDataGeneration();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function DashboardContent() {
       {/* ローディング／エラー／統計表示 */}
       {isLoading && <p>データ生成中...</p>}
       {error && <p className="text-red-500">エラー: {error.message}</p>}
-      {!isLoading && !error && <StatsDisplay />}
+      {!isLoading && !error && <StatsContainer />}
     </div>
   );
 }

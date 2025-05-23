@@ -2,10 +2,10 @@
 
 import { useTheme } from 'next-themes';
 import DynamicBarChart, { ChartData } from '@/components/charts/DynamicBarChart';
-import { Stats } from '@/types/stats';
+import { StatsResponse } from '@/types/api';
 
 interface StatsDisplayProps {
-  stats: Stats;
+  stats: StatsResponse;
   isLoading: boolean;
   error: Error | null;
   onRetry: () => void;
@@ -43,20 +43,20 @@ export default function StatsDisplay({ stats, isLoading, error, onRetry }: Stats
 
   if (!stats) return <p className="text-center">データが見つかりません</p>;
 
-  const monthlyChartData: ChartData[] = stats?.monthlyStats.map(stat => ({
+  const monthlyChartData: ChartData[] = stats.monthlyStats.map(stat => ({
     name: stat.month.split('-')[1] + '月',
     value: Number(stat.avgEmotion)
-  })) ?? [];
+  }));
 
-  const dayOfWeekChartData: ChartData[] = stats?.dayOfWeekStats.map(stat => ({
+  const dayOfWeekChartData: ChartData[] = stats.dayOfWeekStats.map(stat => ({
     name: stat.day,
     value: Number(stat.avgEmotion)
-  })) ?? [];
+  }));
 
   const timeOfDayChartData: ChartData[] = [
-    { name: '朝（5-11時）', value: Number(stats?.timeOfDayStats.morning ?? 0) },
-    { name: '昼（12-17時）', value: Number(stats?.timeOfDayStats.afternoon ?? 0) },
-    { name: '夜（18-4時）', value: Number(stats?.timeOfDayStats.evening ?? 0) }
+    { name: '朝（5-11時）', value: Number(stats.timeOfDayStats.morning) },
+    { name: '昼（12-17時）', value: Number(stats.timeOfDayStats.afternoon) },
+    { name: '夜（18-4時）', value: Number(stats.timeOfDayStats.evening) }
   ];
 
   return (

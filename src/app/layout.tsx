@@ -1,27 +1,23 @@
-'use client';
-
-import { Outfit } from 'next/font/google';
+import { makeServer } from '@/mirage/server';
 import './globals.css';
 
-import { SidebarProvider } from '@/context/SidebarContext';
-import { ThemeProvider } from '@/context/ThemeContext';
-
-const outfit = Outfit({
-  subsets: ["latin"],
-});
+if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_MOCK === 'true') {
+  makeServer({ environment: 'development' });
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={`${outfit.className} dark:bg-gray-900`}>
-        <ThemeProvider>
-          <SidebarProvider>{children}</SidebarProvider>
-        </ThemeProvider>
-      </body>
+    <html lang="ja">
+      <body>{children}</body>
     </html>
   );
 }
+
+export const metadata = {
+  title: 'Dashboard',
+  description: 'ダッシュボードアプリケーション',
+};

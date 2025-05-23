@@ -8,7 +8,6 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.modules = [
       path.resolve(__dirname, "src"),
-      path.resolve(__dirname, "vite_app/src"),
       "node_modules",
     ];
     return config;

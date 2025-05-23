@@ -15,7 +15,7 @@
     "incremental": true,
     "paths": {
       "@ui/*": ["./packages/ui/*"],
-      "@/*": ["./src/*", "./vite_app/src/*"]
+      "@/*": ["./src/*"]
     },
     "plugins": [
       {

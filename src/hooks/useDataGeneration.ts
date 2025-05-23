@@ -1,37 +1,35 @@
-"use client";
+import { useState, useCallback } from 'react';
 
-import { useState } from "react";
-import { Stats } from '@/types/stats';
+export default function useDataGeneration() {
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
-export const useDataGeneration = (setStats: (stats: Stats) => void) => {
-  const [loading, setLoading] = useState(false);
-
-  const generateData = async () => {
-    if (loading) return;
+  const generate = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
-      const res = await fetch("/api/seed", {
-        method: "POST",
+      const response = await fetch('/api/seed', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ students: 25, days: 365 })
+        body: JSON.stringify({ days: 30 }), // 30日分のデータを生成
       });
 
-      if (res.ok) {
-        const statsRes = await fetch("/api/stats");
-        if (statsRes.ok) {
-          const newStats = await statsRes.json();
-          setStats(newStats);
-          // router.refresh() は不要なため削除
-        }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    } catch (error) {
-      console.error("Error generating data:", error);
+
+      const data = await response.json();
+      if (!data.ok) {
+        throw new Error(data.error || 'データ生成に失敗しました');
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e : new Error('Unknown error'));
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  return { loading, generateData };
-};
+  return { generate, isLoading, error };
+}

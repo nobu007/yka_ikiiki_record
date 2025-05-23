@@ -1,23 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { Stats } from '@/types/stats';
-import { useDataGeneration } from '@/hooks/useDataGeneration';
-import DataGenerationButton from './DataGenerationButton';
+import { useEffect } from 'react';
+import useDataGeneration from '@/hooks/useDataGeneration';
 import StatsDisplay from './StatsDisplay';
 
-interface DashboardContentProps {
-  initialStats: Stats;
-}
+export default function DashboardContent() {
+  const { generate, isLoading, error } = useDataGeneration();
 
-export default function DashboardContent({ initialStats }: DashboardContentProps) {
-  const [stats, setStats] = useState<Stats>(initialStats);
-  const { loading, generateData } = useDataGeneration(setStats);
+  useEffect(() => {
+    generate(); // 初回マウント時にデータを生成
+  }, [generate]);
 
   return (
     <div className="p-4 space-y-6">
-      <DataGenerationButton loading={loading} onGenerate={generateData} />
-      <StatsDisplay stats={stats} />
+      {isLoading && <p>データ生成中...</p>}
+      {error && <p>エラーが発生しました: {error.message}</p>}
+      {!isLoading && !error && <StatsDisplay />}
     </div>
   );
 }

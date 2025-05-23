@@ -45,7 +45,6 @@ export default function StatsDisplay({ stats }: StatsDisplayProps) {
         <div className="overflow-x-auto">
           {monthlyChartData.length > 0 ? (
             <DynamicBarChart
-              width={600}
               height={300}
               data={monthlyChartData}
             />
@@ -62,7 +61,6 @@ export default function StatsDisplay({ stats }: StatsDisplayProps) {
         <h3 className="text-lg font-semibold mb-4">曜日別平均感情スコア</h3>
         <div className="overflow-x-auto">
           <DynamicBarChart
-            width={600}
             height={300}
             data={dayOfWeekChartData}
           />
@@ -74,7 +72,6 @@ export default function StatsDisplay({ stats }: StatsDisplayProps) {
         <h3 className="text-lg font-semibold mb-4">時間帯別平均感情スコア</h3>
         <div className="overflow-x-auto">
           <DynamicBarChart
-            width={600}
             height={300}
             data={timeOfDayChartData}
           />

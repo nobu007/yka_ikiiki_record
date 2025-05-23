@@ -18,16 +18,17 @@ export async function POST(request: Request) {
       );
     }
 
-    // リクエストからパラメータを取得（デフォルト: 25名×365日）
-    const { students = 25, days = 365 } = await request.json();
-    const total = students * days;
+    // リクエストからパラメータを取得（デフォルト: 30日分のデータ）
+    const { days = 30 } = await request.json();
 
-    // 既存のレコードを削除してから新しいレコードを作成
-    server.schema.all('record').destroy();
-    server.createList("record", total);
+    // 既存の統計データを削除してから新しいデータを作成
+    server.schema.all('stat').destroy();
+    Array.from({ length: days }).forEach(() => {
+      server.schema.create('stat', {});
+    });
 
     return NextResponse.json(
-      { ok: true, total, students, days },
+      { ok: true, total: days },
       { status: 201 }
     );
   } catch (error) {

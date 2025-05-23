@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import useDataGeneration from '@/hooks/useDataGeneration';
+import DataGenerationButton from './_components/DataGenerationButton';
 import StatsDisplay from './_components/StatsDisplay';
 
 export default function DashboardPage() {
@@ -11,8 +12,12 @@ export default function DashboardPage() {
     generate(); // 初回マウント時にシードAPIを実行
   }, [generate]);
 
-  if (isLoading) return <p>データ生成中...</p>;
   if (error) return <p>エラーが発生しました: {error.message}</p>;
 
-  return <StatsDisplay />;
+  return (
+    <div className="p-4 space-y-6">
+      <DataGenerationButton loading={isLoading} onGenerate={generate} />
+      <StatsDisplay />
+    </div>
+  );
 }

@@ -1,19 +1,18 @@
-import DashboardContent from "./_components/DashboardContent";
+'use client';
 
-const initialStats = {
-  overview: {
-    count: 0,
-    avgEmotion: "0.00"
-  },
-  monthlyStats: [],
-  dayOfWeekStats: [],
-  timeOfDayStats: {
-    morning: "0.00",
-    afternoon: "0.00",
-    evening: "0.00"
-  }
-};
+import { useEffect } from 'react';
+import useDataGeneration from '@/hooks/useDataGeneration';
+import { StatsDisplay } from '../_components/StatsDisplay';
 
-export default function Page() {
-  return <DashboardContent initialStats={initialStats} />;
+export default function DashboardPage() {
+  const { generate, isLoading, error } = useDataGeneration();
+
+  useEffect(() => {
+    generate(); // 初回マウント時にシードAPIを実行
+  }, [generate]);
+
+  if (isLoading) return <p>データ生成中...</p>;
+  if (error) return <p>エラーが発生しました: {error.message}</p>;
+
+  return <StatsDisplay />;
 }

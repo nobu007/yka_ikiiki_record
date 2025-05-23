@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Stats } from '@/types/stats';
 
 export const useDataGeneration = (setStats: (stats: Stats) => void) => {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const generateData = async () => {
@@ -25,7 +23,7 @@ export const useDataGeneration = (setStats: (stats: Stats) => void) => {
         if (statsRes.ok) {
           const newStats = await statsRes.json();
           setStats(newStats);
-          router.refresh();
+          // router.refresh() は不要なため削除
         }
       }
     } catch (error) {

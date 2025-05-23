@@ -8,7 +8,16 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function BarChartOne() {
+interface ChartData {
+  name: string;
+  value: number;
+}
+
+interface BarChartOneProps {
+  data: ChartData[];
+}
+
+export default function BarChartOne({ data }: BarChartOneProps) {
   const options: ApexOptions = {
     colors: ["#465fff"],
     chart: {
@@ -36,20 +45,7 @@ export default function BarChartOne() {
       colors: ["transparent"],
     },
     xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: data.map(item => item.name),
       axisBorder: {
         show: false,
       },
@@ -78,7 +74,6 @@ export default function BarChartOne() {
     fill: {
       opacity: 1,
     },
-
     tooltip: {
       x: {
         show: false,
@@ -88,12 +83,14 @@ export default function BarChartOne() {
       },
     },
   };
+
   const series = [
     {
-      name: "Sales",
-      data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+      name: "値",
+      data: data.map(item => item.value),
     },
   ];
+
   return (
     <div className="max-w-full overflow-x-auto custom-scrollbar">
       <div id="chartOne" className="min-w-[1000px]">

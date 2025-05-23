@@ -1,126 +1,153 @@
-import { Stats } from '@/types/stats';
+import { z } from 'zod';
+import { Stats } from '../types/stats';
 
-type Record = {
-  emotion: number;
-  date: string;
-  student: string;
-  comment: string;
-};
+// 型定義の強化
+const RecordSchema = z.object({
+  emotion: z.number()
+    .min(1, "Emotion score must be at least 1")
+    .max(5, "Emotion score must be at most 5"),
+  date: z.string().datetime("Invalid date format"),
+  student: z.string().min(1, "Student identifier is required"),
+  comment: z.string()
+});
 
-export function calculateStats(records: Record[]): Stats {
-  // 基本的な統計データの準備
-  const monthlyData = new Map<string, { sum: number; count: number }>();
-  const studentData = new Map<string, number[]>();
-  const dayOfWeekData = new Array(7).fill(0).map(() => ({ sum: 0, count: 0 }));
-  const timeOfDayData = {
-    morning: { sum: 0, count: 0 },   // 5-11時
-    afternoon: { sum: 0, count: 0 }, // 12-17時
-    evening: { sum: 0, count: 0 }    // 18-4時
-  };
+export type ValidRecord = z.infer<typeof RecordSchema>;
 
-  // データの集計
-  let totalEmotion = 0;
-  records.forEach(record => {
-    if (!isValidRecord(record)) {
-      console.warn('Invalid record found:', record);
-      return;
-    }
-
-    const date = new Date(record.date);
-    const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-
-    // 月別データ
-    if (!monthlyData.has(month)) {
-      monthlyData.set(month, { sum: 0, count: 0 });
-    }
-    const monthData = monthlyData.get(month)!;
-    monthData.sum += record.emotion;
-    monthData.count += 1;
-
-    // 学生別データ
-    if (!studentData.has(record.student)) {
-      studentData.set(record.student, []);
-    }
-    studentData.get(record.student)!.push(record.emotion);
-
-    // 曜日別データ
-    const dayOfWeek = date.getDay();
-    dayOfWeekData[dayOfWeek].sum += record.emotion;
-    dayOfWeekData[dayOfWeek].count += 1;
-
-    // 時間帯別データ
-    const hour = date.getHours();
-    if (hour >= 5 && hour < 12) {
-      timeOfDayData.morning.sum += record.emotion;
-      timeOfDayData.morning.count += 1;
-    } else if (hour >= 12 && hour < 18) {
-      timeOfDayData.afternoon.sum += record.emotion;
-      timeOfDayData.afternoon.count += 1;
-    } else {
-      timeOfDayData.evening.sum += record.emotion;
-      timeOfDayData.evening.count += 1;
-    }
-
-    totalEmotion += record.emotion;
-  });
-
-  // 統計データの整形
-  return {
-    overview: {
-      count: records.length,
-      avgEmotion: records.length > 0 ? (totalEmotion / records.length).toFixed(2) : "0.00"
-    },
-    monthlyStats: Array.from(monthlyData.entries())
-      .map(([month, data]) => ({
-        month,
-        count: data.count,
-        avgEmotion: (data.sum / data.count).toFixed(2)
-      }))
-      .sort((a, b) => b.month.localeCompare(a.month)),
-    studentStats: Array.from(studentData.entries())
-      .map(([student, emotions]) => ({
-        student,
-        recordCount: emotions.length,
-        avgEmotion: (emotions.reduce((sum, e) => sum + e, 0) / emotions.length).toFixed(2),
-        trendline: emotions.slice(-7)
-      }))
-      .sort((a, b) => Number(b.avgEmotion) - Number(a.avgEmotion)),
-    dayOfWeekStats: ['日', '月', '火', '水', '木', '金', '土']
-      .map((day, index) => ({
-        day,
-        avgEmotion: dayOfWeekData[index].count > 0
-          ? (dayOfWeekData[index].sum / dayOfWeekData[index].count).toFixed(2)
-          : '0.00',
-        count: dayOfWeekData[index].count
-      })),
-    emotionDistribution: records
-      .reduce((acc, record) => {
-        const index = Math.floor(record.emotion) - 1;
-        acc[index]++;
-        return acc;
-      }, new Array(5).fill(0)),
-    timeOfDayStats: {
-      morning: timeOfDayData.morning.count > 0
-        ? (timeOfDayData.morning.sum / timeOfDayData.morning.count).toFixed(2)
-        : '0.00',
-      afternoon: timeOfDayData.afternoon.count > 0
-        ? (timeOfDayData.afternoon.sum / timeOfDayData.afternoon.count).toFixed(2)
-        : '0.00',
-      evening: timeOfDayData.evening.count > 0
-        ? (timeOfDayData.evening.sum / timeOfDayData.evening.count).toFixed(2)
-        : '0.00'
-    }
-  };
+export class StatsError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'StatsError';
+  }
 }
 
-function isValidRecord(record: Record): boolean {
-  return (
-    typeof record.emotion === 'number' &&
-    record.emotion >= 1 &&
-    record.emotion <= 5 &&
-    typeof record.date === 'string' &&
-    !isNaN(new Date(record.date).getTime()) &&
-    typeof record.student === 'string' &&
-    record.student.length > 0
-  );
+const formatAverage = (sum: number, count: number): string =>
+  (count > 0 ? (sum / count) : 0).toFixed(2);
+
+export function calculateStats(records: unknown[]): Stats {
+  try {
+    // 入力データのバリデーション
+    const validRecords = records
+      .map(record => {
+        try {
+          return RecordSchema.parse(record);
+        } catch (e) {
+          console.warn('Invalid record:', record, e);
+          return null;
+        }
+      })
+      .filter((r): r is ValidRecord => r !== null);
+
+    if (validRecords.length === 0) {
+      throw new StatsError('No valid records found');
+    }
+
+    // データ集計の初期化
+    const stats = {
+      monthlyData: new Map<string, { sum: number; count: number }>(),
+      studentData: new Map<string, number[]>(),
+      dayOfWeekData: Array(7).fill(null).map(() => ({ sum: 0, count: 0 })),
+      timeOfDayData: {
+        morning: { sum: 0, count: 0 },   // 5-11時
+        afternoon: { sum: 0, count: 0 }, // 12-17時
+        evening: { sum: 0, count: 0 }    // 18-4時
+      },
+      emotionDistribution: new Array(5).fill(0)
+    };
+
+    // 1回のループで全ての統計を計算（パフォーマンス最適化）
+    let totalEmotion = 0;
+    for (const record of validRecords) {
+      const date = new Date(record.date);
+
+      // 月別データ
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      const monthData = stats.monthlyData.get(monthKey) || { sum: 0, count: 0 };
+      monthData.sum += record.emotion;
+      monthData.count += 1;
+      stats.monthlyData.set(monthKey, monthData);
+
+      // 学生別データ
+      if (!stats.studentData.has(record.student)) {
+        stats.studentData.set(record.student, []);
+      }
+      stats.studentData.get(record.student)!.push(record.emotion);
+
+      // 曜日別データ
+      const dayOfWeek = date.getDay();
+      stats.dayOfWeekData[dayOfWeek].sum += record.emotion;
+      stats.dayOfWeekData[dayOfWeek].count += 1;
+
+      // 時間帯別データ
+      const hour = date.getHours();
+      const timeData =
+        hour >= 5 && hour < 12 ? stats.timeOfDayData.morning :
+        hour >= 12 && hour < 18 ? stats.timeOfDayData.afternoon :
+        stats.timeOfDayData.evening;
+
+      timeData.sum += record.emotion;
+      timeData.count += 1;
+
+      // 感情スコア分布
+      const emotionIndex = Math.floor(record.emotion) - 1;
+      stats.emotionDistribution[emotionIndex]++;
+
+      totalEmotion += record.emotion;
+    }
+
+    // 結果の整形
+    return {
+      overview: {
+        count: validRecords.length,
+        avgEmotion: formatAverage(totalEmotion, validRecords.length)
+      },
+      monthlyStats: Array.from(stats.monthlyData.entries())
+        .map(([month, data]) => ({
+          month,
+          count: data.count,
+          avgEmotion: formatAverage(data.sum, data.count)
+        }))
+        .sort((a, b) => b.month.localeCompare(a.month)),
+      studentStats: Array.from(stats.studentData.entries())
+        .map(([student, emotions]) => ({
+          student,
+          recordCount: emotions.length,
+          avgEmotion: formatAverage(
+            emotions.reduce((sum, e) => sum + e, 0),
+            emotions.length
+          ),
+          trendline: emotions.slice(-7) // 直近7日間のトレンド
+        }))
+        .sort((a, b) => Number(b.avgEmotion) - Number(a.avgEmotion)),
+      dayOfWeekStats: ['日', '月', '火', '水', '木', '金', '土']
+        .map((day, index) => ({
+          day,
+          avgEmotion: formatAverage(
+            stats.dayOfWeekData[index].sum,
+            stats.dayOfWeekData[index].count
+          ),
+          count: stats.dayOfWeekData[index].count
+        })),
+      emotionDistribution: stats.emotionDistribution,
+      timeOfDayStats: {
+        morning: formatAverage(
+          stats.timeOfDayData.morning.sum,
+          stats.timeOfDayData.morning.count
+        ),
+        afternoon: formatAverage(
+          stats.timeOfDayData.afternoon.sum,
+          stats.timeOfDayData.afternoon.count
+        ),
+        evening: formatAverage(
+          stats.timeOfDayData.evening.sum,
+          stats.timeOfDayData.evening.count
+        )
+      }
+    };
+
+  } catch (error) {
+    if (error instanceof StatsError) {
+      throw error;
+    }
+    throw new StatsError('Failed to calculate statistics');
+  }
 }

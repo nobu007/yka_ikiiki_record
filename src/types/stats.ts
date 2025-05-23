@@ -3,19 +3,26 @@ export interface Stats {
     count: number;
     avgEmotion: string;
   };
-  monthlyStats: Array<{
+  monthlyStats: {
     month: string;
     count: number;
     avgEmotion: string;
-  }>;
-  dayOfWeekStats: Array<{
-    day: string;
-    count: number;
+  }[];
+  studentStats: {
+    student: string;
+    recordCount: number;
     avgEmotion: string;
-  }>;
+    trendline: number[];
+  }[];
+  dayOfWeekStats: {
+    day: string;
+    avgEmotion: string;
+    count: number;
+  }[];
+  emotionDistribution: number[];
   timeOfDayStats: {
     morning: string;
     afternoon: string;
     evening: string;
-  }
+  };
 }

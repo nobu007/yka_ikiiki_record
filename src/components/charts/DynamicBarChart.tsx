@@ -1,41 +1,90 @@
-"use client";
+'use client';
 
+import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
-import { ResponsiveContainer } from 'recharts';
+
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+  ssr: false,
+});
 
 export interface ChartData {
   name: string;
   value: number;
 }
 
-interface ChartProps {
+interface DynamicBarChartProps {
+  data: ChartData[];
   height?: number;
-  data?: ChartData[];
   title?: string;
 }
 
-const DynamicBarChart = dynamic(
-  () => import('recharts').then(mod => {
-    const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } = mod;
-    return function Chart({ height, data, title }: ChartProps) {
-      return (
-        <div>
-          {title && <h3 className="text-lg font-semibold mb-4">{title}</h3>}
-          <ResponsiveContainer width="100%" height={height}>
-            <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis domain={[0, 5]} />
-              <Tooltip formatter={(value: number) => value.toFixed(2)} />
-              <Legend />
-              <Bar dataKey="value" name="感情スコア" className="text-indigo-600" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      );
-    };
-  }),
-  { ssr: false }
-);
+export default function DynamicBarChart({ data, height = 300, title }: DynamicBarChartProps) {
+  const options: ApexOptions = {
+    chart: {
+      type: 'bar',
+      height: height,
+      toolbar: {
+        show: false,
+      },
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '50%',
+        borderRadius: 4,
+      },
+    },
+    colors: ['#4F46E5'],
+    dataLabels: {
+      enabled: false,
+    },
+    xaxis: {
+      categories: data.map(item => item.name),
+      axisBorder: {
+        show: false,
+      },
+      axisTicks: {
+        show: false,
+      },
+    },
+    yaxis: {
+      min: 0,
+      max: 5,
+      tickAmount: 5,
+      labels: {
+        formatter: (val) => val.toFixed(1),
+      },
+    },
+    grid: {
+      borderColor: '#f1f1f1',
+      padding: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 10,
+      },
+    },
+    tooltip: {
+      y: {
+        formatter: (val) => val.toFixed(2),
+      },
+    },
+  };
 
-export default DynamicBarChart;
+  const series = [{
+    name: 'スコア',
+    data: data.map(item => item.value),
+  }];
+
+  return (
+    <div className="w-full">
+      {title && <h3 className="text-lg font-semibold mb-4">{title}</h3>}
+      <ReactApexChart
+        options={options}
+        series={series}
+        type="bar"
+        height={height}
+      />
+    </div>
+  );
+}

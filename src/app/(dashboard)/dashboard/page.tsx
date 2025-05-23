@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import useDataGeneration from '@/hooks/useDataGeneration';
-import { StatsDisplay } from '../_components/StatsDisplay';
+import StatsDisplay from './_components/StatsDisplay';
 
 export default function DashboardPage() {
   const { generate, isLoading, error } = useDataGeneration();

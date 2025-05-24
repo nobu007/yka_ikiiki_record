@@ -1,6 +1,6 @@
 "use client";
 
-import BarChartOne from "@/components/charts/bar/BarChartOne";
+import DynamicBarChart from "@/components/charts/DynamicBarChart";
 import DashboardTemplate from "../../../(dashboard)/dashboard/components/__templates__/DashboardTemplate";
 import { useState, useCallback } from "react";
 
@@ -44,7 +44,11 @@ export default function BarChartContent() {
         loading: isLoading
       }}
       displayProps={{
-        data: <BarChartOne data={demoData} />,
+        data: <DynamicBarChart
+          data={demoData}
+          title="月別データ"
+          height={300}
+        />,
         loading: isLoading,
         error: error
       }}

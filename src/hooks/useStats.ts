@@ -1,5 +1,5 @@
 import useSWR, { KeyedMutator } from 'swr';
-import { StatsResponseSchema, StatsResponse } from '@/schemas/stats';
+import { StatsResponseSchema, StatsResponse } from '@/schemas/api';
 import { useState, useCallback } from 'react';
 
 const fetcher = async (url: string): Promise<StatsResponse> => {

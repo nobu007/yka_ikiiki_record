@@ -35,8 +35,8 @@ export const TimeOfDayStatsSchema = z.object({
   evening: z.number()
 });
 
-// 全体の統計情報レスポンススキーマ
-export const StatsResponseSchema = z.object({
+// 統計データ本体のスキーマ
+export const StatsDataSchema = z.object({
   overview: StatsOverviewSchema,
   monthlyStats: z.array(MonthlyStatSchema),
   studentStats: z.array(StudentStatSchema),
@@ -45,9 +45,20 @@ export const StatsResponseSchema = z.object({
   timeOfDayStats: TimeOfDayStatsSchema
 });
 
-// シード処理のレスポンススキーマ
-export const SeedResponseSchema = z.object({
+// 基本レスポンススキーマ
+const BaseResponseSchema = z.object({
   success: z.boolean(),
+  message: z.string().optional(),
+  error: z.string().optional()
+});
+
+// シード処理のレスポンススキーマ
+export const SeedResponseSchema = BaseResponseSchema;
+
+// 統計情報レスポンススキーマ
+export const StatsResponseSchema = z.object({
+  success: z.boolean(),
+  data: StatsDataSchema,
   message: z.string().optional(),
   error: z.string().optional()
 });
@@ -57,5 +68,6 @@ export type StatsOverview = z.infer<typeof StatsOverviewSchema>;
 export type MonthlyStats = z.infer<typeof MonthlyStatSchema>;
 export type DayOfWeekStats = z.infer<typeof DayOfWeekStatSchema>;
 export type TimeOfDayStats = z.infer<typeof TimeOfDayStatsSchema>;
+export type StatsData = z.infer<typeof StatsDataSchema>;
 export type StatsResponse = z.infer<typeof StatsResponseSchema>;
 export type SeedResponse = z.infer<typeof SeedResponseSchema>;

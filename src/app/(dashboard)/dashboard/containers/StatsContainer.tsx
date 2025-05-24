@@ -12,22 +12,22 @@ export default function StatsContainer() {
 
   // データ加工ロジック
   const processChartData = () => {
-    if (!stats) return null;
+    if (!stats?.data) return null;
 
-    const monthlyChartData: ChartData[] = stats.monthlyStats.map(stat => ({
+    const monthlyChartData: ChartData[] = stats.data.monthlyStats.map(stat => ({
       name: stat.month.split('-')[1] + '月',
       value: Number(stat.avgEmotion)
     }));
 
-    const dayOfWeekChartData: ChartData[] = stats.dayOfWeekStats.map(stat => ({
+    const dayOfWeekChartData: ChartData[] = stats.data.dayOfWeekStats.map(stat => ({
       name: stat.day,
       value: Number(stat.avgEmotion)
     }));
 
     const timeOfDayChartData: ChartData[] = [
-      { name: '朝（5-11時）', value: Number(stats.timeOfDayStats.morning) },
-      { name: '昼（12-17時）', value: Number(stats.timeOfDayStats.afternoon) },
-      { name: '夜（18-4時）', value: Number(stats.timeOfDayStats.evening) }
+      { name: '朝（5-11時）', value: Number(stats.data.timeOfDayStats.morning) },
+      { name: '昼（12-17時）', value: Number(stats.data.timeOfDayStats.afternoon) },
+      { name: '夜（18-4時）', value: Number(stats.data.timeOfDayStats.evening) }
     ];
 
     return {
@@ -35,8 +35,8 @@ export default function StatsContainer() {
       dayOfWeek: dayOfWeekChartData,
       timeOfDay: timeOfDayChartData,
       overview: {
-        count: stats.overview.count,
-        avgEmotion: stats.overview.avgEmotion
+        count: stats.data.overview.count,
+        avgEmotion: stats.data.overview.avgEmotion
       }
     };
   };

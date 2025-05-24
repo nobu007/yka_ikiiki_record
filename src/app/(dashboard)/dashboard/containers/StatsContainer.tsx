@@ -1,12 +1,12 @@
 'use client';
 
-import { useStatsFetch } from '@/hooks/useStatsFetch';
+import { useStats } from '@/hooks';
 import StatsDisplay from '../components/stats/StatsDisplay';
 import { ChartData } from '@/components/charts/DynamicBarChart';
 import { useTheme } from 'next-themes';
 
 export default function StatsContainer() {
-  const { stats, error, isLoading, refetch } = useStatsFetch();
+  const { stats, error, isLoading, refetch } = useStats();
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
 

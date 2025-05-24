@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { StatsResponse } from '../schemas/api';
+import { StatsResponse, StatsResponseSchema } from '../schemas/api';
 
 // 型定義の強化
 const RecordSchema = z.object({
@@ -95,54 +95,60 @@ export function calculateStats(records: unknown[]): StatsResponse {
     }
 
     // 結果の整形
-    return {
-      overview: {
-        count: validRecords.length,
-        avgEmotion: calculateAverage(totalEmotion, validRecords.length)
-      },
-      monthlyStats: Array.from(stats.monthlyData.entries())
-        .map(([month, data]) => ({
-          month,
-          count: data.count,
-          avgEmotion: calculateAverage(data.sum, data.count)
-        }))
-        .sort((a, b) => b.month.localeCompare(a.month)),
-      studentStats: Array.from(stats.studentData.entries())
-        .map(([student, emotions]) => ({
-          student,
-          recordCount: emotions.length,
-          avgEmotion: calculateAverage(
-            emotions.reduce((sum, e) => sum + e, 0),
-            emotions.length
+    const response = {
+      success: true,
+      data: {
+        overview: {
+          count: validRecords.length,
+          avgEmotion: calculateAverage(totalEmotion, validRecords.length)
+        },
+        monthlyStats: Array.from(stats.monthlyData.entries())
+          .map(([month, data]) => ({
+            month,
+            count: data.count,
+            avgEmotion: calculateAverage(data.sum, data.count)
+          }))
+          .sort((a, b) => b.month.localeCompare(a.month)),
+        studentStats: Array.from(stats.studentData.entries())
+          .map(([student, emotions]) => ({
+            student,
+            recordCount: emotions.length,
+            avgEmotion: calculateAverage(
+              emotions.reduce((sum, e) => sum + e, 0),
+              emotions.length
+            ),
+            trendline: emotions.slice(-7) // 直近7日間のトレンド
+          }))
+          .sort((a, b) => Number(b.avgEmotion) - Number(a.avgEmotion)),
+        dayOfWeekStats: ['日', '月', '火', '水', '木', '金', '土']
+          .map((day, index) => ({
+            day,
+            avgEmotion: calculateAverage(
+              stats.dayOfWeekData[index].sum,
+              stats.dayOfWeekData[index].count
+            ),
+            count: stats.dayOfWeekData[index].count
+          })),
+        emotionDistribution: stats.emotionDistribution,
+        timeOfDayStats: {
+          morning: calculateAverage(
+            stats.timeOfDayData.morning.sum,
+            stats.timeOfDayData.morning.count
           ),
-          trendline: emotions.slice(-7) // 直近7日間のトレンド
-        }))
-        .sort((a, b) => Number(b.avgEmotion) - Number(a.avgEmotion)),
-      dayOfWeekStats: ['日', '月', '火', '水', '木', '金', '土']
-        .map((day, index) => ({
-          day,
-          avgEmotion: calculateAverage(
-            stats.dayOfWeekData[index].sum,
-            stats.dayOfWeekData[index].count
+          afternoon: calculateAverage(
+            stats.timeOfDayData.afternoon.sum,
+            stats.timeOfDayData.afternoon.count
           ),
-          count: stats.dayOfWeekData[index].count
-        })),
-      emotionDistribution: stats.emotionDistribution,
-      timeOfDayStats: {
-        morning: calculateAverage(
-          stats.timeOfDayData.morning.sum,
-          stats.timeOfDayData.morning.count
-        ),
-        afternoon: calculateAverage(
-          stats.timeOfDayData.afternoon.sum,
-          stats.timeOfDayData.afternoon.count
-        ),
-        evening: calculateAverage(
-          stats.timeOfDayData.evening.sum,
-          stats.timeOfDayData.evening.count
-        )
+          evening: calculateAverage(
+            stats.timeOfDayData.evening.sum,
+            stats.timeOfDayData.evening.count
+          )
+        }
       }
     };
+
+    // データの形式を検証
+    return StatsResponseSchema.parse(response);
 
   } catch (error) {
     if (error instanceof StatsError) {

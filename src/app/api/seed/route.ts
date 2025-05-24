@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { SeedResponseSchema } from '@/types/api';
+import { SeedResponseSchema } from '@/schemas/api';
 
 export async function POST() {
   try {

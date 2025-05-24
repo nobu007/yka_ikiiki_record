@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Stats } from '../types/stats';
+import { StatsResponse } from '../schemas/api';
 
 // 型定義の強化
 const RecordSchema = z.object({
@@ -20,10 +20,10 @@ export class StatsError extends Error {
   }
 }
 
-const formatAverage = (sum: number, count: number): string =>
-  (count > 0 ? (sum / count) : 0).toFixed(2);
+const calculateAverage = (sum: number, count: number): number =>
+  count > 0 ? Number((sum / count).toFixed(2)) : 0;
 
-export function calculateStats(records: unknown[]): Stats {
+export function calculateStats(records: unknown[]): StatsResponse {
   try {
     // 入力データのバリデーション
     const validRecords = records
@@ -98,20 +98,20 @@ export function calculateStats(records: unknown[]): Stats {
     return {
       overview: {
         count: validRecords.length,
-        avgEmotion: formatAverage(totalEmotion, validRecords.length)
+        avgEmotion: calculateAverage(totalEmotion, validRecords.length)
       },
       monthlyStats: Array.from(stats.monthlyData.entries())
         .map(([month, data]) => ({
           month,
           count: data.count,
-          avgEmotion: formatAverage(data.sum, data.count)
+          avgEmotion: calculateAverage(data.sum, data.count)
         }))
         .sort((a, b) => b.month.localeCompare(a.month)),
       studentStats: Array.from(stats.studentData.entries())
         .map(([student, emotions]) => ({
           student,
           recordCount: emotions.length,
-          avgEmotion: formatAverage(
+          avgEmotion: calculateAverage(
             emotions.reduce((sum, e) => sum + e, 0),
             emotions.length
           ),
@@ -121,7 +121,7 @@ export function calculateStats(records: unknown[]): Stats {
       dayOfWeekStats: ['日', '月', '火', '水', '木', '金', '土']
         .map((day, index) => ({
           day,
-          avgEmotion: formatAverage(
+          avgEmotion: calculateAverage(
             stats.dayOfWeekData[index].sum,
             stats.dayOfWeekData[index].count
           ),
@@ -129,15 +129,15 @@ export function calculateStats(records: unknown[]): Stats {
         })),
       emotionDistribution: stats.emotionDistribution,
       timeOfDayStats: {
-        morning: formatAverage(
+        morning: calculateAverage(
           stats.timeOfDayData.morning.sum,
           stats.timeOfDayData.morning.count
         ),
-        afternoon: formatAverage(
+        afternoon: calculateAverage(
           stats.timeOfDayData.afternoon.sum,
           stats.timeOfDayData.afternoon.count
         ),
-        evening: formatAverage(
+        evening: calculateAverage(
           stats.timeOfDayData.evening.sum,
           stats.timeOfDayData.evening.count
         )

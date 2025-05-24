@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useSeed } from '@/hooks/useSeed';
-import DataGenerationButton from '../components/buttons/DataGenerationButton';
+import DashboardTemplate from '../components/__templates__/DashboardTemplate';
 import StatsContainer from './StatsContainer';
 
 export default function DashboardContainer() {
@@ -13,14 +13,19 @@ export default function DashboardContainer() {
   }, [generate]);
 
   return (
-    <div className="p-4 space-y-6">
-      {/* データ生成ボタン */}
-      <DataGenerationButton loading={isLoading} onGenerate={() => generate().catch(console.error)} />
-
-      {/* ローディング／エラー／統計表示 */}
-      {isLoading && <p>データ生成中...</p>}
-      {error && <p className="text-red-500">エラー: {error.message}</p>}
-      {!isLoading && !error && <StatsContainer />}
-    </div>
+    <DashboardTemplate
+      buttonProps={{
+        label: "データを生成",
+        onClick: () => generate().catch(console.error),
+        loading: isLoading,
+      }}
+      displayProps={{
+        loading: isLoading,
+        error: error,
+        // StatsContainerをchildren propsとして渡す
+        data: !isLoading && !error ? <StatsContainer /> : undefined
+      }}
+      className="space-y-6"
+    />
   );
 }

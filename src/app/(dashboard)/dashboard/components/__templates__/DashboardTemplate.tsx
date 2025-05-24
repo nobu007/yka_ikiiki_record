@@ -34,7 +34,7 @@ interface ButtonProps {
 
 // データ表示エリアのProps
 interface DisplayProps {
-  data?: any;                    // 表示するデータ
+  data?: React.ReactNode;        // 表示するコンポーネントまたはデータ
   error?: Error | null;          // エラー情報
   loading?: boolean;             // ローディング状態
 }
@@ -84,10 +84,7 @@ export default function DashboardTemplate({
           </div>
         ) : displayProps.data ? (
           <div className="border rounded-lg p-4 bg-white">
-            {/* データ表示領域 - 実装時にカスタマイズ */}
-            <pre className="whitespace-pre-wrap">
-              {JSON.stringify(displayProps.data, null, 2)}
-            </pre>
+            {displayProps.data}
           </div>
         ) : (
           <div className="text-gray-500 p-4">

@@ -63,7 +63,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
         show: false,
       },
       animations: {
-        enabled: window?.matchMedia('(prefers-reduced-motion: no-preference)').matches,
+        enabled: mounted && typeof window !== 'undefined',
         easing: 'easeinout',
         speed: 800,
         dynamicAnimation: {
@@ -126,7 +126,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
         formatter: (val) => val.toFixed(2),
       },
     },
-  }), [height, validData, isDark]);
+  }), [height, validData, isDark, mounted]);
 
   // シリーズデータのメモ化
   const series = useMemo(() => [{

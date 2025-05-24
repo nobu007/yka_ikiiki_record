@@ -1,17 +1,23 @@
-import { useState, useCallback } from 'react';
 import useSWR, { KeyedMutator } from 'swr';
 import { StatsResponseSchema, StatsResponse } from '@/schemas/stats';
+import { useState, useCallback } from 'react';
 
 const fetcher = async (url: string): Promise<StatsResponse> => {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error('APIリクエストに失敗しました');
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('APIリクエストに失敗しました');
+    }
+    const data = await response.json();
+    return StatsResponseSchema.parse(data);
+  } catch (e) {
+    const error = e instanceof Error ? e : new Error('不明なエラーが発生しました');
+    console.error('統計データの取得に失敗しました:', error);
+    throw error;
   }
-  const data = await response.json();
-  return StatsResponseSchema.parse(data);
 };
 
-export function useStatsFetch() {
+export function useStats() {
   const [error, setError] = useState<Error | null>(null);
 
   const {
@@ -21,12 +27,11 @@ export function useStatsFetch() {
     mutate
   } = useSWR<StatsResponse>('/api/stats', fetcher, {
     onError: (err) => {
-      console.error('統計データの取得に失敗しました:', err);
       setError(err instanceof Error ? err : new Error('不明なエラーが発生しました'));
     }
   });
 
-  const refetch: KeyedMutator<StatsResponse> = useCallback(() => {
+  const refetch = useCallback(() => {
     setError(null);
     return mutate();
   }, [mutate]);

@@ -1,34 +1,47 @@
-import { useState } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useStats as useApplicationStats } from '@/application/hooks/useStats';
 import { Stats } from '@/domain/entities/Stats';
-import { useAsync } from '@/hooks/useAsync';
 
+/**
+ * 統計データを表示するためのプレゼンテーションHook
+ * - UIの状態管理
+ * - データの整形
+ * - エラーメッセージの表示制御
+ */
 export const useStats = () => {
-  const [stats, setStats] = useState<Stats | null>(null);
+  const { stats, error, isLoading, refetch } = useApplicationStats();
 
-  const { execute: fetchStats, isLoading, error } = useAsync({
-    onSuccess: (data: Stats) => {
-      setStats(data);
-    },
-    onError: (error: Error) => {
-      console.error('統計データの取得に失敗しました:', error);
+  // エラーメッセージの整形
+  const displayError = useMemo(() => {
+    if (!error) return null;
+    return {
+      title: 'エラーが発生しました',
+      message: error.message
+    };
+  }, [error]);
+
+  // 表示用データの整形
+  const displayStats = useMemo(() => {
+    if (!stats) return null;
+    return {
+      ...stats,
+      // 必要に応じて表示用のデータ整形を追加
+    } as Stats;
+  }, [stats]);
+
+  // リフェッチのラッパー
+  const handleRefetch = useCallback(async () => {
+    try {
+      await refetch();
+    } catch (err) {
+      console.error('データの更新に失敗しました:', err);
     }
-  });
-
-  const fetchStatsData = async () => {
-    const response = await fetch('/api/stats');
-    const data = await response.json();
-
-    if (!data.success) {
-      throw new Error(data.error || '統計データの取得に失敗しました');
-    }
-
-    return data.data;
-  };
+  }, [refetch]);
 
   return {
-    stats,
-    fetchStats: () => fetchStats(fetchStatsData),
+    stats: displayStats,
+    error: displayError,
     isLoading,
-    error
+    refetch: handleRefetch
   };
 };

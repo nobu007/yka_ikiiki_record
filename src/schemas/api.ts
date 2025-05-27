@@ -1,73 +1,56 @@
 import { z } from 'zod';
+import { Stats } from '@/domain/entities/Stats';
 
-// 基本的な統計情報のスキーマ
-export const StatsOverviewSchema = z.object({
-  count: z.number(),
-  avgEmotion: z.number()
-});
-
-// 月別統計のスキーマ
-export const MonthlyStatSchema = z.object({
-  month: z.string(),
-  count: z.number(),
-  avgEmotion: z.number()
-});
-
-// 学生別統計のスキーマ
-export const StudentStatSchema = z.object({
-  student: z.string(),
-  recordCount: z.number(),
-  avgEmotion: z.number(),
-  trendline: z.array(z.number())
-});
-
-// 曜日別統計のスキーマ
-export const DayOfWeekStatSchema = z.object({
-  day: z.string(),
-  avgEmotion: z.number(),
-  count: z.number()
-});
-
-// 時間帯別統計のスキーマ
-export const TimeOfDayStatsSchema = z.object({
-  morning: z.number(),
-  afternoon: z.number(),
-  evening: z.number()
-});
-
-// 統計データ本体のスキーマ
-export const StatsDataSchema = z.object({
-  overview: StatsOverviewSchema,
-  monthlyStats: z.array(MonthlyStatSchema),
-  studentStats: z.array(StudentStatSchema),
-  dayOfWeekStats: z.array(DayOfWeekStatSchema),
-  emotionDistribution: z.array(z.number()),
-  timeOfDayStats: TimeOfDayStatsSchema
-});
-
-// 基本レスポンススキーマ
+// 基本レスポンス型
 const BaseResponseSchema = z.object({
   success: z.boolean(),
-  message: z.string().optional(),
   error: z.string().optional()
 });
 
-// シード処理のレスポンススキーマ
-export const SeedResponseSchema = BaseResponseSchema;
+// 感情分布パターンの定義
+const EmotionDistributionPatternSchema = z.enum(['normal', 'bimodal', 'stress', 'happy']);
 
-// 統計情報レスポンススキーマ
-export const StatsResponseSchema = z.object({
-  success: z.boolean(),
-  data: StatsDataSchema,
-  message: z.string().optional(),
-  error: z.string().optional()
+// イベント効果の定義
+const EventEffectSchema = z.object({
+  name: z.string(),
+  startDate: z.date(),
+  endDate: z.date(),
+  impact: z.number().min(-1).max(1)
+});
+
+// クラス特性の定義
+const ClassCharacteristicsSchema = z.object({
+  baselineEmotion: z.number().min(2.5).max(3.5),
+  volatility: z.number().min(0.1).max(1.0),
+  cohesion: z.number().min(0.1).max(1.0)
+});
+
+// データ生成設定の定義
+export const DataGenerationConfigSchema = z.object({
+  studentCount: z.number().min(10).max(500),
+  periodDays: z.number().min(7).max(365),
+  distributionPattern: EmotionDistributionPatternSchema,
+  seasonalEffects: z.boolean(),
+  eventEffects: z.array(EventEffectSchema),
+  classCharacteristics: ClassCharacteristicsSchema
+});
+
+// シード生成リクエストの定義
+export const SeedRequestSchema = z.object({
+  config: DataGenerationConfigSchema
+});
+
+// シード生成レスポンスの定義
+export const SeedResponseSchema = BaseResponseSchema.extend({
+  data: z.undefined()
+});
+
+// 統計データレスポンスの定義
+export const StatsResponseSchema = BaseResponseSchema.extend({
+  data: z.custom<Stats>()
 });
 
 // 型定義のエクスポート
-export type StatsOverview = z.infer<typeof StatsOverviewSchema>;
-export type MonthlyStats = z.infer<typeof MonthlyStatSchema>;
-export type DayOfWeekStats = z.infer<typeof DayOfWeekStatSchema>;
-export type TimeOfDayStats = z.infer<typeof TimeOfDayStatsSchema>;
-export type StatsData = z.infer<typeof StatsDataSchema>;
-export type StatsResponse = z.infer<typeof StatsResponseSchema>;
+export type SeedRequest = z.infer<typeof SeedRequestSchema>;
 export type SeedResponse = z.infer<typeof SeedResponseSchema>;
+export type StatsResponse = z.infer<typeof StatsResponseSchema>;

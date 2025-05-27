@@ -1,6 +1,6 @@
 'use client';
 
-import { useDataGeneration } from '@/hooks/useDataGeneration';
+import { useDataGeneration } from '@/application/hooks/useDataGeneration';
 import { DataGenerationConfig, EmotionDistributionPattern, EventEffect } from '@/domain/entities/DataGeneration';
 import { useState } from 'react';
 

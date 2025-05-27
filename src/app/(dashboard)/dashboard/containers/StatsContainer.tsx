@@ -1,7 +1,6 @@
 'use client';
 
-import { useStats } from '@/hooks';
-import { useSeedGeneration } from '@/hooks/useSeedGeneration';
+import { useStats, useSeedGeneration } from '@/application/hooks';
 import StatsDisplay from '../components/stats/StatsDisplay';
 import DataGenerationPanel from '../components/stats/DataGenerationPanel';
 import { ChartData } from '@/components/charts/DynamicBarChart';

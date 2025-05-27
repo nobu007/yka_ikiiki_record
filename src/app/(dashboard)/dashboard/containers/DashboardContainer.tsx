@@ -1,6 +1,6 @@
 'use client';
 
-import { useSeedGeneration } from '@/hooks/useSeedGeneration';
+import { useSeedGeneration } from '@/application/hooks/useSeedGeneration';
 import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
 
 export default function DashboardContainer() {

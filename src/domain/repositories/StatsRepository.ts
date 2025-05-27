@@ -11,6 +11,11 @@ export interface StatsRepository {
   getStats(): Promise<Stats>;
 
   /**
+   * 統計情報を保存
+   */
+  saveStats(stats: Stats): Promise<void>;
+
+  /**
    * テストデータを生成
    */
   generateSeedData(): Promise<void>;

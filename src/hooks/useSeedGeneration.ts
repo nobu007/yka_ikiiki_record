@@ -1,42 +1,43 @@
-import { useAsync } from './useAsync';
+import { useState, useCallback } from 'react';
+import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
 
-interface SeedGenerationOptions {
-  days?: number;
-}
+export function useSeedGeneration() {
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
-async function generateSeedData(options: SeedGenerationOptions = {}) {
-  const response = await fetch('/api/seed', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ days: options.days || 30 }),
-  });
+  const generateSeed = useCallback(async (config: DataGenerationConfig) => {
+    setIsGenerating(true);
+    setError(null);
 
-  if (!response.ok) {
-    throw new Error(`データ生成に失敗しました (${response.status})`);
-  }
+    try {
+      const response = await fetch('/api/seed', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ config }),
+      });
 
-  const data = await response.json();
-  if (!data.ok) {
-    throw new Error(data.error || 'データ生成に失敗しました');
-  }
+      if (!response.ok) {
+        throw new Error('データ生成に失敗しました');
+      }
 
-  return data;
-}
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.error || '不明なエラーが発生しました');
+      }
 
-export function useSeedGeneration(options: SeedGenerationOptions = {}) {
-  const { execute, isLoading, error } = useAsync({
-    onError: (err) => {
-      console.error('データ生成エラー:', err);
-    },
-  });
-
-  const generate = () => execute(() => generateSeedData(options));
+    } catch (e) {
+      setError(e instanceof Error ? e : new Error('不明なエラーが発生しました'));
+      throw e;
+    } finally {
+      setIsGenerating(false);
+    }
+  }, []);
 
   return {
-    generate,
-    isLoading,
+    isGenerating,
     error,
+    generateSeed
   };
 }

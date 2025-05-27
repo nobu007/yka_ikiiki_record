@@ -1,32 +1,39 @@
-"use client";
+'use client';
 
-import { useEffect } from 'react';
-import { useSeedGeneration } from '@/hooks';
-import DashboardTemplate from '../components/__templates__/DashboardTemplate';
-import StatsContainer from './StatsContainer';
+import { useSeedGeneration } from '@/hooks/useSeedGeneration';
+import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
 
 export default function DashboardContainer() {
-  const { generate, isLoading, error } = useSeedGeneration({
-    days: 30 // 30日分のデータを生成
-  });
+  const { generateSeed, isGenerating, error } = useSeedGeneration();
 
-  useEffect(() => {
-    generate().catch(console.error); // 初回マウント時にデータを生成
-  }, [generate]);
+  // 初期データの生成
+  const handleInitialGeneration = async () => {
+    try {
+      // デフォルト設定で30日分のデータを生成
+      await generateSeed({
+        ...DEFAULT_CONFIG,
+        periodDays: 30
+      });
+    } catch (e) {
+      console.error('初期データ生成エラー:', e);
+    }
+  };
 
   return (
-    <DashboardTemplate
-      buttonProps={{
-        label: "データを生成",
-        onClick: () => generate().catch(console.error),
-        loading: isLoading,
-      }}
-      displayProps={{
-        loading: isLoading,
-        error: error,
-        data: !isLoading && !error ? <StatsContainer /> : undefined
-      }}
-      className="space-y-6"
-    />
+    <div>
+      <button
+        onClick={handleInitialGeneration}
+        disabled={isGenerating}
+        className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+      >
+        {isGenerating ? 'データ生成中...' : '初期データを生成'}
+      </button>
+
+      {error && (
+        <div className="mt-2 p-2 text-red-500 bg-red-100 rounded">
+          {error.message}
+        </div>
+      )}
+    </div>
   );
 }

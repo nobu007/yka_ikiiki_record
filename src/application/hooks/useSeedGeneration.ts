@@ -1,6 +1,12 @@
 import { useState, useCallback } from 'react';
 import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
 
+interface ApiResponse {
+  success: boolean;
+  error?: string;
+  data?: any;
+}
+
 export function useSeedGeneration() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -19,17 +25,20 @@ export function useSeedGeneration() {
       });
 
       if (!response.ok) {
-        throw new Error('データ生成に失敗しました');
+        throw new Error(`APIエラー: ${response.status} ${response.statusText}`);
       }
 
-      const data = await response.json();
+      const data: ApiResponse = await response.json();
       if (!data.success) {
-        throw new Error(data.error || '不明なエラーが発生しました');
+        throw new Error(data.error || 'データ生成に失敗しました');
       }
+
+      return data.data;
 
     } catch (e) {
-      setError(e instanceof Error ? e : new Error('不明なエラーが発生しました'));
-      throw e;
+      const errorMessage = e instanceof Error ? e.message : 'データ生成中に予期せぬエラーが発生しました';
+      setError(new Error(errorMessage));
+      throw new Error(errorMessage);
     } finally {
       setIsGenerating(false);
     }

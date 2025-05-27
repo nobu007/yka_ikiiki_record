@@ -1,4 +1,4 @@
-import { Stats, StatsOverview, MonthlyStats, StudentStats, DayOfWeekStats, TimeOfDayStats } from '../../domain/entities/Stats';
+import { Stats } from '../../domain/entities/Stats';
 import { StatsRepository } from '../../domain/repositories/StatsRepository';
 
 export class MockStatsRepository implements StatsRepository {
@@ -46,8 +46,12 @@ export class MockStatsRepository implements StatsRepository {
     return this.mockStats;
   }
 
+  async saveStats(stats: Stats): Promise<void> {
+    this.mockStats = stats;
+  }
+
   async generateSeedData(): Promise<void> {
-    // モックデータの生成ロジックをここに実装
-    // 現在は何もしない
+    // 実際のデータ生成はStatsServiceで行われるため、
+    // このメソッドは空の実装のままとします
   }
 }

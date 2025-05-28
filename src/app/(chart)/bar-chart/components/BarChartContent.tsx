@@ -1,7 +1,7 @@
 "use client";
 
 import DynamicBarChart from "@/components/charts/DynamicBarChart";
-import DashboardTemplate from "../../../(dashboard)/dashboard/components/__templates__/DashboardTemplate";
+import DashboardTemplate from "../../../(dashboard)/dashboard/components/_templates/DashboardTemplate";
 import { useState, useCallback } from "react";
 
 const demoData = [

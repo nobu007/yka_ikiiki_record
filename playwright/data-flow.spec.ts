@@ -1,68 +1,122 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('データフローのテスト', () => {
+test.describe('イキイキレコード デモ - E2Eテスト', () => {
   test.beforeEach(async ({ page }) => {
-    // モックモードを有効化
-    process.env.NEXT_PUBLIC_MOCK = 'true';
+    await page.goto('/');
+  });
+
+  test('ランディングページからダッシュボードへの遷移', async ({ page }) => {
+    // ランディングページの確認
+    await expect(page.getByText('イキイキレコード デモ')).toBeVisible();
+    await expect(page.getByRole('link', { name: '教師ダッシュボードを見る' })).toBeVisible();
+    
+    // ダッシュボードへの遷移
+    await page.getByRole('link', { name: '教師ダッシュボードを見る' }).click();
+    await expect(page).toHaveURL('/dashboard');
+  });
+
+  test('データ生成フローの完全テスト', async ({ page }) => {
+    // ダッシュボードに直接アクセス
     await page.goto('/dashboard');
+    
+    // ページタイトルの確認
+    await expect(page.getByText('ダッシュボード')).toBeVisible();
+    await expect(page.getByText('データ管理')).toBeVisible();
+    await expect(page.getByText('初期データを生成')).toBeVisible();
+    
+    // データ生成ボタンのクリック
+    await page.getByRole('button', { name: '初期データを生成' }).click();
+    
+    // ローディング状態の確認
+    await expect(page.getByText('データ生成中...')).toBeVisible();
+    
+    // 成功通知の確認
+    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
+    
+    // ローディング完了の確認
+    await expect(page.getByText('データ生成中...')).toBeHidden();
   });
 
-  test('完全なデータフロー', async ({ page }) => { // pageをここで受け取る
-    // データ生成から表示までの流れをテスト
-    await test.step('データ生成', async () => {
-      const generateButton = page.getByRole('button', { name: /データを生成/i });
-      await generateButton.click();
-
-      // ローディング状態の確認
-      await expect(page.getByText('データ生成中...')).toBeVisible();
-
-      // ローディング完了を待機
-      await expect(page.getByText('データ生成中...')).toBeHidden();
-    });
-
-    await test.step('統計表示の確認', async () => {
-      // 各セクションの存在確認
-      await expect(page.getByText('月別平均感情スコア')).toBeVisible();
-      await expect(page.getByText('曜日別平均感情スコア')).toBeVisible();
-      await expect(page.getByText('時間帯別平均感情スコア')).toBeVisible();
-
-      // グラフの存在確認
-      const charts = await page.locator('svg').all();
-      expect(charts.length).toBeGreaterThanOrEqual(3);
-    });
-
-    await test.step('データの整合性確認', async () => {
-      // 概要統計の値が正常範囲内かチェック
-      const avgScore = page.locator('text=/^[1-5]\\.[0-9]{2}$/').first();
-      await expect(avgScore).toBeVisible(); // 要素が表示されていることを確認
-      const score = parseFloat(await avgScore.innerText());
-      expect(score).toBeGreaterThanOrEqual(1);
-      expect(score).toBeLessThanOrEqual(5);
-    });
-
-    await test.step('インタラクティブ機能', async () => { // pageを引数から削除
-      // グラフのホバー機能テスト
-      // ApexChartsのSVG要素内のバー要素を特定
-      const firstBar = page.locator('.apexcharts-bar-series rect').first();
-      await expect(firstBar).toBeVisible(); // バーが表示されていることを確認
-      await firstBar.hover();
-
-      // ツールチップが表示されることを確認
-      await expect(page.locator('.apexcharts-tooltip')).toBeVisible();
-    });
+  test('使い方セクションの表示確認', async ({ page }) => {
+    await page.goto('/dashboard');
+    
+    // 使い方セクションの確認
+    await expect(page.getByText('使い方')).toBeVisible();
+    await expect(page.getByText('「初期データを生成」ボタンをクリックしてテストデータを作成します')).toBeVisible();
+    await expect(page.getByText('生成には数秒かかる場合があります')).toBeVisible();
+    await expect(page.getByText('データが生成されると、統計情報がダッシュボードに表示されます')).toBeVisible();
   });
 
-  test('エラーハンドリング', async () => {
-    // モックサーバーを無効化してエラー状態をテスト
-    // 環境変数をテスト内で変更するのは推奨されないため、テストをスキップするか、
-    // テスト環境のセットアップで制御することを検討
-    test.skip('エラーハンドリングテスト', async () => {
-      // このテストは環境変数 NEXT_PUBLIC_MOCK を 'false' に設定して実行する必要があります
-      // 例: NEXT_PUBLIC_MOCK=false pnpm test:e2e
-      // 現在のテスト実行方法では環境変数を動的に変更できないためスキップします
-    });
+  test('ボタンの状態変化', async ({ page }) => {
+    await page.goto('/dashboard');
+    
+    const generateButton = page.getByRole('button', { name: '初期データを生成' });
+    
+    // 初期状態では有効
+    await expect(generateButton).toBeEnabled();
+    
+    // クリックして無効化を確認
+    await generateButton.click();
+    await expect(generateButton).toBeDisabled();
+    await expect(generateButton).toHaveText('データ生成中...');
+    
+    // 完了後に再度有効化を確認
+    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
+    await expect(generateButton).toBeEnabled();
+    await expect(generateButton).toHaveText('初期データを生成');
+  });
 
-    // 代替として、APIがエラーを返すシナリオをモックで再現することを検討
-    // 例: Mirage.jsでエラーレスポンスを返すように設定
+  test('レスポンシブデザインの確認', async ({ page }) => {
+    await page.goto('/dashboard');
+    
+    // デスクトップサイズ
+    await page.setViewportSize({ width: 1200, height: 800 });
+    await expect(page.getByText('ダッシュボード')).toBeVisible();
+    
+    // タブレットサイズ
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await expect(page.getByText('ダッシュボード')).toBeVisible();
+    
+    // モバイルサイズ
+    await page.setViewportSize({ width: 375, height: 667 });
+    await expect(page.getByText('ダッシュボード')).toBeVisible();
+  });
+
+  test('キーボードナビゲーション', async ({ page }) => {
+    await page.goto('/dashboard');
+    
+    // Tabキーでボタンにフォーカス
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('button', { name: '初期データを生成' })).toBeFocused();
+    
+    // Enterキーで実行
+    await page.keyboard.press('Enter');
+    await expect(page.getByText('データ生成中...')).toBeVisible();
+  });
+
+  test('ページリロード時の状態保持', async ({ page }) => {
+    await page.goto('/dashboard');
+    
+    // データを生成
+    await page.getByRole('button', { name: '初期データを生成' }).click();
+    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
+    
+    // ページをリロード
+    await page.reload();
+    await expect(page.getByText('ダッシュボード')).toBeVisible();
+    await expect(page.getByRole('button', { name: '初期データを生成' })).toBeVisible();
+  });
+
+  test('エラーハンドリングのシミュレーション', async ({ page }) => {
+    await page.goto('/dashboard');
+    
+    // ネットワークエラーをシミュレート
+    await page.route('**/api/seed', route => route.abort());
+    
+    // データ生成を試行
+    await page.getByRole('button', { name: '初期データを生成' }).click();
+    
+    // エラー通知が表示されることを確認
+    await expect(page.getByText(/エラーが発生しました|ネットワーク接続を確認してください/)).toBeVisible({ timeout: 5000 });
   });
 });

@@ -7,11 +7,10 @@ import { MonthlyStats, DayOfWeekStats, TimeOfDayStats, StudentStats } from '@/do
 /**
  * 平均値を計算
  */
-export function calculateAverage(values: number[]): number {
+export const calculateAverage = (values: number[]): number => {
   if (values.length === 0) return 0;
-  const sum = values.reduce((acc, curr) => acc + curr, 0);
-  return Number((sum / values.length).toFixed(1));
-}
+  return Number((values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(1));
+};
 
 /**
  * 月別統計を計算

@@ -10,15 +10,19 @@ export const ERROR_CODES = {
 
 type ErrorCodeType = typeof ERROR_CODES[keyof typeof ERROR_CODES];
 
-const USER_MESSAGES: Record<ErrorCodeType, string> = {
-  [ERROR_CODES.UNKNOWN]: '予期せぬエラーが発生しました',
-  [ERROR_CODES.VALIDATION]: '入力内容を確認してください',
-  [ERROR_CODES.NETWORK]: 'ネットワーク接続を確認してください',
-  [ERROR_CODES.TIMEOUT]: 'タイムアウトしました。再度お試しください',
-  [ERROR_CODES.GENERATION]: 'データの生成に失敗しました',
-  [ERROR_CODES.NOT_FOUND]: '要求されたデータが見つかりません',
-  [ERROR_CODES.PERMISSION]: 'この操作を実行する権限がありません'
-};
+import { ERROR_MESSAGES } from '@/lib/constants/messages';
+
+const USER_MESSAGES = {
+  [ERROR_CODES.UNKNOWN]: ERROR_MESSAGES.UNEXPECTED,
+  [ERROR_CODES.VALIDATION]: ERROR_MESSAGES.VALIDATION,
+  [ERROR_CODES.NETWORK]: ERROR_MESSAGES.NETWORK,
+  [ERROR_CODES.TIMEOUT]: ERROR_MESSAGES.TIMEOUT,
+  [ERROR_CODES.GENERATION]: ERROR_MESSAGES.GENERATION,
+  [ERROR_CODES.NOT_FOUND]: ERROR_MESSAGES.NOT_FOUND,
+  [ERROR_CODES.PERMISSION]: ERROR_MESSAGES.PERMISSION
+} as const;
+
+const NETWORK_ERROR_PATTERNS = ['fetch', 'network', 'connection'];
 
 export class AppError extends Error {
   constructor(
@@ -41,7 +45,7 @@ export class ValidationError extends AppError {
 }
 
 export class NetworkError extends AppError {
-  constructor(message: string = 'ネットワークエラーが発生しました', statusCode: number = 0) {
+  constructor(message: string = ERROR_MESSAGES.NETWORK_ERROR, statusCode: number = 0) {
     super(message, ERROR_CODES.NETWORK, statusCode);
     this.name = 'NetworkError';
   }
@@ -63,9 +67,7 @@ export class TimeoutError extends AppError {
 
 const isNetworkRelated = (error: Error): boolean => 
   error.name === 'TypeError' || 
-  error.message.includes('fetch') || 
-  error.message.includes('network') ||
-  error.message.includes('connection');
+  NETWORK_ERROR_PATTERNS.some(pattern => error.message.includes(pattern));
 
 export function normalizeError(error: unknown): AppError {
   if (error instanceof AppError) {
@@ -83,7 +85,7 @@ export function normalizeError(error: unknown): AppError {
     return new AppError(error);
   }
 
-  return new AppError('予期せぬエラーが発生しました');
+  return new AppError(ERROR_MESSAGES.UNEXPECTED);
 }
 
 export function getUserFriendlyMessage(error: unknown): string {

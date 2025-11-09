@@ -1,8 +1,9 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useSeedGeneration } from '@/application/hooks/useSeedGeneration';
 import { useNotification } from '@/hooks/useNotification';
 import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
 import { getUserFriendlyMessage, normalizeError, logError } from '@/lib/error-handler';
+import { SUCCESS_MESSAGES, LOADING_MESSAGES } from '@/lib/constants/messages';
 
 const GENERATION_CONFIG = { ...DEFAULT_CONFIG, periodDays: 30 } as const;
 
@@ -22,7 +23,7 @@ export function useDashboard() {
     try {
       clearNotification();
       await generateSeed(GENERATION_CONFIG);
-      showSuccess('テストデータの生成が完了しました');
+      showSuccess(SUCCESS_MESSAGES.DATA_GENERATION_COMPLETE);
     } catch (e) {
       const normalizedError = normalizeError(e);
       logError(normalizedError, 'useDashboard.handleInitialGeneration');
@@ -32,10 +33,15 @@ export function useDashboard() {
     }
   }, [generateSeed, showSuccess, showError, clearNotification, notification.show]);
 
+  const isLoadingMessage = useMemo(() => 
+    isGenerating ? LOADING_MESSAGES.GENERATING_DATA : null, 
+    [isGenerating]
+  );
+
   return {
     isGenerating,
     notification,
     handleInitialGeneration,
-    isLoadingMessage: isGenerating ? 'テストデータを生成中...' : null
+    isLoadingMessage
   };
 }

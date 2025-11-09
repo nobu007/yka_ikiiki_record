@@ -1,75 +1,118 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { useDashboard } from './useDashboard';
-import { AppError } from '@/lib/error-handler';
+import { useSeedGeneration } from '@/application/hooks/useSeedGeneration';
+import { useNotification } from '@/hooks/useNotification';
+import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
 
-const mockShowSuccess = jest.fn();
-const mockShowError = jest.fn();
-const mockClearNotification = jest.fn();
-const mockGenerateSeed = jest.fn();
+// Mock the hooks
+jest.mock('@/application/hooks/useSeedGeneration');
+jest.mock('@/hooks/useNotification');
+jest.mock('@/domain/entities/DataGeneration');
 
-// Mock the notification hook
-jest.mock('./useNotification', () => ({
-  useNotification: () => ({
-    showSuccess: mockShowSuccess,
-    showError: mockShowError,
-    showWarning: jest.fn(),
-    showInfo: jest.fn(),
-    clearNotification: mockClearNotification,
-    hideNotification: jest.fn(),
-    notification: { show: false, message: '', type: 'success' as const }
-  })
-}));
-
-// Mock useSeedGeneration hook
-jest.mock('../application/hooks/useSeedGeneration', () => ({
-  useSeedGeneration: () => ({
-    generateSeed: mockGenerateSeed,
-    isGenerating: false,
-    error: null
-  })
-}));
-
-// Mock error handler
-jest.mock('@/lib/error-handler', () => ({
-  ...jest.requireActual('@/lib/error-handler'),
-  logError: jest.fn(),
-  getUserFriendlyMessage: jest.fn((error) => error.message || 'エラーが発生しました'),
-  normalizeError: jest.fn((error) => error)
-}));
+const mockUseSeedGeneration = useSeedGeneration as jest.MockedFunction<typeof useSeedGeneration>;
+const mockUseNotification = useNotification as jest.MockedFunction<typeof useNotification>;
 
 describe('useDashboard', () => {
+  const mockGenerateSeed = jest.fn();
+  const mockShowSuccess = jest.fn();
+  const mockShowError = jest.fn();
+  const mockClearNotification = jest.fn();
+
   beforeEach(() => {
     jest.clearAllMocks();
+    
+    mockUseSeedGeneration.mockReturnValue({
+      generateSeed: mockGenerateSeed,
+      isGenerating: false,
+      error: null
+    });
+
+    mockUseNotification.mockReturnValue({
+      notification: { show: false, message: '', type: 'success' },
+      showSuccess: mockShowSuccess,
+      showError: mockShowError,
+      clearNotification: mockClearNotification
+    });
+
+    (DEFAULT_CONFIG as jest.Mock) = { periodDays: 7 };
   });
 
-  test('initial state should be correct', () => {
+  it('returns initial state correctly', () => {
     const { result } = renderHook(() => useDashboard());
 
     expect(result.current.isGenerating).toBe(false);
-    expect(result.current.notification.show).toBe(false);
-    expect(typeof result.current.handleInitialGeneration).toBe('function');
+    expect(result.current.notification).toEqual({ show: false, message: '', type: 'success' });
     expect(result.current.isLoadingMessage).toBe(null);
+    expect(typeof result.current.handleInitialGeneration).toBe('function');
   });
 
-  test('handleInitialGeneration should work successfully', async () => {
-    mockGenerateSeed.mockResolvedValue(undefined);
-    
-    const { result } = renderHook(() => useDashboard());
-
-    await act(async () => {
-      await result.current.handleInitialGeneration();
+  it('shows loading message when generating', () => {
+    mockUseSeedGeneration.mockReturnValue({
+      generateSeed: mockGenerateSeed,
+      isGenerating: true,
+      error: null
     });
 
+    const { result } = renderHook(() => useDashboard());
+
+    expect(result.current.isLoadingMessage).toBe('テストデータを生成中...');
+  });
+
+  it('clears notification when generation starts', () => {
+    mockUseSeedGeneration.mockReturnValue({
+      generateSeed: mockGenerateSeed,
+      isGenerating: true,
+      error: null
+    });
+
+    renderHook(() => useDashboard());
+
     expect(mockClearNotification).toHaveBeenCalled();
-    expect(mockGenerateSeed).toHaveBeenCalled();
-    expect(mockShowSuccess).toHaveBeenCalledWith('テストデータの生成が完了しました');
+  });
+
+  it('shows error notification when generation fails', () => {
+    const error = new Error('Test error');
+    mockUseSeedGeneration.mockReturnValue({
+      generateSeed: mockGenerateSeed,
+      isGenerating: false,
+      error
+    });
+
+    mockUseNotification.mockReturnValue({
+      notification: { show: false, message: '', type: 'success' },
+      showSuccess: mockShowSuccess,
+      showError: mockShowError,
+      clearNotification: mockClearNotification
+    });
+
+    renderHook(() => useDashboard());
+
+    expect(mockShowError).toHaveBeenCalledWith('予期せぬエラーが発生しました');
+  });
+
+  it('does not show error if notification is already showing', () => {
+    const error = new Error('Test error');
+    mockUseSeedGeneration.mockReturnValue({
+      generateSeed: mockGenerateSeed,
+      isGenerating: false,
+      error
+    });
+
+    mockUseNotification.mockReturnValue({
+      notification: { show: true, message: 'Existing', type: 'error' },
+      showSuccess: mockShowSuccess,
+      showError: mockShowError,
+      clearNotification: mockClearNotification
+    });
+
+    renderHook(() => useDashboard());
+
     expect(mockShowError).not.toHaveBeenCalled();
   });
 
-  test('handleInitialGeneration should handle errors', async () => {
-    const testError = new AppError('テストエラー');
-    mockGenerateSeed.mockRejectedValue(testError);
-    
+  it('handles successful generation', async () => {
+    mockGenerateSeed.mockResolvedValue(undefined);
+
     const { result } = renderHook(() => useDashboard());
 
     await act(async () => {
@@ -77,27 +120,42 @@ describe('useDashboard', () => {
     });
 
     expect(mockClearNotification).toHaveBeenCalled();
-    expect(mockGenerateSeed).toHaveBeenCalled();
-    expect(mockShowSuccess).not.toHaveBeenCalled();
-    expect(mockShowError).toHaveBeenCalled();
+    expect(mockGenerateSeed).toHaveBeenCalledWith({ periodDays: 30 });
+    expect(mockShowSuccess).toHaveBeenCalledWith('テストデータの生成が完了しました');
   });
 
-  test('should show loading message when generating', () => {
-    // This test verifies the logic in the hook - when isGenerating is true, 
-    // isLoadingMessage should show the loading text
+  it('handles generation failure', async () => {
+    const error = new Error('Generation failed');
+    mockGenerateSeed.mockRejectedValue(error);
+
     const { result } = renderHook(() => useDashboard());
-    
-    // The hook returns isLoadingMessage based on isGenerating from useSeedGeneration
-    // Since our mock returns isGenerating: false, we expect null
-    expect(result.current.isLoadingMessage).toBe(null);
+
+    await act(async () => {
+      await result.current.handleInitialGeneration();
+    });
+
+    expect(mockClearNotification).toHaveBeenCalled();
+    expect(mockGenerateSeed).toHaveBeenCalledWith({ periodDays: 30 });
+    expect(mockShowError).toHaveBeenCalledWith('予期せぬエラーが発生しました');
   });
 
-  test('should clear notification when generating starts', () => {
-    renderHook(() => useDashboard());
-    
-    // The useEffect should call clearNotification when isGenerating changes
-    // Since our mock starts with isGenerating: false, it won't trigger initially
-    // This test verifies the hook structure is correct
-    expect(typeof mockClearNotification).toBe('function');
+  it('does not show error notification if already showing during failure', async () => {
+    const error = new Error('Generation failed');
+    mockGenerateSeed.mockRejectedValue(error);
+
+    mockUseNotification.mockReturnValue({
+      notification: { show: true, message: 'Existing', type: 'error' },
+      showSuccess: mockShowSuccess,
+      showError: mockShowError,
+      clearNotification: mockClearNotification
+    });
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleInitialGeneration();
+    });
+
+    expect(mockShowError).not.toHaveBeenCalled();
   });
 });

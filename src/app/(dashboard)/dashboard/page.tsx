@@ -4,28 +4,65 @@ import { useDashboard } from '@/hooks';
 import { ErrorBoundary, LoadingOverlay, Notification } from '@/components/common';
 import { DataSection, InstructionsSection } from '@/components/dashboard';
 
-const DASHBOARD_TITLE = 'ダッシュボード';
-const LOADING_MESSAGE = 'データを生成中...';
+const DASHBOARD_CONFIG = {
+  title: 'イキイキレコード - 教師ダッシュボード',
+  description: '生徒の学習データを生成・管理するダッシュボードです',
+  loadingMessage: 'データを生成中...'
+} as const;
+
+const DashboardHeader: React.FC = () => (
+  <div className="mb-8">
+    <h1 className="text-3xl font-bold text-gray-900 mb-2">
+      {DASHBOARD_CONFIG.title}
+    </h1>
+    <p className="text-gray-600">
+      {DASHBOARD_CONFIG.description}
+    </p>
+  </div>
+);
+
+const DashboardNotification: React.FC<{ notification: ReturnType<typeof useDashboard>['notification'] }> = ({ 
+  notification 
+}) => (
+  <Notification
+    show={notification.show}
+    message={notification.message}
+    type={notification.type}
+    onClose={() => notification.show && notification.type !== 'error' && void 0}
+    autoClose={notification.type === 'success'}
+  />
+);
+
+const DashboardContent: React.FC<{
+  isGenerating: boolean;
+  onGenerate: () => void;
+}> = ({ isGenerating, onGenerate }) => (
+  <div className="space-y-8">
+    <DataSection isGenerating={isGenerating} onGenerate={onGenerate} />
+    <InstructionsSection />
+  </div>
+);
 
 export default function DashboardPage() {
-  const { isGenerating, notification, handleInitialGeneration } = useDashboard();
+  const { isGenerating, notification, handleInitialGeneration, isLoadingMessage } = useDashboard();
 
   return (
     <ErrorBoundary>
-      <LoadingOverlay isLoading={isGenerating} message={LOADING_MESSAGE} />
+      <LoadingOverlay 
+        isLoading={isGenerating} 
+        message={isLoadingMessage || DASHBOARD_CONFIG.loadingMessage} 
+      />
       
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">{DASHBOARD_TITLE}</h1>
-          
-          <Notification
-            show={notification.show}
-            message={notification.message}
-            type={notification.type}
-          />
-          
-          <DataSection isGenerating={isGenerating} onGenerate={handleInitialGeneration} />
-          <InstructionsSection />
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
+            <DashboardHeader />
+            <DashboardNotification notification={notification} />
+            <DashboardContent 
+              isGenerating={isGenerating} 
+              onGenerate={handleInitialGeneration} 
+            />
+          </div>
         </div>
       </div>
     </ErrorBoundary>

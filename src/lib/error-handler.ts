@@ -1,51 +1,93 @@
 /**
- * 標準化されたエラーハンドリングユーティリティ
+ * Centralized error handling utilities
  */
 
-// エラーコードの定数を抽出
+// Error codes with TypeScript enum-like behavior
 export const ERROR_CODES = {
   UNKNOWN: 'UNKNOWN_ERROR',
   VALIDATION: 'VALIDATION_ERROR',
   NETWORK: 'NETWORK_ERROR',
   TIMEOUT: 'TIMEOUT_ERROR',
-  GENERATION: 'GENERATION_ERROR'
+  GENERATION: 'GENERATION_ERROR',
+  NOT_FOUND: 'NOT_FOUND_ERROR',
+  PERMISSION: 'PERMISSION_ERROR'
 } as const;
 
-// ユーザーフレンドリーメッセージのマップ
-const USER_MESSAGES = {
+type ErrorCodeType = typeof ERROR_CODES[keyof typeof ERROR_CODES];
+
+// User-friendly messages for each error type
+const USER_MESSAGES: Record<ErrorCodeType, string> = {
+  [ERROR_CODES.UNKNOWN]: '予期せぬエラーが発生しました',
   [ERROR_CODES.VALIDATION]: '入力内容を確認してください',
   [ERROR_CODES.NETWORK]: 'ネットワーク接続を確認してください',
   [ERROR_CODES.TIMEOUT]: 'タイムアウトしました。再度お試しください',
-  [ERROR_CODES.GENERATION]: 'データの生成に失敗しました'
-} as const;
+  [ERROR_CODES.GENERATION]: 'データの生成に失敗しました',
+  [ERROR_CODES.NOT_FOUND]: '要求されたデータが見つかりません',
+  [ERROR_CODES.PERMISSION]: 'この操作を実行する権限がありません'
+};
 
+/**
+ * Base application error class
+ */
 export class AppError extends Error {
   constructor(
     message: string,
-    public code: string = ERROR_CODES.UNKNOWN,
-    public statusCode: number = 500
+    public code: ErrorCodeType = ERROR_CODES.UNKNOWN,
+    public statusCode: number = 500,
+    public details?: Record<string, any>
   ) {
     super(message);
     this.name = 'AppError';
+    
+    // Maintains proper stack trace for where our error was thrown (only available on V8)
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, AppError);
+    }
   }
 }
 
+/**
+ * Validation error (400)
+ */
 export class ValidationError extends AppError {
-  constructor(message: string) {
-    super(message, ERROR_CODES.VALIDATION, 400);
+  constructor(message: string, details?: Record<string, any>) {
+    super(message, ERROR_CODES.VALIDATION, 400, details);
     this.name = 'ValidationError';
   }
 }
 
+/**
+ * Network error (0 for client-side, 500+ for server-side)
+ */
 export class NetworkError extends AppError {
-  constructor(message: string = 'ネットワークエラーが発生しました') {
-    super(message, ERROR_CODES.NETWORK, 0);
+  constructor(message: string = 'ネットワークエラーが発生しました', statusCode: number = 0) {
+    super(message, ERROR_CODES.NETWORK, statusCode);
     this.name = 'NetworkError';
   }
 }
 
 /**
- * エラーを標準化された形式に変換
+ * Not found error (404)
+ */
+export class NotFoundError extends AppError {
+  constructor(message: string = '要求されたリソースが見つかりません') {
+    super(message, ERROR_CODES.NOT_FOUND, 404);
+    this.name = 'NotFoundError';
+  }
+}
+
+/**
+ * Timeout error (408)
+ */
+export class TimeoutError extends AppError {
+  constructor(message: string = 'リクエストがタイムアウトしました') {
+    super(message, ERROR_CODES.TIMEOUT, 408);
+    this.name = 'TimeoutError';
+  }
+}
+
+/**
+ * Normalizes any error into AppError format
  */
 export function normalizeError(error: unknown): AppError {
   if (error instanceof AppError) {
@@ -53,45 +95,76 @@ export function normalizeError(error: unknown): AppError {
   }
 
   if (error instanceof Error) {
+    // Handle common error types
+    if (error.name === 'TypeError' || error.message.includes('fetch')) {
+      return new NetworkError(error.message);
+    }
+    
     return new AppError(error.message, ERROR_CODES.UNKNOWN, 500);
   }
 
   if (typeof error === 'string') {
-    return new AppError(error, ERROR_CODES.UNKNOWN, 500);
+    return new AppError(error);
   }
 
-  return new AppError('予期せぬエラーが発生しました', ERROR_CODES.UNKNOWN, 500);
+  return new AppError('予期せぬエラーが発生しました');
 }
 
 /**
- * ユーザー向けのエラーメッセージを生成
+ * Gets user-friendly message for an error
  */
-export function getUserFriendlyMessage(error: AppError): string {
-  return USER_MESSAGES[error.code as keyof typeof USER_MESSAGES] || 
-         error.message || 
-         'エラーが発生しました';
+export function getUserFriendlyMessage(error: unknown): string {
+  const normalized = normalizeError(error);
+  return USER_MESSAGES[normalized.code] || normalized.message;
 }
 
 /**
- * エラーログを出力
+ * Logs error with context information
  */
 export function logError(error: unknown, context?: string): void {
-  const normalizedError = normalizeError(error);
-  const contextStr = context ? `[${context}]` : '[APP]';
-  console.error(`${contextStr} ${normalizedError.code}:`, normalizedError);
-}
-
-/**
- * エラーがネットワーク関連か判定
- */
-export function isNetworkError(error: unknown): boolean {
   const normalized = normalizeError(error);
-  return normalized.code === ERROR_CODES.NETWORK || normalized.statusCode === 0;
+  const contextStr = context ? `[${context}]` : '[APP]';
+  
+  console.group(`${contextStr} Error Details`);
+  console.error('Code:', normalized.code);
+  console.error('Message:', normalized.message);
+  console.error('Status:', normalized.statusCode);
+  
+  if (normalized.details) {
+    console.error('Details:', normalized.details);
+  }
+  
+  console.error('Stack:', normalized.stack);
+  console.groupEnd();
 }
 
 /**
- * エラーが検証エラーか判定
+ * Type guards for error checking
  */
-export function isValidationError(error: unknown): boolean {
-  return normalizeError(error).code === ERROR_CODES.VALIDATION;
-}
+export const errorTypeGuards = {
+  isNetworkError: (error: unknown): boolean => {
+    const normalized = normalizeError(error);
+    return normalized.code === ERROR_CODES.NETWORK || normalized.statusCode === 0;
+  },
+  
+  isValidationError: (error: unknown): boolean => {
+    return normalizeError(error).code === ERROR_CODES.VALIDATION;
+  },
+  
+  isNotFoundError: (error: unknown): boolean => {
+    return normalizeError(error).code === ERROR_CODES.NOT_FOUND;
+  },
+  
+  isTimeoutError: (error: unknown): boolean => {
+    return normalizeError(error).code === ERROR_CODES.TIMEOUT;
+  },
+  
+  isServerError: (error: unknown): boolean => {
+    const normalized = normalizeError(error);
+    return normalized.statusCode >= 500;
+  }
+} as const;
+
+// Export individual type guards for backward compatibility
+export const isNetworkError = errorTypeGuards.isNetworkError;
+export const isValidationError = errorTypeGuards.isValidationError;

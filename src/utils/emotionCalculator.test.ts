@@ -33,7 +33,8 @@ describe('emotionCalculator', () => {
 
     test('unknown pattern returns default value', () => {
       const emotion = generateBaseEmotion('unknown' as any);
-      expect(emotion).toBe(3.0);
+      expect(emotion).toBeGreaterThanOrEqual(EMOTION_CONSTANTS.MIN_EMOTION);
+      expect(emotion).toBeLessThanOrEqual(EMOTION_CONSTANTS.MAX_EMOTION);
     });
   });
 

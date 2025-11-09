@@ -4,19 +4,37 @@ import { createErrorResponse } from './response';
 import { AppError, normalizeError, logError, ERROR_CODES } from '@/lib/error-handler';
 
 /**
+ * Zodエラーからユーザーフレンドリーなメッセージを生成
+ */
+const formatZodError = (error: z.ZodError): string => {
+  return error.errors
+    .map((err) => {
+      const field = err.path.join('.');
+      const message = err.message;
+      return field ? `${field}: ${message}` : message;
+    })
+    .join(', ');
+};
+
+/**
  * APIエラーをハンドリングする
  */
 export function handleApiError(error: unknown): NextResponse {
   const normalizedError = normalizeError(error);
   logError(error, 'API');
 
+  // Zod検証エラーの処理
   if (error instanceof z.ZodError) {
-    const message = error.errors
-      .map((err) => `${err.path.join('.')}: ${err.message}`)
-      .join(', ');
-    return createErrorResponse(message, 400);
+    const message = formatZodError(error);
+    return createErrorResponse(`入力データの検証に失敗しました: ${message}`, 400);
   }
 
+  // JSONパースエラーの処理
+  if (error instanceof SyntaxError && 'body' in error) {
+    return createErrorResponse('リクエストボディのJSON形式が正しくありません', 400);
+  }
+
+  // アプリケーションエラーの処理
   return createErrorResponse(
     normalizedError.message,
     normalizedError.statusCode || 500
@@ -24,23 +42,42 @@ export function handleApiError(error: unknown): NextResponse {
 }
 
 /**
- * 特定のエラーを生成する
+ * 特定のエラーを生成するファクトリー関数
  */
 export const createError = {
-  badRequest: (message: string) => new AppError(message, 400, ERROR_CODES.VALIDATION),
-  unauthorized: (message: string = '認証が必要です') => new AppError(message, 401),
-  forbidden: (message: string = 'アクセスが拒否されました') => new AppError(message, 403),
-  notFound: (message: string = 'リソースが見つかりません') => new AppError(message, 404),
-  internal: (message: string = 'サーバーエラーが発生しました') => new AppError(message, 500, ERROR_CODES.UNKNOWN),
-  timeout: (message: string = 'リクエストがタイムアウトしました') => new AppError(message, 408, ERROR_CODES.TIMEOUT),
-  generation: (message: string = 'データ生成に失敗しました') => new AppError(message, 500, ERROR_CODES.GENERATION)
-};
+  badRequest: (message: string = 'リクエストが正しくありません') => 
+    new AppError(message, ERROR_CODES.VALIDATION, 400),
+  unauthorized: (message: string = '認証が必要です') => 
+    new AppError(message, ERROR_CODES.PERMISSION, 401),
+  forbidden: (message: string = 'アクセスが拒否されました') => 
+    new AppError(message, ERROR_CODES.PERMISSION, 403),
+  notFound: (message: string = 'リソースが見つかりません') => 
+    new AppError(message, ERROR_CODES.NOT_FOUND, 404),
+  timeout: (message: string = 'リクエストがタイムアウトしました') => 
+    new AppError(message, ERROR_CODES.TIMEOUT, 408),
+  generation: (message: string = 'データ生成に失敗しました') => 
+    new AppError(message, ERROR_CODES.GENERATION, 500),
+  internal: (message: string = 'サーバーエラーが発生しました') => 
+    new AppError(message, ERROR_CODES.UNKNOWN, 500)
+} as const;
 
 /**
  * APIハンドラーをエラーハンドリングで包む
+ * 型安全なエラーハンドリングラッパー
  */
-export function withErrorHandler<T extends Promise<NextResponse>>(
-  handler: () => T
-): T {
-  return handler().catch(handleApiError) as T;
+export function withErrorHandler<T extends NextResponse>(
+  handler: () => Promise<T>
+): Promise<T> {
+  return handler().catch(handleApiError);
+}
+
+/**
+ * リクエストデータの安全なパース
+ */
+export async function parseRequestBody(req: Request): Promise<unknown> {
+  try {
+    return await req.json();
+  } catch (error) {
+    throw createError.badRequest('リクエストボディの解析に失敗しました');
+  }
 }

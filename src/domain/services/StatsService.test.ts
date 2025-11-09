@@ -2,19 +2,18 @@ import { StatsService } from './StatsService';
 import { StatsRepository } from '../repositories/StatsRepository';
 import { DataGenerationConfig } from '../entities/DataGeneration';
 import { Stats } from '../entities/Stats';
-import { EmotionGenerator } from './EmotionGenerator';
+import { generateEmotion } from './EmotionGenerator';
 
 // Mock the dependencies
 jest.mock('../repositories/StatsRepository');
 jest.mock('./EmotionGenerator');
 
 const MockStatsRepository = StatsRepository as jest.MockedClass<typeof StatsRepository>;
-const MockEmotionGenerator = EmotionGenerator as jest.MockedClass<typeof EmotionGenerator>;
+const mockGenerateEmotion = generateEmotion as jest.MockedFunction<typeof generateEmotion>;
 
 describe('StatsService', () => {
   let statsService: StatsService;
   let mockRepository: jest.Mocked<StatsRepository>;
-  let mockEmotionGenerator: jest.Mocked<EmotionGenerator>;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -24,12 +23,8 @@ describe('StatsService', () => {
       saveStats: jest.fn()
     } as any;
 
-    // Mock EmotionGenerator
-    mockEmotionGenerator = {
-      generateEmotion: jest.fn().mockReturnValue(3.5)
-    } as any;
-
-    MockEmotionGenerator.mockImplementation(() => mockEmotionGenerator);
+    // Mock generateEmotion function
+    mockGenerateEmotion.mockReturnValue(3.5);
 
     statsService = new StatsService(mockRepository);
   });

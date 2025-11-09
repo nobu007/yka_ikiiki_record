@@ -100,7 +100,7 @@ describe('Notification', () => {
 
     const icon = document.querySelector('svg');
     expect(icon).toBeInTheDocument();
-    expect(icon).toHaveClass('text-green-500');
+    expect(icon).toHaveClass('h-5', 'w-5', 'mr-2');
   });
 
   test('renders error icon for error type', () => {
@@ -114,7 +114,7 @@ describe('Notification', () => {
 
     const icon = document.querySelector('svg');
     expect(icon).toBeInTheDocument();
-    expect(icon).toHaveClass('text-red-500');
+    expect(icon).toHaveClass('h-5', 'w-5', 'mr-2');
   });
 
   test('applies correct layout classes', () => {

@@ -6,31 +6,22 @@ import { MockStatsRepository } from '@/infrastructure/storage/MockStatsRepositor
 import { validateDataSafe } from '@/lib/api/validation';
 import { createError } from '@/lib/api/error-handler';
 
-// リポジトリとサービスのインスタンスを作成
 const repository = new MockStatsRepository();
 const statsService = new StatsService(repository);
 
-/**
- * POST /api/seed
- * テストデータを生成するAPIエンドポイント
- */
 export async function POST(req: NextRequest): Promise<NextResponse> {
   return withErrorHandler(async () => {
-    // リクエストボディの取得と検証
-    const rawData = await req.json().catch(() => {
-      throw createError.badRequest('リクエストボディの解析に失敗しました');
-    });
+    const rawData = await req.json().catch(() => 
+      createError.badRequest('リクエストボディの解析に失敗しました')
+    );
 
     const [validated, error] = validateDataSafe(rawData, SeedRequestSchema);
-
     if (error || !validated) {
       throw createError.badRequest(error || 'リクエストデータの検証に失敗しました');
     }
 
-    // StatsServiceを使用してシードデータを生成
     await statsService.generateSeedData(validated.config);
 
-    // シンプルなレスポンスを返す
     return NextResponse.json({
       success: true,
       message: 'テストデータの生成が完了しました'

@@ -102,6 +102,7 @@ const char* password = "YOUR_WIFI_PASSWORD"; // ここをあなたのWi-Fi パ�
 // サーバー設定
 const char* serverUrl = "http://YOUR_SERVER_IP_OR_DOMAIN/get_max_n"; // ここをサーバーのエンドポイントURLに置き換えてください
 ```
+
 - `ssid` と `password` は、ATOM Lite が接続する Wi-Fi ネットワークの認証情報です。
 - `serverUrl` は、`max_n` を取得するためのサーバーのエンドポイント URL です。
 
@@ -112,14 +113,14 @@ const char* serverUrl = "http://YOUR_SERVER_IP_OR_DOMAIN/get_max_n"; // ここ�
 1. **ATOM Lite の接続:** ATOM Lite を USB-C ケーブルで PC に接続します。
 2. VS Code の下部にある**ステータスバー**を確認します。PlatformIO のアイコンの横に、M5Stack ATOM Lite のボード名とポート名が表示されていることを確認してください。もし表示されていない場合や間違っている場合は、クリックして正しいボード (`m5stack-atom`) とシリアルポートを選択します。
 3. **ビルド:**
-    - 下部ステータスバーの「**✔**」マーク (**PlatformIO: Build**) をクリックするか、
-    - `Ctrl+Alt+B` (Windows/Linux) / `Cmd+Option+B` (macOS) を押します。
-    - これにより、コードがコンパイルされ、必要なライブラリがダウンロードされます。
+   - 下部ステータスバーの「**✔**」マーク (**PlatformIO: Build**) をクリックするか、
+   - `Ctrl+Alt+B` (Windows/Linux) / `Cmd+Option+B` (macOS) を押します。
+   - これにより、コードがコンパイルされ、必要なライブラリがダウンロードされます。
 4. **書き込み:**
-    - ビルドが成功したら、下部ステータスバーの**右矢印アイコン** (**PlatformIO: Upload**) をクリックするか、
-    - `Ctrl+Alt+U` (Windows/Linux) / `Cmd+Option+U` (macOS) を押します。
-    - 書き込みが開始されます。ATOM Lite のLEDが点滅し、書き込みが進行していることを示します。
-    - もし書き込み中にエラーが発生する場合、一度 ATOM Lite をPCから外し、再度接続し直してから書き込みを試す、または ATOM Lite のリセットボタンを押しながら書き込みを開始すると改善する場合があります。
+   - ビルドが成功したら、下部ステータスバーの**右矢印アイコン** (**PlatformIO: Upload**) をクリックするか、
+   - `Ctrl+Alt+U` (Windows/Linux) / `Cmd+Option+U` (macOS) を押します。
+   - 書き込みが開始されます。ATOM Lite の LED が点滅し、書き込みが進行していることを示します。
+   - もし書き込み中にエラーが発生する場合、一度 ATOM Lite を PC から外し、再度接続し直してから書き込みを試す、または ATOM Lite のリセットボタンを押しながら書き込みを開始すると改善する場合があります。
 
 ---
 
@@ -129,21 +130,21 @@ ATOM Lite が起動し、デバッグメッセージを出力しているのを�
 
 1. 下部ステータスバーの**プラグアイコン** (**PlatformIO: Serial Monitor**) をクリックするか、
 2. `Ctrl+Alt+S` (Windows/Linux) / `Cmd+Option+S` (macOS) を押します。
-3. シリアルモニターが開き、ATOM Lite からの出力が表示されます。Wi-Fi接続状況やサーバーからの `max_n` 取得、ボタン操作のログなどが確認できます。
+3. シリアルモニターが開き、ATOM Lite からの出力が表示されます。Wi-Fi 接続状況やサーバーからの `max_n` 取得、ボタン操作のログなどが確認できます。
 
 ---
 
 ### 9. トラブルシューティング
 
-- **COMポートが見つからない/書き込みができない:**
-    - USBケーブルがデータ転送対応か確認してください。充電専用ケーブルでは書き込みできません。
-    - ATOM Lite をPCの別のUSBポートに接続してみてください。
-    - PCに適切なUSBドライバがインストールされているか確認してください。M5StackやESP32の場合、CP2104またはCH9102Fドライバが必要です。M5Stackの公式ドキュメントで確認できます。
+- **COM ポートが見つからない/書き込みができない:**
+  - USB ケーブルがデータ転送対応か確認してください。充電専用ケーブルでは書き込みできません。
+  - ATOM Lite を PC の別の USB ポートに接続してみてください。
+  - PC に適切な USB ドライバがインストールされているか確認してください。M5Stack や ESP32 の場合、CP2104 または CH9102F ドライバが必要です。M5Stack の公式ドキュメントで確認できます。
 - **`platformio.ini` のボードまたはフレームワークが間違っている:**
-    - `platformio.ini` の `board` と `framework` の設定が正しいか再確認してください。
+  - `platformio.ini` の `board` と `framework` の設定が正しいか再確認してください。
 - **ライブラリが見つからないエラー:**
-    - `platformio.ini` の `lib_deps` に必要なライブラリがすべて正しく記述されているか確認してください。バージョン指定も重要です。
+  - `platformio.ini` の `lib_deps` に必要なライブラリがすべて正しく記述されているか確認してください。バージョン指定も重要です。
 - **Wi-Fi に接続できない:**
-    - `ssid` と `password` が正しいか再度確認してください（大文字・小文字も含む）。
-    - Wi-Fiルーターと ATOM Lite の距離が離れすぎていないか確認してください。
-    - Wi-Fiルーターが2.4GHz帯に対応しているか確認してください（ESP32は通常2.4GHzのみ対応）。
+  - `ssid` と `password` が正しいか再度確認してください（大文字・小文字も含む）。
+  - Wi-Fi ルーターと ATOM Lite の距離が離れすぎていないか確認してください。
+  - Wi-Fi ルーターが 2.4GHz 帯に対応しているか確認してください（ESP32 は通常 2.4GHz のみ対応）。

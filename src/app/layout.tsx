@@ -5,6 +5,11 @@ if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_MOCK === '
   makeServer({ environment: 'development' });
 }
 
+export const metadata = {
+  title: 'Dashboard',
+  description: 'ダッシュボードアプリケーション',
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -16,8 +21,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-export const metadata = {
-  title: 'Dashboard',
-  description: 'ダッシュボードアプリケーション',
-};

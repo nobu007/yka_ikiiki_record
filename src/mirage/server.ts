@@ -79,7 +79,16 @@ export function makeServer({ environment = 'development' } = {}) {
       this.get('/stats', (schema) => {
         try {
           const records = schema.all('record').models;
-          return calculateStats(records);
+          
+          // Transform Mirage records to match calculateStats expected format
+          const transformedRecords = records.map((record: any) => ({
+            date: new Date(record.date),
+            emotion: record.emotion,
+            student: parseInt(record.student.replace('学生', '')) - 1, // Convert "学生1" to 0
+            hour: new Date(record.date).getHours()
+          }));
+          
+          return calculateStats(transformedRecords);
         } catch (error) {
           console.error('Stats Error:', error);
           return new Response(500, {}, { error: 'Failed to calculate stats' });

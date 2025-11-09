@@ -88,3 +88,6 @@ export function calculateEventEffect(date: Date, events: EventEffect[]): number 
 
   return totalEffect;
 }
+
+// Export the clamp function for external use
+export const clampEmotionValue = clampEmotion;

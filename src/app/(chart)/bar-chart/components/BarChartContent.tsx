@@ -1,7 +1,7 @@
 "use client";
 
 import DynamicBarChart from "@/components/charts/DynamicBarChart";
-import DashboardTemplate from "../../../(dashboard)/dashboard/components/_templates/DashboardTemplate";
+import ComponentCard from "@/components/common/ComponentCard";
 import { useState, useCallback } from "react";
 
 const demoData = [
@@ -37,22 +37,35 @@ export default function BarChartContent() {
   }, []);
 
   return (
-    <DashboardTemplate
-      buttonProps={{
-        label: "データを更新",
-        onClick: handleRefresh,
-        loading: isLoading
-      }}
-      displayProps={{
-        data: <DynamicBarChart
-          data={demoData}
-          title="月別データ"
-          height={300}
-        />,
-        loading: isLoading,
-        error: error
-      }}
-      className="space-y-6"
-    />
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">月別データ</h2>
+        <button
+          onClick={handleRefresh}
+          disabled={isLoading}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+        >
+          {isLoading ? "更新中..." : "データを更新"}
+        </button>
+      </div>
+
+      <ComponentCard
+        title="月別統計"
+        desc="月別の統計データを表示します"
+      >
+        {error ? (
+          <div className="text-red-500 p-4 border border-red-200 rounded-md bg-red-50">
+            <p className="font-semibold">エラーが発生しました</p>
+            <p className="text-sm">{error.message}</p>
+          </div>
+        ) : (
+          <DynamicBarChart
+            data={demoData}
+            title="月別データ"
+            height={300}
+          />
+        )}
+      </ComponentCard>
+    </div>
   );
 }

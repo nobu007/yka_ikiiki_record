@@ -134,3 +134,25 @@ export function calculateTrendline(emotions: number[]): number[] {
 export function getRandomHour(): number {
   return Math.floor(Math.random() * 19) + 5; // 5-23時
 }
+
+// Export a comprehensive calculate function for external use
+export function calculateStats(emotions: Array<{date: Date; emotion: number; student: number; hour: number}>) {
+  const totalRecords = emotions.length;
+  const averageEmotion = calculateAverage(emotions.map(e => e.emotion));
+  const emotionDistribution = calculateEmotionDistribution(emotions);
+  const monthlyStats = calculateMonthlyStats(emotions);
+  const weekdayStats = calculateDayOfWeekStats(emotions);
+  const hourlyStats = calculateTimeOfDayStats(emotions);
+  const studentStats = calculateStudentStats(emotions);
+
+  return {
+    totalRecords,
+    averageEmotion,
+    emotionDistribution,
+    monthlyStats,
+    weekdayStats,
+    hourlyStats,
+    studentStats,
+    trend: calculateTrendline(emotions.map(e => e.emotion))
+  };
+}

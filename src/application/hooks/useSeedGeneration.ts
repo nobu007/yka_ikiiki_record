@@ -27,7 +27,7 @@ export function useSeedGeneration() {
       }
     } catch (e) {
       const appError = normalizeError(e);
-      logError(e, 'useSeedGeneration');
+      logError(appError, 'useSeedGeneration.generateSeed');
       setError(appError);
       throw appError;
     } finally {

@@ -29,9 +29,7 @@ export class AppError extends Error {
   ) {
     super(message);
     this.name = 'AppError';
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, AppError);
-    }
+    Error.captureStackTrace?.(this, AppError);
   }
 }
 
@@ -63,16 +61,19 @@ export class TimeoutError extends AppError {
   }
 }
 
+const isNetworkRelated = (error: Error): boolean => 
+  error.name === 'TypeError' || 
+  error.message.includes('fetch') || 
+  error.message.includes('network') ||
+  error.message.includes('connection');
+
 export function normalizeError(error: unknown): AppError {
   if (error instanceof AppError) {
     return error;
   }
 
   if (error instanceof Error) {
-    if (error.name === 'TypeError' || 
-        error.message.includes('fetch') || 
-        error.message.includes('network') ||
-        error.message.includes('connection')) {
+    if (isNetworkRelated(error)) {
       return new NetworkError(error.message);
     }
     return new AppError(error.message, ERROR_CODES.UNKNOWN, 500);

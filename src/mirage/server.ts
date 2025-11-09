@@ -88,7 +88,7 @@ export function makeServer({ environment = 'development' } = {}) {
             hour: new Date(record.date).getHours()
           }));
           
-          return calculateStats(transformedRecords);
+          return calculateStats.calculateMonthlyStats(transformedRecords);
         } catch (error) {
           console.error('Stats Error:', error);
           return new Response(500, {}, { error: 'Failed to calculate stats' });

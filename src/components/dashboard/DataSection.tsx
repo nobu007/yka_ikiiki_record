@@ -19,7 +19,8 @@ const DATA_SECTION_CONFIG = {
   ]
 } as const;
 
-const buttonClasses = `
+// Extracted button styles for better maintainability
+const buttonStyles = `
   inline-flex items-center justify-center px-6 py-3 border border-transparent 
   text-base font-medium rounded-md text-white bg-blue-600 
   hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
@@ -28,7 +29,8 @@ const buttonClasses = `
   shadow-md hover:shadow-lg
 `;
 
-const FeatureItem: React.FC<{ feature: string; index: number }> = ({ feature }) => (
+// Reusable feature item component
+const FeatureItem: React.FC<{ feature: string }> = React.memo(({ feature }) => (
   <li className="flex items-center text-sm text-gray-600">
     <svg 
       className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" 
@@ -44,27 +46,33 @@ const FeatureItem: React.FC<{ feature: string; index: number }> = ({ feature }) 
     </svg>
     {feature}
   </li>
-);
+));
 
-const FeaturesList: React.FC = () => (
+FeatureItem.displayName = 'FeatureItem';
+
+// Extracted features list component
+const FeaturesList: React.FC = React.memo(() => (
   <div className="bg-white rounded-md p-4 mb-6">
     <h3 className="text-sm font-medium text-gray-700 mb-3">生成されるデータ:</h3>
     <ul className="space-y-2">
       {DATA_SECTION_CONFIG.features.map((feature) => (
-        <FeatureItem key={feature} feature={feature} index={0} />
+        <FeatureItem key={feature} feature={feature} />
       ))}
     </ul>
   </div>
-);
+));
 
-const GenerateButton: React.FC<{ isGenerating: boolean; onClick: () => void }> = ({ 
+FeaturesList.displayName = 'FeaturesList';
+
+// Extracted button component
+const GenerateButton: React.FC<{ isGenerating: boolean; onClick: () => void }> = React.memo(({ 
   isGenerating, 
   onClick 
 }) => (
   <button 
     onClick={onClick} 
     disabled={isGenerating} 
-    className={buttonClasses}
+    className={buttonStyles}
     aria-describedby="generate-help"
   >
     {isGenerating ? (
@@ -92,23 +100,28 @@ const GenerateButton: React.FC<{ isGenerating: boolean; onClick: () => void }> =
       </>
     )}
   </button>
-);
+));
 
-const HelpText: React.FC<{ isGenerating: boolean }> = ({ isGenerating }) => (
+GenerateButton.displayName = 'GenerateButton';
+
+// Extracted help text component
+const HelpText: React.FC<{ isGenerating: boolean }> = React.memo(({ isGenerating }) => (
   <p id="generate-help" className="mt-4 text-sm text-gray-500 text-center">
     {isGenerating 
       ? 'データ生成には数秒かかる場合があります。'
       : 'ボタンをクリックしてテストデータを生成してください。'
     }
   </p>
-);
+));
+
+HelpText.displayName = 'HelpText';
 
 export const DataSection: React.FC<DataSectionProps> = React.memo(({ 
   isGenerating, 
   onGenerate 
 }) => (
   <section className="bg-gray-50 rounded-lg p-6">
-    <div className="mb-6">
+    <header className="mb-6">
       <h2 className="text-xl font-semibold text-gray-900 mb-3">
         {DATA_SECTION_CONFIG.title}
       </h2>
@@ -117,7 +130,7 @@ export const DataSection: React.FC<DataSectionProps> = React.memo(({
       </p>
       
       <FeaturesList />
-    </div>
+    </header>
     
     <div className="flex items-center justify-center">
       <GenerateButton isGenerating={isGenerating} onClick={onGenerate} />

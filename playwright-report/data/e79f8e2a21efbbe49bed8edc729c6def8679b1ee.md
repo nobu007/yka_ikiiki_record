@@ -1,25 +1,37 @@
 # Test info
 
-- Name: イキイキレコード デモ - E2Eテスト >> エラーハンドリングのシミュレーション
-- Location: /home/jinno/yka_ikiiki_record/playwright/data-flow.spec.ts:110:7
+- Name: イキイキレコード デモ - E2Eテスト >> ボタンの状態変化
+- Location: /home/jinno/yka_ikiiki_record/playwright/data-flow.spec.ts:50:7
 
 # Error details
 
 ```
-Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell
-╔═════════════════════════════════════════════════════════════════════════╗
-║ Looks like Playwright Test or Playwright was just installed or updated. ║
-║ Please run the following command to download new browsers:              ║
-║                                                                         ║
-║     npx playwright install                                              ║
-║                                                                         ║
-║ <3 Playwright Team                                                      ║
-╚═════════════════════════════════════════════════════════════════════════╝
+Error: browserType.launch: 
+╔══════════════════════════════════════════════════════╗
+║ Host system is missing dependencies to run browsers. ║
+║ Please install them with the following command:      ║
+║                                                      ║
+║     sudo npx playwright install-deps                 ║
+║                                                      ║
+║ Alternatively, use apt:                              ║
+║     sudo apt-get install libicu74                    ║
+║                                                      ║
+║ <3 Playwright Team                                   ║
+╚══════════════════════════════════════════════════════╝
 ```
 
 # Test source
 
 ```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test.describe('イキイキレコード デモ - E2Eテスト', () => {
+   4 |   test.beforeEach(async ({ page }) => {
+   5 |     await page.goto('/');
+   6 |   });
+   7 |
+   8 |   test('ランディングページからダッシュボードへの遷移', async ({ page }) => {
+   9 |     // ランディングページの確認
    10 |     await expect(page.getByText('イキイキレコード デモ')).toBeVisible();
    11 |     await expect(page.getByRole('link', { name: '教師ダッシュボードを見る' })).toBeVisible();
    12 |     
@@ -60,7 +72,8 @@ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-pla
    47 |     await expect(page.getByText('データが生成されると、統計情報がダッシュボードに表示されます')).toBeVisible();
    48 |   });
    49 |
-   50 |   test('ボタンの状態変化', async ({ page }) => {
+>  50 |   test('ボタンの状態変化', async ({ page }) => {
+      |       ^ Error: browserType.launch: 
    51 |     await page.goto('/dashboard');
    52 |     
    53 |     const generateButton = page.getByRole('button', { name: '初期データを生成' });
@@ -120,8 +133,7 @@ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-pla
   107 |     await expect(page.getByRole('button', { name: '初期データを生成' })).toBeVisible();
   108 |   });
   109 |
-> 110 |   test('エラーハンドリングのシミュレーション', async ({ page }) => {
-      |       ^ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell
+  110 |   test('エラーハンドリングのシミュレーション', async ({ page }) => {
   111 |     await page.goto('/dashboard');
   112 |     
   113 |     // ネットワークエラーをシミュレート

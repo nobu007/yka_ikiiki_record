@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useSeedGeneration } from '@/application/hooks/useSeedGeneration';
 import { useNotification } from '@/hooks/useNotification';
 import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
@@ -15,6 +15,7 @@ const DASHBOARD_MESSAGES = {
   }
 } as const;
 
+// Memoize error message mapping to avoid recreating on every render
 const getErrorMessage = (error: unknown): string => {
   if (errorTypeGuards.isNetworkError(error)) {
     return DASHBOARD_MESSAGES.error.network;
@@ -31,6 +32,12 @@ const getErrorMessage = (error: unknown): string => {
 export function useDashboard() {
   const { generateSeed, isGenerating, error } = useSeedGeneration();
   const { notification, showSuccess, showError, clearNotification } = useNotification();
+
+  // Memoize loading message to prevent unnecessary recalculations
+  const isLoadingMessage = useMemo(
+    () => isGenerating ? DASHBOARD_MESSAGES.generating : null,
+    [isGenerating]
+  );
 
   // Combined effect for error handling and notification clearing
   useEffect(() => {
@@ -68,12 +75,12 @@ export function useDashboard() {
         showError(getUserFriendlyMessage(normalizedError));
       }
     }
-  }, [generateSeed, showSuccess, showError, clearNotification, notification.show]);
+  }, [generateSeed, showSuccess, showError, clearNotification]);
 
   return {
     isGenerating,
     notification,
     handleInitialGeneration,
-    isLoadingMessage: isGenerating ? DASHBOARD_MESSAGES.generating : null
+    isLoadingMessage
   };
 }

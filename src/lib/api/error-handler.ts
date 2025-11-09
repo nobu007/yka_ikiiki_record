@@ -67,7 +67,7 @@ export const createError = {
  */
 export function withErrorHandler<T extends NextResponse>(
   handler: () => Promise<T>
-): Promise<T> {
+): Promise<T | NextResponse> {
   return handler().catch(handleApiError);
 }
 

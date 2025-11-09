@@ -2,17 +2,24 @@ import { useState, useCallback } from 'react';
 import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
 import { AppError, NetworkError, normalizeError, logError } from '@/lib/error-handler';
 
-interface ApiResponse {
+// Improved type definitions for better type safety
+interface ApiResponse<T = unknown> {
   success: boolean;
   error?: string;
-  data?: any;
+  data?: T;
 }
 
-export function useSeedGeneration() {
+interface UseSeedGenerationReturn {
+  isGenerating: boolean;
+  error: AppError | null;
+  generateSeed: (config: DataGenerationConfig) => Promise<unknown>;
+}
+
+export function useSeedGeneration(): UseSeedGenerationReturn {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<AppError | null>(null);
 
-  const generateSeed = useCallback(async (config: DataGenerationConfig) => {
+  const generateSeed = useCallback(async (config: DataGenerationConfig): Promise<unknown> => {
     setIsGenerating(true);
     setError(null);
 

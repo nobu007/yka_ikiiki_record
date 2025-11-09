@@ -6,15 +6,11 @@
 # Error details
 
 ```
-Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-playwright/firefox-1482/firefox/firefox
-╔═════════════════════════════════════════════════════════════════════════╗
-║ Looks like Playwright Test or Playwright was just installed or updated. ║
-║ Please run the following command to download new browsers:              ║
-║                                                                         ║
-║     npx playwright install                                              ║
-║                                                                         ║
-║ <3 Playwright Team                                                      ║
-╚═════════════════════════════════════════════════════════════════════════╝
+Error: page.goto: Protocol error (Page.navigate): Invalid url: "/"
+Call log:
+  - navigating to "/", waiting until "load"
+
+    at /home/jinno/yka_ikiiki_record/playwright/data-flow.spec.ts:5:16
 ```
 
 # Test source
@@ -24,11 +20,11 @@ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-pla
    2 |
    3 | test.describe('イキイキレコード デモ - E2Eテスト', () => {
    4 |   test.beforeEach(async ({ page }) => {
-   5 |     await page.goto('/');
+>  5 |     await page.goto('/');
+     |                ^ Error: page.goto: Protocol error (Page.navigate): Invalid url: "/"
    6 |   });
    7 |
->  8 |   test('ランディングページからダッシュボードへの遷移', async ({ page }) => {
-     |       ^ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-playwright/firefox-1482/firefox/firefox
+   8 |   test('ランディングページからダッシュボードへの遷移', async ({ page }) => {
    9 |     // ランディングページの確認
    10 |     await expect(page.getByText('イキイキレコード デモ')).toBeVisible();
    11 |     await expect(page.getByRole('link', { name: '教師ダッシュボードを見る' })).toBeVisible();
@@ -126,7 +122,4 @@ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-pla
   103 |     
   104 |     // ページをリロード
   105 |     await page.reload();
-  106 |     await expect(page.getByText('ダッシュボード')).toBeVisible();
-  107 |     await expect(page.getByRole('button', { name: '初期データを生成' })).toBeVisible();
-  108 |   });
 ```

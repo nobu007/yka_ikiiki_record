@@ -49,9 +49,9 @@ export const calculateDayOfWeekStats = (emotions: EmotionData[]): DayOfWeekStats
 
 export const calculateTimeOfDayStats = (emotions: EmotionData[]): TimeOfDayStats => {
   const timeGroups = {
-    morning: emotions.filter(({ hour }) => hour >= TIME_RANGES.morning.start && hour < TIME_RANGES.morning.end),
-    afternoon: emotions.filter(({ hour }) => hour >= TIME_RANGES.afternoon.start && hour < TIME_RANGES.afternoon.end),
-    evening: emotions.filter(({ hour }) => hour >= TIME_RANGES.evening.start || hour < TIME_RANGES.morning.start)
+    morning: emotions.filter(({ hour }) => hour !== undefined && hour >= TIME_RANGES.morning.start && hour < TIME_RANGES.morning.end),
+    afternoon: emotions.filter(({ hour }) => hour !== undefined && hour >= TIME_RANGES.afternoon.start && hour < TIME_RANGES.afternoon.end),
+    evening: emotions.filter(({ hour }) => hour !== undefined && (hour >= TIME_RANGES.evening.start || hour < TIME_RANGES.morning.start))
   };
 
   return {
@@ -89,4 +89,30 @@ export const calculateTrendline = (emotions: number[]): number[] =>
 export const getRandomHour = (): number => {
   const totalHours = TIME_RANGES.evening.end - TIME_RANGES.morning.start;
   return Math.floor(Math.random() * totalHours) + TIME_RANGES.morning.start;
+};
+
+// Legacy export for backward compatibility
+export const calculateStats = {
+  calculateMonthlyStats,
+  calculateDayOfWeekStats,
+  calculateTimeOfDayStats,
+  calculateEmotionDistribution,
+  calculateStudentStats,
+  calculateTrendline
+};
+
+// Additional utility functions for emotion calculations
+export const calculateAverageEmotion = (emotions: number[]): number => 
+  calculateAverage(emotions);
+
+export const calculateEmotionTrend = (emotions: number[]): 'up' | 'down' | 'stable' => {
+  if (emotions.length < 2) return 'stable';
+  const recent = emotions.slice(-3);
+  const earlier = emotions.slice(-6, -3);
+  const recentAvg = calculateAverage(recent);
+  const earlierAvg = calculateAverage(earlier);
+  const diff = recentAvg - earlierAvg;
+  if (diff > 0.2) return 'up';
+  if (diff < -0.2) return 'down';
+  return 'stable';
 };

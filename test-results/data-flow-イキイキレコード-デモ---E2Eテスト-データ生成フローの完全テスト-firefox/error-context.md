@@ -6,15 +6,11 @@
 # Error details
 
 ```
-Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-playwright/firefox-1482/firefox/firefox
-╔═════════════════════════════════════════════════════════════════════════╗
-║ Looks like Playwright Test or Playwright was just installed or updated. ║
-║ Please run the following command to download new browsers:              ║
-║                                                                         ║
-║     npx playwright install                                              ║
-║                                                                         ║
-║ <3 Playwright Team                                                      ║
-╚═════════════════════════════════════════════════════════════════════════╝
+Error: page.goto: Protocol error (Page.navigate): Invalid url: "/"
+Call log:
+  - navigating to "/", waiting until "load"
+
+    at /home/jinno/yka_ikiiki_record/playwright/data-flow.spec.ts:5:16
 ```
 
 # Test source
@@ -24,7 +20,8 @@ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-pla
    2 |
    3 | test.describe('イキイキレコード デモ - E2Eテスト', () => {
    4 |   test.beforeEach(async ({ page }) => {
-   5 |     await page.goto('/');
+>  5 |     await page.goto('/');
+     |                ^ Error: page.goto: Protocol error (Page.navigate): Invalid url: "/"
    6 |   });
    7 |
    8 |   test('ランディングページからダッシュボードへの遷移', async ({ page }) => {
@@ -37,8 +34,7 @@ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-pla
    15 |     await expect(page).toHaveURL('/dashboard');
    16 |   });
    17 |
->  18 |   test('データ生成フローの完全テスト', async ({ page }) => {
-      |       ^ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-playwright/firefox-1482/firefox/firefox
+   18 |   test('データ生成フローの完全テスト', async ({ page }) => {
    19 |     // ダッシュボードに直接アクセス
    20 |     await page.goto('/dashboard');
    21 |     
@@ -126,17 +122,4 @@ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-pla
   103 |     
   104 |     // ページをリロード
   105 |     await page.reload();
-  106 |     await expect(page.getByText('ダッシュボード')).toBeVisible();
-  107 |     await expect(page.getByRole('button', { name: '初期データを生成' })).toBeVisible();
-  108 |   });
-  109 |
-  110 |   test('エラーハンドリングのシミュレーション', async ({ page }) => {
-  111 |     await page.goto('/dashboard');
-  112 |     
-  113 |     // ネットワークエラーをシミュレート
-  114 |     await page.route('**/api/seed', route => route.abort());
-  115 |     
-  116 |     // データ生成を試行
-  117 |     await page.getByRole('button', { name: '初期データを生成' }).click();
-  118 |     
 ```

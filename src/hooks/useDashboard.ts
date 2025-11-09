@@ -11,10 +11,14 @@ export function useDashboard() {
   const { generateSeed, isGenerating, error } = useSeedGeneration();
   const { notification, showSuccess, showError, clearNotification } = useNotification();
 
+  // Simplified effect with fewer dependencies
   useEffect(() => {
     if (isGenerating) {
       clearNotification();
-    } else if (error && !notification.show) {
+      return;
+    }
+    
+    if (error && !notification.show) {
       showError(getUserFriendlyMessage(error));
     }
   }, [isGenerating, error, notification.show, clearNotification, showError]);
@@ -27,6 +31,7 @@ export function useDashboard() {
     } catch (e) {
       const normalizedError = normalizeError(e);
       logError(normalizedError, 'useDashboard.handleInitialGeneration');
+      
       if (!notification.show) {
         showError(getUserFriendlyMessage(normalizedError));
       }

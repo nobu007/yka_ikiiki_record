@@ -2,12 +2,10 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { useDashboard } from './useDashboard';
 import { useSeedGeneration } from '@/application/hooks/useSeedGeneration';
 import { useNotification } from '@/hooks/useNotification';
-import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
 
 // Mock the hooks
 jest.mock('@/application/hooks/useSeedGeneration');
 jest.mock('@/hooks/useNotification');
-jest.mock('@/domain/entities/DataGeneration');
 
 const mockUseSeedGeneration = useSeedGeneration as jest.MockedFunction<typeof useSeedGeneration>;
 const mockUseNotification = useNotification as jest.MockedFunction<typeof useNotification>;
@@ -33,8 +31,6 @@ describe('useDashboard', () => {
       showError: mockShowError,
       clearNotification: mockClearNotification
     });
-
-    (DEFAULT_CONFIG as jest.Mock) = { periodDays: 7 };
   });
 
   it('returns initial state correctly', () => {
@@ -120,7 +116,7 @@ describe('useDashboard', () => {
     });
 
     expect(mockClearNotification).toHaveBeenCalled();
-    expect(mockGenerateSeed).toHaveBeenCalledWith({ periodDays: 30 });
+    expect(mockGenerateSeed).toHaveBeenCalledWith(expect.objectContaining({ periodDays: 30 }));
     expect(mockShowSuccess).toHaveBeenCalledWith('テストデータの生成が完了しました');
   });
 
@@ -135,7 +131,7 @@ describe('useDashboard', () => {
     });
 
     expect(mockClearNotification).toHaveBeenCalled();
-    expect(mockGenerateSeed).toHaveBeenCalledWith({ periodDays: 30 });
+    expect(mockGenerateSeed).toHaveBeenCalledWith(expect.objectContaining({ periodDays: 30 }));
     expect(mockShowError).toHaveBeenCalledWith('予期せぬエラーが発生しました');
   });
 

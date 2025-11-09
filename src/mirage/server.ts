@@ -1,5 +1,5 @@
 import { createServer, Factory, Model, Response } from 'miragejs';
-import { calculateStats } from '@/utils/statsCalculator';
+import { calculateMonthlyStats } from '@/utils/statsCalculator';
 
 type Record = {
   emotion: number;
@@ -88,7 +88,7 @@ export function makeServer({ environment = 'development' } = {}) {
             hour: new Date(record.date).getHours()
           }));
           
-          return calculateStats.calculateMonthlyStats(transformedRecords);
+          return calculateMonthlyStats(transformedRecords);
         } catch (error) {
           console.error('Stats Error:', error);
           return new Response(500, {}, { error: 'Failed to calculate stats' });

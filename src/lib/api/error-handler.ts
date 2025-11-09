@@ -17,24 +17,24 @@ const formatZodError = (error: z.ZodError): string => {
 };
 
 /**
- * APIエラーをハンドリングする
+ * Enhanced API error handler with better type safety
  */
 export function handleApiError(error: unknown): NextResponse {
-  const normalizedError = normalizeError(error);
-  logError(error, 'API');
-
-  // Zod検証エラーの処理
+  // Zod validation errors
   if (error instanceof z.ZodError) {
     const message = formatZodError(error);
     return createErrorResponse(`入力データの検証に失敗しました: ${message}`, 400);
   }
 
-  // JSONパースエラーの処理
+  // JSON parse errors
   if (error instanceof SyntaxError && 'body' in error) {
     return createErrorResponse('リクエストボディのJSON形式が正しくありません', 400);
   }
 
-  // アプリケーションエラーの処理
+  // Application errors
+  const normalizedError = normalizeError(error);
+  logError(error, 'API');
+
   return createErrorResponse(
     normalizedError.message,
     normalizedError.statusCode || 500

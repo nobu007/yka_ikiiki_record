@@ -1,8 +1,3 @@
-/**
- * Centralized error handling utilities
- */
-
-// Error codes with TypeScript enum-like behavior
 export const ERROR_CODES = {
   UNKNOWN: 'UNKNOWN_ERROR',
   VALIDATION: 'VALIDATION_ERROR',
@@ -15,7 +10,6 @@ export const ERROR_CODES = {
 
 type ErrorCodeType = typeof ERROR_CODES[keyof typeof ERROR_CODES];
 
-// User-friendly messages for each error type
 const USER_MESSAGES: Record<ErrorCodeType, string> = {
   [ERROR_CODES.UNKNOWN]: '予期せぬエラーが発生しました',
   [ERROR_CODES.VALIDATION]: '入力内容を確認してください',
@@ -26,9 +20,6 @@ const USER_MESSAGES: Record<ErrorCodeType, string> = {
   [ERROR_CODES.PERMISSION]: 'この操作を実行する権限がありません'
 };
 
-/**
- * Base application error class
- */
 export class AppError extends Error {
   constructor(
     message: string,
@@ -38,17 +29,12 @@ export class AppError extends Error {
   ) {
     super(message);
     this.name = 'AppError';
-    
-    // Maintains proper stack trace for where our error was thrown (only available on V8)
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, AppError);
     }
   }
 }
 
-/**
- * Validation error (400)
- */
 export class ValidationError extends AppError {
   constructor(message: string, details?: Record<string, any>) {
     super(message, ERROR_CODES.VALIDATION, 400, details);
@@ -56,9 +42,6 @@ export class ValidationError extends AppError {
   }
 }
 
-/**
- * Network error (0 for client-side, 500+ for server-side)
- */
 export class NetworkError extends AppError {
   constructor(message: string = 'ネットワークエラーが発生しました', statusCode: number = 0) {
     super(message, ERROR_CODES.NETWORK, statusCode);
@@ -66,9 +49,6 @@ export class NetworkError extends AppError {
   }
 }
 
-/**
- * Not found error (404)
- */
 export class NotFoundError extends AppError {
   constructor(message: string = '要求されたリソースが見つかりません') {
     super(message, ERROR_CODES.NOT_FOUND, 404);
@@ -76,9 +56,6 @@ export class NotFoundError extends AppError {
   }
 }
 
-/**
- * Timeout error (408)
- */
 export class TimeoutError extends AppError {
   constructor(message: string = 'リクエストがタイムアウトしました') {
     super(message, ERROR_CODES.TIMEOUT, 408);
@@ -86,20 +63,18 @@ export class TimeoutError extends AppError {
   }
 }
 
-/**
- * Normalizes any error into AppError format
- */
 export function normalizeError(error: unknown): AppError {
   if (error instanceof AppError) {
     return error;
   }
 
   if (error instanceof Error) {
-    // Handle common error types
-    if (error.name === 'TypeError' || error.message.includes('fetch')) {
+    if (error.name === 'TypeError' || 
+        error.message.includes('fetch') || 
+        error.message.includes('network') ||
+        error.message.includes('connection')) {
       return new NetworkError(error.message);
     }
-    
     return new AppError(error.message, ERROR_CODES.UNKNOWN, 500);
   }
 
@@ -110,17 +85,11 @@ export function normalizeError(error: unknown): AppError {
   return new AppError('予期せぬエラーが発生しました');
 }
 
-/**
- * Gets user-friendly message for an error
- */
 export function getUserFriendlyMessage(error: unknown): string {
   const normalized = normalizeError(error);
   return USER_MESSAGES[normalized.code] || normalized.message;
 }
 
-/**
- * Logs error with context information
- */
 export function logError(error: unknown, context?: string): void {
   const normalized = normalizeError(error);
   const contextStr = context ? `[${context}]` : '[APP]';
@@ -138,9 +107,6 @@ export function logError(error: unknown, context?: string): void {
   console.groupEnd();
 }
 
-/**
- * Type guards for error checking
- */
 export const errorTypeGuards = {
   isNetworkError: (error: unknown): boolean => {
     const normalized = normalizeError(error);

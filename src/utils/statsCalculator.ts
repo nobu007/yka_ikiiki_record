@@ -1,27 +1,21 @@
 import { MonthlyStats, DayOfWeekStats, TimeOfDayStats, StudentStats } from '@/domain/entities/Stats';
 
 const DAYS_OF_WEEK = ['日', '月', '火', '水', '木', '金', '土'] as const;
-const DECIMAL_PLACES = 1;
 const TIME_RANGES = { morning: { start: 5, end: 12 }, afternoon: { start: 12, end: 18 }, evening: { start: 18, end: 24 } } as const;
-const EMOTION_LEVELS = 5;
 
 type EmotionData = { date: Date; emotion: number; hour?: number; student?: number };
 
-/**
- * 統計計算に関するユーティリティ関数
- */
-
 export const calculateAverage = (values: number[]): number => 
-  values.length === 0 ? 0 : Number((values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(DECIMAL_PLACES));
+  values.length === 0 ? 0 : Number((values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(1));
 
 const groupBy = <T, K>(items: T[], keyFn: (item: T) => K): Map<K, T[]> => {
   const groups = new Map<K, T[]>();
-  items.forEach(item => {
+  for (const item of items) {
     const key = keyFn(item);
     const group = groups.get(key) || [];
     group.push(item);
     groups.set(key, group);
-  });
+  }
   return groups;
 };
 
@@ -62,11 +56,11 @@ export const calculateTimeOfDayStats = (emotions: EmotionData[]): TimeOfDayStats
 };
 
 export const calculateEmotionDistribution = (emotions: EmotionData[]): number[] => {
-  const distribution = new Array(EMOTION_LEVELS).fill(0);
-  emotions.forEach(({ emotion }) => {
-    const index = Math.min(Math.max(Math.floor(emotion) - 1, 0), EMOTION_LEVELS - 1);
+  const distribution = new Array(5).fill(0);
+  for (const { emotion } of emotions) {
+    const index = Math.min(Math.max(Math.floor(emotion) - 1, 0), 4);
     distribution[index]++;
-  });
+  }
   return distribution;
 };
 

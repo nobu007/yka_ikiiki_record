@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { handleApiError, withErrorHandler, parseRequestBody, createError } from './error-handler';
-import { AppError, NetworkError, ValidationError } from '@/lib/error-handler';
+import { AppError, NetworkError, ValidationError, logError } from '@/lib/error-handler';
 
-// Mock the logger
+// Mock the logError function
 jest.mock('@/lib/error-handler', () => ({
   ...jest.requireActual('@/lib/error-handler'),
   logError: jest.fn()
 }));
 
-const { logError } = require('@/lib/error-handler');
+const mockedLogError = logError as jest.MockedFunction<typeof logError>;
 
 describe('API Error Handler', () => {
   beforeEach(() => {
@@ -30,9 +30,9 @@ describe('API Error Handler', () => {
 
       const response = handleApiError(zodError);
       
-      // Check that response is created and error is logged
+      // Check that response is created (ZodError doesn't log to API)
       expect(response).toBeDefined();
-      expect(logError).toHaveBeenCalledWith(zodError, 'API');
+      expect(mockedLogError).not.toHaveBeenCalled();
     });
 
     test('handles JSON parse error correctly', () => {
@@ -41,8 +41,9 @@ describe('API Error Handler', () => {
 
       const response = handleApiError(syntaxError);
       
+      // Check that response is created (SyntaxError with body doesn't log to API)
       expect(response).toBeDefined();
-      expect(logError).toHaveBeenCalledWith(syntaxError, 'API');
+      expect(mockedLogError).not.toHaveBeenCalled();
     });
 
     test('handles AppError correctly', () => {
@@ -51,7 +52,7 @@ describe('API Error Handler', () => {
       const response = handleApiError(appError);
       
       expect(response).toBeDefined();
-      expect(logError).toHaveBeenCalledWith(appError, 'API');
+      expect(mockedLogError).toHaveBeenCalledWith(appError, 'API');
     });
 
     test('handles NetworkError correctly', () => {
@@ -60,7 +61,7 @@ describe('API Error Handler', () => {
       const response = handleApiError(networkError);
       
       expect(response).toBeDefined();
-      expect(logError).toHaveBeenCalledWith(networkError, 'API');
+      expect(mockedLogError).toHaveBeenCalledWith(networkError, 'API');
     });
 
     test('handles generic Error correctly', () => {
@@ -69,7 +70,7 @@ describe('API Error Handler', () => {
       const response = handleApiError(genericError);
       
       expect(response).toBeDefined();
-      expect(logError).toHaveBeenCalledWith(genericError, 'API');
+      expect(mockedLogError).toHaveBeenCalledWith(genericError, 'API');
     });
 
     test('handles string error correctly', () => {
@@ -78,7 +79,7 @@ describe('API Error Handler', () => {
       const response = handleApiError(stringError);
       
       expect(response).toBeDefined();
-      expect(logError).toHaveBeenCalledWith(stringError, 'API');
+      expect(mockedLogError).toHaveBeenCalledWith(stringError, 'API');
     });
 
     test('handles unknown error correctly', () => {
@@ -87,7 +88,7 @@ describe('API Error Handler', () => {
       const response = handleApiError(unknownError);
       
       expect(response).toBeDefined();
-      expect(logError).toHaveBeenCalledWith(unknownError, 'API');
+      expect(mockedLogError).toHaveBeenCalledWith(unknownError, 'API');
     });
   });
 
@@ -160,7 +161,7 @@ describe('API Error Handler', () => {
       
       expect(mockHandler).toHaveBeenCalled();
       expect(result).toBeDefined();
-      expect(logError).toHaveBeenCalledWith(new Error('Handler error'), 'API');
+      expect(mockedLogError).toHaveBeenCalledWith(new Error('Handler error'), 'API');
     });
   });
 

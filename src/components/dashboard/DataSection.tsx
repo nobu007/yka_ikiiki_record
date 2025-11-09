@@ -1,4 +1,3 @@
-import React from 'react';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 
 interface DataSectionProps {
@@ -19,10 +18,7 @@ const DATA_SECTION_CONFIG = {
   ]
 } as const;
 
-export const DataSection: React.FC<DataSectionProps> = React.memo(({ 
-  isGenerating, 
-  onGenerate 
-}) => (
+export const DataSection = ({ isGenerating, onGenerate }: DataSectionProps) => (
   <section className="bg-gray-50 rounded-lg p-6">
     <header className="mb-6">
       <h2 className="text-xl font-semibold text-gray-900 mb-3">
@@ -31,7 +27,6 @@ export const DataSection: React.FC<DataSectionProps> = React.memo(({
       <p className="text-gray-600 mb-4 leading-relaxed">
         {DATA_SECTION_CONFIG.description}
       </p>
-      
       <div className="bg-white rounded-md p-4 mb-6">
         <h3 className="text-sm font-medium text-gray-700 mb-3">生成されるデータ:</h3>
         <ul className="space-y-2">
@@ -97,6 +92,4 @@ export const DataSection: React.FC<DataSectionProps> = React.memo(({
       }
     </p>
   </section>
-));
-
-DataSection.displayName = 'DataSection';
+);

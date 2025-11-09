@@ -1,36 +1,16 @@
 'use client';
 
-import { useSeedGeneration } from '@/application/hooks/useSeedGeneration';
-import { useNotification } from '@/hooks/useNotification';
-import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
+import { useDashboard } from '@/hooks';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { LoadingSpinner, LoadingOverlay } from '@/components/common/LoadingSpinner';
 import { Notification } from '@/components/common/Notification';
-import { getUserFriendlyMessage } from '@/lib/error-handler';
 
 export default function DashboardPage() {
-  const { generateSeed, isGenerating, error } = useSeedGeneration();
-  const { notification, showSuccess, showError } = useNotification();
-
-  // エラーが発生した場合は通知を表示
-  if (error && !notification.show) {
-    showError(getUserFriendlyMessage(error));
-  }
-
-  // 初期データの生成
-  const handleInitialGeneration = async () => {
-    try {
-      // デフォルト設定で30日分のデータを生成
-      await generateSeed({
-        ...DEFAULT_CONFIG,
-        periodDays: 30
-      });
-      showSuccess('テストデータの生成が完了しました');
-    } catch (e) {
-      console.error('初期データ生成エラー:', e);
-      showError('データの生成に失敗しました');
-    }
-  };
+  const { 
+    isGenerating, 
+    notification, 
+    handleInitialGeneration 
+  } = useDashboard();
 
   return (
     <ErrorBoundary>

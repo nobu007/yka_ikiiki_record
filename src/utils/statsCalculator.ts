@@ -125,7 +125,7 @@ export function calculateStudentStats(
  * トレンドラインを計算（直近7件）
  */
 export function calculateTrendline(emotions: number[]): number[] {
-  return emotions.slice(-7).map(score => Number(score.toFixed(1)));
+  return emotions.slice(-7).map(score => Number((score || 0).toFixed(1)));
 }
 
 /**

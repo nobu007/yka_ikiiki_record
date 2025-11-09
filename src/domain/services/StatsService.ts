@@ -12,6 +12,13 @@ import {
   getRandomHour
 } from '@/utils/statsCalculator';
 
+interface EmotionData {
+  date: Date;
+  student: number;
+  emotion: number;
+  hour: number;
+}
+
 /**
  * 統計情報に関するサービスクラス
  */
@@ -41,16 +48,17 @@ export class StatsService {
    * 統計データを生成
    */
   private generateStatsData(config: DataGenerationConfig): Stats {
+    const allEmotions = this.generateEmotionData(config);
+    return this.calculateStats(allEmotions);
+  }
+
+  /**
+   * 感情データを生成
+   */
+  private generateEmotionData(config: DataGenerationConfig): EmotionData[] {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - config.periodDays);
-
-    // 全期間の感情データを生成
-    const allEmotions: Array<{
-      date: Date;
-      student: number;
-      emotion: number;
-      hour: number;
-    }> = [];
+    const allEmotions: EmotionData[] = [];
 
     // 各生徒、各日のデータを生成
     for (let studentIndex = 0; studentIndex < config.studentCount; studentIndex++) {
@@ -62,37 +70,35 @@ export class StatsService {
         const recordCount = Math.floor(Math.random() * 3) + 1;
 
         for (let i = 0; i < recordCount; i++) {
-          const hour = getRandomHour();
-          const emotion = this.emotionGenerator.generateEmotion(config, date, studentIndex);
-
           allEmotions.push({
             date,
             student: studentIndex,
-            emotion,
-            hour
+            emotion: this.emotionGenerator.generateEmotion(config, date, studentIndex),
+            hour: getRandomHour()
           });
         }
       }
     }
 
-    // 各種統計を計算
-    const monthlyStats = calculateMonthlyStats(allEmotions);
-    const dayOfWeekStats = calculateDayOfWeekStats(allEmotions);
-    const timeOfDayStats = calculateTimeOfDayStats(allEmotions);
-    const studentStats = calculateStudentStats(allEmotions);
-    const emotionDistribution = calculateEmotionDistribution(allEmotions);
-    const overview = {
-      count: allEmotions.length,
-      avgEmotion: calculateAverage(allEmotions.map(e => e.emotion))
-    };
+    return allEmotions;
+  }
 
+  /**
+   * 統計情報を計算
+   */
+  private calculateStats(allEmotions: EmotionData[]): Stats {
+    const emotions = allEmotions.map(e => e.emotion);
+    
     return {
-      overview,
-      monthlyStats,
-      studentStats,
-      dayOfWeekStats,
-      emotionDistribution,
-      timeOfDayStats
+      overview: {
+        count: allEmotions.length,
+        avgEmotion: calculateAverage(emotions)
+      },
+      monthlyStats: calculateMonthlyStats(allEmotions),
+      studentStats: calculateStudentStats(allEmotions),
+      dayOfWeekStats: calculateDayOfWeekStats(allEmotions),
+      emotionDistribution: calculateEmotionDistribution(allEmotions),
+      timeOfDayStats: calculateTimeOfDayStats(allEmotions)
     };
   }
 }

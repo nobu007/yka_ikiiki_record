@@ -1,27 +1,14 @@
 import { z } from 'zod';
 import { NextResponse } from 'next/server';
 import { createErrorResponse } from './response';
-
-export class AppError extends Error {
-  constructor(
-    message: string,
-    public statusCode: number = 500,
-    public code?: string
-  ) {
-    super(message);
-    this.name = 'AppError';
-  }
-}
+import { AppError, normalizeError, logError, ERROR_CODES } from '@/lib/error-handler';
 
 /**
  * APIエラーをハンドリングする
  */
 export function handleApiError(error: unknown): NextResponse {
-  console.error('API Error:', error);
-
-  if (error instanceof AppError) {
-    return createErrorResponse(error.message, error.statusCode);
-  }
+  const normalizedError = normalizeError(error);
+  logError(error, 'API');
 
   if (error instanceof z.ZodError) {
     const message = error.errors
@@ -30,29 +17,30 @@ export function handleApiError(error: unknown): NextResponse {
     return createErrorResponse(message, 400);
   }
 
-  if (error instanceof Error) {
-    return createErrorResponse(error.message);
-  }
-
-  return createErrorResponse('予期せぬエラーが発生しました');
+  return createErrorResponse(
+    normalizedError.message,
+    normalizedError.statusCode || 500
+  );
 }
 
 /**
  * 特定のエラーを生成する
  */
 export const createError = {
-  badRequest: (message: string) => new AppError(message, 400),
-  unauthorized: (message: string) => new AppError(message, 401),
-  forbidden: (message: string) => new AppError(message, 403),
-  notFound: (message: string) => new AppError(message, 404),
-  internal: (message: string) => new AppError(message, 500)
+  badRequest: (message: string) => new AppError(message, 400, ERROR_CODES.VALIDATION),
+  unauthorized: (message: string = '認証が必要です') => new AppError(message, 401),
+  forbidden: (message: string = 'アクセスが拒否されました') => new AppError(message, 403),
+  notFound: (message: string = 'リソースが見つかりません') => new AppError(message, 404),
+  internal: (message: string = 'サーバーエラーが発生しました') => new AppError(message, 500, ERROR_CODES.UNKNOWN),
+  timeout: (message: string = 'リクエストがタイムアウトしました') => new AppError(message, 408, ERROR_CODES.TIMEOUT),
+  generation: (message: string = 'データ生成に失敗しました') => new AppError(message, 500, ERROR_CODES.GENERATION)
 };
 
 /**
  * APIハンドラーをエラーハンドリングで包む
  */
-export function withErrorHandler(
-  handler: () => Promise<NextResponse>
-): Promise<NextResponse> {
-  return handler().catch(handleApiError);
+export function withErrorHandler<T extends Promise<NextResponse>>(
+  handler: () => T
+): T {
+  return handler().catch(handleApiError) as T;
 }

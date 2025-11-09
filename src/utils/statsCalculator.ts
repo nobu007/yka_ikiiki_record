@@ -1,5 +1,10 @@
 import { MonthlyStats, DayOfWeekStats, TimeOfDayStats, StudentStats } from '@/domain/entities/Stats';
 
+// 定数を抽出してコードを簡潔に
+const DAYS_OF_WEEK = ['日', '月', '火', '水', '木', '金', '土'] as const;
+const DECIMAL_PLACES = 1;
+const EMPTY_ARRAY: number[] = [];
+
 /**
  * 統計計算に関するユーティリティ関数
  */
@@ -9,7 +14,8 @@ import { MonthlyStats, DayOfWeekStats, TimeOfDayStats, StudentStats } from '@/do
  */
 export const calculateAverage = (values: number[]): number => {
   if (values.length === 0) return 0;
-  return Number((values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(1));
+  const sum = values.reduce((total, value) => total + value, 0);
+  return Number((sum / values.length).toFixed(DECIMAL_PLACES));
 };
 
 /**
@@ -38,22 +44,31 @@ export function calculateMonthlyStats(emotions: Array<{date: Date; emotion: numb
  * 曜日別統計を計算
  */
 export function calculateDayOfWeekStats(emotions: Array<{date: Date; emotion: number}>): DayOfWeekStats[] {
-  const days = ['日', '月', '火', '水', '木', '金', '土'];
   const dayData = new Map<string, number[]>();
 
   emotions.forEach(({ date, emotion }) => {
-    const day = days[date.getDay()];
-    const dayEmotions = dayData.get(day) || [];
+    const day = DAYS_OF_WEEK[date.getDay()];
+    const dayEmotions = dayData.get(day) || EMPTY_ARRAY.slice();
     dayEmotions.push(emotion);
     dayData.set(day, dayEmotions);
   });
 
-  return days.map(day => ({
-    day,
-    avgEmotion: calculateAverage(dayData.get(day) || []),
-    count: (dayData.get(day) || []).length
-  }));
+  return DAYS_OF_WEEK.map(day => {
+    const emotionsForDay = dayData.get(day) || EMPTY_ARRAY;
+    return {
+      day,
+      avgEmotion: calculateAverage(emotionsForDay),
+      count: emotionsForDay.length
+    };
+  });
 }
+
+// 時間帯の定数を抽出
+const TIME_RANGES = {
+  morning: { start: 5, end: 12 },
+  afternoon: { start: 12, end: 18 },
+  evening: { start: 18, end: 24 }
+} as const;
 
 /**
  * 時間帯別統計を計算
@@ -68,9 +83,9 @@ export function calculateTimeOfDayStats(
   };
 
   emotions.forEach(({ emotion, hour }) => {
-    if (hour >= 5 && hour < 12) {
+    if (hour >= TIME_RANGES.morning.start && hour < TIME_RANGES.morning.end) {
       timeRanges.morning.push(emotion);
-    } else if (hour >= 12 && hour < 18) {
+    } else if (hour >= TIME_RANGES.afternoon.start && hour < TIME_RANGES.afternoon.end) {
       timeRanges.afternoon.push(emotion);
     } else {
       timeRanges.evening.push(emotion);
@@ -84,15 +99,24 @@ export function calculateTimeOfDayStats(
   };
 }
 
+// 感情分布の定数
+const EMOTION_RANGES = {
+  MIN: 1,
+  MAX: 5,
+  LEVELS: 5
+} as const;
+
 /**
  * 感情値の分布を計算（1-5の範囲を5段階に分類）
  */
 export function calculateEmotionDistribution(emotions: Array<{emotion: number}>): number[] {
-  const distribution = new Array(5).fill(0);
+  const distribution = new Array(EMOTION_RANGES.LEVELS).fill(0);
 
   emotions.forEach(({ emotion }) => {
-    const index = Math.min(Math.floor(emotion) - 1, 4);
-    distribution[index]++;
+    const index = Math.min(Math.floor(emotion) - EMOTION_RANGES.MIN, EMOTION_RANGES.LEVELS - 1);
+    if (index >= 0 && index < EMOTION_RANGES.LEVELS) {
+      distribution[index]++;
+    }
   });
 
   return distribution;
@@ -132,7 +156,9 @@ export function calculateTrendline(emotions: number[]): number[] {
  * ランダムな時刻を生成（5-23時）
  */
 export function getRandomHour(): number {
-  return Math.floor(Math.random() * 19) + 5; // 5-23時
+  const { start: minHour, end: maxHour } = TIME_RANGES.morning;
+  const totalHours = TIME_RANGES.evening.end - minHour;
+  return Math.floor(Math.random() * totalHours) + minHour;
 }
 
 // Export a comprehensive calculate function for external use

@@ -91,20 +91,6 @@ export const getRandomHour = (): number => {
   return Math.floor(Math.random() * totalHours) + TIME_RANGES.morning.start;
 };
 
-// Legacy export for backward compatibility
-export const calculateStats = {
-  calculateMonthlyStats,
-  calculateDayOfWeekStats,
-  calculateTimeOfDayStats,
-  calculateEmotionDistribution,
-  calculateStudentStats,
-  calculateTrendline
-};
-
-// Additional utility functions for emotion calculations
-export const calculateAverageEmotion = (emotions: number[]): number => 
-  calculateAverage(emotions);
-
 export const calculateEmotionTrend = (emotions: number[]): 'up' | 'down' | 'stable' => {
   if (emotions.length < 2) return 'stable';
   const recent = emotions.slice(-3);

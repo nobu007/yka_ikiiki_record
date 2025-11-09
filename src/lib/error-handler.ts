@@ -164,7 +164,3 @@ export const errorTypeGuards = {
     return normalized.statusCode >= 500;
   }
 } as const;
-
-// Export individual type guards for backward compatibility
-export const isNetworkError = errorTypeGuards.isNetworkError;
-export const isValidationError = errorTypeGuards.isValidationError;

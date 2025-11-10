@@ -1,24 +1,16 @@
-// Consolidated application hooks
+// Simplified application hooks
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { APP_CONFIG, MESSAGES } from '@/lib/config';
 import { AppError, normalizeError, getUserFriendlyMessage, logError } from '@/lib/error-handler';
 
-// Notification state
 interface NotificationState {
   show: boolean;
   message: string;
   type: 'success' | 'error' | 'warning' | 'info';
 }
 
-// API state
-interface ApiState<T = any> {
-  data: T | null;
-  loading: boolean;
-  error: AppError | null;
-}
-
-// Simplified notification hook
+// Simple notification hook
 export function useNotification() {
   const [notification, setNotification] = useState<NotificationState>({
     show: false,
@@ -30,38 +22,41 @@ export function useNotification() {
     setNotification({ show: true, message, type });
   }, []);
 
-  const showSuccess = useCallback((message: string) => {
-    setNotification({ show: true, message, type: 'success' });
+  const clearNotification = useCallback(() => {
+    setNotification(prev => ({ ...prev, show: false }));
   }, []);
 
-  const showError = useCallback((message: string) => {
-    setNotification({ show: true, message, type: 'error' });
+  return { notification, showNotification, clearNotification };
+}
+
+// Simplified dashboard hook
+export function useDashboard() {
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [notification, setNotification] = useState<NotificationState>({
+    show: false,
+    message: '',
+    type: 'info'
+  });
+
+  const showNotification = useCallback((message: string, type: NotificationState['type'] = 'info') => {
+    setNotification({ show: true, message, type });
   }, []);
 
   const clearNotification = useCallback(() => {
     setNotification(prev => ({ ...prev, show: false }));
   }, []);
 
-  return {
-    notification,
-    showSuccess,
-    showError,
-    clearNotification
-  };
-}
-
-// Simplified data generation hook
-export function useDataGeneration() {
-  const [state, setState] = useState<ApiState>({
-    data: null,
-    loading: false,
-    error: null
-  });
-
-  const generate = useCallback(async (config: any): Promise<void> => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
-
+  const handleGenerate = useCallback(async () => {
     try {
+      setIsGenerating(true);
+      clearNotification();
+
+      const config = {
+        periodDays: APP_CONFIG.generation.defaultPeriodDays,
+        studentCount: APP_CONFIG.generation.defaultStudentCount,
+        distributionPattern: APP_CONFIG.generation.defaultPattern
+      };
+
       const response = await fetch(`${APP_CONFIG.api.baseUrl}${APP_CONFIG.api.endpoints.seed}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -77,63 +72,15 @@ export function useDataGeneration() {
         throw new Error(data.error || MESSAGES.error.generation);
       }
 
-      setState({ data, loading: false, error: null });
-    } catch (e) {
-      const error = normalizeError(e);
-      logError(error, 'useDataGeneration.generate');
-      setState(prev => ({ ...prev, loading: false, error }));
-      throw error;
+      showNotification(MESSAGES.success.dataGeneration, 'success');
+    } catch (error) {
+      const appError = normalizeError(error);
+      logError(appError, 'useDashboard.handleGenerate');
+      showNotification(getUserFriendlyMessage(appError), 'error');
+    } finally {
+      setIsGenerating(false);
     }
-  }, []);
-
-  const reset = useCallback(() => {
-    setState({ data: null, loading: false, error: null });
-  }, []);
-
-  return {
-    ...state,
-    generate,
-    reset,
-    isGenerating: state.loading
-  };
-}
-
-// Simplified dashboard hook
-export function useDashboard() {
-  const { generate, isGenerating, error } = useDataGeneration();
-  const { notification, showSuccess, showError, clearNotification } = useNotification();
-
-  // Handle error display
-  useEffect(() => {
-    if (error && !isGenerating && !notification.show) {
-      showError(getUserFriendlyMessage(error));
-    }
-  }, [error, isGenerating, notification.show, showError]);
-
-  // Clear notification when generating
-  useEffect(() => {
-    if (isGenerating) {
-      clearNotification();
-    }
-  }, [isGenerating, clearNotification]);
-
-  const handleGenerate = useCallback(async () => {
-    try {
-      clearNotification();
-      const config = {
-        periodDays: APP_CONFIG.generation.defaultPeriodDays,
-        studentCount: APP_CONFIG.generation.defaultStudentCount,
-        distributionPattern: APP_CONFIG.generation.defaultPattern
-      };
-      
-      await generate(config);
-      showSuccess(MESSAGES.success.dataGeneration);
-    } catch (e) {
-      const error = normalizeError(e);
-      logError(error, 'useDashboard.handleGenerate');
-      showError(getUserFriendlyMessage(error));
-    }
-  }, [generate, showSuccess, showError, clearNotification]);
+  }, [clearNotification, showNotification]);
 
   return {
     isGenerating,

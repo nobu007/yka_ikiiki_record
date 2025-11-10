@@ -1,4 +1,4 @@
-// Simplified API route for seed data generation
+// Optimized API route for seed data generation
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -6,7 +6,7 @@ import { AppError, normalizeError, logError } from '@/lib/error-handler';
 import { dataService, DataGenerationConfig } from '@/infrastructure/services/dataService';
 import { APP_CONFIG } from '@/lib/config';
 
-// Simple validation schema
+// Validation schema
 const SeedRequestSchema = z.object({
   config: z.object({
     periodDays: z.number().min(1).max(365).default(APP_CONFIG.generation.defaultPeriodDays),
@@ -25,8 +25,22 @@ const SeedRequestSchema = z.object({
   })
 });
 
-// Simple in-memory storage (in production, use a proper database)
-let storedStats: any = null;
+// Improved in-memory storage with metadata
+interface StoredData {
+  data: any;
+  timestamp: number;
+  config: DataGenerationConfig;
+}
+
+let storedData: StoredData | null = null;
+const DATA_TTL = 30 * 60 * 1000; // 30 minutes
+
+// Clean up old data
+const cleanupOldData = () => {
+  if (storedData && Date.now() - storedData.timestamp > DATA_TTL) {
+    storedData = null;
+  }
+};
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
@@ -34,12 +48,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const { config } = SeedRequestSchema.parse(body);
     
     const stats = dataService.generateStats(config as DataGenerationConfig);
-    storedStats = stats;
+    storedData = {
+      data: stats,
+      timestamp: Date.now(),
+      config: config as DataGenerationConfig
+    };
 
     return NextResponse.json({
       success: true,
       message: 'テストデータの生成が完了しました',
-      data: stats
+      data: stats,
+      metadata: {
+        timestamp: storedData.timestamp,
+        config: storedData.config
+      }
     });
   } catch (error) {
     const appError = normalizeError(error);
@@ -57,7 +79,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 export async function GET(): Promise<NextResponse> {
   try {
-    if (!storedStats) {
+    cleanupOldData();
+    
+    if (!storedData) {
       return NextResponse.json(
         { 
           success: false, 
@@ -69,7 +93,12 @@ export async function GET(): Promise<NextResponse> {
 
     return NextResponse.json({
       success: true,
-      data: storedStats
+      data: storedData.data,
+      metadata: {
+        timestamp: storedData.timestamp,
+        age: Date.now() - storedData.timestamp,
+        config: storedData.config
+      }
     });
   } catch (error) {
     const appError = normalizeError(error);

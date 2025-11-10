@@ -4,7 +4,7 @@ import {
   calculateSeasonalEffect,
   calculateEventEffect,
   clampEmotion
-} from '@/lib/utils';
+} from '@/utils/statsCalculator';
 
 /**
  * 感情値を生成する関数

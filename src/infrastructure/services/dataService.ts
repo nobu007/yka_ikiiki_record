@@ -12,7 +12,7 @@ import {
   calculateDayOfWeekStats,
   calculateEmotionDistribution,
   calculateTimeOfDayStats
-} from '@/lib/utils';
+} from '@/utils/statsCalculator';
 import { APP_CONFIG } from '@/lib/config';
 
 export interface DataGenerationConfig {

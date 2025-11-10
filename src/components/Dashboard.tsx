@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { APP_CONFIG, MESSAGES } from '@/lib/config';
 import { Button, LoadingSpinner, CheckIcon, PlusIcon, Notification } from './ui';
 import { UsageInstructions } from './common/UsageInstructions';
@@ -16,7 +16,7 @@ interface DashboardProps {
   onNotificationClose?: () => void;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({
+const DashboardComponent: React.FC<DashboardProps> = ({
   isGenerating,
   onGenerate,
   notification,
@@ -25,31 +25,30 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [stats, setStats] = useState<GeneratedStats | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const helpText = isGenerating 
-    ? MESSAGES.ui.dashboard.helpTextGenerating
-    : MESSAGES.ui.dashboard.helpTextReady;
+  // Memoize help text to prevent unnecessary re-renders
+  const helpText = useMemo(() => 
+    isGenerating 
+      ? MESSAGES.ui.dashboard.helpTextGenerating
+      : MESSAGES.ui.dashboard.helpTextReady,
+    [isGenerating]
+  );
 
-  // Consolidated data fetching function
+  // Optimized data fetching function
   const fetchStats = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await fetch('/api/seed');
       
-      if (!response) {
-        throw new Error('No response received from server');
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success) {
-          setStats(result.data);
-        }
-      } else {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      const result = await response.json();
+      if (result.success) {
+        setStats(result.data);
       }
     } catch (error) {
       console.error('Failed to fetch data:', error);
-      // Don't set stats on error to maintain previous state
     } finally {
       setIsLoading(false);
     }
@@ -66,6 +65,17 @@ export const Dashboard: React.FC<DashboardProps> = ({
       fetchStats();
     }
   }, [notification.show, notification.type, fetchStats]);
+
+  // Memoize features list to prevent unnecessary re-renders
+  const featuresList = useMemo(() => 
+    MESSAGES.ui.features.generatedData.map((feature, index) => (
+      <li key={index} className="flex items-center text-sm text-gray-600">
+        <CheckIcon />
+        {feature}
+      </li>
+    )),
+    []
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -104,12 +114,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     生成されるデータ
                   </h3>
                   <ul className="space-y-2">
-                    {MESSAGES.ui.features.generatedData.map((feature, index) => (
-                      <li key={index} className="flex items-center text-sm text-gray-600">
-                        <CheckIcon />
-                        {feature}
-                      </li>
-                    ))}
+                    {featuresList}
                   </ul>
                 </div>
               </header>
@@ -165,3 +170,5 @@ export const Dashboard: React.FC<DashboardProps> = ({
     </div>
   );
 };
+
+export const Dashboard = React.memo(DashboardComponent);

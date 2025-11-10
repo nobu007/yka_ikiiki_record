@@ -10,7 +10,7 @@ import {
   calculateStudentStats,
   calculateAverage,
   getRandomHour
-} from '@/utils/statsCalculator';
+} from '@/lib/utils';
 
 type EmotionData = { date: Date; student: number; emotion: number; hour: number };
 

@@ -3,8 +3,8 @@ import {
   generateBaseEmotion,
   calculateSeasonalEffect,
   calculateEventEffect,
-  clampEmotionValue
-} from '@/utils/emotionCalculator';
+  clampEmotion
+} from '@/lib/utils';
 
 /**
  * 感情値を生成する関数
@@ -30,5 +30,5 @@ export const generateEmotion = (
   // イベントの影響を反映
   emotion += calculateEventEffect(date, eventEffects);
   
-  return clampEmotionValue(emotion);
+  return clampEmotion(emotion);
 };

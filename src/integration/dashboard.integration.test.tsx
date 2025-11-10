@@ -3,7 +3,7 @@
  * Tests the interaction between components, hooks, and API
  */
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import DashboardPage from '@/app/(dashboard)/dashboard/page';
 import * as hooks from '@/hooks/useApp';
 
@@ -72,9 +72,11 @@ describe('Dashboard Integration Tests', () => {
         </Wrapper>
       );
 
-      // Click generate button
-      const generateButton = screen.getByText('初期データを生成');
-      fireEvent.click(generateButton);
+      // Click generate button within act
+      await act(async () => {
+        const generateButton = screen.getByText('初期データを生成');
+        fireEvent.click(generateButton);
+      });
 
       // Verify handler was called
       expect(mockHandleInitialGeneration).toHaveBeenCalledTimes(1);

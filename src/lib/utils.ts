@@ -9,6 +9,9 @@ export const clamp = (value: number, min: number, max: number): number =>
 export const average = (values: number[]): number => 
   values.length === 0 ? 0 : Number((values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(1));
 
+// Alias for backward compatibility
+export const calculateAverage = average;
+
 // Normal distribution generator (Box-Muller transform)
 export const generateNormalRandom = (): number => {
   const u1 = Math.random();

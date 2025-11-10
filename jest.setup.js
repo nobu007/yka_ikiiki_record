@@ -10,6 +10,10 @@ beforeAll(() => {
       // Suppress detailed error logs from our error handler during tests
       return;
     }
+    // Suppress React act() warnings in tests since they're expected in our current test setup
+    if (typeof message === 'string' && message.includes('Warning: An update to')) {
+      return;
+    }
     originalError.call(console, ...args);
   };
 });
@@ -38,3 +42,18 @@ jest.mock('next/server', () => ({
     }))
   }
 }));
+
+// Mock fetch API with proper default responses
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    ok: true,
+    status: 200,
+    statusText: 'OK',
+    json: () => Promise.resolve({ success: true, data: null })
+  })
+);
+
+// Reset fetch mocks before each test
+beforeEach(() => {
+  fetch.mockClear();
+});

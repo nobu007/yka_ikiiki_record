@@ -18,7 +18,7 @@ interface ApiState<T = any> {
   error: AppError | null;
 }
 
-// Notification hook
+// Simplified notification hook
 export function useNotification() {
   const [notification, setNotification] = useState<NotificationState>({
     show: false,
@@ -31,12 +31,12 @@ export function useNotification() {
   }, []);
 
   const showSuccess = useCallback((message: string) => {
-    showNotification(message, 'success');
-  }, [showNotification]);
+    setNotification({ show: true, message, type: 'success' });
+  }, []);
 
   const showError = useCallback((message: string) => {
-    showNotification(message, 'error');
-  }, [showNotification]);
+    setNotification({ show: true, message, type: 'error' });
+  }, []);
 
   const clearNotification = useCallback(() => {
     setNotification(prev => ({ ...prev, show: false }));
@@ -50,7 +50,7 @@ export function useNotification() {
   };
 }
 
-// API hook for data generation
+// Simplified data generation hook
 export function useDataGeneration() {
   const [state, setState] = useState<ApiState>({
     data: null,
@@ -98,21 +98,24 @@ export function useDataGeneration() {
   };
 }
 
-// Combined dashboard hook
+// Simplified dashboard hook
 export function useDashboard() {
   const { generate, isGenerating, error } = useDataGeneration();
   const { notification, showSuccess, showError, clearNotification } = useNotification();
 
+  // Handle error display
+  useEffect(() => {
+    if (error && !isGenerating && !notification.show) {
+      showError(getUserFriendlyMessage(error));
+    }
+  }, [error, isGenerating, notification.show, showError]);
+
+  // Clear notification when generating
   useEffect(() => {
     if (isGenerating) {
       clearNotification();
-      return;
     }
-    
-    if (error && !notification.show) {
-      showError(getUserFriendlyMessage(error));
-    }
-  }, [isGenerating, error, notification.show, showError, clearNotification]);
+  }, [isGenerating, clearNotification]);
 
   const handleGenerate = useCallback(async () => {
     try {
@@ -128,12 +131,9 @@ export function useDashboard() {
     } catch (e) {
       const error = normalizeError(e);
       logError(error, 'useDashboard.handleGenerate');
-      
-      if (!notification.show) {
-        showError(getUserFriendlyMessage(error));
-      }
+      showError(getUserFriendlyMessage(error));
     }
-  }, [generate, showSuccess, showError, clearNotification, notification.show]);
+  }, [generate, showSuccess, showError, clearNotification]);
 
   return {
     isGenerating,

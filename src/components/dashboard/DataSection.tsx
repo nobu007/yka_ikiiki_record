@@ -9,51 +9,8 @@ interface DataSectionProps {
   onGenerate: () => void;
 }
 
-const FeatureList = () => (
-  <div className="bg-white rounded-md p-4 mb-6">
-    <h3 className="text-sm font-medium text-gray-700 mb-3">{UI_TEXT.FEATURES.GENERATED_DATA}</h3>
-    <ul className="space-y-2">
-      {DATA_GENERATION_FEATURES.map((feature) => (
-        <li key={feature} className="flex items-center text-sm text-gray-600">
-          <CheckIcon />
-          {feature}
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
-interface GenerateButtonProps {
-  isGenerating: boolean;
-  onClick: () => void;
-}
-
-const GenerateButton = ({ isGenerating, onClick }: GenerateButtonProps) => {
-  const buttonClasses = getButtonClasses('primary', isGenerating);
-
-  return (
-    <button 
-      onClick={onClick} 
-      disabled={isGenerating} 
-      className={buttonClasses}
-      aria-describedby="generate-help"
-    >
-      {isGenerating ? (
-        <>
-          <LoadingSpinner size="sm" color="white" className="mr-2" />
-          {UI_TEXT.DASHBOARD.GENERATING_BUTTON}
-        </>
-      ) : (
-        <>
-          <PlusIcon />
-          {UI_TEXT.DASHBOARD.GENERATE_BUTTON}
-        </>
-      )}
-    </button>
-  );
-};
-
 export const DataSection = React.memo(({ isGenerating, onGenerate }: DataSectionProps) => {
+  const buttonClasses = getButtonClasses('primary', isGenerating);
   const helpText = isGenerating 
     ? UI_TEXT.DASHBOARD.HELP_TEXT_GENERATING
     : UI_TEXT.DASHBOARD.HELP_TEXT_READY;
@@ -67,11 +24,39 @@ export const DataSection = React.memo(({ isGenerating, onGenerate }: DataSection
         <p className="text-gray-600 mb-4 leading-relaxed">
           {UI_TEXT.DASHBOARD.DATA_GENERATION_DESCRIPTION}
         </p>
-        <FeatureList />
+        
+        <div className="bg-white rounded-md p-4 mb-6">
+          <h3 className="text-sm font-medium text-gray-700 mb-3">{UI_TEXT.FEATURES.GENERATED_DATA}</h3>
+          <ul className="space-y-2">
+            {DATA_GENERATION_FEATURES.map((feature) => (
+              <li key={feature} className="flex items-center text-sm text-gray-600">
+                <CheckIcon />
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
       </header>
       
       <div className="flex items-center justify-center">
-        <GenerateButton isGenerating={isGenerating} onClick={onGenerate} />
+        <button 
+          onClick={onGenerate} 
+          disabled={isGenerating} 
+          className={buttonClasses}
+          aria-describedby="generate-help"
+        >
+          {isGenerating ? (
+            <>
+              <LoadingSpinner size="sm" color="white" className="mr-2" />
+              {UI_TEXT.DASHBOARD.GENERATING_BUTTON}
+            </>
+          ) : (
+            <>
+              <PlusIcon />
+              {UI_TEXT.DASHBOARD.GENERATE_BUTTON}
+            </>
+          )}
+        </button>
       </div>
       
       <p id="generate-help" className="mt-4 text-sm text-gray-500 text-center">
@@ -80,4 +65,5 @@ export const DataSection = React.memo(({ isGenerating, onGenerate }: DataSection
     </section>
   );
 });
+
 DataSection.displayName = 'DataSection';

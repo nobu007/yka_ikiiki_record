@@ -1,27 +1,53 @@
 import { MonthlyStats, DayOfWeekStats, TimeOfDayStats, StudentStats } from '@/domain/entities/Stats';
 
 const DAYS_OF_WEEK = ['日', '月', '火', '水', '木', '金', '土'] as const;
-const TIME_RANGES = { morning: { start: 5, end: 12 }, afternoon: { start: 12, end: 18 }, evening: { start: 18, end: 24 } } as const;
+const TIME_RANGES = { 
+  morning: { start: 5, end: 12 }, 
+  afternoon: { start: 12, end: 18 }, 
+  evening: { start: 18, end: 24 } 
+} as const;
 
 type EmotionData = { date: Date; emotion: number; hour?: number; student?: number };
 
 export const calculateAverage = (values: number[]): number => 
   values.length === 0 ? 0 : Number((values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(1));
 
-export const calculateMonthlyStats = (emotions: EmotionData[]): MonthlyStats[] => {
-  const monthlyGroups = new Map<string, EmotionData[]>();
+const groupByMonth = (emotions: EmotionData[]): Map<string, number[]> => {
+  const groups = new Map<string, number[]>();
   
   emotions.forEach(({ date, emotion }) => {
     const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-    const group = monthlyGroups.get(key) || [];
-    group.push({ date, emotion });
-    monthlyGroups.set(key, group);
+    const values = groups.get(key) || [];
+    values.push(emotion);
+    groups.set(key, values);
   });
+  
+  return groups;
+};
+
+const groupByStudent = (emotions: EmotionData[]): Map<number, number[]> => {
+  const groups = new Map<number, number[]>();
+  
+  emotions.forEach(({ emotion, student }) => {
+    const key = student ?? 0;
+    const values = groups.get(key) || [];
+    values.push(emotion);
+    groups.set(key, values);
+  });
+  
+  return groups;
+};
+
+const filterByTimeRange = (emotions: EmotionData[], start: number, end: number): EmotionData[] =>
+  emotions.filter(({ hour }) => hour !== undefined && hour >= start && hour < end);
+
+export const calculateMonthlyStats = (emotions: EmotionData[]): MonthlyStats[] => {
+  const monthlyGroups = groupByMonth(emotions);
   
   return Array.from(monthlyGroups.entries())
     .map(([month, monthEmotions]) => ({
       month,
-      avgEmotion: calculateAverage(monthEmotions.map(e => e.emotion)),
+      avgEmotion: calculateAverage(monthEmotions),
       count: monthEmotions.length
     }))
     .sort((a, b) => a.month.localeCompare(b.month));
@@ -38,16 +64,17 @@ export const calculateDayOfWeekStats = (emotions: EmotionData[]): DayOfWeekStats
   });
 
 export const calculateTimeOfDayStats = (emotions: EmotionData[]): TimeOfDayStats => {
-  const timeGroups = {
-    morning: emotions.filter(({ hour }) => hour !== undefined && hour >= TIME_RANGES.morning.start && hour < TIME_RANGES.morning.end),
-    afternoon: emotions.filter(({ hour }) => hour !== undefined && hour >= TIME_RANGES.afternoon.start && hour < TIME_RANGES.afternoon.end),
-    evening: emotions.filter(({ hour }) => hour !== undefined && (hour >= TIME_RANGES.evening.start || hour < TIME_RANGES.morning.start))
-  };
+  const morningEmotions = filterByTimeRange(emotions, TIME_RANGES.morning.start, TIME_RANGES.morning.end);
+  const afternoonEmotions = filterByTimeRange(emotions, TIME_RANGES.afternoon.start, TIME_RANGES.afternoon.end);
+  const eveningEmotions = [
+    ...filterByTimeRange(emotions, TIME_RANGES.evening.start, TIME_RANGES.evening.end),
+    ...filterByTimeRange(emotions, 0, TIME_RANGES.morning.start)
+  ];
 
   return {
-    morning: calculateAverage(timeGroups.morning.map(e => e.emotion)),
-    afternoon: calculateAverage(timeGroups.afternoon.map(e => e.emotion)),
-    evening: calculateAverage(timeGroups.evening.map(e => e.emotion))
+    morning: calculateAverage(morningEmotions.map(e => e.emotion)),
+    afternoon: calculateAverage(afternoonEmotions.map(e => e.emotion)),
+    evening: calculateAverage(eveningEmotions.map(e => e.emotion))
   };
 };
 
@@ -61,21 +88,14 @@ export const calculateEmotionDistribution = (emotions: EmotionData[]): number[] 
 };
 
 export const calculateStudentStats = (emotions: EmotionData[]): StudentStats[] => {
-  const studentGroups = new Map<number, EmotionData[]>();
-  
-  emotions.forEach(({ emotion, student }) => {
-    const key = student ?? 0;
-    const group = studentGroups.get(key) || [];
-    group.push({ emotion, student: key });
-    studentGroups.set(key, group);
-  });
+  const studentGroups = groupByStudent(emotions);
   
   return Array.from(studentGroups.entries())
     .map(([student, studentEmotions]) => ({
       student: `学生${student + 1}`,
       recordCount: studentEmotions.length,
-      avgEmotion: calculateAverage(studentEmotions.map(e => e.emotion)),
-      trendline: calculateTrendline(studentEmotions.map(e => e.emotion))
+      avgEmotion: calculateAverage(studentEmotions),
+      trendline: calculateTrendline(studentEmotions)
     }))
     .sort((a, b) => a.student.localeCompare(b.student));
 };

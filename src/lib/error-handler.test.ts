@@ -2,8 +2,6 @@ import {
   AppError,
   ValidationError,
   NetworkError,
-  NotFoundError,
-  TimeoutError,
   normalizeError,
   getUserFriendlyMessage,
   logError,
@@ -55,27 +53,6 @@ describe('error-handler', () => {
       expect(error.name).toBe('NetworkError');
     });
 
-    test('NotFoundError creates proper error instance', () => {
-      const error = new NotFoundError('Resource not found');
-      
-      expect(error).toBeInstanceOf(AppError);
-      expect(error).toBeInstanceOf(NotFoundError);
-      expect(error.message).toBe('Resource not found');
-      expect(error.code).toBe(ERROR_CODES.NOT_FOUND);
-      expect(error.statusCode).toBe(404);
-      expect(error.name).toBe('NotFoundError');
-    });
-
-    test('TimeoutError creates proper error instance', () => {
-      const error = new TimeoutError('Request timeout');
-      
-      expect(error).toBeInstanceOf(AppError);
-      expect(error).toBeInstanceOf(TimeoutError);
-      expect(error.message).toBe('Request timeout');
-      expect(error.code).toBe(ERROR_CODES.TIMEOUT);
-      expect(error.statusCode).toBe(408);
-      expect(error.name).toBe('TimeoutError');
-    });
   });
 
   describe('normalizeError', () => {
@@ -202,7 +179,7 @@ describe('error-handler', () => {
     });
 
     test('isNotFoundError identifies not found errors', () => {
-      const notFoundError = new NotFoundError('Not found');
+      const notFoundError = new AppError('Not found', ERROR_CODES.NOT_FOUND, 404);
       expect(errorTypeGuards.isNotFoundError(notFoundError)).toBe(true);
       
       const validationError = new ValidationError('Invalid data');
@@ -210,7 +187,7 @@ describe('error-handler', () => {
     });
 
     test('isTimeoutError identifies timeout errors', () => {
-      const timeoutError = new TimeoutError('Timeout');
+      const timeoutError = new AppError('Timeout', ERROR_CODES.TIMEOUT, 408);
       expect(errorTypeGuards.isTimeoutError(timeoutError)).toBe(true);
       
       const validationError = new ValidationError('Invalid data');

@@ -19,17 +19,6 @@ const NOTIFICATION_STYLES = {
   info: 'bg-blue-50 border-blue-200 text-blue-800'
 } as const;
 
-const CloseButton = ({ onClose }: { onClose: () => void }) => (
-  <button
-    onClick={onClose}
-    className="ml-4 text-sm underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1"
-    aria-label="通知を閉じる"
-    type="button"
-  >
-    閉じる
-  </button>
-);
-
 export const Notification: React.FC<NotificationProps> = React.memo(({
   show,
   message,
@@ -66,7 +55,16 @@ export const Notification: React.FC<NotificationProps> = React.memo(({
           <p className="text-sm font-medium break-words">{message}</p>
         </div>
         
-        {onClose && <CloseButton onClose={onClose} />}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="ml-4 text-sm underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1"
+            aria-label="通知を閉じる"
+            type="button"
+          >
+            閉じる
+          </button>
+        )}
       </div>
     </div>
   );

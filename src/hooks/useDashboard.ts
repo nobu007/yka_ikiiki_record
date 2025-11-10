@@ -11,7 +11,6 @@ export function useDashboard() {
   const { generateSeed, isGenerating, error } = useSeedGeneration();
   const { notification, showSuccess, showError, clearNotification } = useNotification();
 
-  // Simplified effect - only handle state changes
   useEffect(() => {
     if (isGenerating) {
       clearNotification();
@@ -32,19 +31,16 @@ export function useDashboard() {
       const normalizedError = normalizeError(e);
       logError(normalizedError, 'useDashboard.handleInitialGeneration');
       
-      // Only show error if no notification is currently showing
       if (!notification.show) {
         showError(getUserFriendlyMessage(normalizedError));
       }
     }
   }, [generateSeed, showSuccess, showError, clearNotification, notification.show]);
 
-  const isLoadingMessage = isGenerating ? LOADING_MESSAGES.GENERATING_DATA : null;
-
   return {
     isGenerating,
     notification,
     handleInitialGeneration,
-    isLoadingMessage
+    isLoadingMessage: isGenerating ? LOADING_MESSAGES.GENERATING_DATA : null
   };
 }

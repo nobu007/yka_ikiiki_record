@@ -1,3 +1,5 @@
+import { ERROR_MESSAGES } from '@/lib/constants/messages';
+
 export const ERROR_CODES = {
   UNKNOWN: 'UNKNOWN_ERROR',
   VALIDATION: 'VALIDATION_ERROR',
@@ -9,8 +11,6 @@ export const ERROR_CODES = {
 } as const;
 
 type ErrorCodeType = typeof ERROR_CODES[keyof typeof ERROR_CODES];
-
-import { ERROR_MESSAGES } from '@/lib/constants/messages';
 
 const USER_MESSAGES = {
   [ERROR_CODES.UNKNOWN]: ERROR_MESSAGES.UNEXPECTED,
@@ -48,20 +48,6 @@ export class NetworkError extends AppError {
   constructor(message: string = ERROR_MESSAGES.NETWORK_ERROR, statusCode: number = 0) {
     super(message, ERROR_CODES.NETWORK, statusCode);
     this.name = 'NetworkError';
-  }
-}
-
-export class NotFoundError extends AppError {
-  constructor(message: string = '要求されたリソースが見つかりません') {
-    super(message, ERROR_CODES.NOT_FOUND, 404);
-    this.name = 'NotFoundError';
-  }
-}
-
-export class TimeoutError extends AppError {
-  constructor(message: string = 'リクエストがタイムアウトしました') {
-    super(message, ERROR_CODES.TIMEOUT, 408);
-    this.name = 'TimeoutError';
   }
 }
 

@@ -3,7 +3,7 @@ import { useSeedGeneration } from '@/application/hooks/useSeedGeneration';
 import { useNotification } from '@/hooks/useNotification';
 import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
 import { getUserFriendlyMessage, normalizeError, logError } from '@/lib/error-handler';
-import { SUCCESS_MESSAGES, LOADING_MESSAGES } from '@/lib/constants/messages';
+import { SUCCESS_MESSAGES, LOADING_MESSAGES } from '@/lib/config';
 
 const GENERATION_CONFIG = { ...DEFAULT_CONFIG, periodDays: 30 };
 

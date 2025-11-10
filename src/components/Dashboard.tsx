@@ -1,8 +1,7 @@
-// Simplified dashboard component
-
 import React from 'react';
-import { APP_CONFIG, MESSAGES, UI_CONFIG } from '@/lib/config';
+import { APP_CONFIG, MESSAGES } from '@/lib/config';
 import { Button, LoadingSpinner, CheckIcon, PlusIcon, Notification } from './ui';
+import { UsageInstructions } from './common/UsageInstructions';
 
 interface DashboardProps {
   isGenerating: boolean;
@@ -95,27 +94,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               </p>
             </section>
 
-            <section className="bg-blue-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">使い方</h3>
-              <ol className="space-y-3 text-sm text-gray-700">
-                <li className="flex">
-                  <span className="font-medium mr-2">1.</span>
-                  <span>「初期データを生成」ボタンをクリックしてテストデータを作成します</span>
-                </li>
-                <li className="flex">
-                  <span className="font-medium mr-2">2.</span>
-                  <span>生成が完了すると統計データが表示されます</span>
-                </li>
-                <li className="flex">
-                  <span className="font-medium mr-2">3.</span>
-                  <span>グラフやチャートで生徒の感情データを確認できます</span>
-                </li>
-                <li className="flex">
-                  <span className="font-medium mr-2">4.</span>
-                  <span>何度でもデータを再生成して異なるパターンを試せます</span>
-                </li>
-              </ol>
-            </section>
+            <UsageInstructions />
           </main>
         </div>
       </div>

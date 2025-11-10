@@ -13,12 +13,29 @@ import {
   ERROR_CODES 
 } from './error-handler';
 
-// Mock console methods
-const mockConsoleError = jest.spyOn(console, 'error').mockImplementation();
-const mockConsoleGroup = jest.spyOn(console, 'group').mockImplementation();
-const mockConsoleGroupEnd = jest.spyOn(console, 'groupEnd').mockImplementation();
+// Mock console methods - restore original for error-handler tests
+let originalConsoleError;
+let mockConsoleError;
+let mockConsoleGroup;
+let mockConsoleGroupEnd;
 
 describe('error-handler', () => {
+  beforeAll(() => {
+    // Store original console.error and mock it for these tests
+    originalConsoleError = console.error;
+    mockConsoleError = jest.fn();
+    console.error = mockConsoleError;
+    mockConsoleGroup = jest.spyOn(console, 'group').mockImplementation();
+    mockConsoleGroupEnd = jest.spyOn(console, 'groupEnd').mockImplementation();
+  });
+
+  afterAll(() => {
+    // Restore original console.error
+    console.error = originalConsoleError;
+    mockConsoleGroup.mockRestore();
+    mockConsoleGroupEnd.mockRestore();
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
   });

@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES } from '@/lib/constants/messages';
+import { ERROR_MESSAGES } from '@/lib/config';
 
 export const ERROR_CODES = {
   UNKNOWN: 'UNKNOWN_ERROR',
@@ -76,6 +76,12 @@ export function getUserFriendlyMessage(error: unknown): string {
 export function logError(error: unknown, context?: string): void {
   const normalized = normalizeError(error);
   const contextStr = context ? `[${context}]` : '[APP]';
+  
+  // Reduce console noise in test environment
+  if (process.env.NODE_ENV === 'test') {
+    console.error(`${contextStr} ${normalized.code}: ${normalized.message}`);
+    return;
+  }
   
   console.error(`${contextStr} Error:`, {
     code: normalized.code,

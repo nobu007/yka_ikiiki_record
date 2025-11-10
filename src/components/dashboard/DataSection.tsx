@@ -1,3 +1,4 @@
+import React from 'react';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { CheckIcon, PlusIcon } from '@/components/common/Icons';
 import { UI_TEXT, DATA_GENERATION_FEATURES } from '@/lib/constants/messages';

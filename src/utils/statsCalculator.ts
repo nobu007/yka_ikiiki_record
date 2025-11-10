@@ -8,19 +8,15 @@ type EmotionData = { date: Date; emotion: number; hour?: number; student?: numbe
 export const calculateAverage = (values: number[]): number => 
   values.length === 0 ? 0 : Number((values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(1));
 
-const groupBy = <T, K>(items: T[], keyFn: (item: T) => K): Map<K, T[]> => {
-  const groups = new Map<K, T[]>();
-  for (const item of items) {
-    const key = keyFn(item);
-    const group = groups.get(key) || [];
-    group.push(item);
-    groups.set(key, group);
-  }
-  return groups;
-};
-
 export const calculateMonthlyStats = (emotions: EmotionData[]): MonthlyStats[] => {
-  const monthlyGroups = groupBy(emotions, ({ date }) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`);
+  const monthlyGroups = new Map<string, EmotionData[]>();
+  
+  emotions.forEach(({ date, emotion }) => {
+    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    const group = monthlyGroups.get(key) || [];
+    group.push({ date, emotion });
+    monthlyGroups.set(key, group);
+  });
   
   return Array.from(monthlyGroups.entries())
     .map(([month, monthEmotions]) => ({
@@ -57,15 +53,22 @@ export const calculateTimeOfDayStats = (emotions: EmotionData[]): TimeOfDayStats
 
 export const calculateEmotionDistribution = (emotions: EmotionData[]): number[] => {
   const distribution = new Array(5).fill(0);
-  for (const { emotion } of emotions) {
+  emotions.forEach(({ emotion }) => {
     const index = Math.min(Math.max(Math.floor(emotion) - 1, 0), 4);
     distribution[index]++;
-  }
+  });
   return distribution;
 };
 
 export const calculateStudentStats = (emotions: EmotionData[]): StudentStats[] => {
-  const studentGroups = groupBy(emotions, ({ student }) => student ?? 0);
+  const studentGroups = new Map<number, EmotionData[]>();
+  
+  emotions.forEach(({ emotion, student }) => {
+    const key = student ?? 0;
+    const group = studentGroups.get(key) || [];
+    group.push({ emotion, student: key });
+    studentGroups.set(key, group);
+  });
   
   return Array.from(studentGroups.entries())
     .map(([student, studentEmotions]) => ({

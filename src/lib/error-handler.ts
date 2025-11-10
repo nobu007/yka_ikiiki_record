@@ -70,21 +70,16 @@ const isNetworkRelated = (error: Error): boolean =>
   NETWORK_ERROR_PATTERNS.some(pattern => error.message.includes(pattern));
 
 export function normalizeError(error: unknown): AppError {
-  if (error instanceof AppError) {
-    return error;
-  }
-
+  if (error instanceof AppError) return error;
+  
   if (error instanceof Error) {
-    if (isNetworkRelated(error)) {
-      return new NetworkError(error.message);
-    }
-    return new AppError(error.message, ERROR_CODES.UNKNOWN, 500);
+    return isNetworkRelated(error) 
+      ? new NetworkError(error.message)
+      : new AppError(error.message, ERROR_CODES.UNKNOWN, 500);
   }
-
-  if (typeof error === 'string') {
-    return new AppError(error);
-  }
-
+  
+  if (typeof error === 'string') return new AppError(error);
+  
   return new AppError(ERROR_MESSAGES.UNEXPECTED);
 }
 
@@ -116,20 +111,15 @@ export const errorTypeGuards = {
     return normalized.code === ERROR_CODES.NETWORK || normalized.statusCode === 0;
   },
   
-  isValidationError: (error: unknown): boolean => {
-    return normalizeError(error).code === ERROR_CODES.VALIDATION;
-  },
+  isValidationError: (error: unknown): boolean => 
+    normalizeError(error).code === ERROR_CODES.VALIDATION,
   
-  isNotFoundError: (error: unknown): boolean => {
-    return normalizeError(error).code === ERROR_CODES.NOT_FOUND;
-  },
+  isNotFoundError: (error: unknown): boolean => 
+    normalizeError(error).code === ERROR_CODES.NOT_FOUND,
   
-  isTimeoutError: (error: unknown): boolean => {
-    return normalizeError(error).code === ERROR_CODES.TIMEOUT;
-  },
+  isTimeoutError: (error: unknown): boolean => 
+    normalizeError(error).code === ERROR_CODES.TIMEOUT,
   
-  isServerError: (error: unknown): boolean => {
-    const normalized = normalizeError(error);
-    return normalized.statusCode >= 500;
-  }
+  isServerError: (error: unknown): boolean => 
+    normalizeError(error).statusCode >= 500
 } as const;

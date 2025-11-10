@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useSeedGeneration } from '@/application/hooks/useSeedGeneration';
 import { useNotification } from '@/hooks/useNotification';
 import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
@@ -11,7 +11,7 @@ export function useDashboard() {
   const { generateSeed, isGenerating, error } = useSeedGeneration();
   const { notification, showSuccess, showError, clearNotification } = useNotification();
 
-  // Simplified effect with fewer dependencies
+  // Simplified effect - only handle state changes
   useEffect(() => {
     if (isGenerating) {
       clearNotification();
@@ -21,7 +21,7 @@ export function useDashboard() {
     if (error && !notification.show) {
       showError(getUserFriendlyMessage(error));
     }
-  }, [isGenerating, error, notification.show, clearNotification, showError]);
+  }, [isGenerating, error, notification.show, showError, clearNotification]);
 
   const handleInitialGeneration = useCallback(async () => {
     try {
@@ -32,16 +32,14 @@ export function useDashboard() {
       const normalizedError = normalizeError(e);
       logError(normalizedError, 'useDashboard.handleInitialGeneration');
       
+      // Only show error if no notification is currently showing
       if (!notification.show) {
         showError(getUserFriendlyMessage(normalizedError));
       }
     }
   }, [generateSeed, showSuccess, showError, clearNotification, notification.show]);
 
-  const isLoadingMessage = useMemo(() => 
-    isGenerating ? LOADING_MESSAGES.GENERATING_DATA : null, 
-    [isGenerating]
-  );
+  const isLoadingMessage = isGenerating ? LOADING_MESSAGES.GENERATING_DATA : null;
 
   return {
     isGenerating,

@@ -5,4 +5,4 @@ export {
 } from '@/application/hooks';
 
 export { useNotification } from './useNotification';
-export { useDashboard } from './useDashboard';
+export { useDashboard } from './useApp';

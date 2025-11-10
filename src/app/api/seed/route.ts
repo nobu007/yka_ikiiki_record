@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { AppError, normalizeError, logError } from '@/lib/errors';
+import { AppError, normalizeError, logError } from '@/lib/error-handler';
 import { generateBaseEmotion, calculateSeasonalEffect, calculateEventEffect, clampEmotion, getRandomHour } from '@/lib/utils';
 import { APP_CONFIG, EMOTION_CONFIG } from '@/lib/config';
 

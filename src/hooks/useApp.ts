@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { APP_CONFIG, MESSAGES } from '@/lib/config';
-import { AppError, normalizeError, getUserMessage, logError } from '@/lib/errors';
+import { AppError, normalizeError, getUserFriendlyMessage, logError } from '@/lib/error-handler';
 
 // Notification state
 interface NotificationState {
@@ -110,7 +110,7 @@ export function useDashboard() {
     }
     
     if (error && !notification.show) {
-      showError(getUserMessage(error));
+      showError(getUserFriendlyMessage(error));
     }
   }, [isGenerating, error, notification.show, showError, clearNotification]);
 
@@ -130,7 +130,7 @@ export function useDashboard() {
       logError(error, 'useDashboard.handleGenerate');
       
       if (!notification.show) {
-        showError(getUserMessage(error));
+        showError(getUserFriendlyMessage(error));
       }
     }
   }, [generate, showSuccess, showError, clearNotification, notification.show]);

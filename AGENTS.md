@@ -1,4 +1,4 @@
-# AGENTS.md - AI自律開発指示書（TEST専用）
+# AGENTS.md - AI自律開発指示書（FEEDBACK専用）
 
 # エラー予防プロトコル - SDEC×2SCV×ACR統合版
 
@@ -1172,713 +1172,357 @@ GOAL_06_04_01-002,GOAL,"ARCH_06_04_01-002,ARCH_06_04_01-003",ARCH,VIOLATION,MULT
 - 保守性・拡張性の向上
 
 
-# テスト戦略 (Test Strategy)
+# 改善方法論 (Improvement Methodology)
 
-## 1. テスト戦略の基本方針
+## 1. 継続的改善の原則
 
-### 1.1. テストピラミッド
-- **ユニットテスト (70%)**: 個別コンポーネントのテスト
-- **統合テスト (20%)**: コンポーネント間の連携テスト
-- **E2Eテスト (10%)**: エンドツーエンドのシナリオテスト
+### 1.1. PDCA サイクル
+- **Plan (計画)**: 改善目標と実行計画の策定
+- **Do (実行)**: 改善活動の実施
+- **Check (評価)**: 結果の測定と分析
+- **Act (改善)**: 標準化と次サイクルへの反映
 
-### 1.2. 品質ゲート
-- **開発段階**: 各開発フェーズでの品質チェック
-- **継続的インテグレーション**: 自動テストによる品質確保
-- **リリース前**: 包括的な品質検証
+### 1.2. カイゼンの基本思想
+- **小さな改善の積み重ね**: 大きな変化よりも継続的な小改善
+- **現場主導**: 実際の作業者による改善提案
+- **データに基づく判断**: 感覚ではなくデータに基づく改善
 
-## 2. テストレベルと範囲
+## 2. 改善プロセス
 
-### 2.1. ユニットテスト
-- **対象**: 個別関数、メソッド、クラス
-- **目的**: ロジックの正確性確認
-- **ツール**: Jest, JUnit, pytest など
-- **カバレッジ目標**: 80%以上
+### 2.1. 問題の特定
+- **現状分析**: 現在の状況とパフォーマンスの把握
+- **ギャップ分析**: 理想状態との差異の特定
+- **根本原因分析**: なぜなぜ分析による真因究明
 
-### 2.2. 統合テスト
-- **対象**: API、データベース、外部サービス連携
-- **目的**: インターフェースの整合性確認
-- **ツール**: Postman, REST Assured, Supertest など
+### 2.2. 改善策の立案
+- **解決策の立案**: 複数の改善案の検討
+- **効果予測**: 改善効果の定量的予測
+- **実施計画**: 具体的な実行スケジュールと担当者
 
-### 2.3. システムテスト
-- **対象**: システム全体
-- **目的**: 要求仕様の充足確認
-- **ツール**: Selenium, Playwright, Cypress など
+### 2.3. 実施と評価
+- **パイロット実施**: 小規模での試行実施
+- **効果測定**: 定量的・定性的な効果の測定
+- **フィードバック収集**: 関係者からの意見収集
 
-## 3. テスト設計技法
+## 3. 改善手法
 
-### 3.1. 同値分割
-- **有効同値クラス**: 正常な入力範囲
-- **無効同値クラス**: 異常な入力範囲
-- **境界値分析**: 境界での動作確認
+### 3.1. 5S活動
+- **整理 (Seiri)**: 必要・不要の区分
+- **整頓 (Seiton)**: 適切な配置と標識
+- **清掃 (Seiso)**: 清潔な状態の維持
+- **清潔 (Seiketsu)**: 標準化とルール化
+- **躾 (Shitsuke)**: 習慣化と継続
 
-### 3.2. 状態遷移テスト
-- **状態の定義**: システムが取りうる状態
-- **遷移条件**: 状態変化の条件
-- **遷移表**: 網羅的な状態遷移の確認
+### 3.2. ムダの排除
+- **7つのムダ**: 過剰生産、在庫、運搬、加工、手待ち、動作、不良品
+- **価値流分析**: プロセス全体の価値とムダの可視化
+- **リードタイム短縮**: 工程時間の最適化
 
-## 4. テスト自動化戦略
+## 4. 組織的改善
 
-### 4.1. 自動化対象の選定
-- **回帰テスト**: 繰り返し実行されるテスト
-- **データ駆動テスト**: 大量データでのテスト
-- **パフォーマンステスト**: 負荷テストと性能テスト
+### 4.1. 改善文化の醸成
+- **改善提案制度**: 全員参加の改善活動
+- **成功事例の共有**: ベストプラクティスの水平展開
+- **学習する組織**: 失敗から学ぶ文化の構築
 
-### 4.2. 自動化フレームワーク
-- **キーワード駆動**: 再利用可能なキーワード
-- **データ駆動**: 外部データソースの活用
-- **ページオブジェクトモデル**: UIテストの構造化
+### 4.2. スキル向上
+- **改善スキルの教育**: 分析手法と改善技法の習得
+- **ファシリテーション**: 改善活動の効果的な進行
+- **データ分析**: 客観的な分析能力の向上
 
 
-# 品質保証 (Quality Assurance)
+# メトリクス収集 (Metrics Collection)
 
-## 1. 品質保証の基本方針
+## 1. メトリクス収集の基本方針
 
-### 1.1. 品質の定義
-- **機能品質**: 要求仕様の充足度
-- **性能品質**: パフォーマンスと効率性
-- **信頼性**: 可用性と障害耐性
-- **保守性**: コードの可読性と変更容易性
+### 1.1. 収集目的
+- **パフォーマンス測定**: システムと組織の性能評価
+- **問題の早期発見**: 異常値やトレンドの検出
+- **改善効果の検証**: 施策の効果測定
+- **意思決定支援**: データに基づく判断材料の提供
 
-### 1.2. 品質管理プロセス
-- **計画**: 品質目標と基準の設定
-- **実行**: 品質活動の実施
-- **監視**: 品質メトリクスの測定
-- **改善**: 継続的な品質向上
+### 1.2. SMART指標
+- **Specific (具体的)**: 明確で具体的な指標
+- **Measurable (測定可能)**: 定量的に測定できる
+- **Achievable (達成可能)**: 現実的に達成可能
+- **Relevant (関連性)**: ビジネス目標に関連
+- **Time-bound (期限付き)**: 明確な期限設定
 
-## 2. 品質メトリクス
+## 2. メトリクスの分類
+
+### 2.1. 技術メトリクス
+```
+パフォーマンス:
+- 応答時間 (Response Time)
+- スループット (Throughput)
+- CPU使用率 (CPU Utilization)
+- メモリ使用率 (Memory Usage)
+
+品質:
+- バグ密度 (Bug Density)
+- コードカバレッジ (Code Coverage)
+- 技術的負債 (Technical Debt)
+- コード複雑度 (Cyclomatic Complexity)
+```
+
+### 2.2. ビジネスメトリクス
+```
+生産性:
+- 機能完成率 (Feature Completion Rate)
+- デプロイ頻度 (Deployment Frequency)
+- リードタイム (Lead Time)
+- MTTR (Mean Time To Recovery)
+
+顧客満足度:
+- NPS (Net Promoter Score)
+- ユーザー満足度 (User Satisfaction)
+- 機能利用率 (Feature Usage Rate)
+- 離脱率 (Churn Rate)
+```
+
+## 3. 収集システムの設計
+
+### 3.1. データソース
+- **アプリケーションログ**: 業務処理の記録
+- **システムログ**: インフラとミドルウェアの状態
+- **ユーザー行動データ**: UI操作とページビュー
+- **外部システム**: API呼び出しと連携データ
+
+### 3.2. 収集アーキテクチャ
+```
+Data Sources → Data Collectors → Data Storage → Analytics → Visualization
+     ↓              ↓              ↓            ↓           ↓
+  Applications   Fluentd       InfluxDB    Grafana     Dashboard
+  Servers        Logstash      Prometheus  ElasticSearch  Alerts
+  APIs           Beats         MongoDB     Splunk      Reports
+```
+
+## 4. 分析と活用
+
+### 4.1. リアルタイム監視
+- **ダッシュボード**: 主要指標の一覧表示
+- **アラート**: 閾値超過時の自動通知
+- **トレンド分析**: 時系列での変化パターン
+
+### 4.2. 定期レポート
+- **週次レポート**: 短期的なパフォーマンス評価
+- **月次レポート**: 中期的なトレンド分析
+- **四半期レポート**: 戦略的な意思決定支援
+
+# 継続的改善 (Continuous Improvement)
+
+## 1. 継続的改善の基盤
+
+### 1.1. 改善文化の構築
+- **改善マインドセット**: 現状に満足せず常に改善を求める姿勢
+- **全員参加**: 全チームメンバーが改善活動に参加
+- **実験的アプローチ**: 小さな実験を通じた学習と改善
+- **失敗を学習機会として捉える**: 失敗から価値ある教訓を抽出
+
+### 1.2. 改善の仕組み化
+- **定期的な振り返り**: スプリントレトロスペクティブ
+- **改善提案制度**: 日常的な改善アイデアの収集
+- **成功事例の共有**: ベストプラクティスの水平展開
+- **KPI と改善の連動**: 測定指標と改善活動の整合
+
+## 2. 改善プロセスの標準化
+
+### 2.1. 改善サイクル
+```
+1. 問題・機会の特定
+   ↓
+2. 現状分析とデータ収集
+   ↓
+3. 根本原因の特定
+   ↓
+4. 改善策の立案
+   ↓
+5. 実験・試行実施
+   ↓
+6. 効果測定と評価
+   ↓
+7. 標準化と定着
+   ↓
+8. 次の改善機会の特定
+```
+
+### 2.2. 改善手法の選択
+- **カイゼンイベント**: 集中的な改善活動
+- **日常改善**: 継続的な小さな改善
+- **プロセス改善**: ワークフローの最適化
+- **技術改善**: ツールと技術の向上
+
+## 3. データ駆動改善
+
+### 3.1. 測定と分析
+- **ベースライン確立**: 改善前の現状値の記録
+- **定量的効果測定**: 数値による改善効果の確認
+- **定性的評価**: チーム満足度や作業負荷の評価
+- **トレンド分析**: 長期的な変化パターンの把握
+
+### 3.2. 仮説検証アプローチ
+- **仮説設定**: 改善案に対する仮説の明確化
+- **実験設計**: 仮説を検証する実験の設計
+- **A/Bテスト**: 比較による効果の検証
+- **学習と調整**: 結果に基づく改善案の調整
+
+## 4. 組織レベルの改善
+
+### 4.1. 学習する組織
+- **知識の蓄積**: 改善経験の組織的な蓄積
+- **スキルの向上**: 改善能力の継続的な強化
+- **ナレッジシェア**: 部門を超えた知識共有
+- **イノベーション**: 創造的な改善アプローチ
+
+### 4.2. 改善の持続可能性
+- **リーダーシップ**: 改善を推進するリーダーの育成
+- **インセンティブ**: 改善活動への適切な動機付け
+- **リソース確保**: 改善活動のための時間と予算
+- **長期視点**: 短期的成果と長期的価値のバランス
+
+# フィードバックループ (Feedback Loop)
+
+## 1. フィードバックループの設計
+
+### 1.1. 基本原則
+- **迅速性**: 行動と結果の間の時間を最小化
+- **明確性**: フィードバックの内容が具体的で理解しやすい
+- **実行可能性**: フィードバックに基づいて具体的な改善行動が取れる
+- **継続性**: 一度限りではなく継続的なフィードバック
+
+### 1.2. フィードバックの種類
+- **即座のフィードバック**: リアルタイムでの結果表示
+- **定期フィードバック**: 週次・月次での総合評価
+- **イベント駆動**: 特定の条件や閾値での通知
+- **要求時フィードバック**: 必要時に取得できる詳細情報
+
+## 2. 技術的フィードバックループ
+
+### 2.1. 開発プロセス
+```
+コード作成 → 静的解析 → ユニットテスト → 統合テスト → デプロイ
+     ↑                                                        ↓
+     ←←←←←← フィードバック（結果・メトリクス） ←←←←←←
+```
+
+### 2.2. 監視とアラート
+- **システム監視**: CPU、メモリ、ディスク使用率
+- **アプリケーション監視**: 応答時間、エラー率
+- **ビジネス監視**: KPI、ユーザー行動指標
+- **セキュリティ監視**: 不正アクセス、脆弱性
+
+## 3. 組織的フィードバックループ
+
+### 3.1. チーム内フィードバック
+- **日次スタンドアップ**: 短期的な課題と進捗の共有
+- **コードレビュー**: 技術的品質と知識共有
+- **ペアプログラミング**: リアルタイムでの相互学習
+- **レトロスペクティブ**: プロセスの振り返りと改善
+
+### 3.2. ステークホルダーフィードバック
+- **顧客フィードバック**: ユーザビリティテストと満足度調査
+- **プロダクトオーナー**: 機能要件と優先順位の調整
+- **運用チーム**: システムの安定性と運用性の評価
+- **セキュリティチーム**: セキュリティ要件の確認
+
+## 4. フィードバックの最適化
+
+### 4.1. 効果的なフィードバック
+- **タイムリーさ**: 適切なタイミングでの提供
+- **関連性**: 受け手の状況や課題に関連した内容
+- **建設的**: 批判的ではなく改善に向けた内容
+- **具体性**: 抽象的ではなく具体的なアクション
+
+### 4.2. フィードバック品質の向上
+- **フィードバックのフィードバック**: フィードバック自体の改善
+- **多様な視点**: 異なる立場からの多角的な評価
+- **データの活用**: 客観的なデータに基づく評価
+- **継続的改善**: フィードバックプロセスの継続的な改善
+
+# 品質監視 (Quality Monitoring)
+
+## 1. 品質監視の目的と範囲
+
+### 1.1. 監視目的
+- **品質劣化の早期発見**: 問題が大きくなる前の検出
+- **継続的品質確保**: 開発プロセス全体での品質維持
+- **改善機会の特定**: データに基づく改善ポイントの発見
+- **コンプライアンス確保**: 品質基準の遵守状況確認
+
+### 1.2. 監視範囲
+- **コード品質**: 静的解析、複雑度、重複率
+- **テスト品質**: カバレッジ、テスト結果、実行時間
+- **プロダクト品質**: パフォーマンス、信頼性、使いやすさ
+- **プロセス品質**: 開発速度、バグ修正時間、レビュー効率
+
+## 2. 品質メトリクスと KPI
 
 ### 2.1. コード品質メトリクス
-- **複雑度**: サイクロマティック複雑度
-- **重複度**: コード重複率
-- **カバレッジ**: テストカバレッジ率
-- **技術的負債**: SonarQubeスコア
-
-### 2.2. テスト品質メトリクス
-- **欠陥密度**: 機能あたりの欠陥数
-- **欠陥除去効率**: 発見された欠陥の割合
-- **テスト効率**: テスト実行時間と効果
-- **回帰率**: 再発した欠陥の割合
-
-## 3. 品質活動
-
-### 3.1. 静的品質分析
-- **コードレビュー**: ペアプログラミングとプルリクエスト
-- **静的解析**: SonarQube, ESLint, PMD
-- **アーキテクチャレビュー**: 設計品質の確認
-
-### 3.2. 動的品質分析
-- **単体テスト**: 個別コンポーネントの品質
-- **統合テスト**: システム連携の品質
-- **パフォーマンステスト**: 性能品質の確認
-
-## 4. 品質改善プロセス
-
-### 4.1. 欠陥管理
-- **欠陥記録**: 詳細な欠陥情報の記録
-- **根本原因分析**: なぜなぜ分析による原因究明
-- **再発防止**: プロセス改善による予防
-
-### 4.2. 継続的改善
-- **品質データ分析**: メトリクスに基づく分析
-- **ベストプラクティス**: 成功事例の共有
-- **プロセス改善**: 効果的な手法の導入
-
-# テストケース設計 (Test Case Design)
-
-## 1. テストケース設計の原則
-
-### 1.1. 設計方針
-- **網羅性**: 要求仕様の全範囲をカバー
-- **効率性**: 最小限のテストで最大限の検証
-- **保守性**: 変更に強く理解しやすい設計
-- **追跡可能性**: 要求仕様との対応関係
-
-### 1.2. 設計技法
-- **ブラックボックステスト**: 外部仕様に基づく設計
-- **ホワイトボックステスト**: 内部構造に基づく設計
-- **グレーボックステスト**: 両方のアプローチを組み合わせ
-
-## 2. テストケースの構造
-
-### 2.1. テストケースの要素
 ```
-テストID: TC001
-目的: ユーザーログイン機能の正常系テスト
-前提条件: 
-  - 有効なユーザーアカウントが存在する
-  - ログイン画面が表示されている
-実行手順:
-  1. ユーザー名フィールドに有効なユーザー名を入力
-  2. パスワードフィールドに正しいパスワードを入力
-  3. ログインボタンをクリック
-期待結果:
-  - ダッシュボード画面に遷移する
-  - ユーザー名が画面右上に表示される
+静的品質指標:
+- サイクロマティック複雑度 < 10
+- コード重複率 < 3%
+- 技術的負債指数 < 5%
+- コーディング規約違反 = 0
+
+動的品質指標:
+- ユニットテストカバレッジ > 80%
+- 統合テストカバレッジ > 60%
+- バグ密度 < 1件/KLOC
+- 性能要件達成率 > 95%
 ```
 
-### 2.2. データ駆動テスト
+### 2.2. プロセス品質メトリクス
 ```
-テストデータセット:
-| ユーザー名 | パスワード | 期待結果 |
-| user1     | pass1     | 成功     |
-| user2     | wrongpass | 失敗     |
-| invalid   | pass3     | 失敗     |
-```
+開発効率:
+- リードタイム < 5日
+- デプロイ頻度 > 週1回
+- 変更失敗率 < 15%
+- MTTR < 1時間
 
-## 3. 設計技法の適用
-
-### 3.1. 同値分割法
-- **有効同値クラス**: 正常な入力値の範囲
-- **無効同値クラス**: 異常な入力値の範囲
-- **代表値選択**: 各クラスから代表的な値を選択
-
-### 3.2. 境界値分析
-- **最小値**: 許可される最小値
-- **最大値**: 許可される最大値
-- **境界付近**: 境界の前後の値
-
-### 3.3. デシジョンテーブル
-```
-条件1(年齢) | 条件2(会員) | 結果(割引率)
->65        | Yes        | 20%
->65        | No         | 10%
-<=65       | Yes        | 5%
-<=65       | No         | 0%
+品質プロセス:
+- コードレビュー実施率 = 100%
+- 自動テスト実行率 = 100%
+- セキュリティスキャン実施率 = 100%
+- ドキュメント更新率 > 90%
 ```
 
-## 4. テストケースの管理
+## 3. 監視システムの構築
 
-### 4.1. 分類と整理
-- **機能別**: 画面や機能単位での分類
-- **重要度別**: Critical, High, Medium, Low
-- **実行頻度別**: Smoke, Regression, Full
-
-### 4.2. レビューと改善
-- **ピアレビュー**: 他メンバーによる確認
-- **実行結果分析**: 欠陥検出効率の評価
-- **継続的改善**: 効果的なテストケースへの改良
-
-# テスト自動化 (Test Automation)
-
-## 1. 自動化戦略
-
-### 1.1. 自動化の目的
-- **効率性**: 繰り返しテストの自動実行
-- **一貫性**: 人的ミスの排除
-- **早期フィードバック**: 継続的インテグレーション
-- **カバレッジ**: 広範囲なテストの実現
-
-### 1.2. 自動化対象の選定基準
-- **実行頻度**: 頻繁に実行されるテスト
-- **安定性**: 仕様変更の少ない機能
-- **ROI**: 自動化コストに見合う効果
-- **クリティカル性**: ビジネスに重要な機能
-
-## 2. 自動化フレームワーク
-
-### 2.1. フレームワークの種類
-- **Linear Framework**: 単純な録画再生型
-- **Modular Framework**: 機能ごとのモジュール化
-- **Data-Driven Framework**: データ駆動型
-- **Hybrid Framework**: 複数手法の組み合わせ
-
-### 2.2. ツール選択
+### 3.1. 自動化ツール統合
 ```
-UI自動化:
-- Selenium WebDriver
-- Playwright
-- Cypress
+静的解析ツール:
+- SonarQube: 包括的なコード品質分析
+- ESLint/Prettier: JavaScript品質確保
+- SpotBugs: Java静的解析
+- RuboCop: Ruby品質チェック
 
-API自動化:
-- REST Assured
-- Postman/Newman
-- Supertest
-
-モバイル自動化:
-- Appium
-- Espresso (Android)
-- XCTest (iOS)
+監視・アラートツール:
+- Grafana: メトリクス可視化
+- Prometheus: メトリクス収集
+- DataDog: APM統合監視
+- New Relic: アプリケーション監視
 ```
 
-## 3. 自動化設計パターン
-
-### 3.1. Page Object Model
-```python
-class LoginPage:
-    def __init__(self, driver):
-        self.driver = driver
-        self.username_field = driver.find_element(By.ID, "username")
-        self.password_field = driver.find_element(By.ID, "password")
-        self.login_button = driver.find_element(By.ID, "login")
-    
-    def login(self, username, password):
-        self.username_field.send_keys(username)
-        self.password_field.send_keys(password)
-        self.login_button.click()
-```
-
-### 3.2. データ駆動テスト
-```python
-```pytest.mark.parametrize("username,password,expected",
-    [File not found: /home/jinno/ucg-devops/pytest.mark.parametrize("username,password,expected",]
-``` [
-    ("valid_user", "valid_pass", "success"),
-    ("invalid_user", "invalid_pass", "error"),
-])
-def test_login(username, password, expected):
-    # テスト実行ロジック
-    pass
-```
-
-## 4. 継続的インテグレーション
-
-### 4.1. CI/CDパイプライン統合
-- **ビルドトリガー**: コードコミット時の自動実行
-- **並列実行**: 複数ブラウザ・環境での同時実行
-- **結果報告**: 詳細なテストレポートの生成
-
-### 4.2. 自動化メンテナンス
-- **定期レビュー**: テストスクリプトの見直し
-- **リファクタリング**: 保守性向上のための改良
-- **バージョン管理**: テストコードの適切な管理
-
-# Pytestテスト実装ルール (Pytest Implementation Rules)
-
-## 1. 基本原則
-
-### 1.1. テスト設計方針
-
-- **単純性**: 基本的な確認のみで十分
-- **保守性**: メンテナンス性を最優先
-- **再利用性**: コードの重複を避ける
-- **現代的**: フィクスチャとパラメタライズを積極活用
-
-### 1.2. テストファイル構成
-
-```
-tests/
-├── conftest.py           # 共通フィクスチャ
-├── test_module_name.py   # モジュール別テスト
-└── fixtures/             # テストデータ
-    └── sample_data.json
-```
-
-## 2. フィクスチャの活用
-
-### 2.1. 基本フィクスチャ
-
-```python
-# conftest.py
-import pytest
-from pathlib import Path
-from unittest.mock import Mock
-
-```pytest.fixture
-    [File not found: /home/jinno/ucg-devops/pytest.fixture]
-```
-def sample_data():
-    """テスト用サンプルデータ"""
-    return {
-        "user_id": "test_user",
-        "name": "Test User",
-        "email": "test```example.com"
-    [File not found: /home/jinno/ucg-devops/example.com"]
-```
-    }
-
-```pytest.fixture
-    [File not found: /home/jinno/ucg-devops/pytest.fixture]
-```
-def temp_file(tmp_path):
-    """一時ファイル作成"""
-    file_path = tmp_path / "test_file.txt"
-    file_path.write_text("test content")
-    return file_path
-
-```pytest.fixture
-    [File not found: /home/jinno/ucg-devops/pytest.fixture]
-```
-def mock_logger():
-    """ログモック"""
-    return Mock()
-```
-
-### 2.2. スコープ付きフィクスチャ
-
-```python
-```pytest.fixture(scope="session")
-    [File not found: /home/jinno/ucg-devops/pytest.fixture(scope="session")]
-```
-def database_connection():
-    """セッション全体で共有するDB接続"""
-    connection = create_test_db()
-    yield connection
-    connection.close()
-
-```pytest.fixture(scope="module")
-    [File not found: /home/jinno/ucg-devops/pytest.fixture(scope="module")]
-```
-def api_client():
-    """モジュール単位で共有するAPIクライアント"""
-    return TestClient()
-```
-
-## 3. パラメタライズテスト
-
-### 3.1. 基本的なパラメタライズ
-
-```python
-```pytest.mark.parametrize("input_value,expected",
-    [File not found: /home/jinno/ucg-devops/pytest.mark.parametrize("input_value,expected",]
-``` [
-    ("valid_input", True),
-    ("", False),
-    (None, False),
-])
-def test_validation(input_value, expected):
-    """入力値検証テスト"""
-    result = validate_input(input_value)
-    assert result == expected
-```
-
-### 3.2. 複数パラメータの組み合わせ
-
-```python
-```pytest.mark.parametrize("username,password",
-    [File not found: /home/jinno/ucg-devops/pytest.mark.parametrize("username,password",]
-``` [
-    ("admin", "admin123"),
-    ("user", "user123"),
-])
-```pytest.mark.parametrize("endpoint",
-    [File not found: /home/jinno/ucg-devops/pytest.mark.parametrize("endpoint",]
-``` ["/api/v1", "/api/v2"])
-def test_authentication(username, password, endpoint, api_client):
-    """認証テスト（複数バージョン対応）"""
-    response = api_client.login(endpoint, username, password)
-    assert response.status_code == 200
-```
-
-### 3.3. IDを使った可読性向上
-
-```python
-```pytest.mark.parametrize("test_case",
-    [File not found: /home/jinno/ucg-devops/pytest.mark.parametrize("test_case",]
-``` [
-    pytest.param(
-        {"input": "valid", "expected": True},
-        id="valid_case"
-    ),
-    pytest.param(
-        {"input": "", "expected": False},
-        id="empty_case"
-    ),
-])
-def test_with_ids(test_case):
-    """ID付きテストケース"""
-    result = process_input(test_case["input"])
-    assert result == test_case["expected"]
-```
-
-## 4. モックとパッチング
-
-### 4.1. 基本的なモック使用
-
-```python
-def test_external_api_call(mock_logger):
-    """外部API呼び出しテスト"""
-    with patch('module.requests.get') as mock_get:
-        mock_get.return_value.json.return_value = {"status": "ok"}
-        mock_get.return_value.status_code = 200
-        
-        result = api_function()
-        
-        assert result["status"] == "ok"
-        mock_get.assert_called_once()
-```
-
-### 4.2. フィクスチャとしてのモック
-
-```python
-```pytest.fixture
-    [File not found: /home/jinno/ucg-devops/pytest.fixture]
-```
-def mock_file_system(monkeypatch):
-    """ファイルシステムのモック"""
-    mock_exists = Mock(return_value=True)
-    mock_read = Mock(return_value="test content")
-    
-    monkeypatch.setattr("pathlib.Path.exists", mock_exists)
-    monkeypatch.setattr("pathlib.Path.read_text", mock_read)
-    
-    return {
-        "exists": mock_exists,
-        "read": mock_read
-    }
-```
-
-## 5. テストの構造化
-
-### 5.1. テストクラスの使用
-
-```python
-class TestUserManager:
-    """ユーザー管理機能のテスト"""
-    
-    ```pytest.fixture(autouse=True)
-    [File not found: /home/jinno/ucg-devops/pytest.fixture(autouse=True)]
-```
-    def setup(self, sample_data):
-        """各テスト前の共通セットアップ"""
-        self.user_data = sample_data
-        self.manager = UserManager()
-    
-    def test_create_user(self):
-        """ユーザー作成テスト"""
-        user = self.manager.create_user(self.user_data)
-        assert user.name == self.user_data["name"]
-    
-    def test_validate_email(self):
-        """メール検証テスト"""
-        result = self.manager.validate_email(self.user_data["email"])
-        assert result is True
-```
-
-### 5.2. セットアップとティアダウン
-
-```python
-class TestDatabaseOperations:
-    """データベース操作テスト"""
-    
-    ```pytest.fixture(autouse=True)
-    [File not found: /home/jinno/ucg-devops/pytest.fixture(autouse=True)]
-```
-    def setup_teardown(self, database_connection):
-        """テスト前後の処理"""
-        # セットアップ
-        self.db = database_connection
-        self.db.begin_transaction()
-        
-        yield
-        
-        # ティアダウン
-        self.db.rollback()
-```
-
-## 6. エラーテスト
-
-### 6.1. 例外テスト
-
-```python
-def test_invalid_input_raises_error():
-    """無効入力時の例外テスト"""
-    with pytest.raises(ValueError, match="Invalid input"):
-        process_invalid_data("")
-
-def test_file_not_found_error(tmp_path):
-    """ファイル不存在エラーテスト"""
-    non_existent_file = tmp_path / "missing.txt"
-    
-    with pytest.raises(FileNotFoundError):
-        read_file(non_existent_file)
-```
-
-### 6.2. 警告テスト
-
-```python
-def test_deprecated_function_warns():
-    """非推奨関数の警告テスト"""
-    with pytest.warns(DeprecationWarning):
-        deprecated_function()
-```
-
-## 7. マーキング
-
-### 7.1. カスタムマーカー
-
-```python
-# pytest.ini または pyproject.toml で定義
-# markers =
-#     slow: 実行時間が長いテスト
-#     integration: 統合テスト
-#     unit: 単体テスト
-
-```pytest.mark.unit
-    [File not found: /home/jinno/ucg-devops/pytest.mark.unit]
-```
-def test_fast_unit():
-    """高速な単体テスト"""
-    assert add(1, 2) == 3
-
-```pytest.mark.slow
-    [File not found: /home/jinno/ucg-devops/pytest.mark.slow]
-```
-def test_heavy_processing():
-    """重い処理のテスト"""
-    result = heavy_calculation()
-    assert result is not None
-
-```pytest.mark.integration
-    [File not found: /home/jinno/ucg-devops/pytest.mark.integration]
-```
-def test_system_integration():
-    """システム統合テスト"""
-    response = full_system_test()
-    assert response.success
-```
-
-## 8. テストデータ管理
-
-### 8.1. 外部データの活用
-
-```python
-```pytest.fixture
-    [File not found: /home/jinno/ucg-devops/pytest.fixture]
-```
-def test_data():
-    """外部JSONファイルからテストデータ読み込み"""
-    data_file = Path(__file__).parent / "fixtures" / "test_data.json"
-    with open(data_file) as f:
-        return json.load(f)
-
-def test_with_external_data(test_data):
-    """外部データを使用したテスト"""
-    for case in test_data["test_cases"]:
-        result = process_data(case["input"])
-        assert result == case["expected"]
-```
-
-### 8.2. ファクトリパターン
-
-```python
-```pytest.fixture
-    [File not found: /home/jinno/ucg-devops/pytest.fixture]
-```
-def user_factory():
-    """ユーザーデータ生成ファクトリ"""
-    def _create_user(name="Test User", email=None):
-        return {
-            "name": name,
-            "email": email or f"{name.lower().replace(' ', '.')}```test.com"
-    [File not found: /home/jinno/ucg-devops/test.com"]
-```
-        }
-    return _create_user
-
-def test_user_creation(user_factory):
-    """ファクトリを使用したテスト"""
-    user1 = user_factory("Alice")
-    user2 = user_factory("Bob", "bob```custom.com")
-    [File not found: /home/jinno/ucg-devops/custom.com")]
-```
-    
-    assert user1["name"] == "Alice"
-    assert user2["email"] == "bob```custom.com"
-    [File not found: /home/jinno/ucg-devops/custom.com"]
-```
-```
-
-## 9. パフォーマンステスト
-
-### 9.1. 実行時間測定
-
-```python
-def test_performance_benchmark(benchmark):
-    """パフォーマンステスト（pytest-benchmark使用）"""
-    result = benchmark(expensive_function, arg1, arg2)
-    assert result is not None
-
-```pytest.mark.timeout(5)
-    [File not found: /home/jinno/ucg-devops/pytest.mark.timeout(5)]
-```
-def test_with_timeout():
-    """タイムアウト付きテスト"""
-    result = potentially_slow_function()
-    assert result == "expected"
-```
-
-## 10. ベストプラクティス
-
-### 10.1. テスト命名規則
-
-```python
-# ✅ 良い命名
-def test_user_creation_with_valid_data_returns_user():
-    pass
-
-def test_empty_input_raises_validation_error():
-    pass
-
-# ❌ 悪い命名
-def test_user():
-    pass
-
-def test_error():
-    pass
-```
-
-### 10.2. アサーション
-
-```python
-# ✅ 明確なアサーション
-def test_user_status():
-    user = create_user()
-    assert user.is_active is True
-    assert user.email == "test```example.com"
-    [File not found: /home/jinno/ucg-devops/example.com"]
-```
-    assert len(user.permissions) == 3
-
-# ✅ カスタムエラーメッセージ
-def test_calculation():
-    result = calculate(10, 5)
-    assert result == 15, f"Expected 15, but got {result}"
-```
-
-### 10.3. テストの独立性
-
-```python
-# ✅ 各テストが独立
-```pytest.fixture
-    [File not found: /home/jinno/ucg-devops/pytest.fixture]
-```
-def clean_database():
-    """テスト用クリーンなDB"""
-    db = create_test_db()
-    yield db
-    db.cleanup()
-
-def test_create_record(clean_database):
-    """レコード作成テスト（独立）"""
-    record = clean_database.create_record("test")
-    assert record.id is not None
-
-def test_delete_record(clean_database):
-    """レコード削除テスト（独立）"""
-    record = clean_database.create_record("test")
-    result = clean_database.delete_record(record.id)
-    assert result is True
-```
-
-## 11. 継続的改善
-
-### 11.1. カバレッジモニタリング
-
-```bash
-# カバレッジ実行
-pytest --cov=src --cov-report=html --cov-report=term-missing
-
-# 未カバー行の確認
-pytest --cov=src --cov-report=term-missing --cov-fail-under=80
-```
-
-### 11.2. テストメンテナンス
-
-- **定期レビュー**: 月1回のテストコード見直し
-- **リファクタリング**: 重複コードの統合
-- **更新**: 新機能追加時の既存テスト更新
-- **削除**: 不要になったテストの除去
-
+### 3.2. ダッシュボード設計
+- **リアルタイムビュー**: 現在の品質状況の即座の把握
+- **トレンドビュー**: 時系列での品質変化の追跡
+- **詳細ビュー**: 問題の深堀り分析用の詳細データ
+- **アラートビュー**: 緊急対応が必要な品質問題
+
+## 4. 品質改善アクション
+
+### 4.1. 閾値管理と アラート
+- **警告レベル**: 改善が推奨される状態
+- **注意レベル**: 監視強化が必要な状態
+- **危険レベル**: 即座の対応が必要な状態
+- **自動対応**: 可能な場合の自動修復機能
+
+### 4.2. 継続的改善プロセス
+- **週次品質レビュー**: 短期的な品質トレンドの確認
+- **月次品質評価**: 品質目標達成度の評価
+- **四半期改善計画**: 中長期的な品質向上施策
+- **年次品質戦略**: 品質管理戦略の見直しと策定
 
 ## 13. ドキュメント体系
 

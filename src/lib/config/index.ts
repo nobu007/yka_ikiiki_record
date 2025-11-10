@@ -46,8 +46,7 @@ export const UI_CONFIG = {
 
 export const MESSAGES = {
   success: {
-    dataGeneration: 'テストデータの生成が完了しました',
-    DATA_GENERATION_COMPLETE: 'テストデータの生成が完了しました'
+    dataGeneration: 'テストデータの生成が完了しました'
   },
   error: {
     network: 'ネットワーク接続に問題があります',
@@ -55,21 +54,12 @@ export const MESSAGES = {
     generation: 'データ生成に失敗しました',
     unexpected: '予期せぬエラーが発生しました',
     api: (status: number, statusText: string) => `APIエラー: ${status} ${statusText}`,
-    UNEXPECTED: '予期せぬエラーが発生しました',
-    VALIDATION: '入力内容を確認してください',
-    NETWORK: 'ネットワーク接続を確認してください',
-    TIMEOUT: 'タイムアウトしました。再度お試しください',
-    GENERATION: 'データの生成に失敗しました',
-    NOT_FOUND: '要求されたデータが見つかりません',
-    PERMISSION: 'この操作を実行する権限がありません',
-    NETWORK_ERROR: 'ネットワークエラーが発生しました',
-    DEFAULT_GENERATION: 'データ生成に失敗しました',
-    API_ERROR: (status: number, statusText: string) => `APIエラー: ${status} ${statusText}`
+    timeout: 'タイムアウトしました。再度お試しください',
+    notFound: '要求されたデータが見つかりません',
+    permission: 'この操作を実行する権限がありません'
   },
   loading: {
-    generating: 'データを生成中...',
-    processing: '処理中...',
-    GENERATING_DATA: 'テストデータを生成中...'
+    generating: 'データを生成中...'
   },
   ui: {
     dashboard: {
@@ -91,38 +81,11 @@ export const MESSAGES = {
       ]
     },
     landing: {
-      TITLE: 'イキイキレコード デモ',
-      DASHBOARD_BUTTON: '教師ダッシュボードを見る'
+      title: 'イキイキレコード デモ',
+      dashboardButton: '教師ダッシュボードを見る'
     }
   }
 } as const;
-
-// Additional constants for backward compatibility
-export const SUCCESS_MESSAGES = MESSAGES.success;
-export const ERROR_MESSAGES = MESSAGES.error;
-export const LOADING_MESSAGES = MESSAGES.loading;
-export const UI_TEXT = {
-  DASHBOARD: MESSAGES.ui.dashboard,
-  LANDING: MESSAGES.ui.landing,
-  FEATURES: {
-    LEARNING_DATA: '30日分の学習データ',
-    EMOTION_ANALYSIS: '感情分析サンプル',
-    SEASONAL_FACTORS: '季節要因の考慮',
-    EVENT_SIMULATION: 'イベント影響のシミュレーション',
-    GENERATED_DATA: '生成されるデータ:',
-  }
-};
-
-export const API_ENDPOINTS = {
-  SEED: '/api/seed',
-} as const;
-
-export const DATA_GENERATION_FEATURES = [
-  UI_TEXT.FEATURES.LEARNING_DATA,
-  UI_TEXT.FEATURES.EMOTION_ANALYSIS,
-  UI_TEXT.FEATURES.SEASONAL_FACTORS,
-  UI_TEXT.FEATURES.EVENT_SIMULATION,
-] as const;
 
 // Error codes are defined in src/lib/error-handler.ts to avoid circular dependency
 // Import them directly from there when needed

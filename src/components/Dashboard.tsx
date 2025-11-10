@@ -37,12 +37,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
             </p>
           </header>
           
-          <Notification
-            show={notification.show}
-            message={notification.message}
-            type={notification.type}
-            onClose={onNotificationClose}
-          />
+          {notification.show && (
+            <Notification
+              show={notification.show}
+              message={notification.message}
+              type={notification.type}
+              onClose={onNotificationClose}
+            />
+          )}
           
           <main className="space-y-8">
             <section className="bg-gray-50 rounded-lg p-6">

@@ -87,8 +87,8 @@ describe('Dashboard Integration Tests', () => {
       mockUseDashboard.mockReturnValue({
         isGenerating: true,
         notification: { show: false, message: '', type: 'success' },
-        handleInitialGeneration: mockHandleInitialGeneration,
-        isLoadingMessage: 'テストデータを生成中...',
+        handleGenerate: mockHandleInitialGeneration,
+        isLoadingMessage: 'データを生成中...',
       });
 
       render(
@@ -98,7 +98,7 @@ describe('Dashboard Integration Tests', () => {
       );
 
       // Check loading overlay is present
-      expect(screen.getByText('テストデータを生成中...')).toBeInTheDocument();
+      expect(screen.getByText('データを生成中...')).toBeInTheDocument();
       
       // Button should be disabled and show loading text
       const generateButton = screen.getByText('生成中...');
@@ -116,7 +116,7 @@ describe('Dashboard Integration Tests', () => {
           message: 'テストデータの生成が完了しました', 
           type: 'success' 
         },
-        handleInitialGeneration: mockHandleInitialGeneration,
+        handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
       });
 
@@ -141,7 +141,7 @@ describe('Dashboard Integration Tests', () => {
           message: 'データの生成に失敗しました', 
           type: 'error' 
         },
-        handleInitialGeneration: mockHandleInitialGeneration,
+        handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
       });
 
@@ -197,7 +197,7 @@ describe('Dashboard Integration Tests', () => {
       mockUseDashboard.mockReturnValue({
         isGenerating: false,
         notification: { show: false, message: '', type: 'success' },
-        handleInitialGeneration: mockHandleInitialGeneration,
+        handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
       });
 
@@ -215,8 +215,8 @@ describe('Dashboard Integration Tests', () => {
       mockUseDashboard.mockReturnValue({
         isGenerating: true,
         notification: { show: false, message: '', type: 'success' },
-        handleInitialGeneration: mockHandleInitialGeneration,
-        isLoadingMessage: 'テストデータを生成中...',
+        handleGenerate: mockHandleInitialGeneration,
+        isLoadingMessage: 'データを生成中...',
       });
 
       render(
@@ -242,7 +242,7 @@ describe('Dashboard Integration Tests', () => {
           message: 'ネットワーク接続を確認してください', 
           type: 'error' 
         },
-        handleInitialGeneration: mockHandleInitialGeneration,
+        handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
       });
 

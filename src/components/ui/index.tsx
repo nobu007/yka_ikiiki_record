@@ -100,7 +100,7 @@ export const LoadingOverlay = ({ isLoading, message }: { isLoading: boolean; mes
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 flex flex-col items-center">
         <LoadingSpinner size="md" />
-        <p className="mt-4 text-gray-700">{message || MESSAGES.loading.processing}</p>
+        <p className="mt-4 text-gray-700">{message || MESSAGES.loading.generating}</p>
       </div>
     </div>
   );

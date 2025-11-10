@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES } from '@/lib/config';
+import { MESSAGES } from '@/lib/config';
 
 export const ERROR_CODES = {
   UNKNOWN: 'UNKNOWN_ERROR',
@@ -10,17 +10,7 @@ export const ERROR_CODES = {
   PERMISSION: 'PERMISSION_ERROR'
 } as const;
 
-type ErrorCodeType = typeof ERROR_CODES[keyof typeof ERROR_CODES];
-
-const USER_MESSAGES = {
-  [ERROR_CODES.UNKNOWN]: ERROR_MESSAGES.UNEXPECTED,
-  [ERROR_CODES.VALIDATION]: ERROR_MESSAGES.VALIDATION,
-  [ERROR_CODES.NETWORK]: ERROR_MESSAGES.NETWORK,
-  [ERROR_CODES.TIMEOUT]: ERROR_MESSAGES.TIMEOUT,
-  [ERROR_CODES.GENERATION]: ERROR_MESSAGES.GENERATION,
-  [ERROR_CODES.NOT_FOUND]: ERROR_MESSAGES.NOT_FOUND,
-  [ERROR_CODES.PERMISSION]: ERROR_MESSAGES.PERMISSION
-} as const;
+export type ErrorCodeType = typeof ERROR_CODES[keyof typeof ERROR_CODES];
 
 const NETWORK_ERROR_PATTERNS = ['fetch', 'network', 'connection'];
 
@@ -44,7 +34,7 @@ export class ValidationError extends AppError {
 }
 
 export class NetworkError extends AppError {
-  constructor(message: string = ERROR_MESSAGES.NETWORK_ERROR, statusCode: number = 0) {
+  constructor(message: string = MESSAGES.error.network, statusCode: number = 0) {
     super(message, ERROR_CODES.NETWORK, statusCode);
     this.name = 'NetworkError';
   }
@@ -65,12 +55,23 @@ export function normalizeError(error: unknown): AppError {
   
   if (typeof error === 'string') return new AppError(error);
   
-  return new AppError(ERROR_MESSAGES.UNEXPECTED);
+  return new AppError(MESSAGES.error.unexpected);
 }
 
 export function getUserFriendlyMessage(error: unknown): string {
   const normalized = normalizeError(error);
-  return USER_MESSAGES[normalized.code] || normalized.message;
+  
+  const messageMap: Record<ErrorCodeType, string> = {
+    [ERROR_CODES.UNKNOWN]: MESSAGES.error.unexpected,
+    [ERROR_CODES.VALIDATION]: MESSAGES.error.validation,
+    [ERROR_CODES.NETWORK]: MESSAGES.error.network,
+    [ERROR_CODES.TIMEOUT]: MESSAGES.error.timeout,
+    [ERROR_CODES.GENERATION]: MESSAGES.error.generation,
+    [ERROR_CODES.NOT_FOUND]: MESSAGES.error.notFound,
+    [ERROR_CODES.PERMISSION]: MESSAGES.error.permission
+  };
+  
+  return messageMap[normalized.code] || normalized.message;
 }
 
 export function logError(error: unknown, context?: string): void {

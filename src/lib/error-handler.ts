@@ -33,7 +33,6 @@ export class AppError extends Error {
   ) {
     super(message);
     this.name = 'AppError';
-    Error.captureStackTrace?.(this, AppError);
   }
 }
 
@@ -78,17 +77,13 @@ export function logError(error: unknown, context?: string): void {
   const normalized = normalizeError(error);
   const contextStr = context ? `[${context}]` : '[APP]';
   
-  console.group(`${contextStr} Error Details`);
-  console.error('Code:', normalized.code);
-  console.error('Message:', normalized.message);
-  console.error('Status:', normalized.statusCode);
-  
-  if (normalized.details) {
-    console.error('Details:', normalized.details);
-  }
-  
-  console.error('Stack:', normalized.stack);
-  console.groupEnd();
+  console.error(`${contextStr} Error:`, {
+    code: normalized.code,
+    message: normalized.message,
+    status: normalized.statusCode,
+    details: normalized.details,
+    stack: normalized.stack
+  });
 }
 
 export const errorTypeGuards = {

@@ -1,11 +1,11 @@
 import { MonthlyStats, DayOfWeekStats, TimeOfDayStats, StudentStats } from '@/domain/entities/Stats';
 
-const DAYS_OF_WEEK = ['日', '月', '火', '水', '木', '金', '土'] as const;
+const DAYS_OF_WEEK = ['日', '月', '火', '水', '木', '金', '土'];
 const TIME_RANGES = { 
   morning: { start: 5, end: 12 }, 
   afternoon: { start: 12, end: 18 }, 
   evening: { start: 18, end: 24 } 
-} as const;
+};
 
 type EmotionData = { date: Date; emotion: number; hour?: number; student?: number };
 

@@ -17,9 +17,9 @@ const NOTIFICATION_STYLES = {
   error: 'bg-red-50 border-red-200 text-red-800',
   warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
   info: 'bg-blue-50 border-blue-200 text-blue-800'
-} as const;
+};
 
-export const Notification: React.FC<NotificationProps> = React.memo(({
+export const Notification: React.FC<NotificationProps> = ({
   show,
   message,
   type,
@@ -68,6 +68,4 @@ export const Notification: React.FC<NotificationProps> = React.memo(({
       </div>
     </div>
   );
-});
-
-Notification.displayName = 'Notification';
+};

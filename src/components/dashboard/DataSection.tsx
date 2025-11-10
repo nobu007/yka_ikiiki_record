@@ -9,7 +9,7 @@ interface DataSectionProps {
   onGenerate: () => void;
 }
 
-export const DataSection = React.memo(({ isGenerating, onGenerate }: DataSectionProps) => {
+export const DataSection = ({ isGenerating, onGenerate }: DataSectionProps) => {
   const buttonClasses = getButtonClasses('primary', isGenerating);
   const helpText = isGenerating 
     ? UI_TEXT.DASHBOARD.HELP_TEXT_GENERATING
@@ -64,6 +64,4 @@ export const DataSection = React.memo(({ isGenerating, onGenerate }: DataSection
       </p>
     </section>
   );
-});
-
-DataSection.displayName = 'DataSection';
+};

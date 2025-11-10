@@ -5,7 +5,7 @@ import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
 import { getUserFriendlyMessage, normalizeError, logError } from '@/lib/error-handler';
 import { SUCCESS_MESSAGES, LOADING_MESSAGES } from '@/lib/constants/messages';
 
-const GENERATION_CONFIG = { ...DEFAULT_CONFIG, periodDays: 30 } as const;
+const GENERATION_CONFIG = { ...DEFAULT_CONFIG, periodDays: 30 };
 
 export function useDashboard() {
   const { generateSeed, isGenerating, error } = useSeedGeneration();

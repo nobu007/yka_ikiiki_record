@@ -2,20 +2,14 @@ import { EmotionDistributionPattern, EventEffect, EMOTION_CONSTANTS } from '@/do
 
 const { MIN_EMOTION, MAX_EMOTION, DEFAULT_STDDEV, SEASONAL_IMPACT, MAX_EVENT_IMPACT } = EMOTION_CONSTANTS;
 
-const SEASONAL_FACTORS = [0.2, 0.1, 0.3, 0.4, 0.5, 0.3, 0.2, 0.1, 0.3, 0.4, 0.3, 0.1] as const;
-const BASE_EMOTIONS = { normal: 3.0, bimodal: 2.0, stress: 2.5, happy: 3.5 } as const;
-
-type MonthIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
-type ValidEmotion = number & { readonly __brand: unique symbol };
+const SEASONAL_FACTORS = [0.2, 0.1, 0.3, 0.4, 0.5, 0.3, 0.2, 0.1, 0.3, 0.4, 0.3, 0.1];
+const BASE_EMOTIONS = { normal: 3.0, bimodal: 2.0, stress: 2.5, happy: 3.5 };
 
 const generateNormalRandom = (): number => {
   const u1 = Math.random();
   const u2 = Math.random();
   return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
 };
-
-const isValidEmotionValue = (value: number): value is ValidEmotion => 
-  value >= MIN_EMOTION && value <= MAX_EMOTION;
 
 export const clampEmotionValue = (emotion: number): number => 
   Math.max(MIN_EMOTION, Math.min(MAX_EMOTION, emotion));
@@ -28,7 +22,7 @@ export const generateBaseEmotion = (pattern: EmotionDistributionPattern): number
 };
 
 export const calculateSeasonalEffect = (date: Date): number => {
-  const monthIndex = date.getMonth() as MonthIndex;
+  const monthIndex = date.getMonth();
   const monthFactor = SEASONAL_FACTORS[monthIndex];
   return (monthFactor - 0.3) * SEASONAL_IMPACT;
 };

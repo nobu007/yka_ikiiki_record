@@ -32,13 +32,3 @@ export const generateEmotion = (
   
   return clampEmotionValue(emotion);
 };
-
-/**
- * 感情値を生成するクラス（後方互換性のため）
- * @deprecated generateEmotion 関数の使用を推奨
- */
-export class EmotionGenerator {
-  generateEmotion(config: DataGenerationConfig, date: Date, studentIndex: number): number {
-    return generateEmotion(config, date, studentIndex);
-  }
-}

@@ -137,11 +137,13 @@ describe('error-handler', () => {
       
       logError(error, 'TestContext');
       
-      expect(mockConsoleGroup).toHaveBeenCalledWith('[TestContext] Error Details');
-      expect(mockConsoleError).toHaveBeenCalledWith('Code:', ERROR_CODES.VALIDATION);
-      expect(mockConsoleError).toHaveBeenCalledWith('Message:', 'Test validation error');
-      expect(mockConsoleError).toHaveBeenCalledWith('Status:', 400);
-      expect(mockConsoleGroupEnd).toHaveBeenCalled();
+      expect(mockConsoleError).toHaveBeenCalledWith('[TestContext] Error:', {
+        code: ERROR_CODES.VALIDATION,
+        message: 'Test validation error',
+        status: 400,
+        details: undefined,
+        stack: expect.any(String)
+      });
     });
 
     test('logs error without context', () => {
@@ -149,7 +151,13 @@ describe('error-handler', () => {
       
       logError(error);
       
-      expect(mockConsoleGroup).toHaveBeenCalledWith('[APP] Error Details');
+      expect(mockConsoleError).toHaveBeenCalledWith('[APP] Error:', {
+        code: ERROR_CODES.NETWORK,
+        message: 'Network error',
+        status: 0,
+        details: undefined,
+        stack: expect.any(String)
+      });
     });
 
     test('logs error with details', () => {
@@ -157,7 +165,13 @@ describe('error-handler', () => {
       
       logError(error);
       
-      expect(mockConsoleError).toHaveBeenCalledWith('Details:', { field: 'email' });
+      expect(mockConsoleError).toHaveBeenCalledWith('[APP] Error:', {
+        code: ERROR_CODES.VALIDATION,
+        message: 'Error with details',
+        status: 400,
+        details: { field: 'email' },
+        stack: expect.any(String)
+      });
     });
   });
 

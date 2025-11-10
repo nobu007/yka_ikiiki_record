@@ -1,11 +1,11 @@
 'use client';
 
-import { useDashboard } from '@/hooks';
-import { ErrorBoundary, LoadingOverlay, Notification } from '@/components/common';
-import { DataSection, InstructionsSection } from '@/components/dashboard';
+import { useDashboard } from '@/hooks/useApp';
+import { ErrorBoundary, LoadingOverlay } from '@/components/ui';
+import { Dashboard } from '@/components/Dashboard';
 
 export default function DashboardPage() {
-  const { isGenerating, notification, handleInitialGeneration, isLoadingMessage } = useDashboard();
+  const { isGenerating, notification, handleGenerate, isLoadingMessage } = useDashboard();
 
   return (
     <ErrorBoundary>
@@ -14,32 +14,12 @@ export default function DashboardPage() {
         message={isLoadingMessage || 'データを生成中...'} 
       />
       
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-            <header className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                イキイキレコード - 教師ダッシュボード
-              </h1>
-              <p className="text-gray-600">
-                生徒の学習データを生成・管理するダッシュボードです
-              </p>
-            </header>
-            
-            <Notification
-              show={notification.show}
-              message={notification.message}
-              type={notification.type}
-              onClose={() => notification.show && notification.type !== 'error' && void 0}
-            />
-            
-            <main className="space-y-8">
-              <DataSection isGenerating={isGenerating} onGenerate={handleInitialGeneration} />
-              <InstructionsSection />
-            </main>
-          </div>
-        </div>
-      </div>
+      <Dashboard
+        isGenerating={isGenerating}
+        onGenerate={handleGenerate}
+        notification={notification}
+        onNotificationClose={() => notification.show && notification.type !== 'error' && void 0}
+      />
     </ErrorBoundary>
   );
 }

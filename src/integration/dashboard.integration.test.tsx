@@ -5,15 +5,12 @@
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DashboardPage from '@/app/(dashboard)/dashboard/page';
-import * as hooks from '@/hooks';
-import * as api from '@/application/hooks/useSeedGeneration';
+import * as hooks from '@/hooks/useApp';
 
-// Mock the hooks and API
-jest.mock('@/hooks');
-jest.mock('@/application/hooks/useSeedGeneration');
+// Mock hooks
+jest.mock('@/hooks/useApp');
 
 const mockUseDashboard = hooks.useDashboard as jest.MockedFunction<typeof hooks.useDashboard>;
-const mockUseSeedGeneration = api.useSeedGeneration as jest.MockedFunction<typeof api.useSeedGeneration>;
 
 // Simple test wrapper
 const createTestWrapper = () => {
@@ -35,14 +32,8 @@ describe('Dashboard Integration Tests', () => {
     mockUseDashboard.mockReturnValue({
       isGenerating: false,
       notification: { show: false, message: '', type: 'success' },
-      handleInitialGeneration: mockHandleInitialGeneration,
+      handleGenerate: mockHandleInitialGeneration,
       isLoadingMessage: null,
-    });
-
-    mockUseSeedGeneration.mockReturnValue({
-      isGenerating: false,
-      error: null,
-      generateSeed: jest.fn().mockResolvedValue({}),
     });
   });
 
@@ -59,18 +50,19 @@ describe('Dashboard Integration Tests', () => {
       // Check main elements are present
       expect(screen.getByText('イキイキレコード - 教師ダッシュボード')).toBeInTheDocument();
       expect(screen.getByText('生徒の学習データを生成・管理するダッシュボードです')).toBeInTheDocument();
-      expect(screen.getByText('テストデータ生成')).toBeInTheDocument();
-      expect(screen.getByText('使い方ガイド')).toBeInTheDocument();
+      expect(screen.getByText('データ生成')).toBeInTheDocument();
+      expect(screen.getByText('使い方')).toBeInTheDocument();
     });
 
     it('should handle data generation flow successfully', async () => {
       const Wrapper = createTestWrapper();
       
       // Mock successful generation
+      mockHandleInitialGeneration.mockResolvedValue(undefined);
       mockUseDashboard.mockReturnValue({
         isGenerating: false,
         notification: { show: false, message: '', type: 'success' },
-        handleInitialGeneration: mockHandleInitialGeneration.mockResolvedValue(undefined),
+        handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
       });
 
@@ -81,7 +73,7 @@ describe('Dashboard Integration Tests', () => {
       );
 
       // Click generate button
-      const generateButton = screen.getByText('テストデータを生成');
+      const generateButton = screen.getByText('初期データを生成');
       fireEvent.click(generateButton);
 
       // Verify handler was called
@@ -175,10 +167,11 @@ describe('Dashboard Integration Tests', () => {
       );
 
       // Check all features are listed
-      expect(screen.getByText('30日分の学習データ')).toBeInTheDocument();
-      expect(screen.getByText('感情分析サンプル')).toBeInTheDocument();
-      expect(screen.getByText('季節要因の考慮')).toBeInTheDocument();
-      expect(screen.getByText('イベント影響のシミュレーション')).toBeInTheDocument();
+      expect(screen.getByText('月別感情スコアの統計')).toBeInTheDocument();
+      expect(screen.getByText('曜日別の学習傾向分析')).toBeInTheDocument();
+      expect(screen.getByText('時間帯別の活動パターン')).toBeInTheDocument();
+      expect(screen.getByText('生徒ごとの詳細データ')).toBeInTheDocument();
+      expect(screen.getByText('感情分布の可視化')).toBeInTheDocument();
     });
 
     it('should display instruction steps correctly', () => {
@@ -191,9 +184,10 @@ describe('Dashboard Integration Tests', () => {
       );
 
       // Check instruction steps
-      expect(screen.getByText('データの生成')).toBeInTheDocument();
-      expect(screen.getByText('データの確認')).toBeInTheDocument();
-      expect(screen.getByText('分析と活用')).toBeInTheDocument();
+      expect(screen.getByText('「初期データを生成」ボタンをクリックしてテストデータを作成します')).toBeInTheDocument();
+      expect(screen.getByText('生成が完了すると統計データが表示されます')).toBeInTheDocument();
+      expect(screen.getByText('グラフやチャートで生徒の感情データを確認できます')).toBeInTheDocument();
+      expect(screen.getByText('何度でもデータを再生成して異なるパターンを試せます')).toBeInTheDocument();
     });
 
     it('should display correct help text for different states', () => {
@@ -213,7 +207,7 @@ describe('Dashboard Integration Tests', () => {
         </Wrapper>
       );
 
-      expect(screen.getByText('ボタンをクリックしてテストデータを生成してください。')).toBeInTheDocument();
+      expect(screen.getByText('ボタンをクリックしてテストデータを生成してください')).toBeInTheDocument();
       
       unmount();
 
@@ -232,7 +226,7 @@ describe('Dashboard Integration Tests', () => {
       );
 
       // The help text should show the generating message
-      expect(screen.getByText('データ生成には数秒かかる場合があります。')).toBeInTheDocument();
+      expect(screen.getByText('データを生成しています。しばらくお待ちください...')).toBeInTheDocument();
     });
   });
 

@@ -1,12 +1,16 @@
-import {
-  AppError,
-  ValidationError,
-  NetworkError,
-  normalizeError,
-  getUserFriendlyMessage,
+import { 
+  AppError, 
+  ValidationError, 
+  NetworkError, 
+  normalizeError, 
+  getUserFriendlyMessage, 
   logError,
-  errorTypeGuards,
-  ERROR_CODES
+  isNetworkError,
+  isValidationError,
+  isNotFoundError,
+  isTimeoutError,
+  isServerError,
+  ERROR_CODES 
 } from './error-handler';
 
 // Mock console methods
@@ -178,42 +182,42 @@ describe('error-handler', () => {
   describe('errorTypeGuards', () => {
     test('isNetworkError identifies network errors', () => {
       const networkError = new NetworkError('Network failed');
-      expect(errorTypeGuards.isNetworkError(networkError)).toBe(true);
+      expect(isNetworkError(networkError)).toBe(true);
       
       const validationError = new ValidationError('Invalid data');
-      expect(errorTypeGuards.isNetworkError(validationError)).toBe(false);
+      expect(isNetworkError(validationError)).toBe(false);
     });
 
     test('isValidationError identifies validation errors', () => {
       const validationError = new ValidationError('Invalid data');
-      expect(errorTypeGuards.isValidationError(validationError)).toBe(true);
+      expect(isValidationError(validationError)).toBe(true);
       
       const networkError = new NetworkError('Network failed');
-      expect(errorTypeGuards.isValidationError(networkError)).toBe(false);
+      expect(isValidationError(networkError)).toBe(false);
     });
 
     test('isNotFoundError identifies not found errors', () => {
       const notFoundError = new AppError('Not found', ERROR_CODES.NOT_FOUND, 404);
-      expect(errorTypeGuards.isNotFoundError(notFoundError)).toBe(true);
+      expect(isNotFoundError(notFoundError)).toBe(true);
       
       const validationError = new ValidationError('Invalid data');
-      expect(errorTypeGuards.isNotFoundError(validationError)).toBe(false);
+      expect(isNotFoundError(validationError)).toBe(false);
     });
 
     test('isTimeoutError identifies timeout errors', () => {
       const timeoutError = new AppError('Timeout', ERROR_CODES.TIMEOUT, 408);
-      expect(errorTypeGuards.isTimeoutError(timeoutError)).toBe(true);
+      expect(isTimeoutError(timeoutError)).toBe(true);
       
       const validationError = new ValidationError('Invalid data');
-      expect(errorTypeGuards.isTimeoutError(validationError)).toBe(false);
+      expect(isTimeoutError(validationError)).toBe(false);
     });
 
     test('isServerError identifies server errors', () => {
       const serverError = new AppError('Server error', ERROR_CODES.UNKNOWN, 500);
-      expect(errorTypeGuards.isServerError(serverError)).toBe(true);
+      expect(isServerError(serverError)).toBe(true);
       
       const clientError = new ValidationError('Client error');
-      expect(errorTypeGuards.isServerError(clientError)).toBe(false);
+      expect(isServerError(clientError)).toBe(false);
     });
   });
 });

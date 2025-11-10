@@ -41,17 +41,14 @@ const groupByStudent = (emotions: EmotionData[]): Map<number, number[]> => {
 const filterByTimeRange = (emotions: EmotionData[], start: number, end: number): EmotionData[] =>
   emotions.filter(({ hour }) => hour !== undefined && hour >= start && hour < end);
 
-export const calculateMonthlyStats = (emotions: EmotionData[]): MonthlyStats[] => {
-  const monthlyGroups = groupByMonth(emotions);
-  
-  return Array.from(monthlyGroups.entries())
+export const calculateMonthlyStats = (emotions: EmotionData[]): MonthlyStats[] => 
+  Array.from(groupByMonth(emotions).entries())
     .map(([month, monthEmotions]) => ({
       month,
       avgEmotion: calculateAverage(monthEmotions),
       count: monthEmotions.length
     }))
     .sort((a, b) => a.month.localeCompare(b.month));
-};
 
 export const calculateDayOfWeekStats = (emotions: EmotionData[]): DayOfWeekStats[] => 
   DAYS_OF_WEEK.map(day => {
@@ -87,10 +84,8 @@ export const calculateEmotionDistribution = (emotions: EmotionData[]): number[] 
   return distribution;
 };
 
-export const calculateStudentStats = (emotions: EmotionData[]): StudentStats[] => {
-  const studentGroups = groupByStudent(emotions);
-  
-  return Array.from(studentGroups.entries())
+export const calculateStudentStats = (emotions: EmotionData[]): StudentStats[] => 
+  Array.from(groupByStudent(emotions).entries())
     .map(([student, studentEmotions]) => ({
       student: `学生${student + 1}`,
       recordCount: studentEmotions.length,
@@ -98,7 +93,6 @@ export const calculateStudentStats = (emotions: EmotionData[]): StudentStats[] =
       trendline: calculateTrendline(studentEmotions)
     }))
     .sort((a, b) => a.student.localeCompare(b.student));
-};
 
 export const calculateTrendline = (emotions: number[]): number[] => 
   emotions.slice(-7).map(score => Number((score || 0).toFixed(1)));

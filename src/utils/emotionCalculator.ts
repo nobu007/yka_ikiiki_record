@@ -17,23 +17,15 @@ export const clampEmotionValue = (emotion: number): number =>
 export const generateBaseEmotion = (pattern: EmotionDistributionPattern): number => {
   const baseValue = BASE_EMOTIONS[pattern] ?? BASE_EMOTIONS.normal;
   const adjustedBase = pattern === 'bimodal' && Math.random() < 0.5 ? 4.0 : baseValue;
-  const emotion = adjustedBase + DEFAULT_STDDEV * generateNormalRandom();
-  return clampEmotionValue(emotion);
+  return clampEmotionValue(adjustedBase + DEFAULT_STDDEV * generateNormalRandom());
 };
 
-export const calculateSeasonalEffect = (date: Date): number => {
-  const monthIndex = date.getMonth();
-  const monthFactor = SEASONAL_FACTORS[monthIndex];
-  return (monthFactor - 0.3) * SEASONAL_IMPACT;
-};
+export const calculateSeasonalEffect = (date: Date): number => 
+  (SEASONAL_FACTORS[date.getMonth()] - 0.3) * SEASONAL_IMPACT;
 
-export const calculateEventEffect = (date: Date, events: EventEffect[]): number => {
-  return events.reduce((total, event) => {
-    const { startDate, endDate, impact } = event;
-    
-    if (date < startDate || date > endDate) {
-      return total;
-    }
+export const calculateEventEffect = (date: Date, events: EventEffect[]): number => 
+  events.reduce((total, { startDate, endDate, impact }) => {
+    if (date < startDate || date > endDate) return total;
     
     const duration = endDate.getTime() - startDate.getTime();
     const progress = (date.getTime() - startDate.getTime()) / duration;
@@ -41,4 +33,3 @@ export const calculateEventEffect = (date: Date, events: EventEffect[]): number 
     
     return total + impact * intensity * MAX_EVENT_IMPACT;
   }, 0);
-};

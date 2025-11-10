@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { NotificationIcon } from './Icons';
 
 type NotificationType = 'success' | 'error' | 'warning' | 'info';
@@ -8,8 +8,6 @@ interface NotificationProps {
   message: string;
   type: NotificationType;
   onClose?: () => void;
-  autoClose?: boolean;
-  duration?: number;
 }
 
 const NOTIFICATION_STYLES = {
@@ -23,24 +21,8 @@ export const Notification: React.FC<NotificationProps> = ({
   show,
   message,
   type,
-  onClose,
-  autoClose = false,
-  duration = 5000
+  onClose
 }) => {
-  const timeoutRef = useRef<NodeJS.Timeout>();
-
-  useEffect(() => {
-    if (show && autoClose && onClose) {
-      timeoutRef.current = setTimeout(onClose, duration);
-    }
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [show, autoClose, duration, onClose]);
-
   if (!show) return null;
 
   return (

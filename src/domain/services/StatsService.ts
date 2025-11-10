@@ -14,9 +14,6 @@ import {
 
 type EmotionData = { date: Date; student: number; emotion: number; hour: number };
 
-/**
- * 統計情報に関するサービスクラス
- */
 export class StatsService {
   constructor(private readonly repository: StatsRepository) {}
 
@@ -31,7 +28,19 @@ export class StatsService {
 
   private generateStatsData(config: DataGenerationConfig): Stats {
     const allEmotions = this.generateEmotionData(config);
-    return this.calculateStats(allEmotions);
+    const emotions = allEmotions.map(e => e.emotion);
+    
+    return {
+      overview: {
+        count: allEmotions.length,
+        avgEmotion: calculateAverage(emotions)
+      },
+      monthlyStats: calculateMonthlyStats(allEmotions),
+      studentStats: calculateStudentStats(allEmotions),
+      dayOfWeekStats: calculateDayOfWeekStats(allEmotions),
+      emotionDistribution: calculateEmotionDistribution(allEmotions),
+      timeOfDayStats: calculateTimeOfDayStats(allEmotions)
+    };
   }
 
   private generateEmotionData(config: DataGenerationConfig): EmotionData[] {
@@ -57,21 +66,5 @@ export class StatsService {
     }
 
     return allEmotions;
-  }
-
-  private calculateStats(allEmotions: EmotionData[]): Stats {
-    const emotions = allEmotions.map(e => e.emotion);
-    
-    return {
-      overview: {
-        count: allEmotions.length,
-        avgEmotion: calculateAverage(emotions)
-      },
-      monthlyStats: calculateMonthlyStats(allEmotions),
-      studentStats: calculateStudentStats(allEmotions),
-      dayOfWeekStats: calculateDayOfWeekStats(allEmotions),
-      emotionDistribution: calculateEmotionDistribution(allEmotions),
-      timeOfDayStats: calculateTimeOfDayStats(allEmotions)
-    };
   }
 }

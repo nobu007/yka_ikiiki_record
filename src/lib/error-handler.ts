@@ -86,21 +86,19 @@ export function logError(error: unknown, context?: string): void {
   });
 }
 
-export const errorTypeGuards = {
-  isNetworkError: (error: unknown): boolean => {
-    const normalized = normalizeError(error);
-    return normalized.code === ERROR_CODES.NETWORK || normalized.statusCode === 0;
-  },
-  
-  isValidationError: (error: unknown): boolean => 
-    normalizeError(error).code === ERROR_CODES.VALIDATION,
-  
-  isNotFoundError: (error: unknown): boolean => 
-    normalizeError(error).code === ERROR_CODES.NOT_FOUND,
-  
-  isTimeoutError: (error: unknown): boolean => 
-    normalizeError(error).code === ERROR_CODES.TIMEOUT,
-  
-  isServerError: (error: unknown): boolean => 
-    normalizeError(error).statusCode >= 500
-} as const;
+export const isNetworkError = (error: unknown): boolean => {
+  const normalized = normalizeError(error);
+  return normalized.code === ERROR_CODES.NETWORK || normalized.statusCode === 0;
+};
+
+export const isValidationError = (error: unknown): boolean => 
+  normalizeError(error).code === ERROR_CODES.VALIDATION;
+
+export const isNotFoundError = (error: unknown): boolean => 
+  normalizeError(error).code === ERROR_CODES.NOT_FOUND;
+
+export const isTimeoutError = (error: unknown): boolean => 
+  normalizeError(error).code === ERROR_CODES.TIMEOUT;
+
+export const isServerError = (error: unknown): boolean => 
+  normalizeError(error).statusCode >= 500;

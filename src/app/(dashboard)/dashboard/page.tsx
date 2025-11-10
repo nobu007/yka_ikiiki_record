@@ -31,7 +31,6 @@ export default function DashboardPage() {
               message={notification.message}
               type={notification.type}
               onClose={() => notification.show && notification.type !== 'error' && void 0}
-              autoClose={notification.type === 'success'}
             />
             
             <main className="space-y-8">

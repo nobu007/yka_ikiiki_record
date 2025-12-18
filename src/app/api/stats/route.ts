@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { StatsResponseSchema } from '@/schemas/api';
-import { createSuccessResponse, createErrorResponse } from '@/lib/api/response';
+import { createSuccessResponse } from '@/lib/api/response';
 import { withErrorHandler } from '@/lib/api/error-handler';
 import { StatsService } from '@/domain/services/StatsService';
 import { MockStatsRepository } from '@/infrastructure/storage/MockStatsRepository';
@@ -14,7 +14,7 @@ const statsService = new StatsService(repository);
  * GET /api/stats
  * 統計情報を取得するAPIエンドポイント
  */
-export async function GET(req: NextRequest): Promise<NextResponse> {
+export async function GET(_req: NextRequest): Promise<NextResponse> {
   return withErrorHandler(async () => {
     try {
       // StatsServiceを使用してデータを取得

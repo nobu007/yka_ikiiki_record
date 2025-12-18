@@ -6,12 +6,12 @@ interface AsyncState<T> {
   error: Error | null;
 }
 
-interface UseAsyncOptions<T = any> {
+interface UseAsyncOptions<T> {
   onSuccess?: (data: T) => void;
   onError?: (error: Error) => void;
 }
 
-export function useAsync<T = any>(options: UseAsyncOptions<T> = {}) {
+export function useAsync<T = unknown>(options: UseAsyncOptions<T> = {}) {
   const [state, setState] = useState<AsyncState<T>>({
     data: null,
     isLoading: false,
@@ -34,7 +34,7 @@ export function useAsync<T = any>(options: UseAsyncOptions<T> = {}) {
         throw error;
       }
     },
-    [options.onSuccess, options.onError]
+    [options]
   );
 
   return { ...state, execute };

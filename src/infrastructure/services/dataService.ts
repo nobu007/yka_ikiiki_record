@@ -68,7 +68,7 @@ export interface GeneratedStats {
 }
 
 class DataService {
-  private generateEmotion(config: DataGenerationConfig, date: Date, studentIndex: number): number {
+  private generateEmotion(config: DataGenerationConfig, date: Date, _studentIndex: number): number {
     let emotion = generateBaseEmotion(config.distributionPattern);
     
     // Apply class characteristics

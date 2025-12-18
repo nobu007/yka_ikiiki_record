@@ -1,4 +1,4 @@
-import useSWR, { KeyedMutator } from 'swr';
+import useSWR from 'swr';
 import { StatsResponseSchema, StatsResponse } from '@/schemas/api';
 import { useState, useCallback } from 'react';
 import { validateDataSafe } from '@/lib/api/validation';

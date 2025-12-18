@@ -19,7 +19,7 @@ export class AppError extends Error {
     message: string,
     public code: ErrorCodeType = ERROR_CODES.UNKNOWN,
     public statusCode: number = 500,
-    public details?: Record<string, any>
+    public details?: Record<string, unknown>
   ) {
     super(message);
     this.name = 'AppError';
@@ -27,7 +27,7 @@ export class AppError extends Error {
 }
 
 export class ValidationError extends AppError {
-  constructor(message: string, details?: Record<string, any>) {
+  constructor(message: string, details?: Record<string, unknown>) {
     super(message, ERROR_CODES.VALIDATION, 400, details);
     this.name = 'ValidationError';
   }

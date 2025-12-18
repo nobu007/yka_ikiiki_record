@@ -4,7 +4,7 @@ import { calculateMonthlyStats } from '@/utils/statsCalculator';
 type Record = {
   emotion: number;
   date: string;
-  student: string;
+  student: number;
   comment: string;
 };
 
@@ -81,10 +81,10 @@ export function makeServer({ environment = 'development' } = {}) {
           const records = schema.all('record').models;
           
           // Transform Mirage records to match calculateStats expected format
-          const transformedRecords = records.map((record: any) => ({
+          const transformedRecords = records.map((record: Record) => ({
             date: new Date(record.date),
             emotion: record.emotion,
-            student: parseInt(record.student.replace('学生', '')) - 1, // Convert "学生1" to 0
+            student: parseInt(record.student.toString().replace('学生', '')) - 1, // Convert "学生1" to 0
             hour: new Date(record.date).getHours()
           }));
           

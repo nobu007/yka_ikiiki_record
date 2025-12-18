@@ -2,8 +2,9 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { AppError, normalizeError, logError } from '@/lib/error-handler';
+import { normalizeError, logError } from '@/lib/error-handler';
 import { dataService, DataGenerationConfig } from '@/infrastructure/services/dataService';
+import { DailyEmotion } from '@/domain/entities/Emotion';
 import { APP_CONFIG } from '@/lib/config';
 
 // Validation schema
@@ -27,7 +28,7 @@ const SeedRequestSchema = z.object({
 
 // Improved in-memory storage with metadata
 interface StoredData {
-  data: any;
+  data: DailyEmotion[];
   timestamp: number;
   config: DataGenerationConfig;
 }

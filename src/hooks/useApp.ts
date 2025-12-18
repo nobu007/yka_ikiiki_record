@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { APP_CONFIG, MESSAGES } from '@/lib/config';
-import { AppError, normalizeError, getUserFriendlyMessage, logError } from '@/lib/error-handler';
+import { normalizeError, getUserFriendlyMessage, logError } from '@/lib/error-handler';
 
 interface NotificationState {
   show: boolean;

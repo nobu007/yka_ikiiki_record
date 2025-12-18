@@ -8,7 +8,6 @@ import { generateEmotion } from './EmotionGenerator';
 jest.mock('../repositories/StatsRepository');
 jest.mock('./EmotionGenerator');
 
-const MockStatsRepository = StatsRepository as jest.MockedClass<typeof StatsRepository>;
 const mockGenerateEmotion = generateEmotion as jest.MockedFunction<typeof generateEmotion>;
 
 describe('StatsService', () => {
@@ -21,7 +20,7 @@ describe('StatsService', () => {
     mockRepository = {
       getStats: jest.fn(),
       saveStats: jest.fn()
-    } as any;
+    } as jest.Mocked<StatsRepository>;
 
     // Mock generateEmotion function
     mockGenerateEmotion.mockReturnValue(3.5);

@@ -3,7 +3,7 @@
  * Tests the interaction between components, hooks, and API
  */
 
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import DashboardPage from '@/app/(dashboard)/dashboard/page';
 import * as hooks from '@/hooks/useApp';
 
@@ -14,16 +14,15 @@ const mockUseDashboard = hooks.useDashboard as jest.MockedFunction<typeof hooks.
 
 // Simple test wrapper
 const createTestWrapper = () => {
-  return ({ children }: { children: React.ReactNode }) => (
+  const TestWrapper = ({ children }: { children: React.ReactNode }) => (
     <>{children}</>
   );
+  TestWrapper.displayName = 'TestWrapper';
+  return TestWrapper;
 };
 
 describe('Dashboard Integration Tests', () => {
   const mockHandleInitialGeneration = jest.fn();
-  const mockShowSuccess = jest.fn();
-  const mockShowError = jest.fn();
-  const mockClearNotification = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();

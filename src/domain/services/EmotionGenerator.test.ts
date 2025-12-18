@@ -40,7 +40,6 @@ describe('EmotionGenerator', () => {
 
     test('applies event effects', () => {
       const date = new Date('2025-05-15');
-      const eventDate = new Date('2025-05-15');
       const configWithEvents = {
         ...DEFAULT_CONFIG,
         eventEffects: [

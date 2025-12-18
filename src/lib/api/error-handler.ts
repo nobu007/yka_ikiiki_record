@@ -77,7 +77,7 @@ export function withErrorHandler<T extends NextResponse>(
 export async function parseRequestBody(req: Request): Promise<unknown> {
   try {
     return await req.json();
-  } catch (error) {
+  } catch {
     throw createError.badRequest('リクエストボディの解析に失敗しました');
   }
 }

@@ -61,8 +61,14 @@ describe('ErrorBoundary', () => {
 
   test('reloads page when reload button is clicked', () => {
     const originalLocation = window.location;
-    delete (window as any).location;
-    window.location = { ...originalLocation, reload: jest.fn() } as any;
+    const mockLocation = {
+      ...originalLocation,
+      reload: jest.fn(),
+    };
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: mockLocation,
+    });
 
     render(
       <ErrorBoundary>

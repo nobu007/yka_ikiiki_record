@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { handleApiError, withErrorHandler, parseRequestBody, createError } from './error-handler';
-import { AppError, NetworkError, ValidationError, logError } from '@/lib/error-handler';
+import { AppError, NetworkError, logError } from '@/lib/error-handler';
 
 // Mock the logError function
 jest.mock('@/lib/error-handler', () => ({
@@ -36,8 +36,8 @@ describe('API Error Handler', () => {
     });
 
     test('handles JSON parse error correctly', () => {
-      const syntaxError = new SyntaxError('Unexpected token in JSON');
-      (syntaxError as any).body = true;
+      const syntaxError = new SyntaxError('Unexpected token in JSON') as SyntaxError & { body: boolean };
+      syntaxError.body = true;
 
       const response = handleApiError(syntaxError);
       
@@ -169,7 +169,7 @@ describe('API Error Handler', () => {
     test('parses valid JSON successfully', async () => {
       const mockReq = {
         json: jest.fn().mockResolvedValue({ test: 'data' })
-      } as any;
+      } as unknown as Request;
 
       const result = await parseRequestBody(mockReq);
       
@@ -180,7 +180,7 @@ describe('API Error Handler', () => {
     test('throws bad request error on JSON parse failure', async () => {
       const mockReq = {
         json: jest.fn().mockRejectedValue(new Error('Invalid JSON'))
-      } as any;
+      } as unknown as Request;
 
       await expect(parseRequestBody(mockReq)).rejects.toThrow('リクエストボディの解析に失敗しました');
       expect(mockReq.json).toHaveBeenCalled();

@@ -1,7 +1,7 @@
 'use client';
 
 import { useDataGeneration } from '@/application/hooks/useDataGeneration';
-import { DataGenerationConfig, EmotionDistributionPattern, EventEffect } from '@/domain/entities/DataGeneration';
+import { DataGenerationConfig, EmotionDistributionPattern } from '@/domain/entities/DataGeneration';
 import { useState } from 'react';
 
 const DISTRIBUTION_PATTERNS: { label: string; value: EmotionDistributionPattern }[] = [

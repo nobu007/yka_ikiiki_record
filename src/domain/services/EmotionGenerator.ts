@@ -12,7 +12,7 @@ import {
 export const generateEmotion = (
   config: DataGenerationConfig, 
   date: Date, 
-  studentIndex: number
+  _studentIndex: number
 ): number => {
   const { distributionPattern, classCharacteristics, seasonalEffects, eventEffects } = config;
   

@@ -40,7 +40,7 @@ export async function validateRequestBody<T>(
   try {
     const body = await request.json();
     return validateDataSafe(body, schema);
-  } catch (error) {
+  } catch {
     return [null, 'リクエストボディの解析に失敗しました'];
   }
 }

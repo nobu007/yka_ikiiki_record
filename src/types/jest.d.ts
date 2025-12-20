@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 
 // Enhanced fetch mock types
 declare global {
-  var fetch: jest.MockedFunction<typeof fetch>;
+  const fetch: jest.MockedFunction<typeof fetch>;
 }
 
 // Mock types for testing
@@ -10,7 +10,7 @@ interface MockFetchResponse {
   ok: boolean;
   status: number;
   statusText: string;
-  json: () => Promise<any>;
+  json: () => Promise<unknown>;
 }
 
 declare global {

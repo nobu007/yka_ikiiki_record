@@ -144,6 +144,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
         setError(e instanceof Error ? e : new Error('Failed to update chart'));
       }
     }, 250),
+
     []
   );
 

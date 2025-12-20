@@ -55,7 +55,7 @@ describe('useSeedGeneration', () => {
     await act(async () => {
       try {
         await result.current.generateSeed(mockConfig);
-      } catch (error) {
+      } catch {
         // Expected to throw
       }
     });
@@ -77,7 +77,7 @@ describe('useSeedGeneration', () => {
     await act(async () => {
       try {
         await result.current.generateSeed(mockConfig);
-      } catch (error) {
+      } catch {
         // Expected to throw
       }
     });
@@ -96,7 +96,7 @@ describe('useSeedGeneration', () => {
     await act(async () => {
       try {
         await result.current.generateSeed(mockConfig);
-      } catch (error) {
+      } catch {
         // Expected to throw
       }
     });
@@ -106,7 +106,7 @@ describe('useSeedGeneration', () => {
   });
 
   it('should set loading state correctly during generation', async () => {
-    let resolvePromise: (value: any) => void;
+    let resolvePromise: (value: unknown) => void;
     const mockPromise = new Promise(resolve => {
       resolvePromise = resolve;
     });

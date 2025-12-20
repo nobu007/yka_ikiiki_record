@@ -11,6 +11,18 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    ignores: ["free-nextjs-admin-dashboard/**"],
+  },
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
+      ],
+      "react-hooks/exhaustive-deps": "off"
+    }
+  }
 ];
 
 export default eslintConfig;

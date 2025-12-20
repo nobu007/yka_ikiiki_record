@@ -42,7 +42,7 @@ describe('useAsync', () => {
     await act(async () => {
       try {
         await result.current.execute(mockAsyncFn);
-      } catch (error) {
+      } catch {
         // Expected to throw
       }
     });
@@ -72,7 +72,7 @@ describe('useAsync', () => {
     await act(async () => {
       try {
         await result.current.execute(mockAsyncFn);
-      } catch (error) {
+      } catch {
         // Expected to throw
       }
     });

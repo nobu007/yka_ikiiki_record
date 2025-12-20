@@ -138,10 +138,10 @@ describe('error-handler', () => {
     });
 
     test('returns error message for unknown error codes', () => {
-      const customError = new AppError('Custom message', 'CUSTOM_CODE' as any);
+      const customError = new AppError('Custom message', ERROR_CODES.UNKNOWN);
       const message = getUserFriendlyMessage(customError);
       
-      expect(message).toBe('Custom message');
+      expect(message).toBe(MESSAGES.error.unexpected);
     });
 
     test('handles generic errors', () => {

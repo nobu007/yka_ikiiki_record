@@ -130,9 +130,14 @@ fi
 # 5. Security Analysis
 echo "🔒 Security Analysis..."
 
-# Check for common security patterns
-if grep -r "eval\|Function\|setTimeout.*string" src --include="*.ts" --include="*.tsx" >/dev/null 2>&1; then
-    log_opportunity "Security" "HIGH" "Potentially unsafe patterns" "eval/Function usage detected" "Security hardening"
+# Check for actual security patterns (excluding legitimate TypeScript/Jest patterns)
+UNSAFE_PATTERNS=$(grep -r "eval(" src --include="*.ts" --include="*.tsx" 2>/dev/null | grep -v "test" | grep -v "\.test\." | wc -l)
+CONSTRUCTOR_PATTERNS=$(grep -r "new Function(" src --include="*.ts" --include="*.tsx" 2>/dev/null | grep -v "test" | grep -v "\.test\." | wc -l)
+UNSAFE_SETTIMEOUT=$(grep -r "setTimeout.*string" src --include="*.ts" --include="*.tsx" 2>/dev/null | grep -v "test" | grep -v "\.test\." | wc -l)
+
+TOTAL_UNSAFE=$((UNSAFE_PATTERNS + CONSTRUCTOR_PATTERNS + UNSAFE_SETTIMEOUT))
+if [ "$TOTAL_UNSAFE" -gt 0 ]; then
+    log_opportunity "Security" "HIGH" "Potentially unsafe patterns" "$TOTAL_UNSAFE actual security issues found" "Security hardening"
 fi
 
 # 6. Architectural Analysis

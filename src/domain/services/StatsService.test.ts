@@ -9,7 +9,7 @@ jest.mock('./EmotionGenerator');
 
 const mockGenerateEmotion = generateEmotion as unknown as jest.MockedFunction<typeof generateEmotion>;
 
-describe('StatsService', () => {
+const createMockConfig = (overrides: Partial<DataGenerationConfig> = {}): DataGenerationConfig => ({
   periodDays: 30,
   studentCount: 5,
   distributionPattern: 'normal',

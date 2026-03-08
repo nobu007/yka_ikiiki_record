@@ -40,7 +40,6 @@ const INSTRUCTIONS_CONFIG: InstructionsConfig = {
   ]
 } as const;
 
-// Extracted step number component
 const StepNumber: React.FC<{ number: number }> = React.memo(({ number }) => (
   <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full">
     <span className="text-blue-600 font-semibold text-sm">
@@ -51,7 +50,6 @@ const StepNumber: React.FC<{ number: number }> = React.memo(({ number }) => (
 
 StepNumber.displayName = 'StepNumber';
 
-// Extracted step icon component
 const StepIcon: React.FC<{ icon: string }> = React.memo(({ icon }) => (
   <svg 
     className="h-6 w-6 text-blue-500" 
@@ -70,7 +68,6 @@ const StepIcon: React.FC<{ icon: string }> = React.memo(({ icon }) => (
 
 StepIcon.displayName = 'StepIcon';
 
-// Extracted individual step component
 const InstructionStep: React.FC<{ step: Step; index: number }> = React.memo(({ step, index }) => (
   <div className="flex items-start space-x-4 bg-white rounded-lg p-4 shadow-sm">
     <StepNumber number={index + 1} />
@@ -88,7 +85,6 @@ const InstructionStep: React.FC<{ step: Step; index: number }> = React.memo(({ s
 
 InstructionStep.displayName = 'InstructionStep';
 
-// Extracted steps list component
 const StepsList: React.FC = React.memo(() => (
   <div className="space-y-4 mb-6">
     {INSTRUCTIONS_CONFIG.steps.map((step, index) => (
@@ -99,7 +95,6 @@ const StepsList: React.FC = React.memo(() => (
 
 StepsList.displayName = 'StepsList';
 
-// Extracted tip item component
 const TipItem: React.FC<{ tip: string }> = React.memo(({ tip }) => (
   <li className="flex items-start">
     <span className="text-yellow-500 mr-2">•</span>
@@ -109,7 +104,6 @@ const TipItem: React.FC<{ tip: string }> = React.memo(({ tip }) => (
 
 TipItem.displayName = 'TipItem';
 
-// Extracted tips section component
 const TipsSection: React.FC = React.memo(() => (
   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
     <div className="flex items-center mb-2">

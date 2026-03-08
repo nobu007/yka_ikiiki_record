@@ -17,7 +17,7 @@ export const useStats = () => {
     if (!stats) return null;
     return {
       ...stats,
-    } as Stats;
+    };
   }, [stats]);
 
   const handleRefetch = useCallback(async () => {

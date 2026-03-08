@@ -177,4 +177,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
   );
 };
 
-export const Dashboard = React.memo(DashboardComponent);
+const Dashboard = React.memo(DashboardComponent);
+Dashboard.displayName = 'Dashboard';
+
+export { Dashboard };

@@ -3,6 +3,9 @@ import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
+// Define chart constants to avoid magic numbers
+const DEFAULT_CHART_HEIGHT = 300;
+
 export interface ChartData {
   labels: string[];
   series: Array<{
@@ -31,7 +34,7 @@ const defaultColors = [
 export const EmotionChart = React.memo<EmotionChartProps>(({
   data,
   title,
-  height = 300,
+  height = DEFAULT_CHART_HEIGHT,
   type = 'line',
   colors = defaultColors
 }) => {

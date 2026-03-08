@@ -1,15 +1,12 @@
 'use client';
 
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
-import { debounce } from 'lodash';
 import ChartWrapper from './ChartWrapper';
 
-// Define chart constants to avoid magic numbers
 const CHART_ANIMATION_SPEED_MS = 800;
 const CHART_DYNAMIC_ANIMATION_SPEED_MS = 350;
-const CHART_UPDATE_DEBOUNCE_MS = 250;
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -136,25 +133,6 @@ const DynamicBarChart = memo(function DynamicBarChart({
     data: validData.map(item => item.value),
   }], [validData]);
 
-  const debouncedUpdate = useCallback(
-    debounce(() => {
-      try {
-      } catch (e) {
-        setError(e instanceof Error ? e : new Error('Failed to update chart'));
-      }
-    }, CHART_UPDATE_DEBOUNCE_MS),
-
-    []
-  );
-
-  useEffect(() => {
-    if (mounted) {
-      debouncedUpdate();
-    }
-    return () => {
-      debouncedUpdate.cancel();
-    };
-  }, [mounted, debouncedUpdate]);
 
   const wrapperProps: {
       height: number;

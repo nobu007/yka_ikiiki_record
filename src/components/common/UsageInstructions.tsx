@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-export const UsageInstructions: React.FC = () => {
-  const instructions = [
+export const UsageInstructions = React.memo(() => {
+  const instructions = useMemo(() => [
     '「初期データを生成」ボタンをクリックしてテストデータを作成します',
     '生成が完了すると統計データが表示されます',
     'グラフやチャートで生徒の感情データを確認できます',
     '何度でもデータを再生成して異なるパターンを試せます'
-  ];
+  ], []);
 
   return (
     <section className="bg-blue-50 rounded-lg p-6">
@@ -21,4 +21,6 @@ export const UsageInstructions: React.FC = () => {
       </ol>
     </section>
   );
-};
+});
+
+UsageInstructions.displayName = 'UsageInstructions';

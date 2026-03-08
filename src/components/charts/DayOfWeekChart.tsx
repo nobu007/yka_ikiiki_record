@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react';
 import { EmotionChart } from './EmotionChart';
 
+// Define chart constants to avoid magic numbers
+const DAY_OF_WEEK_CHART_HEIGHT = 300;
+
 export const DayOfWeekChart = React.memo<{ data: Array<{ day: string; avgEmotion: number }> }>(({ data }) => {
   const chartData = useMemo(() => ({
     labels: data.map(d => d.day),
@@ -15,7 +18,7 @@ export const DayOfWeekChart = React.memo<{ data: Array<{ day: string; avgEmotion
       data={chartData}
       title="曜日別感情スコア"
       type="bar"
-      height={300}
+      height={DAY_OF_WEEK_CHART_HEIGHT}
     />
   );
 });

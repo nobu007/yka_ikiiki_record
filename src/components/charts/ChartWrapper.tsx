@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, memo } from 'react';
+import React, { ReactNode, memo } from 'react';
 
 interface ChartWrapperProps {
   title?: string;
@@ -50,6 +50,7 @@ export const ChartWrapper = memo<ChartWrapperProps>(({
   return (
     <div
       className="w-full"
+      style={{ height }}
       role="region"
       aria-label={title || '統計グラフ'}
     >

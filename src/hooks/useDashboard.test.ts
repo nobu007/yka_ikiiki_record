@@ -5,7 +5,6 @@ import { useDashboard } from './useApp';
 global.fetch = jest.fn();
 
 describe('useDashboard', () => {
-  const _createMockResponse = () => ({ /* Mock implementation */ });
   beforeEach(() => {
     jest.clearAllMocks();
   });

@@ -6,6 +6,14 @@
  * - Timeout issues
  * - Slow test execution
  *
+ * LIMITATIONS:
+ * - Does NOT simulate chart methods (updateOptions, updateSeries, etc.)
+ * - Does NOT simulate chart events (onClick, onZoomed, etc.)
+ * - Does NOT validate chart options or data structure
+ * - Only provides basic DOM structure for testing component integration
+ *
+ * For testing chart behavior, use integration/E2E tests instead.
+ *
  * @see https://apexcharts.com/docs/installation/
  */
 'use strict';

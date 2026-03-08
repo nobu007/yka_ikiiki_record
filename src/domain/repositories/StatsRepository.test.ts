@@ -2,6 +2,10 @@ import { StatsRepository } from './StatsRepository';
 import { Stats } from '../entities/Stats';
 import { createEmptyStats, createValidStats } from '@/test-utils/fixtures';
 
+type MockedStatsRepository = {
+  [K in keyof StatsRepository]: jest.MockedFunction<StatsRepository[K]>
+};
+
 describe('StatsRepository Interface', () => {
   describe('Interface Contract', () => {
     it('should define required methods', () => {
@@ -58,7 +62,7 @@ describe('StatsRepository Interface', () => {
   });
 
   describe('Method Behavior Validation', () => {
-    let mockRepository: StatsRepository;
+    let mockRepository: MockedStatsRepository;
     let mockStats: Stats;
 
     beforeEach(() => {
@@ -80,9 +84,9 @@ describe('StatsRepository Interface', () => {
       };
 
       mockRepository = {
-        getStats: jest.fn().mockResolvedValue(mockStats),
-        saveStats: jest.fn().mockResolvedValue(undefined),
-        generateSeedData: jest.fn().mockResolvedValue(undefined)
+        getStats: jest.fn().mockResolvedValue(mockStats) as unknown as jest.MockedFunction<StatsRepository['getStats']>,
+        saveStats: jest.fn().mockResolvedValue(undefined) as unknown as jest.MockedFunction<StatsRepository['saveStats']>,
+        generateSeedData: jest.fn().mockResolvedValue(undefined) as unknown as jest.MockedFunction<StatsRepository['generateSeedData']>
       };
     });
 

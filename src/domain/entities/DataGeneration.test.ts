@@ -429,8 +429,8 @@ describe('DataGeneration Domain Entities', () => {
       expect(config.distributionPattern).toBe('stress');
       expect(config.classCharacteristics.volatility).toBeGreaterThan(0.5);
       expect(config.classCharacteristics.cohesion).toBeLessThan(0.5);
-      expect(config.eventEffects[0].impact).toBeLessThan(0);
-      expect(config.eventEffects[0].impact).toBeGreaterThanOrEqual(EMOTION_CONSTANTS.MAX_EVENT_IMPACT * -1);
+      expect(config.eventEffects[0]?.impact).toBeLessThan(0);
+      expect(config.eventEffects[0]?.impact).toBeGreaterThanOrEqual(EMOTION_CONSTANTS.MAX_EVENT_IMPACT * -1);
     });
   });
 });

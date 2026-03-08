@@ -50,9 +50,9 @@ describe('StatsService', () => {
         dayOfWeekStats: [],
         emotionDistribution: [],
         timeOfDayStats: {
-          morning: { count: 30, avgEmotion: 3.2 },
-          afternoon: { count: 40, avgEmotion: 3.6 },
-          evening: { count: 30, avgEmotion: 3.7 }
+          morning: 3.2,
+          afternoon: 3.6,
+          evening: 3.7
         }
       };
 
@@ -76,7 +76,7 @@ describe('StatsService', () => {
 
       expect(mockRepository.saveStats).toHaveBeenCalledTimes(1);
 
-      const savedStats = mockRepository.saveStats.mock.calls[0][0] as Stats;
+      const savedStats = mockRepository.saveStats.mock.calls[0]?.[0] as Stats;
       expect(savedStats).toHaveProperty('overview');
       expect(savedStats).toHaveProperty('monthlyStats');
       expect(savedStats).toHaveProperty('studentStats');

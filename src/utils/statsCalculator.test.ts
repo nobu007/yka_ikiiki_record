@@ -58,8 +58,8 @@ describe('statsCalculator', () => {
       ];
       const result = calculateMonthlyStats(multiMonthData);
       expect(result).toHaveLength(2);
-      expect(result[0].month).toBe('2025-05');
-      expect(result[1].month).toBe('2025-06');
+      expect(result[0]?.month).toBe('2025-05');
+      expect(result[1]?.month).toBe('2025-06');
     });
   });
 
@@ -161,7 +161,7 @@ describe('statsCalculator', () => {
       ];
       const result = calculateStudentStats(noStudentData);
       expect(result).toHaveLength(1);
-      expect(result[0].student).toBe('学生1'); // student 0 becomes 学生1
+      expect(result[0]?.student).toBe('学生1'); // student 0 becomes 学生1
     });
   });
 

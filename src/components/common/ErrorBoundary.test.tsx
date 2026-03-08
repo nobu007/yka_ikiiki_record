@@ -144,11 +144,19 @@ describe('ErrorBoundary', () => {
     const originalNodeEnv = process.env.NODE_ENV;
 
     beforeAll(() => {
-      process.env.NODE_ENV = 'production';
+      Object.defineProperty(process, 'env', {
+        value: { ...process.env, NODE_ENV: 'production' },
+        writable: true,
+        configurable: true,
+      });
     });
 
     afterAll(() => {
-      process.env.NODE_ENV = originalNodeEnv;
+      Object.defineProperty(process, 'env', {
+        value: { ...process.env, NODE_ENV: originalNodeEnv },
+        writable: true,
+        configurable: true,
+      });
     });
 
     test('hides error details in production mode', () => {

@@ -8,7 +8,7 @@ interface MockResponse extends Partial<Response> {
 // Mock fetch API
 global.fetch = jest.fn();
 
-const createMockResponse = (overrides: Partial<MockResponse> = {}): MockResponse => ({
+const _createMockResponse = (overrides: Partial<MockResponse> = {}): MockResponse => ({
   ok: true,
   status: 200,
   statusText: 'OK',

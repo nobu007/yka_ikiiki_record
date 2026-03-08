@@ -5,17 +5,21 @@ import { LoadingSpinner, LoadingOverlay } from './LoadingSpinner';
 describe('LoadingSpinner', () => {
   test('renders with default props', () => {
     render(<LoadingSpinner />);
-    
+
     const svg = document.querySelector('svg');
     expect(svg).toBeInTheDocument();
-    expect(svg).toHaveClass('animate-spin', 'h-8', 'w-8', 'text-blue-600');
+    expect(svg).toHaveClass('animate-spin');
+    expect(svg).toHaveClass('h-8');
+    expect(svg).toHaveClass('w-8');
+    expect(svg).toHaveClass('text-blue-600');
   });
 
   test('renders with large size', () => {
     render(<LoadingSpinner size="lg" />);
-    
+
     const svg = document.querySelector('svg');
-    expect(svg).toHaveClass('h-12', 'w-12');
+    expect(svg).toHaveClass('h-12');
+    expect(svg).toHaveClass('w-12');
   });
 
   test('renders with small size', () => {

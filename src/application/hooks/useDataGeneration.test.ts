@@ -26,7 +26,7 @@ const createMockEvent = (overrides: Partial<EventEffect> = {}): EventEffect => (
   ...overrides
 });
 
-const createMockClassCharacteristics = (overrides: Partial<ClassCharacteristics> = {}): ClassCharacteristics => ({
+const _createMockClassCharacteristics = (overrides: Partial<ClassCharacteristics> = {}): ClassCharacteristics => ({
   baselineEmotion: 3.0,
   volatility: 0.5,
   cohesion: 0.7,

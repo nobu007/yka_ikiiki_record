@@ -17,6 +17,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^.+\\.(css|sass|scss)$': '<rootDir>/__mocks__/styleMock.js',
     '^.+\\.(png|jpg|jpeg|gif|svg|ico|webp)$': '<rootDir>/__mocks__/fileMock.js',
+    'react-apexcharts': '<rootDir>/__mocks__/react-apexcharts.js',
   },
   transform: {
     // Simplified ts-jest configuration - only override what differs from main tsconfig

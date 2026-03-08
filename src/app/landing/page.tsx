@@ -1,7 +1,8 @@
 import Link from "next/link";
+import React from "react";
 import { MESSAGES } from '@/lib/config';
 
-export default function Landing() {
+const Landing = React.memo(function Landing() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
       <div className="max-w-2xl mx-auto text-center space-y-8">
@@ -40,4 +41,8 @@ export default function Landing() {
       </div>
     </main>
   );
-}
+});
+
+Landing.displayName = 'Landing';
+
+export default Landing;

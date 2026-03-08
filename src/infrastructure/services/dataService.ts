@@ -1,5 +1,3 @@
-// Data service layer for emotion data generation and statistics
-
 import { 
   generateBaseEmotion, 
   calculateSeasonalEffect, 
@@ -71,18 +69,15 @@ class DataService {
   private generateEmotion(config: DataGenerationConfig, date: Date, _studentIndex: number): number {
     let emotion = generateBaseEmotion(config.distributionPattern);
     
-    // Apply class characteristics
     if (config.classCharacteristics) {
       emotion = emotion * (1 + (config.classCharacteristics.volatility - 0.5) * 0.4);
       emotion += (config.classCharacteristics.baselineEmotion - 3.0) * 0.5;
     }
     
-    // Apply seasonal effects
     if (config.seasonalEffects) {
       emotion += calculateSeasonalEffect(date);
     }
     
-    // Apply event effects
     const events = config.eventEffects.map(event => ({
       ...event,
       startDate: new Date(event.startDate),

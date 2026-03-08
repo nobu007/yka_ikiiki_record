@@ -18,7 +18,7 @@ const BELOW_MIN_PERIOD_DAYS = 5;
 const ABOVE_MAX_PERIOD_DAYS = 400;
 
 // Test helper factories
-const _createMockEvent = (overrides: Partial<EventEffect> = {}): EventEffect => ({
+const createMockEvent = (overrides: Partial<EventEffect> = {}): EventEffect => ({
   name: 'Test Event',
   startDate: new Date('2025-01-15'),
   endDate: new Date('2025-01-16'),

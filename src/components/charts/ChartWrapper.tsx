@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, memo } from 'react';
 
 interface ChartWrapperProps {
   title?: string;
@@ -11,14 +11,14 @@ interface ChartWrapperProps {
   isDark?: boolean;
 }
 
-export default function ChartWrapper({
+export const ChartWrapper = memo<ChartWrapperProps>(({
   title,
   height = 300,
   isLoading,
   error,
   children,
   isDark = false
-}: ChartWrapperProps) {
+}) => {
   const headingColor = isDark ? 'text-gray-100' : 'text-gray-900';
   const chartId = `chart-${title?.replace(/\s+/g, '-') ?? 'default'}`;
 
@@ -66,4 +66,8 @@ export default function ChartWrapper({
       </div>
     </div>
   );
-}
+});
+
+ChartWrapper.displayName = 'ChartWrapper';
+
+export default ChartWrapper;

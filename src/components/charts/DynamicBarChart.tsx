@@ -6,6 +6,11 @@ import dynamic from 'next/dynamic';
 import { debounce } from 'lodash';
 import ChartWrapper from './ChartWrapper';
 
+// Define chart constants to avoid magic numbers
+const CHART_ANIMATION_SPEED_MS = 800;
+const CHART_DYNAMIC_ANIMATION_SPEED_MS = 350;
+const CHART_UPDATE_DEBOUNCE_MS = 250;
+
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
   loading: () => (
@@ -63,10 +68,10 @@ const DynamicBarChart = memo(function DynamicBarChart({
       animations: {
         enabled: mounted && typeof window !== 'undefined',
         easing: 'easeinout',
-        speed: 800,
+        speed: CHART_ANIMATION_SPEED_MS,
         dynamicAnimation: {
           enabled: true,
-          speed: 350
+          speed: CHART_DYNAMIC_ANIMATION_SPEED_MS
         }
       },
       background: isDark ? '#1f2937' : '#ffffff',
@@ -137,7 +142,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
       } catch (e) {
         setError(e instanceof Error ? e : new Error('Failed to update chart'));
       }
-    }, 250),
+    }, CHART_UPDATE_DEBOUNCE_MS),
 
     []
   );

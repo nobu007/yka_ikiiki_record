@@ -1,20 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { useDashboard } from './useApp';
 
-interface MockResponse extends Partial<Response> {
-  json: () => Promise<unknown>;
-}
-
 // Mock fetch API
 global.fetch = jest.fn();
-
-const _createMockResponse = (overrides: Partial<MockResponse> = {}): MockResponse => ({
-  ok: true,
-  status: 200,
-  statusText: 'OK',
-  json: async () => ({}),
-  ...overrides
-});
 
 describe('useDashboard', () => {
   beforeEach(() => {
@@ -31,7 +19,7 @@ describe('useDashboard', () => {
   });
 
   it('shows loading message when generating', async () => {
-    const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
+    const mockFetch = fetch as unknown as jest.MockedFunction<typeof fetch>;
     mockFetch.mockImplementation(() => new Promise(() => {})); // Never resolves
 
     const { result } = renderHook(() => useDashboard());
@@ -44,7 +32,7 @@ describe('useDashboard', () => {
   });
 
   it('handles successful generation', async () => {
-    const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
+    const mockFetch = fetch as unknown as jest.MockedFunction<typeof fetch>;
     mockFetch.mockResolvedValue({
       ok: true,
       json: async () => ({ success: true, data: undefined })
@@ -62,7 +50,7 @@ describe('useDashboard', () => {
   });
 
   it('handles generation failure', async () => {
-    const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
+    const mockFetch = fetch as unknown as jest.MockedFunction<typeof fetch>;
     mockFetch.mockResolvedValue({
       ok: false,
       status: 500,

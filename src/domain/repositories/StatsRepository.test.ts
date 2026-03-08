@@ -7,9 +7,9 @@ describe('StatsRepository Interface', () => {
     it('should define required methods', () => {
       // Arrange
       const mockRepository: StatsRepository = {
-        getStats: jest.fn(),
-        saveStats: jest.fn(),
-        generateSeedData: jest.fn()
+        getStats: jest.fn().mockResolvedValue({} as Stats),
+        saveStats: jest.fn().mockResolvedValue(undefined),
+        generateSeedData: jest.fn().mockResolvedValue(undefined)
       };
 
       // Assert

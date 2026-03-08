@@ -11,7 +11,7 @@ import * as hooks from '@/hooks/useApp';
 // Mock hooks
 jest.mock('@/hooks/useApp');
 
-const mockUseDashboard = hooks.useDashboard as jest.MockedFunction<typeof hooks.useDashboard>;
+const mockUseDashboard = hooks.useDashboard as unknown as jest.MockedFunction<typeof hooks.useDashboard>;
 
 // Simple test wrapper
 const createTestWrapper = () => {

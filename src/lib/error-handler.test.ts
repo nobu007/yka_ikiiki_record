@@ -15,10 +15,10 @@ import {
 import { MESSAGES } from '@/lib/config';
 
 // Mock console methods - restore original for error-handler tests
-let originalConsoleError;
-let mockConsoleError;
-let mockConsoleGroup;
-let mockConsoleGroupEnd;
+let originalConsoleError: typeof console.error;
+let mockConsoleError: jest.Mock;
+let mockConsoleGroup: jest.SpyInstance;
+let mockConsoleGroupEnd: jest.SpyInstance;
 
 describe('error-handler', () => {
   beforeAll(() => {

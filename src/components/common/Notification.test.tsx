@@ -46,7 +46,9 @@ describe('Notification', () => {
     );
 
     const notification = screen.getByRole('alert');
-    expect(notification).toHaveClass('bg-green-50', 'border-green-200', 'text-green-800');
+    expect(notification).toHaveClass('bg-green-50');
+    expect(notification).toHaveClass('border-green-200');
+    expect(notification).toHaveClass('text-green-800');
   });
 
   test('should apply correct styles for error type', () => {
@@ -59,7 +61,9 @@ describe('Notification', () => {
     );
 
     const notification = screen.getByRole('alert');
-    expect(notification).toHaveClass('bg-red-50', 'border-red-200', 'text-red-800');
+    expect(notification).toHaveClass('bg-red-50');
+    expect(notification).toHaveClass('border-red-200');
+    expect(notification).toHaveClass('text-red-800');
   });
 
   test('should apply correct styles for warning type', () => {
@@ -72,7 +76,9 @@ describe('Notification', () => {
     );
 
     const notification = screen.getByRole('alert');
-    expect(notification).toHaveClass('bg-yellow-50', 'border-yellow-200', 'text-yellow-800');
+    expect(notification).toHaveClass('bg-yellow-50');
+    expect(notification).toHaveClass('border-yellow-200');
+    expect(notification).toHaveClass('text-yellow-800');
   });
 
   test('should apply correct styles for info type', () => {
@@ -85,7 +91,9 @@ describe('Notification', () => {
     );
 
     const notification = screen.getByRole('alert');
-    expect(notification).toHaveClass('bg-blue-50', 'border-blue-200', 'text-blue-800');
+    expect(notification).toHaveClass('bg-blue-50');
+    expect(notification).toHaveClass('border-blue-200');
+    expect(notification).toHaveClass('text-blue-800');
   });
 
   test('should call onClose when close button is clicked', () => {

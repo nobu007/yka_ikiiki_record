@@ -26,13 +26,6 @@ const createMockEvent = (overrides: Partial<EventEffect> = {}): EventEffect => (
   ...overrides
 });
 
-const _createMockClassCharacteristics = (overrides: Partial<ClassCharacteristics> = {}): ClassCharacteristics => ({
-  baselineEmotion: 3.0,
-  volatility: 0.5,
-  cohesion: 0.7,
-  ...overrides
-});
-
 describe('useDataGeneration', () => {
   let mockOnGenerate: jest.Mock;
 

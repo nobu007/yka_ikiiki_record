@@ -10,6 +10,20 @@ jest.mock('./EmotionGenerator');
 const mockGenerateEmotion = generateEmotion as unknown as jest.MockedFunction<typeof generateEmotion>;
 
 describe('StatsService', () => {
+  periodDays: 30,
+  studentCount: 5,
+  distributionPattern: 'normal',
+  seasonalEffects: false,
+  eventEffects: [],
+  classCharacteristics: {
+    baselineEmotion: 3.0,
+    volatility: 0.5,
+    cohesion: 0.7
+  },
+  ...overrides
+});
+
+describe('StatsService', () => {
   let statsService: StatsService;
   let mockRepository: jest.Mocked<StatsRepository>;
 
@@ -53,18 +67,10 @@ describe('StatsService', () => {
 
   describe('generateSeedData', () => {
     it('should generate and save stats data', async () => {
-      const config: DataGenerationConfig = {
+      const config = createMockConfig({
         periodDays: 30,
-        studentCount: 5,
-        distributionPattern: 'normal',
-        seasonalEffects: false,
-        eventEffects: [],
-        classCharacteristics: {
-          baselineEmotion: 3.0,
-          volatility: 0.5,
-          cohesion: 0.7
-        }
-      };
+        studentCount: 5
+      });
 
       await statsService.generateSeedData(config);
 
@@ -91,18 +97,10 @@ describe('StatsService', () => {
     });
 
     it('should generate correct number of records based on config', async () => {
-      const config: DataGenerationConfig = {
+      const config = createMockConfig({
         periodDays: 10,
-        studentCount: 3,
-        distributionPattern: 'normal',
-        seasonalEffects: false,
-        eventEffects: [],
-        classCharacteristics: {
-          baselineEmotion: 3.0,
-          volatility: 0.5,
-          cohesion: 0.7
-        }
-      };
+        studentCount: 3
+      });
 
       await statsService.generateSeedData(config);
 
@@ -116,18 +114,10 @@ describe('StatsService', () => {
     });
 
     it('should generate valid emotion values', async () => {
-      const config: DataGenerationConfig = {
+      const config = createMockConfig({
         periodDays: 5,
-        studentCount: 2,
-        distributionPattern: 'normal',
-        seasonalEffects: false,
-        eventEffects: [],
-        classCharacteristics: {
-          baselineEmotion: 3.0,
-          volatility: 0.5,
-          cohesion: 0.7
-        }
-      };
+        studentCount: 2
+      });
 
       await statsService.generateSeedData(config);
 
@@ -140,18 +130,10 @@ describe('StatsService', () => {
 
   describe('private methods', () => {
     it('should generate emotion data with correct structure', async () => {
-      const config: DataGenerationConfig = {
+      const config = createMockConfig({
         periodDays: 1,
-        studentCount: 1,
-        distributionPattern: 'normal',
-        seasonalEffects: false,
-        eventEffects: [],
-        classCharacteristics: {
-          baselineEmotion: 3.0,
-          volatility: 0.5,
-          cohesion: 0.7
-        }
-      };
+        studentCount: 1
+      });
 
       await statsService.generateSeedData(config);
 

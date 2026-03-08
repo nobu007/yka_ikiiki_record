@@ -45,15 +45,24 @@ describe('StatsRepository Interface', () => {
 
     it('should enforce async method contracts', () => {
       // Arrange
+      const emptyStats: Stats = {
+        overview: { count: 0, avgEmotion: 0 },
+        monthlyStats: [],
+        studentStats: [],
+        dayOfWeekStats: [],
+        emotionDistribution: [],
+        timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 }
+      };
+
       const mockRepository: StatsRepository = {
-        getStats: jest.fn().mockResolvedValue({} as Stats),
+        getStats: jest.fn().mockResolvedValue(emptyStats),
         saveStats: jest.fn().mockResolvedValue(undefined),
         generateSeedData: jest.fn().mockResolvedValue(undefined)
       };
 
       // Assert
       expect(mockRepository.getStats()).toBeInstanceOf(Promise);
-      expect(mockRepository.saveStats({} as Stats)).toBeInstanceOf(Promise);
+      expect(mockRepository.saveStats(emptyStats)).toBeInstanceOf(Promise);
       expect(mockRepository.generateSeedData()).toBeInstanceOf(Promise);
     });
   });
@@ -266,9 +275,18 @@ describe('StatsRepository Interface', () => {
       };
 
       // Act
+      const emptyStats: Stats = {
+        overview: { count: 0, avgEmotion: 0 },
+        monthlyStats: [],
+        studentStats: [],
+        dayOfWeekStats: [],
+        emotionDistribution: [],
+        timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 }
+      };
+
       const operations = [
         concurrentRepository.getStats(),
-        concurrentRepository.saveStats({} as Stats),
+        concurrentRepository.saveStats(emptyStats),
         concurrentRepository.generateSeedData()
       ];
 
@@ -303,7 +321,7 @@ describe('StatsRepository Interface', () => {
       expect(mockRepository.saveStats).toHaveBeenCalledWith(validStats);
     });
 
-    it('should require all Stats properties', () => {
+    it('should properly type Stats objects', () => {
       // Arrange
       const mockRepository: StatsRepository = {
         getStats: jest.fn(),
@@ -311,14 +329,18 @@ describe('StatsRepository Interface', () => {
         generateSeedData: jest.fn()
       };
 
-      const incompleteStats = {
-        overview: { count: 100, avgEmotion: 3.5 }
-        // Missing required properties
-      } as unknown as Stats;
+      const validStats: Stats = {
+        overview: { count: 100, avgEmotion: 3.5 },
+        monthlyStats: [],
+        studentStats: [],
+        dayOfWeekStats: [],
+        emotionDistribution: [],
+        timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 }
+      };
 
       // Act & Assert
-      // TypeScript should catch this at compile time, but we test runtime behavior
-      expect(() => mockRepository.saveStats(incompleteStats)).not.toThrow();
+      // TypeScript ensures type safety at compile time
+      expect(() => mockRepository.saveStats(validStats)).not.toThrow();
     });
   });
 });

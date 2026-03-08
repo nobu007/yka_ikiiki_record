@@ -49,7 +49,6 @@ const DynamicBarChart = memo(function DynamicBarChart({
         value: Number(item.value)
       })).filter(item => !isNaN(item.value));
     } catch (e) {
-      console.error('Data processing error:', e);
       return [];
     }
   }, [data]);
@@ -140,7 +139,6 @@ const DynamicBarChart = memo(function DynamicBarChart({
       try {
         // チャートの更新処理
       } catch (e) {
-        console.error('Chart update error:', e);
         setError(e instanceof Error ? e : new Error('Failed to update chart'));
       }
     }, 250),
@@ -157,13 +155,26 @@ const DynamicBarChart = memo(function DynamicBarChart({
     };
   }, [mounted, debouncedUpdate]);
 
-  return (
+  const wrapperProps: {
+      height: number;
+      isLoading: boolean;
+      error: Error | null;
+      isDark: boolean;
+      title?: string;
+    } = {
+      height,
+      isLoading: !mounted,
+      error,
+      isDark,
+    };
+
+    if (title !== undefined) {
+      wrapperProps.title = title;
+    }
+
+    return (
     <ChartWrapper
-      title={title}
-      height={height}
-      isLoading={!mounted}
-      error={error}
-      isDark={isDark}
+      {...wrapperProps}
     >
       {validData.length === 0 ? (
         <div

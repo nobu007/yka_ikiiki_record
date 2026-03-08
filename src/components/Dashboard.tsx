@@ -25,7 +25,6 @@ const DashboardComponent: React.FC<DashboardProps> = ({
   const [stats, setStats] = useState<GeneratedStats | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Memoize help text to prevent unnecessary re-renders
   const helpText = useMemo(() => 
     isGenerating 
       ? MESSAGES.ui.dashboard.helpTextGenerating
@@ -33,7 +32,6 @@ const DashboardComponent: React.FC<DashboardProps> = ({
     [isGenerating]
   );
 
-  // Optimized data fetching function
   const fetchStats = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -53,19 +51,16 @@ const DashboardComponent: React.FC<DashboardProps> = ({
     }
   }, []);
 
-  // Fetch existing data when component mounts
   useEffect(() => {
     fetchStats();
   }, [fetchStats]);
 
-  // Refresh data after successful generation
   useEffect(() => {
     if (notification.show && notification.type === 'success') {
       fetchStats();
     }
   }, [notification.show, notification.type, fetchStats]);
 
-  // Memoize features list to prevent unnecessary re-renders
   const featuresList = useMemo(() => 
     MESSAGES.ui.features.generatedData.map((feature, index) => (
       <li key={index} className="flex items-center text-sm text-gray-600">

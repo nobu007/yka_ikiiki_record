@@ -3,6 +3,10 @@ import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
+// Define proper types without using 'as const'
+type ChartMode = 'light' | 'dark';
+type LegendPosition = 'top' | 'bottom' | 'left' | 'right';
+
 export interface ChartData {
   labels: string[];
   series: Array<{
@@ -55,7 +59,7 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
         }
       } : undefined,
       theme: {
-        mode: 'light' as const
+        mode: 'light' satisfies ChartMode
       },
       responsive: [{
         breakpoint: 640,
@@ -64,7 +68,7 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
             height: height * 0.7
           },
           legend: {
-            position: 'bottom' as const
+            position: 'bottom' satisfies LegendPosition
           }
         }
       }]
@@ -75,7 +79,7 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
         ...baseOptions,
         labels: data.labels,
         legend: {
-          position: 'bottom' as const
+          position: 'bottom' satisfies LegendPosition
         }
       };
     }
@@ -101,7 +105,7 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
         borderColor: '#E5E7EB'
       },
       legend: {
-        position: 'top' as const
+        position: 'top' satisfies LegendPosition
       }
     };
   }, [type, height, colors, title]);

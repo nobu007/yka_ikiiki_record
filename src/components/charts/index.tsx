@@ -141,14 +141,14 @@ export const MonthlyEmotionChart = React.memo<{ data: Array<{ month: string; avg
 
 MonthlyEmotionChart.displayName = 'MonthlyEmotionChart';
 
-export const DayOfWeekChart: React.FC<{ data: Array<{ day: string; avgEmotion: number }> }> = ({ data }) => {
-  const chartData: ChartData = {
+export const DayOfWeekChart = React.memo<{ data: Array<{ day: string; avgEmotion: number }> }>(({ data }) => {
+  const chartData = useMemo(() => ({
     labels: data.map(d => d.day),
     series: [{
       name: '平均感情スコア',
       data: data.map(d => d.avgEmotion)
     }]
-  };
+  }), [data]);
 
   return (
     <EmotionChart
@@ -158,17 +158,19 @@ export const DayOfWeekChart: React.FC<{ data: Array<{ day: string; avgEmotion: n
       height={300}
     />
   );
-};
+});
 
-export const EmotionDistributionChart: React.FC<{ data: number[] }> = ({ data }) => {
+DayOfWeekChart.displayName = 'DayOfWeekChart';
+
+export const EmotionDistributionChart = React.memo<{ data: number[] }>(({ data }) => {
   const labels = ['1', '2', '3', '4', '5'];
-  const chartData: ChartData = {
+  const chartData = useMemo(() => ({
     labels,
     series: [{
       name: '分布',
       data
     }]
-  };
+  }), [labels, data]);
 
   return (
     <EmotionChart
@@ -178,16 +180,18 @@ export const EmotionDistributionChart: React.FC<{ data: number[] }> = ({ data })
       height={250}
     />
   );
-};
+});
 
-export const TimeOfDayChart: React.FC<{ data: { morning: number; afternoon: number; evening: number } }> = ({ data }) => {
-  const chartData: ChartData = {
+EmotionDistributionChart.displayName = 'EmotionDistributionChart';
+
+export const TimeOfDayChart = React.memo<{ data: { morning: number; afternoon: number; evening: number } }>(({ data }) => {
+  const chartData = useMemo(() => ({
     labels: ['朝', '昼', '夜'],
     series: [{
       name: '平均感情スコア',
       data: [data.morning, data.afternoon, data.evening]
     }]
-  };
+  }), [data]);
 
   return (
     <EmotionChart
@@ -197,16 +201,18 @@ export const TimeOfDayChart: React.FC<{ data: { morning: number; afternoon: numb
       height={250}
     />
   );
-};
+});
 
-export const StudentEmotionChart: React.FC<{ data: Array<{ student: string; avgEmotion: number }> }> = ({ data }) => {
-  const chartData: ChartData = {
+TimeOfDayChart.displayName = 'TimeOfDayChart';
+
+export const StudentEmotionChart = React.memo<{ data: Array<{ student: string; avgEmotion: number }> }>(({ data }) => {
+  const chartData = useMemo(() => ({
     labels: data.map(d => d.student),
     series: [{
       name: '平均感情スコア',
       data: data.map(d => d.avgEmotion)
     }]
-  };
+  }), [data]);
 
   return (
     <EmotionChart
@@ -216,16 +222,18 @@ export const StudentEmotionChart: React.FC<{ data: Array<{ student: string; avgE
       height={400}
     />
   );
-};
+});
 
-export const EmotionTrendChart: React.FC<{ data: Array<{ student: string; trendline: number[] }> }> = ({ data }) => {
-  const chartData: ChartData = {
+StudentEmotionChart.displayName = 'StudentEmotionChart';
+
+export const EmotionTrendChart = React.memo<{ data: Array<{ student: string; trendline: number[] }> }>(({ data }) => {
+  const chartData = useMemo(() => ({
     labels: ['7日前', '6日前', '5日前', '4日前', '3日前', '2日前', '1日前'],
     series: data.slice(0, 5).map(student => ({
       name: student.student,
       data: student.trendline
     }))
-  };
+  }), [data]);
 
   return (
     <EmotionChart
@@ -235,4 +243,6 @@ export const EmotionTrendChart: React.FC<{ data: Array<{ student: string; trendl
       height={350}
     />
   );
-};
+});
+
+EmotionTrendChart.displayName = 'EmotionTrendChart';

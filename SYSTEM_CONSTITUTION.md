@@ -300,10 +300,51 @@ describe('StatsService', () => {
 - Import loops
 - Circular dependencies
 
+### setTimeout/setInterval Usage Policy
+
+**FORBIDDEN - Business Logic Timers:**
+```typescript
+// ❌ Polling for business state changes
+while (!isOrderComplete(orderId)) {
+  await new Promise(resolve => setTimeout(resolve, 1000));
+}
+
+// ❌ Business process orchestration with delays
+setTimeout(() => processPayment(), 5000);
+
+// ❌ Retry logic in business layer
+for (let i = 0; i < 3; i++) {
+  try {
+    return await fetchData();
+  } catch {
+    await new Promise(resolve => setTimeout(resolve, 1000 * i));
+  }
+}
+```
+
+**PERMITTED - User Experience Timers:**
+```typescript
+// ✅ UI feedback delays to show loading states
+await new Promise(resolve => setTimeout(resolve, 100));
+
+// ✅ Auto-dismissing notifications
+const timeoutRef = setTimeout(() => hideNotification(), 3000);
+
+// ✅ Debouncing user input
+const debounceTimer = setTimeout(() => handleSearch(query), 300);
+
+// ✅ Demo/prototype behavior demonstration
+await new Promise(resolve => setTimeout(resolve, 1000));
+```
+
+**Key Distinction:**
+- **Business Logic Timers**: Control application state, data flow, or business processes
+- **User Experience Timers**: Provide visual feedback, smooth interactions, or demo behavior
+
 ### Type Assertion Exceptions
 The following forms of type assertions are permitted:
 - `as const` - For creating immutable literal types (enhances type safety by preventing mutation)
-- Type guards - When using `value is Type` predicate functions
+- Type guards - When using `value is Type` predicate functions (use minimal assertions within guards)
 - `as unknown as Type` - Test mocks only (necessary for Jest mock objects that don't satisfy full interface requirements)
 
 All other uses of the `as` keyword (including `as keyof`, `as Type`, etc.) are forbidden.

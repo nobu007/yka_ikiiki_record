@@ -12,13 +12,11 @@ const fetcher = async (url: string): Promise<StatsResponse> => {
 
     const rawData = await response.json();
 
-    // レスポンスデータの検証
     const [validated, error] = validateDataSafe(rawData, StatsResponseSchema);
     if (error || !validated) {
       throw new Error(error || 'データの検証に失敗しました');
     }
 
-    // success: falseの場合はエラー扱い
     if (!validated.success) {
       throw new Error(validated.error || '不明なエラーが発生しました');
     }

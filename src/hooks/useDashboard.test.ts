@@ -36,7 +36,7 @@ describe('useDashboard', () => {
     mockFetch.mockResolvedValue({
       ok: true,
       json: async () => ({ success: true, data: undefined })
-    } as Response);
+    } as unknown as Response);
 
     const { result } = renderHook(() => useDashboard());
 
@@ -55,7 +55,7 @@ describe('useDashboard', () => {
       ok: false,
       status: 500,
       statusText: 'Internal Server Error'
-    } as Response);
+    } as unknown as Response);
 
     const { result } = renderHook(() => useDashboard());
 

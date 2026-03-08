@@ -1,15 +1,13 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { handleApiError, withErrorHandler, parseRequestBody, createError } from './error-handler';
-import { AppError, NetworkError, logError } from '@/lib/error-handler';
+import { handleApiError, withErrorHandler, parseRequestBody, parseRequestBodyWithJson, createError } from './error-handler';
+import { AppError, NetworkError, logError, ERROR_CODES } from '@/lib/error-handler';
 
 // Mock the logError function
 jest.mock('@/lib/error-handler', () => ({
   ...jest.requireActual('@/lib/error-handler'),
   logError: jest.fn()
 }));
-
-const mockedLogError = logError as jest.MockedFunction<typeof logError>;
 
 describe('API Error Handler', () => {
   beforeEach(() => {
@@ -32,27 +30,27 @@ describe('API Error Handler', () => {
       
       // Check that response is created (ZodError doesn't log to API)
       expect(response).toBeDefined();
-      expect(mockedLogError).not.toHaveBeenCalled();
+      expect(logError).not.toHaveBeenCalled();
     });
 
     test('handles JSON parse error correctly', () => {
-      const syntaxError = new SyntaxError('Unexpected token in JSON') as SyntaxError & { body: boolean };
-      syntaxError.body = true;
+      const syntaxError = new SyntaxError('Unexpected token in JSON');
+      Object.assign(syntaxError, { body: true });
 
       const response = handleApiError(syntaxError);
-      
+
       // Check that response is created (SyntaxError with body doesn't log to API)
       expect(response).toBeDefined();
-      expect(mockedLogError).not.toHaveBeenCalled();
+      expect(logError).not.toHaveBeenCalled();
     });
 
     test('handles AppError correctly', () => {
-      const appError = new AppError('Test error', 'TEST_ERROR', 422);
+      const appError = new AppError('Test error', ERROR_CODES.VALIDATION, 422);
 
       const response = handleApiError(appError);
-      
+
       expect(response).toBeDefined();
-      expect(mockedLogError).toHaveBeenCalledWith(appError, 'API');
+      expect(logError).toHaveBeenCalledWith(appError, 'API');
     });
 
     test('handles NetworkError correctly', () => {
@@ -61,7 +59,7 @@ describe('API Error Handler', () => {
       const response = handleApiError(networkError);
       
       expect(response).toBeDefined();
-      expect(mockedLogError).toHaveBeenCalledWith(networkError, 'API');
+      expect(logError).toHaveBeenCalledWith(networkError, 'API');
     });
 
     test('handles generic Error correctly', () => {
@@ -70,7 +68,7 @@ describe('API Error Handler', () => {
       const response = handleApiError(genericError);
       
       expect(response).toBeDefined();
-      expect(mockedLogError).toHaveBeenCalledWith(genericError, 'API');
+      expect(logError).toHaveBeenCalledWith(genericError, 'API');
     });
 
     test('handles string error correctly', () => {
@@ -79,7 +77,7 @@ describe('API Error Handler', () => {
       const response = handleApiError(stringError);
       
       expect(response).toBeDefined();
-      expect(mockedLogError).toHaveBeenCalledWith(stringError, 'API');
+      expect(logError).toHaveBeenCalledWith(stringError, 'API');
     });
 
     test('handles unknown error correctly', () => {
@@ -88,7 +86,7 @@ describe('API Error Handler', () => {
       const response = handleApiError(unknownError);
       
       expect(response).toBeDefined();
-      expect(mockedLogError).toHaveBeenCalledWith(unknownError, 'API');
+      expect(logError).toHaveBeenCalledWith(unknownError, 'API');
     });
   });
 
@@ -161,29 +159,25 @@ describe('API Error Handler', () => {
       
       expect(mockHandler).toHaveBeenCalled();
       expect(result).toBeDefined();
-      expect(mockedLogError).toHaveBeenCalledWith(new Error('Handler error'), 'API');
+      expect(logError).toHaveBeenCalledWith(new Error('Handler error'), 'API');
     });
   });
 
-  describe('parseRequestBody', () => {
+  describe('parseRequestBodyWithJson', () => {
     test('parses valid JSON successfully', async () => {
-      const mockReq = {
-        json: jest.fn().mockResolvedValue({ test: 'data' })
-      };
+      const mockJson = jest.fn().mockResolvedValue({ test: 'data' });
 
-      const result = await parseRequestBody(mockReq as unknown as Request);
+      const result = await parseRequestBodyWithJson(mockJson);
 
-      expect(mockReq.json).toHaveBeenCalled();
+      expect(mockJson).toHaveBeenCalled();
       expect(result).toEqual({ test: 'data' });
     });
 
     test('throws bad request error on JSON parse failure', async () => {
-      const mockReq = {
-        json: jest.fn().mockRejectedValue(new Error('Invalid JSON'))
-      };
+      const mockJson = jest.fn().mockRejectedValue(new Error('Invalid JSON'));
 
-      await expect(parseRequestBody(mockReq as unknown as Request)).rejects.toThrow('リクエストボディの解析に失敗しました');
-      expect(mockReq.json).toHaveBeenCalled();
+      await expect(parseRequestBodyWithJson(mockJson)).rejects.toThrow('リクエストボディの解析に失敗しました');
+      expect(mockJson).toHaveBeenCalled();
     });
   });
 });

@@ -81,3 +81,14 @@ export async function parseRequestBody(req: Request): Promise<unknown> {
     throw createError.badRequest('リクエストボディの解析に失敗しました');
   }
 }
+
+/**
+ * Parse request body with injectable dependency for testing
+ */
+export async function parseRequestBodyWithJson(jsonFn: () => Promise<unknown>): Promise<unknown> {
+  try {
+    return await jsonFn();
+  } catch {
+    throw createError.badRequest('リクエストボディの解析に失敗しました');
+  }
+}

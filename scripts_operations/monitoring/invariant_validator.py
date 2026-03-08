@@ -55,10 +55,34 @@ class InvariantValidator:
 
     def _setup_checks(self):
         """Initialize all invariant checks from invariants.yml"""
+        # CRITICAL: INV-ARCH-001 - Single Responsibility (300-line limit)
+        self.checks.append(InvariantCheck(
+            name="INV-ARCH-001: Single Responsibility (300-line limit)",
+            command="find ./src -name '*.ts' -o -name '*.tsx' | while read f; do lines=$(wc -l < \"$f\"); if [ $lines -gt 300 ]; then echo \"$f: $lines\"; fi; done | wc -l",
+            threshold=0,
+            severity="CRITICAL"
+        ))
+
+        # CRITICAL: INV-ARCH-002 - Layer Separation (Domain <- Infrastructure)
+        self.checks.append(InvariantCheck(
+            name="INV-ARCH-002: Layer Separation (no domain->infrastructure imports)",
+            command="grep -r 'from.*infrastructure' src/domain/ --include='*.ts' --include='*.tsx' 2>/dev/null | wc -l",
+            threshold=0,
+            severity="CRITICAL"
+        ))
+
+        # CRITICAL: INV-ARCH-003 - Reference-based options (no deepcopy)
+        self.checks.append(InvariantCheck(
+            name="INV-ARCH-003: Reference-based options propagation",
+            command="grep -r 'deepcopy\\|deepCopy\\|copy\\.deepCopy' src/ --include='*.ts' --include='*.tsx' --include='*.py' | wc -l",
+            threshold=0,
+            severity="CRITICAL"
+        ))
+
         # CRITICAL: INV-QUAL-001 - No logging.getLogger
         self.checks.append(InvariantCheck(
             name="INV-QUAL-001: No logging.getLogger",
-            command="grep -r 'logging.getLogger' src/ --include='*.py' | wc -l",
+            command="grep -r 'logging.getLogger' src/ --include='*.ts' --include='*.tsx' --include='*.js' --include='*.py' | wc -l",
             threshold=0,
             severity="CRITICAL"
         ))
@@ -66,8 +90,10 @@ class InvariantValidator:
         # CRITICAL: INV-QUAL-002 - No timestamped filenames
         self.checks.append(InvariantCheck(
             name="INV-QUAL-002: No timestamped filenames",
-            command="find . -name '*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*' "
-                   "! -path '*/node_modules/*' ! -path '*/.git/*' ! -path '*/.jest-cache/*' | wc -l",
+            command="find . \\( -name '*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*' -o -name '*_20[0-9][0-9]*' \\) "
+                   "! -path '*/node_modules/*' ! -path '*/.git/*' ! -path '*/.jest-cache/*' "
+                   "! -path '*/.next/*' ! -path '*/test-results/*' ! -path '*/playwright-report/*' "
+                   "! -path '*/.pnpm/*' ! -path '*/coverage/*' | wc -l",
             threshold=0,
             severity="CRITICAL"
         ))
@@ -78,16 +104,8 @@ class InvariantValidator:
         self.checks.append(InvariantCheck(
             name="INV-QUAL-003: Common code reuse baseline",
             command="grep -r 'CLIProcessor\\|RateLimitAwareCLIProcessor' src/ --include='*.py' | wc -l",
-            threshold=0,  # Changed from 10 - no Python code exists yet
+            threshold=0,  # No Python code exists yet
             severity="HIGH"
-        ))
-
-        # CRITICAL: INV-ARCH-003 - Reference-based options (no deepcopy in options)
-        self.checks.append(InvariantCheck(
-            name="INV-ARCH-003: Reference-based options propagation",
-            command="grep -r 'deepcopy(' src/ --include='*.py' | grep -E '(options|config)' | wc -l",
-            threshold=0,
-            severity="CRITICAL"
         ))
 
     def run_all_checks(self) -> Tuple[int, int, int]:

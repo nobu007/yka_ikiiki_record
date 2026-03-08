@@ -1,5 +1,4 @@
 import { act } from '@testing-library/react';
-import { useDataGeneration } from './useDataGeneration';
 import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
 import { setupTestHook, createMockOnGenerate, createMockEvent } from './useDataGeneration.test.utils';
 

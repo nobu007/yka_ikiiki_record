@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { NotificationIcon } from './Icons';
 
 type NotificationType = 'success' | 'error' | 'warning' | 'info';
@@ -17,12 +17,16 @@ const NOTIFICATION_STYLES = {
   info: 'bg-blue-50 border-blue-200 text-blue-800'
 };
 
-export const Notification: React.FC<NotificationProps> = ({
-  show,
-  message,
-  type,
-  onClose
+export const Notification = React.memo<NotificationProps>(({ 
+  show, 
+  message, 
+  type, 
+  onClose 
 }) => {
+  const handleClose = useCallback(() => {
+    onClose?.();
+  }, [onClose]);
+
   if (!show) return null;
 
   return (
@@ -39,7 +43,7 @@ export const Notification: React.FC<NotificationProps> = ({
         
         {onClose && (
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="ml-4 text-sm underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1"
             aria-label="通知を閉じる"
             type="button"
@@ -50,4 +54,6 @@ export const Notification: React.FC<NotificationProps> = ({
       </div>
     </div>
   );
-};
+});
+
+Notification.displayName = 'Notification';

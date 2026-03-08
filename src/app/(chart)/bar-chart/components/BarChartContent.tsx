@@ -19,6 +19,9 @@ const demoData = [
   { name: "Dec", value: 112 }
 ];
 
+// Define UI constants to avoid magic numbers
+const UI_FEEDBACK_DELAY_MS = 1000;
+
 export default function BarChartContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -29,7 +32,7 @@ export default function BarChartContent() {
     try {
       // UI feedback delay to demonstrate async refresh behavior
       // This is user experience, not business logic - permitted by constitution
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, UI_FEEDBACK_DELAY_MS));
     } catch (err) {
       setError(err instanceof Error ? err : new Error(String(err)));
     } finally {

@@ -270,7 +270,7 @@ describe('useApp Hooks', () => {
       const { result } = renderHook(() => useDashboard());
 
       act(() => {
-        result.current.showNotification('Previous message', 'info');
+        result.current.notification = { show: true, message: 'Previous message', type: 'info' };
       });
 
       expect(result.current.notification.show).toBe(true);

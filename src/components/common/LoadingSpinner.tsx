@@ -19,7 +19,7 @@ const COLOR_CLASSES = {
   white: 'text-white'
 } as const;
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+export const LoadingSpinner = React.memo<LoadingSpinnerProps>(({
   size = 'md',
   color = 'primary',
   className = '',
@@ -50,13 +50,16 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       </svg>
       <span className="sr-only">{label}</span>
     </div>
-  );
+  });
+});
+
 };
+LoadingSpinner.displayName = 'LoadingSpinner';
 
 /**
  * ローディングオーバーレイコンポーネント
  */
-export const LoadingOverlay: React.FC<{ isLoading: boolean; message?: string }> = ({
+export const LoadingOverlay = React.memo<{ isLoading: boolean; message?: string }>(({
   isLoading,
   message = '読み込み中...'
 }) => {
@@ -71,13 +74,18 @@ export const LoadingOverlay: React.FC<{ isLoading: boolean; message?: string }> 
         </div>
       </div>
     </div>
-  );
+  });
+});
+
+LoadingOverlay.displayName = 'LoadingOverlay';
+});
+
 };
 
 /**
  * ローディングカードコンポーネント
  */
-export const LoadingCard: React.FC<{ message?: string }> = ({
+export const LoadingCard = React.memo<{ message?: string }>(({
   message = 'データを読み込み中...'
 }) => {
   return (
@@ -87,5 +95,10 @@ export const LoadingCard: React.FC<{ message?: string }> = ({
         <p className="mt-4 text-gray-600 text-sm">{message}</p>
       </div>
     </div>
-  );
+  });
+});
+
+LoadingCard.displayName = 'LoadingCard';
+});
+
 };

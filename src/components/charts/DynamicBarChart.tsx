@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 import { debounce } from 'lodash';
 import ChartWrapper from './ChartWrapper';
 
-// ApexChartsをクライアントサイドのみでロード
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
   loading: () => (
@@ -41,7 +40,6 @@ const DynamicBarChart = memo(function DynamicBarChart({
     setMounted(true);
   }, []);
 
-  // データのバリデーションと前処理
   const validData = useMemo(() => {
     try {
       return data.map(item => ({
@@ -53,7 +51,6 @@ const DynamicBarChart = memo(function DynamicBarChart({
     }
   }, [data]);
 
-  // チャートオプションのメモ化
   const options: ApexOptions = useMemo(() => ({
     chart: {
       type: 'bar',
@@ -127,17 +124,14 @@ const DynamicBarChart = memo(function DynamicBarChart({
     },
   }), [height, validData, isDark, mounted]);
 
-  // シリーズデータのメモ化
   const series = useMemo(() => [{
     name: 'スコア',
     data: validData.map(item => item.value),
   }], [validData]);
 
-  // デバウンスされたデータ更新
   const debouncedUpdate = useCallback(
     debounce(() => {
       try {
-        // チャートの更新処理
       } catch (e) {
         setError(e instanceof Error ? e : new Error('Failed to update chart'));
       }

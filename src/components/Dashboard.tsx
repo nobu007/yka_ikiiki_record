@@ -6,6 +6,7 @@ import { DataVisualization } from './dashboard/DataVisualization';
 import { GeneratedStats } from '@/infrastructure/services/dataService';
 import { SeedResponseSchema } from '@/schemas/api';
 import { validateDataSafe } from '@/lib/api/validation';
+import { normalizeError, logError } from '@/lib/error-handler';
 
 interface DashboardProps {
   isGenerating: boolean;
@@ -53,8 +54,10 @@ const DashboardComponent: React.FC<DashboardProps> = ({
       if (validated.success) {
         setStats(validated.data);
       }
-    } catch {
-      // Error is silently handled - stats will remain null
+    } catch (error) {
+      const appError = normalizeError(error);
+      logError(appError, 'Dashboard.fetchStats');
+      // stats will remain null, UI shows appropriate empty state
     } finally {
       setIsLoading(false);
     }

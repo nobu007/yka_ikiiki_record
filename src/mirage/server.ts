@@ -65,8 +65,10 @@ export function makeServer({ environment = 'development' } = {}) {
           });
 
           return new Response(200, {}, { message: 'Data seeded successfully' });
-        } catch {
-          return new Response(500, {}, { error: 'Failed to seed data' });
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          console.error('[Mirage] Seed failed:', errorMessage);
+          return new Response(500, {}, { error: `Failed to seed data: ${errorMessage}` });
         }
       });
 
@@ -82,8 +84,10 @@ export function makeServer({ environment = 'development' } = {}) {
           }));
           
           return calculateMonthlyStats(transformedRecords);
-        } catch {
-          return new Response(500, {}, { error: 'Failed to calculate stats' });
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          console.error('[Mirage] Stats calculation failed:', errorMessage);
+          return new Response(500, {}, { error: `Failed to calculate stats: ${errorMessage}` });
         }
       });
     },

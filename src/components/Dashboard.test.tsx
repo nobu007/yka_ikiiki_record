@@ -8,12 +8,16 @@ global.fetch = jest.fn();
 const mockStats: GeneratedStats = {
   overview: {
     count: 100,
-    avgEmotion: 75.5
+    avgEmotion: 3.5
   },
   monthlyStats: [],
   dayOfWeekStats: [],
   emotionDistribution: [],
-  timeOfDayStats: [],
+  timeOfDayStats: {
+    morning: 3.2,
+    afternoon: 3.8,
+    evening: 3.5
+  },
   studentStats: []
 };
 

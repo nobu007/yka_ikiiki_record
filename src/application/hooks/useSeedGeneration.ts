@@ -2,6 +2,8 @@ import { useState, useCallback } from 'react';
 import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
 import { AppError, NetworkError, normalizeError, logError } from '@/lib/error-handler';
 import { API_ENDPOINTS, ERROR_MESSAGES } from '@/lib/constants/messages';
+import { SeedResponseSchema } from '@/schemas/api';
+import { validateDataSafe } from '@/lib/api/validation';
 
 export function useSeedGeneration() {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -22,9 +24,15 @@ export function useSeedGeneration() {
         throw new NetworkError(ERROR_MESSAGES.API_ERROR(response.status, response.statusText));
       }
 
-      const data = await response.json();
-      if (!data.success) {
-        throw new AppError(data.error || ERROR_MESSAGES.DEFAULT_GENERATION, 'GENERATION_ERROR');
+      const rawData = await response.json();
+
+      const [validated, validationError] = validateDataSafe(rawData, SeedResponseSchema);
+      if (validationError || !validated) {
+        throw new AppError(validationError || 'API response validation failed', 'VALIDATION_ERROR');
+      }
+
+      if (!validated.success) {
+        throw new AppError(validated.error || ERROR_MESSAGES.DEFAULT_GENERATION, 'GENERATION_ERROR');
       }
     } catch (e) {
       const appError = normalizeError(e);

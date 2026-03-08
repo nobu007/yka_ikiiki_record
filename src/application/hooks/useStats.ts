@@ -26,17 +26,10 @@ const fetcher = async (url: string): Promise<StatsResponse> => {
     return validated;
   } catch (e) {
     const error = e instanceof Error ? e : new Error('不明なエラーが発生しました');
-    console.error('統計データの取得に失敗しました:', error);
     throw error;
   }
 };
 
-/**
- * 統計データを取得・管理するアプリケーションHook
- * - APIとの通信
- * - データの検証
- * - エラーハンドリング
- */
 export function useStats() {
   const [error, setError] = useState<Error | null>(null);
 

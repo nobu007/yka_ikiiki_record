@@ -41,9 +41,9 @@ describe('statsCalculator', () => {
     test('月別統計を正しく計算する', () => {
       const result = calculateMonthlyStats(testEmotions);
       expect(result).toHaveLength(1);
-      expect(result[0].month).toBe('2025-05');
-      expect(result[0].avgEmotion).toBe(3.5);
-      expect(result[0].count).toBe(4);
+      expect(result[0]?.month).toBe('2025-05');
+      expect(result[0]?.avgEmotion).toBe(3.5);
+      expect(result[0]?.count).toBe(4);
     });
 
     test('空の配列を処理する', () => {

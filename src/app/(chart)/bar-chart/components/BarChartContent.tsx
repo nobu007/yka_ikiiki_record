@@ -1,7 +1,7 @@
 "use client";
 
 import DynamicBarChart from "@/components/charts/DynamicBarChart";
-import ComponentCard from "@/components/common/ComponentCard";
+import { ComponentCard } from "@/components/common/ComponentCard";
 import { useState, useCallback } from "react";
 
 const demoData = [

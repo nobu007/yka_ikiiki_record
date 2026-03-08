@@ -60,7 +60,6 @@ export function useNotification() {
     showNotification(message, 'info', autoClose);
   }, [showNotification]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {

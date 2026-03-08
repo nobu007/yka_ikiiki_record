@@ -27,8 +27,7 @@ export default function BarChartContent() {
     setIsLoading(true);
     setError(null);
     try {
-      // ここに実際のデータ更新ロジックを実装
-      await new Promise(resolve => setTimeout(resolve, 1000)); // デモ用の遅延
+      await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (err) {
       setError(err as Error);
     } finally {

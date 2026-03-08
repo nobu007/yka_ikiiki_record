@@ -1,9 +1,6 @@
-// Chart components for data visualization
-
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-// Dynamically import ApexCharts to avoid SSR issues
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export interface ChartData {
@@ -23,12 +20,12 @@ export interface EmotionChartProps {
 }
 
 const defaultColors = [
-  '#3B82F6', // blue-500
-  '#10B981', // emerald-500
-  '#F59E0B', // amber-500
-  '#EF4444', // red-500
-  '#8B5CF6', // violet-500
-  '#EC4899', // pink-500
+  '#3B82F6',
+  '#10B981',
+  '#F59E0B',
+  '#EF4444',
+  '#8B5CF6',
+  '#EC4899',
 ];
 
 export const EmotionChart: React.FC<EmotionChartProps> = ({

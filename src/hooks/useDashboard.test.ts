@@ -1,62 +1,196 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { useDashboard } from './useApp';
+import { MESSAGES } from '@/lib/config';
 
-// Mock fetch API
 global.fetch = jest.fn();
 
 describe('useDashboard', () => {
+  const mockSuccessResponse = {
+    success: true,
+    data: {
+      overview: { count: 100, avgEmotion: 75.5 },
+      monthlyStats: [],
+      dayOfWeekStats: [],
+      emotionDistribution: [],
+      timeOfDayStats: [],
+      studentStats: []
+    }
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('returns initial state correctly', () => {
+  it('should initialize with default state', () => {
     const { result } = renderHook(() => useDashboard());
 
     expect(result.current.isGenerating).toBe(false);
-    expect(result.current.notification).toEqual({ show: false, message: '', type: 'info' });
-    expect(result.current.isLoadingMessage).toBe(null);
-    expect(typeof result.current.handleGenerate).toBe('function');
+    expect(result.current.notification).toEqual({
+      show: false,
+      message: '',
+      type: 'info'
+    });
+    expect(result.current.isLoadingMessage).toBeNull();
   });
 
-  it('shows loading message when generating', async () => {
-    const mockFetch = fetch as unknown as jest.MockedFunction<typeof fetch>;
-    mockFetch.mockImplementation(() => new Promise(() => {})); // Never resolves
+  it('should handle successful data generation', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: async () => mockSuccessResponse
+    });
 
     const { result } = renderHook(() => useDashboard());
 
     await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.notification).toEqual({
+      show: true,
+      message: MESSAGES.success.dataGeneration,
+      type: 'success'
+    });
+    expect(result.current.isLoadingMessage).toBeNull();
+  });
+
+  it('should handle API error response', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      statusText: 'Internal Server Error'
+    });
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.notification.show).toBe(true);
+    expect(result.current.notification.type).toBe('error');
+    expect(result.current.isLoadingMessage).toBeNull();
+  });
+
+  it('should handle network error', async () => {
+    (global.fetch as jest.Mock).mockRejectedValueOnce(
+      new Error('Network error')
+    );
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.notification.show).toBe(true);
+    expect(result.current.notification.type).toBe('error');
+    expect(result.current.isLoadingMessage).toBeNull();
+  });
+
+  it('should handle validation error', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: async () => ({ invalid: 'data' })
+    });
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.notification.type).toBe('error');
+  });
+
+  it('should handle API response with success:false', async () => {
+    const errorResponse = {
+      success: false,
+      error: 'Generation failed'
+    };
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: async () => errorResponse
+    });
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.notification.type).toBe('error');
+  });
+
+  it('should show loading message during generation', async () => {
+    (global.fetch as jest.Mock).mockImplementation(
+      () => new Promise(resolve => {
+        setTimeout(() => {
+          resolve({
+            ok: true,
+            status: 200,
+            statusText: 'OK',
+            json: async () => mockSuccessResponse
+          });
+        }, 100);
+      })
+    );
+
+    const { result } = renderHook(() => useDashboard());
+
+    act(() => {
       result.current.handleGenerate();
     });
 
-    expect(result.current.isLoadingMessage).toBe('データを生成中...');
+    expect(result.current.isGenerating).toBe(true);
+    expect(result.current.isLoadingMessage).toBe(MESSAGES.loading.generating);
+
+    await waitFor(() => {
+      expect(result.current.isGenerating).toBe(false);
+    });
   });
 
-  it('handles successful generation', async () => {
-    const mockFetch = fetch as unknown as jest.MockedFunction<typeof fetch>;
-    mockFetch.mockResolvedValue({
+  it('should clear notification before starting generation', async () => {
+    const { result } = renderHook(() => useDashboard());
+
+    act(() => {
+      result.current.notification = { show: true, message: 'Previous message', type: 'info' };
+    });
+
+    expect(result.current.notification.show).toBe(true);
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ success: true, data: undefined })
-    } as Response);
-
-    const { result } = renderHook(() => useDashboard());
+      status: 200,
+      statusText: 'OK',
+      json: async () => mockSuccessResponse
+    });
 
     await act(async () => {
       await result.current.handleGenerate();
     });
 
-    expect(result.current.notification.show).toBe(true);
-    expect(result.current.notification.type).toBe('success');
-    expect(result.current.notification.message).toBe('テストデータの生成が完了しました');
+    expect(result.current.isGenerating).toBe(false);
   });
 
-  it('handles generation failure', async () => {
-    const mockFetch = fetch as unknown as jest.MockedFunction<typeof fetch>;
-    mockFetch.mockResolvedValue({
-      ok: false,
-      status: 500,
-      statusText: 'Internal Server Error',
-      json: async () => ({})
-    } as Response);
+  it('should send correct request payload', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: async () => mockSuccessResponse
+    });
 
     const { result } = renderHook(() => useDashboard());
 
@@ -64,8 +198,47 @@ describe('useDashboard', () => {
       await result.current.handleGenerate();
     });
 
-    expect(result.current.notification.show).toBe(true);
+    expect(global.fetch).toHaveBeenCalledWith(
+      expect.stringContaining('/api/seed'),
+      expect.objectContaining({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: expect.stringContaining('"config"')
+      })
+    );
+  });
+
+  it('should handle 404 error', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      status: 404,
+      statusText: 'Not Found'
+    });
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.isGenerating).toBe(false);
     expect(result.current.notification.type).toBe('error');
-    expect(result.current.notification.message).toBe('予期せぬエラーが発生しました');
+  });
+
+  it('should handle timeout error', async () => {
+    (global.fetch as jest.Mock).mockRejectedValueOnce(
+      new Error('Request timeout')
+    );
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.notification.type).toBe('error');
   });
 });

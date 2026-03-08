@@ -1,122 +1,106 @@
 import { renderHook, act } from '@testing-library/react';
-import { useNotification } from './useNotification';
+import { useNotification } from './useApp';
 
 describe('useNotification', () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-
-  afterEach(() => {
-    jest.useRealTimers();
-  });
-
-  test('initial state should be correct', () => {
+  it('should initialize with default notification state', () => {
     const { result } = renderHook(() => useNotification());
 
-    expect(result.current.notification.show).toBe(false);
-    expect(result.current.notification.message).toBe('');
-    expect(result.current.notification.type).toBe('success');
-    expect(typeof result.current.showSuccess).toBe('function');
-    expect(typeof result.current.showError).toBe('function');
-    expect(typeof result.current.hideNotification).toBe('function');
+    expect(result.current.notification).toEqual({
+      show: false,
+      message: '',
+      type: 'info'
+    });
   });
 
-  test('showSuccess should display success notification', () => {
+  it('should show success notification', () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showSuccess('Success message');
+      result.current.showNotification('Success message', 'success');
     });
 
-    expect(result.current.notification.show).toBe(true);
-    expect(result.current.notification.message).toBe('Success message');
-    expect(result.current.notification.type).toBe('success');
+    expect(result.current.notification).toEqual({
+      show: true,
+      message: 'Success message',
+      type: 'success'
+    });
   });
 
-  test('showError should display error notification', () => {
+  it('should show error notification', () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showError('Error message');
+      result.current.showNotification('Error message', 'error');
     });
 
-    expect(result.current.notification.show).toBe(true);
-    expect(result.current.notification.message).toBe('Error message');
-    expect(result.current.notification.type).toBe('error');
+    expect(result.current.notification).toEqual({
+      show: true,
+      message: 'Error message',
+      type: 'error'
+    });
   });
 
-  test('hideNotification should hide notification', () => {
+  it('should show warning notification', () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showSuccess('Test message');
+      result.current.showNotification('Warning message', 'warning');
     });
 
-    expect(result.current.notification.show).toBe(true);
-
-    act(() => {
-      result.current.hideNotification();
+    expect(result.current.notification).toEqual({
+      show: true,
+      message: 'Warning message',
+      type: 'warning'
     });
-
-    expect(result.current.notification.show).toBe(false);
   });
 
-  test('success notification should auto-hide after 3 seconds', () => {
+  it('should show info notification with default type', () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showSuccess('Auto-hide message');
+      result.current.showNotification('Info message');
     });
 
-    expect(result.current.notification.show).toBe(true);
-
-    
-    act(() => {
-      jest.advanceTimersByTime(3000);
+    expect(result.current.notification).toEqual({
+      show: true,
+      message: 'Info message',
+      type: 'info'
     });
-
-    expect(result.current.notification.show).toBe(false);
   });
 
-  test('error notification should auto-hide after 5 seconds', () => {
+  it('should clear notification', () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showError('Error message');
+      result.current.showNotification('Test message', 'info');
     });
 
     expect(result.current.notification.show).toBe(true);
 
     act(() => {
-      jest.advanceTimersByTime(5000);
+      result.current.clearNotification();
     });
 
     expect(result.current.notification.show).toBe(false);
+    expect(result.current.notification.message).toBe('Test message');
+    expect(result.current.notification.type).toBe('info');
   });
 
-  test('should handle rapid successive notifications', () => {
+  it('should override existing notification', () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showSuccess('Message 1');
+      result.current.showNotification('First message', 'info');
     });
 
     act(() => {
-      result.current.showError('Message 2');
+      result.current.showNotification('Second message', 'error');
     });
 
-    act(() => {
-      result.current.showSuccess('Message 3');
+    expect(result.current.notification).toEqual({
+      show: true,
+      message: 'Second message',
+      type: 'error'
     });
-
-    expect(result.current.notification.message).toBe('Message 3');
-    expect(result.current.notification.type).toBe('success');
-
-    
-    act(() => {
-      jest.advanceTimersByTime(3000);
-    });
-
-    expect(result.current.notification.show).toBe(false);
   });
 });

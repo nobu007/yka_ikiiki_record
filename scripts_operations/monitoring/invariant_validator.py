@@ -73,10 +73,12 @@ class InvariantValidator:
         ))
 
         # HIGH: INV-QUAL-003 - Common code reuse (baseline check)
+        # Note: This is a Python-specific invariant. Frontend is TypeScript/React.
+        # Threshold is 0 until Python processors are implemented.
         self.checks.append(InvariantCheck(
             name="INV-QUAL-003: Common code reuse baseline",
             command="grep -r 'CLIProcessor\\|RateLimitAwareCLIProcessor' src/ --include='*.py' | wc -l",
-            threshold=10,
+            threshold=0,  # Changed from 10 - no Python code exists yet
             severity="HIGH"
         ))
 

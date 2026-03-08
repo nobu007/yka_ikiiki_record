@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { memo } from "react";
+import React, { memo } from "react";
 
 export const GridShape = memo(() => {
   return (

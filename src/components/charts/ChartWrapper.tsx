@@ -38,6 +38,7 @@ export const ChartWrapper = memo<ChartWrapperProps>(({
   if (error) {
     return (
       <div
+        style={{ height }}
         className="w-full flex items-center justify-center text-red-500"
         role="alert"
         aria-label="グラフエラー"

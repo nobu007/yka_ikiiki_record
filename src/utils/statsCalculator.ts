@@ -26,18 +26,28 @@ export const generateBaseEmotion = (pattern: keyof typeof EMOTION_CONFIG.baseEmo
 };
 
 export const calculateSeasonalEffect = (date: Date): number => {
-  const factor = EMOTION_CONFIG.seasonalFactors[date.getMonth()];
+  const monthIndex = date.getMonth();
+  const factor = EMOTION_CONFIG.seasonalFactors[monthIndex] ?? 0.3;
   return (factor - 0.3) * EMOTION_CONFIG.seasonalImpact;
 };
 
-export const calculateEventEffect = (date: Date, events: Array<{startDate: Date; endDate: Date; impact: number}>): number => {
+export const calculateEventEffect = (
+  date: Date,
+  events: ReadonlyArray<{
+    readonly startDate: Date;
+    readonly endDate: Date;
+    readonly impact: number;
+  }>
+): number => {
   return events.reduce((total, { startDate, endDate, impact }) => {
     if (date < startDate || date > endDate) return total;
-    
+
     const duration = endDate.getTime() - startDate.getTime();
+    if (duration === 0) return total; // Prevent division by zero
+
     const progress = (date.getTime() - startDate.getTime()) / duration;
     const intensity = Math.sin(progress * Math.PI);
-    
+
     return total + impact * intensity * EMOTION_CONFIG.maxEventImpact;
   }, 0);
 };

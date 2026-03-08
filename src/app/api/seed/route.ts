@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { normalizeError, logError } from '@/lib/error-handler';
 import { dataService, DataGenerationConfig } from '@/infrastructure/services/dataService';
-import { DailyEmotion } from '@/domain/entities/Emotion';
 import { APP_CONFIG } from '@/lib/config';
 
 const SeedRequestSchema = z.object({
@@ -24,7 +23,7 @@ const SeedRequestSchema = z.object({
 });
 
 interface StoredData {
-  data: DailyEmotion[];
+  data: any;
   timestamp: number;
   config: DataGenerationConfig;
 }
@@ -43,21 +42,29 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const body = await req.json();
     const { config } = SeedRequestSchema.parse(body);
     
-    const stats = dataService.generateStats(config as DataGenerationConfig);
+    // Transform the parsed config to match DataGenerationConfig requirements
+    const transformedConfig: DataGenerationConfig = {
+      studentCount: config.studentCount,
+      periodDays: config.periodDays,
+      distributionPattern: config.distributionPattern,
+      seasonalEffects: config.seasonalEffects,
+      eventEffects: config.eventEffects,
+      classCharacteristics: config.classCharacteristics || {
+        volatility: 0.5,
+        baselineEmotion: 3.0
+      }
+    };
+    
+    const stats = dataService.generateStats(transformedConfig);
     storedData = {
       data: stats,
       timestamp: Date.now(),
-      config: config as DataGenerationConfig
+      config: transformedConfig
     };
 
     return NextResponse.json({
       success: true,
-      message: 'テストデータの生成が完了しました',
-      data: stats,
-      metadata: {
-        timestamp: storedData.timestamp,
-        config: storedData.config
-      }
+      message: 'テストデータの生成が完了しました'
     });
   } catch (error) {
     const appError = normalizeError(error);

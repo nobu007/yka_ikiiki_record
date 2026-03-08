@@ -1,9 +1,21 @@
 import { renderHook, act } from '@testing-library/react';
 import { useSeedGeneration } from './useSeedGeneration';
+import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
 import { AppError, NetworkError } from '@/lib/error-handler';
 
-// Mock fetch
-global.fetch = jest.fn();
+const createMockConfig = (overrides: Partial<DataGenerationConfig> = {}): DataGenerationConfig => ({
+  studentCount: 10,
+  periodDays: 30,
+  distributionPattern: 'normal',
+  seasonalEffects: false,
+  eventEffects: [],
+  classCharacteristics: {
+    volatility: 0.5,
+    baselineEmotion: 3.0,
+    cohesion: 0.7
+  },
+  ...overrides
+});
 
 describe('useSeedGeneration', () => {
   beforeEach(() => {
@@ -19,14 +31,14 @@ describe('useSeedGeneration', () => {
   });
 
   it('should handle successful data generation', async () => {
-    const mockResponse = { success: true, data: { message: 'Data generated' } };
+    const mockResponse = { success: true, message: 'Data generated' };
     (fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => mockResponse,
     });
 
     const { result } = renderHook(() => useSeedGeneration());
-    const mockConfig = { studentCount: 10, periodDays: 30 };
+    const mockConfig = createMockConfig();
 
     await act(async () => {
       await result.current.generateSeed(mockConfig);
@@ -50,7 +62,7 @@ describe('useSeedGeneration', () => {
     });
 
     const { result } = renderHook(() => useSeedGeneration());
-    const mockConfig = { studentCount: 10, periodDays: 30 };
+    const mockConfig = createMockConfig();
 
     await act(async () => {
       try {
@@ -72,7 +84,7 @@ describe('useSeedGeneration', () => {
     });
 
     const { result } = renderHook(() => useSeedGeneration());
-    const mockConfig = { studentCount: 10, periodDays: 30 };
+    const mockConfig = createMockConfig();
 
     await act(async () => {
       try {
@@ -91,7 +103,7 @@ describe('useSeedGeneration', () => {
     (fetch as jest.Mock).mockRejectedValueOnce(new TypeError('Network error'));
 
     const { result } = renderHook(() => useSeedGeneration());
-    const mockConfig = { studentCount: 10, periodDays: 30 };
+    const mockConfig = createMockConfig();
 
     await act(async () => {
       try {
@@ -114,7 +126,7 @@ describe('useSeedGeneration', () => {
     (fetch as jest.Mock).mockReturnValueOnce(mockPromise);
 
     const { result } = renderHook(() => useSeedGeneration());
-    const mockConfig = { studentCount: 10, periodDays: 30 };
+    const mockConfig = createMockConfig();
 
     let generationPromise: Promise<void>;
     
@@ -128,7 +140,7 @@ describe('useSeedGeneration', () => {
     await act(async () => {
       resolvePromise!({
         ok: true,
-        json: async () => ({ success: true, data: {} }),
+        json: async () => ({ success: true, message: 'Data generated' }),
       });
       await generationPromise!;
     });

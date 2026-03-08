@@ -24,7 +24,7 @@ const formatZodError = (error: z.ZodError): string => {
 function isSyntaxErrorWithBody(error: unknown): error is SyntaxError & { body: boolean } {
   return error instanceof SyntaxError &&
          'body' in error &&
-         (error as SyntaxError & { body: boolean }).body === true;
+         (error.body as boolean) === true;
 }
 
 /**

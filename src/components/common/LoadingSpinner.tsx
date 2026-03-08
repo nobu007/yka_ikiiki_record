@@ -1,8 +1,12 @@
 import React from 'react';
 
+// Define proper types without using 'as const'
+type LoadingSize = 'sm' | 'md' | 'lg';
+type LoadingColor = 'primary' | 'secondary' | 'white';
+
 interface LoadingSpinnerProps {
-  size?: 'sm' | 'md' | 'lg';
-  color?: 'primary' | 'secondary' | 'white';
+  size?: LoadingSize;
+  color?: LoadingColor;
   className?: string;
   label?: string;
 }
@@ -11,13 +15,13 @@ const SIZE_CLASSES = {
   sm: 'h-4 w-4',
   md: 'h-8 w-8',
   lg: 'h-12 w-12'
-} as const;
+} satisfies Record<LoadingSize, string>;
 
 const COLOR_CLASSES = {
   primary: 'text-blue-600',
   secondary: 'text-gray-600',
   white: 'text-white'
-} as const;
+} satisfies Record<LoadingColor, string>;
 
 export const LoadingSpinner = React.memo<LoadingSpinnerProps>(({
   size = 'md',
@@ -50,10 +54,9 @@ export const LoadingSpinner = React.memo<LoadingSpinnerProps>(({
       </svg>
       <span className="sr-only">{label}</span>
     </div>
-  });
+  );
 });
 
-};
 LoadingSpinner.displayName = 'LoadingSpinner';
 
 /**
@@ -74,13 +77,10 @@ export const LoadingOverlay = React.memo<{ isLoading: boolean; message?: string 
         </div>
       </div>
     </div>
-  });
+  );
 });
 
 LoadingOverlay.displayName = 'LoadingOverlay';
-});
-
-};
 
 /**
  * ローディングカードコンポーネント
@@ -95,10 +95,7 @@ export const LoadingCard = React.memo<{ message?: string }>(({
         <p className="mt-4 text-gray-600 text-sm">{message}</p>
       </div>
     </div>
-  });
+  );
 });
 
 LoadingCard.displayName = 'LoadingCard';
-});
-
-};

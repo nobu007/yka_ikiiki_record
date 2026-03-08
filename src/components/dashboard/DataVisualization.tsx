@@ -1,6 +1,4 @@
-// Data visualization component for displaying charts and statistics
-
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { 
   MonthlyEmotionChart,
   DayOfWeekChart,
@@ -15,7 +13,18 @@ interface DataVisualizationProps {
   data: GeneratedStats;
 }
 
-export const DataVisualization: React.FC<DataVisualizationProps> = ({ data }) => {
+export const DataVisualization = React.memo<DataVisualizationProps>(({ data }) => {
+  const formatTrendArrow = useCallback((trendline: number[]) => {
+    if (trendline.length < 2) return '';
+    const lastIndex = trendline.length - 1;
+    const prevIndex = trendline.length - 2;
+    const last = trendline[lastIndex];
+    const prev = trendline[prevIndex];
+    if (last === undefined || prev === undefined) return '';
+    return last > prev ? '↗️' : last < prev ? '↘️' : '→';
+  }, []);
+
+  const studentStatsSlice = useMemo(() => data.studentStats.slice(0, 10), [data.studentStats]);
   return (
     <div className="space-y-8">
       {/* Overview Statistics */}
@@ -88,7 +97,7 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ data }) =>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {data.studentStats.slice(0, 10).map((student, index) => (
+              {studentStatsSlice.map((student, index) => (
                 <tr key={student.student} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {student.student}
@@ -102,10 +111,7 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ data }) =>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <div className="flex items-center">
                       <span className="mr-2">
-                        {student.trendline.length >= 2 && (
-                          student.trendline[student.trendline.length - 1] > student.trendline[student.trendline.length - 2] ? '↗️' : 
-                          student.trendline[student.trendline.length - 1] < student.trendline[student.trendline.length - 2] ? '↘️' : '→'
-                        )}
+                        {formatTrendArrow(student.trendline)}
                       </span>
                       <span className="text-xs">
                         {student.trendline.slice(-3).join(' → ')}
@@ -120,4 +126,6 @@ export const DataVisualization: React.FC<DataVisualizationProps> = ({ data }) =>
       </section>
     </div>
   );
-};
+});
+
+DataVisualization.displayName = 'DataVisualization';

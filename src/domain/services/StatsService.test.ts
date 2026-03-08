@@ -90,7 +90,7 @@ describe('StatsService', () => {
 
       expect(mockRepository.saveStats).toHaveBeenCalledTimes(1);
 
-      const savedStats = mockRepository.saveStats.mock.calls[0][0] as Stats;
+      const savedStats = mockRepository.saveStats.mock.calls[0]?.[0] as Stats;
       expect(savedStats.overview.count).toBeGreaterThan(0);
       expect(savedStats.overview.avgEmotion).toBeGreaterThanOrEqual(1);
       expect(savedStats.overview.avgEmotion).toBeLessThanOrEqual(5);
@@ -104,7 +104,7 @@ describe('StatsService', () => {
 
       await statsService.generateSeedData(config);
 
-      const savedStats = mockRepository.saveStats.mock.calls[0][0] as Stats;
+      const savedStats = mockRepository.saveStats.mock.calls[0]?.[0] as Stats;
 
       const minRecords = config.studentCount * config.periodDays;
       const maxRecords = config.studentCount * config.periodDays * 3;
@@ -121,7 +121,7 @@ describe('StatsService', () => {
 
       await statsService.generateSeedData(config);
 
-      const savedStats = mockRepository.saveStats.mock.calls[0][0] as Stats;
+      const savedStats = mockRepository.saveStats.mock.calls[0]?.[0] as Stats;
 
       expect(savedStats.overview.avgEmotion).toBeGreaterThanOrEqual(1);
       expect(savedStats.overview.avgEmotion).toBeLessThanOrEqual(5);
@@ -137,7 +137,7 @@ describe('StatsService', () => {
 
       await statsService.generateSeedData(config);
 
-      const savedStats = mockRepository.saveStats.mock.calls[0][0] as Stats;
+      const savedStats = mockRepository.saveStats.mock.calls[0]?.[0] as Stats;
 
       expect(Array.isArray(savedStats.monthlyStats)).toBe(true);
       expect(Array.isArray(savedStats.studentStats)).toBe(true);

@@ -68,13 +68,16 @@ describe('Dashboard', () => {
 
   describe('Data Fetching', () => {
     it('should fetch stats on mount', async () => {
-      (global.fetch as jest.Mock).mockResolvedValueOnce({
+      const mockResponse = {
         ok: true,
-        json: async () => ({
+        status: 200,
+        json: jest.fn().mockResolvedValue({
           success: true,
           data: mockStats
         })
-      });
+      };
+      
+      (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
 
       render(<Dashboard {...mockProps} />);
 
@@ -96,13 +99,16 @@ describe('Dashboard', () => {
     });
 
     it('should display data visualization when stats are loaded', async () => {
-      (global.fetch as jest.Mock).mockResolvedValueOnce({
+      const mockResponse = {
         ok: true,
-        json: async () => ({
+        status: 200,
+        json: jest.fn().mockResolvedValue({
           success: true,
           data: mockStats
         })
-      });
+      };
+      
+      (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
 
       render(<Dashboard {...mockProps} />);
 

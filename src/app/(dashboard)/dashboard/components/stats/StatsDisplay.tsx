@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import DynamicBarChart, { ChartData } from '@/components/charts/DynamicBarChart';
 
 interface ChartDataSet {
@@ -20,7 +21,7 @@ interface StatsDisplayProps {
   isDark: boolean;
 }
 
-export default function StatsDisplay({ data, isLoading, error, onRetry, isDark }: StatsDisplayProps) {
+const StatsDisplay = memo(function StatsDisplay({ data, isLoading, error, onRetry, isDark }: StatsDisplayProps) {
   const bgColor = isDark ? 'bg-gray-800' : 'bg-white';
   const textColor = isDark ? 'text-gray-200' : 'text-gray-500';
   const headingColor = isDark ? 'text-white' : 'text-gray-900';
@@ -94,4 +95,6 @@ export default function StatsDisplay({ data, isLoading, error, onRetry, isDark }
       </div>
     </div>
   );
-}
+});
+
+export default StatsDisplay;

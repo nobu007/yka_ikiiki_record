@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { useDataGeneration } from '@/application/hooks/useDataGeneration';
 import { DataGenerationConfig, EmotionDistributionPattern } from '@/domain/entities/DataGeneration';
 import { useState } from 'react';
@@ -30,7 +31,7 @@ const DEFAULT_NEW_EVENT: NewEventForm = {
   impact: ''
 };
 
-export default function DataGenerationPanel({ onGenerate, className = '' }: Props) {
+const DataGenerationPanel = memo(function DataGenerationPanel({ onGenerate, className = '' }: Props) {
   const {
     config,
     isGenerating,
@@ -276,4 +277,6 @@ export default function DataGenerationPanel({ onGenerate, className = '' }: Prop
       </div>
     </div>
   );
-}
+});
+
+export default DataGenerationPanel;

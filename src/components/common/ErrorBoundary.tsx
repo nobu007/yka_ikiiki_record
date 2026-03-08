@@ -3,13 +3,16 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { ExclamationIcon } from './Icons';
 
+// Define proper types without using 'as const'
+type ErrorMessageKey = 'title' | 'description' | 'action' | 'buttonText' | 'devDetails';
+
 const ERROR_MESSAGES = {
   title: 'エラーが発生しました',
   description: 'アプリケーションで予期せぬエラーが発生しました。',
   action: 'ページを更新するか、後でもう一度お試しください。',
   buttonText: 'ページを更新',
   devDetails: 'エラー詳細（開発モード）'
-} as const;
+} satisfies Record<ErrorMessageKey, string>;
 
 interface Props {
   children: ReactNode;

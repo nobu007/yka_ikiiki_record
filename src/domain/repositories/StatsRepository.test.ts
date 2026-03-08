@@ -1,5 +1,6 @@
 import { StatsRepository } from './StatsRepository';
 import { Stats } from '../entities/Stats';
+import { createEmptyStats, createValidStats } from '@/test-utils/fixtures';
 
 describe('StatsRepository Interface', () => {
   describe('Interface Contract', () => {
@@ -22,14 +23,10 @@ describe('StatsRepository Interface', () => {
 
     it('should have correct method signatures', () => {
       // Arrange
-      const mockStats: Stats = {
+      const mockStats = createValidStats({
         overview: { count: 100, avgEmotion: 3.5 },
-        monthlyStats: [],
-        studentStats: [],
-        dayOfWeekStats: [],
-        emotionDistribution: [],
         timeOfDayStats: { morning: 3.0, afternoon: 3.5, evening: 4.0 }
-      };
+      });
 
       const mockRepository: StatsRepository = {
         getStats: jest.fn().mockResolvedValue(mockStats),
@@ -45,14 +42,7 @@ describe('StatsRepository Interface', () => {
 
     it('should enforce async method contracts', () => {
       // Arrange
-      const emptyStats: Stats = {
-        overview: { count: 0, avgEmotion: 0 },
-        monthlyStats: [],
-        studentStats: [],
-        dayOfWeekStats: [],
-        emotionDistribution: [],
-        timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 }
-      };
+      const emptyStats = createEmptyStats();
 
       const mockRepository: StatsRepository = {
         getStats: jest.fn().mockResolvedValue(emptyStats),
@@ -110,14 +100,7 @@ describe('StatsRepository Interface', () => {
 
       it('should handle empty stats', async () => {
         // Arrange
-        const emptyStats: Stats = {
-          overview: { count: 0, avgEmotion: 0 },
-          monthlyStats: [],
-          studentStats: [],
-          dayOfWeekStats: [],
-          emotionDistribution: [],
-          timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 }
-        };
+        const emptyStats = createEmptyStats();
         mockRepository.getStats.mockResolvedValue(emptyStats);
 
         // Act
@@ -275,14 +258,7 @@ describe('StatsRepository Interface', () => {
       };
 
       // Act
-      const emptyStats: Stats = {
-        overview: { count: 0, avgEmotion: 0 },
-        monthlyStats: [],
-        studentStats: [],
-        dayOfWeekStats: [],
-        emotionDistribution: [],
-        timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 }
-      };
+      const emptyStats = createEmptyStats();
 
       const operations = [
         concurrentRepository.getStats(),
@@ -307,14 +283,10 @@ describe('StatsRepository Interface', () => {
         generateSeedData: jest.fn()
       };
 
-      const validStats: Stats = {
+      const validStats = createValidStats({
         overview: { count: 100, avgEmotion: 3.5 },
-        monthlyStats: [],
-        studentStats: [],
-        dayOfWeekStats: [],
-        emotionDistribution: [],
         timeOfDayStats: { morning: 3.0, afternoon: 3.5, evening: 4.0 }
-      };
+      });
 
       // Act & Assert
       expect(() => mockRepository.saveStats(validStats)).not.toThrow();
@@ -329,14 +301,7 @@ describe('StatsRepository Interface', () => {
         generateSeedData: jest.fn()
       };
 
-      const validStats: Stats = {
-        overview: { count: 100, avgEmotion: 3.5 },
-        monthlyStats: [],
-        studentStats: [],
-        dayOfWeekStats: [],
-        emotionDistribution: [],
-        timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 }
-      };
+      const validStats = createValidStats();
 
       // Act & Assert
       // TypeScript ensures type safety at compile time

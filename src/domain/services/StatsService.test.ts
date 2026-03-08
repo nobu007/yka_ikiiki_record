@@ -7,7 +7,7 @@ import { generateEmotion } from './EmotionGenerator';
 jest.mock('../repositories/StatsRepository');
 jest.mock('./EmotionGenerator');
 
-const mockGenerateEmotion = generateEmotion as jest.MockedFunction<typeof generateEmotion>;
+const mockGenerateEmotion = generateEmotion as unknown as jest.MockedFunction<typeof generateEmotion>;
 
 describe('StatsService', () => {
   let statsService: StatsService;
@@ -15,11 +15,12 @@ describe('StatsService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     mockRepository = {
       getStats: jest.fn(),
-      saveStats: jest.fn()
-    } as jest.Mocked<StatsRepository>;
+      saveStats: jest.fn(),
+      generateSeedData: jest.fn()
+    };
 
     mockGenerateEmotion.mockReturnValue(3.5);
 
@@ -34,7 +35,11 @@ describe('StatsService', () => {
         studentStats: [],
         dayOfWeekStats: [],
         emotionDistribution: [],
-        timeOfDayStats: []
+        timeOfDayStats: {
+          morning: { count: 30, avgEmotion: 3.2 },
+          afternoon: { count: 40, avgEmotion: 3.6 },
+          evening: { count: 30, avgEmotion: 3.7 }
+        }
       };
 
       mockRepository.getStats.mockResolvedValue(mockStats);
@@ -51,14 +56,20 @@ describe('StatsService', () => {
       const config: DataGenerationConfig = {
         periodDays: 30,
         studentCount: 5,
-        pattern: 'normal',
-        events: []
+        distributionPattern: 'normal',
+        seasonalEffects: false,
+        eventEffects: [],
+        classCharacteristics: {
+          baselineEmotion: 3.0,
+          volatility: 0.5,
+          cohesion: 0.7
+        }
       };
 
       await statsService.generateSeedData(config);
 
       expect(mockRepository.saveStats).toHaveBeenCalledTimes(1);
-      
+
       const savedStats = mockRepository.saveStats.mock.calls[0][0];
       expect(savedStats).toHaveProperty('overview');
       expect(savedStats).toHaveProperty('monthlyStats');
@@ -72,7 +83,7 @@ describe('StatsService', () => {
       await statsService.generateSeedData();
 
       expect(mockRepository.saveStats).toHaveBeenCalledTimes(1);
-      
+
       const savedStats = mockRepository.saveStats.mock.calls[0][0];
       expect(savedStats.overview.count).toBeGreaterThan(0);
       expect(savedStats.overview.avgEmotion).toBeGreaterThanOrEqual(1);
@@ -83,17 +94,23 @@ describe('StatsService', () => {
       const config: DataGenerationConfig = {
         periodDays: 10,
         studentCount: 3,
-        pattern: 'normal',
-        events: []
+        distributionPattern: 'normal',
+        seasonalEffects: false,
+        eventEffects: [],
+        classCharacteristics: {
+          baselineEmotion: 3.0,
+          volatility: 0.5,
+          cohesion: 0.7
+        }
       };
 
       await statsService.generateSeedData(config);
 
       const savedStats = mockRepository.saveStats.mock.calls[0][0];
-      
+
       const minRecords = config.studentCount * config.periodDays;
       const maxRecords = config.studentCount * config.periodDays * 3;
-      
+
       expect(savedStats.overview.count).toBeGreaterThanOrEqual(minRecords);
       expect(savedStats.overview.count).toBeLessThanOrEqual(maxRecords);
     });
@@ -102,14 +119,20 @@ describe('StatsService', () => {
       const config: DataGenerationConfig = {
         periodDays: 5,
         studentCount: 2,
-        pattern: 'normal',
-        events: []
+        distributionPattern: 'normal',
+        seasonalEffects: false,
+        eventEffects: [],
+        classCharacteristics: {
+          baselineEmotion: 3.0,
+          volatility: 0.5,
+          cohesion: 0.7
+        }
       };
 
       await statsService.generateSeedData(config);
 
       const savedStats = mockRepository.saveStats.mock.calls[0][0];
-      
+
       expect(savedStats.overview.avgEmotion).toBeGreaterThanOrEqual(1);
       expect(savedStats.overview.avgEmotion).toBeLessThanOrEqual(5);
     });
@@ -120,14 +143,20 @@ describe('StatsService', () => {
       const config: DataGenerationConfig = {
         periodDays: 1,
         studentCount: 1,
-        pattern: 'normal',
-        events: []
+        distributionPattern: 'normal',
+        seasonalEffects: false,
+        eventEffects: [],
+        classCharacteristics: {
+          baselineEmotion: 3.0,
+          volatility: 0.5,
+          cohesion: 0.7
+        }
       };
 
       await statsService.generateSeedData(config);
 
       const savedStats = mockRepository.saveStats.mock.calls[0][0];
-      
+
       expect(Array.isArray(savedStats.monthlyStats)).toBe(true);
       expect(Array.isArray(savedStats.studentStats)).toBe(true);
       expect(Array.isArray(savedStats.dayOfWeekStats)).toBe(true);

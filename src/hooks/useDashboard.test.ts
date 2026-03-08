@@ -35,7 +35,7 @@ describe('useDashboard', () => {
     const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
     mockFetch.mockResolvedValue({
       ok: true,
-      json: async () => ({ success: true, data: {} })
+      json: async () => ({ success: true, data: undefined })
     } as Response);
 
     const { result } = renderHook(() => useDashboard());

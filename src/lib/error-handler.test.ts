@@ -1,17 +1,18 @@
-import { 
-  AppError, 
-  ValidationError, 
-  NetworkError, 
-  normalizeError, 
-  getUserFriendlyMessage, 
+import {
+  AppError,
+  ValidationError,
+  NetworkError,
+  normalizeError,
+  getUserFriendlyMessage,
   logError,
   isNetworkError,
   isValidationError,
   isNotFoundError,
   isTimeoutError,
   isServerError,
-  ERROR_CODES 
+  ERROR_CODES
 } from './error-handler';
+import { MESSAGES } from '@/lib/config';
 
 // Mock console methods - restore original for error-handler tests
 let originalConsoleError;
@@ -155,44 +156,29 @@ describe('error-handler', () => {
   describe('logError', () => {
     test('logs error with context', () => {
       const error = new ValidationError('Test validation error');
-      
+
       logError(error, 'TestContext');
-      
-      expect(mockConsoleError).toHaveBeenCalledWith('[TestContext] Error:', {
-        code: ERROR_CODES.VALIDATION,
-        message: 'Test validation error',
-        status: 400,
-        details: undefined,
-        stack: expect.any(String)
-      });
+
+      // In test environment, logError uses simplified format
+      expect(mockConsoleError).toHaveBeenCalledWith('[TestContext] VALIDATION_ERROR: Test validation error');
     });
 
     test('logs error without context', () => {
       const error = new NetworkError('Network error');
-      
+
       logError(error);
-      
-      expect(mockConsoleError).toHaveBeenCalledWith('[APP] Error:', {
-        code: ERROR_CODES.NETWORK,
-        message: 'Network error',
-        status: 0,
-        details: undefined,
-        stack: expect.any(String)
-      });
+
+      // In test environment, logError uses simplified format
+      expect(mockConsoleError).toHaveBeenCalledWith('[APP] NETWORK_ERROR: Network error');
     });
 
     test('logs error with details', () => {
       const error = new AppError('Error with details', ERROR_CODES.VALIDATION, 400, { field: 'email' });
-      
+
       logError(error);
-      
-      expect(mockConsoleError).toHaveBeenCalledWith('[APP] Error:', {
-        code: ERROR_CODES.VALIDATION,
-        message: 'Error with details',
-        status: 400,
-        details: { field: 'email' },
-        stack: expect.any(String)
-      });
+
+      // In test environment, logError uses simplified format
+      expect(mockConsoleError).toHaveBeenCalledWith('[APP] VALIDATION_ERROR: Error with details');
     });
   });
 

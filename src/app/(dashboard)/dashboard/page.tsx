@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useDashboard } from '@/hooks/useApp';
 import { ErrorBoundary, LoadingOverlay } from '@/components/ui';
 import { Dashboard } from '@/components/Dashboard';

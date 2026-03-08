@@ -19,76 +19,6 @@ export interface EmotionChartProps {
   colors?: string[];
 }
 
-interface ChartTitle {
-  text: string;
-  style: {
-    fontSize: string;
-    fontWeight: string;
-    color: string;
-  };
-}
-
-interface ChartConfig {
-  type: 'line' | 'bar' | 'area' | 'pie' | 'donut';
-  height: number;
-  toolbar: {
-    show: boolean;
-  };
-  background: 'transparent' | string;
-}
-
-interface ResponsiveOptions {
-  breakpoint: number;
-  options: {
-    chart: {
-      height: number;
-    };
-    legend?: {
-      position: 'top' | 'bottom';
-    };
-  };
-}
-
-interface ChartTheme {
-  mode: 'light' | 'dark';
-}
-
-interface AxisLabels {
-  style: {
-    colors: string;
-  };
-}
-
-interface XAxis {
-  categories: string[];
-  labels: AxisLabels;
-}
-
-interface YAxis {
-  labels: AxisLabels;
-}
-
-interface Grid {
-  borderColor: string;
-}
-
-interface Legend {
-  position: 'top' | 'bottom';
-}
-
-interface BaseChartOptions {
-  chart: ChartConfig;
-  colors: string[];
-  theme: ChartTheme;
-  responsive: ResponsiveOptions[];
-  title?: ChartTitle;
-  xaxis?: XAxis;
-  yaxis?: YAxis;
-  grid?: Grid;
-  legend?: Legend;
-  labels?: string[];
-}
-
 const defaultColors = [
   '#3B82F6',
   '#10B981',
@@ -96,7 +26,7 @@ const defaultColors = [
   '#EF4444',
   '#8B5CF6',
   '#EC4899',
-];
+] as const;
 
 export const EmotionChart = React.memo<EmotionChartProps>(({
   data,
@@ -105,8 +35,8 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
   type = 'line',
   colors = defaultColors
 }) => {
-  const getChartOptions = useCallback((): BaseChartOptions => {
-    const baseOptions: BaseChartOptions = {
+  const getChartOptions = useCallback((): Record<string, unknown> => {
+    const baseOptions: Record<string, unknown> = {
       chart: {
         type,
         height,

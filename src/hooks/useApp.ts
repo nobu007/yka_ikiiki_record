@@ -1,5 +1,3 @@
-// Simplified application hooks
-
 import { useState, useCallback } from 'react';
 import { APP_CONFIG, MESSAGES } from '@/lib/config';
 import { normalizeError, getUserFriendlyMessage, logError } from '@/lib/error-handler';
@@ -10,7 +8,6 @@ interface NotificationState {
   type: 'success' | 'error' | 'warning' | 'info';
 }
 
-// Simple notification hook
 export function useNotification() {
   const [notification, setNotification] = useState<NotificationState>({
     show: false,
@@ -29,7 +26,6 @@ export function useNotification() {
   return { notification, showNotification, clearNotification };
 }
 
-// Simplified dashboard hook
 export function useDashboard() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [notification, setNotification] = useState<NotificationState>({

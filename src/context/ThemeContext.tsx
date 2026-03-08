@@ -18,8 +18,8 @@ export const ThemeProvider = React.memo<{ children: React.ReactNode }>(({
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    const initialTheme = savedTheme || "light";
+    const savedTheme = localStorage.getItem("theme");
+    const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : "light";
 
     setTheme(initialTheme);
     setIsInitialized(true);

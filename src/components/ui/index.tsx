@@ -1,34 +1,49 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { MESSAGES, UI_CONFIG } from '@/lib/config';
 
-export const LoadingSpinner = ({ size = 'md', color = 'blue' }: { size?: 'sm' | 'md'; color?: string }) => {
+interface LoadingSpinnerProps {
+  size?: 'sm' | 'md';
+  color?: string;
+}
+
+export const LoadingSpinner = React.memo<LoadingSpinnerProps>(({ size = 'md', color = 'blue' }) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-6 h-6'
   };
-  
+
   return (
-    <div 
+    <div
       className={`animate-spin rounded-full border-2 border-gray-300 border-t-${color}-500 ${sizeClasses[size]}`}
       role="status"
       aria-label="読み込み中"
     />
   );
-};
+});
 
-export const CheckIcon = () => (
+LoadingSpinner.displayName = 'LoadingSpinner';
+
+export const CheckIcon = React.memo(() => (
   <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
   </svg>
-);
+));
 
-export const PlusIcon = () => (
+CheckIcon.displayName = 'CheckIcon';
+
+export const PlusIcon = React.memo(() => (
   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
   </svg>
-);
+));
 
-export const NotificationIcon = ({ type }: { type: 'success' | 'error' | 'warning' | 'info' }) => {
+PlusIcon.displayName = 'PlusIcon';
+
+interface NotificationIconProps {
+  type: 'success' | 'error' | 'warning' | 'info';
+}
+
+export const NotificationIcon = React.memo<NotificationIconProps>(({ type }) => {
   const iconConfig = {
     success: { color: 'text-green-500', path: 'M5 13l4 4L19 7' },
     error: { color: 'text-red-500', path: 'M6 18L18 6M6 6l12 12' },
@@ -43,14 +58,22 @@ export const NotificationIcon = ({ type }: { type: 'success' | 'error' | 'warnin
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={config.path} />
     </svg>
   );
-};
+});
 
-export const Notification = ({ show, message, type, onClose }: {
+NotificationIcon.displayName = 'NotificationIcon';
+
+interface NotificationProps {
   show: boolean;
   message: string;
   type: 'success' | 'error' | 'warning' | 'info';
   onClose?: () => void;
-}) => {
+}
+
+export const Notification = React.memo<NotificationProps>(({ show, message, type, onClose }) => {
+  const handleClose = useCallback(() => {
+    onClose?.();
+  }, [onClose]);
+
   if (!show) return null;
 
   const styleClasses = {
@@ -61,7 +84,7 @@ export const Notification = ({ show, message, type, onClose }: {
   };
 
   return (
-    <div 
+    <div
       className={`mb-4 p-4 border rounded-lg shadow-sm transition-all duration-300 ${styleClasses[type]}`}
       role="alert"
       aria-live="polite"
@@ -71,10 +94,10 @@ export const Notification = ({ show, message, type, onClose }: {
           <NotificationIcon type={type} />
           <p className="text-sm font-medium break-words">{message}</p>
         </div>
-        
+
         {onClose && (
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="ml-4 text-sm underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1"
             aria-label="通知を閉じる"
             type="button"
@@ -85,9 +108,16 @@ export const Notification = ({ show, message, type, onClose }: {
       </div>
     </div>
   );
-};
+});
 
-export const LoadingOverlay = ({ isLoading, message }: { isLoading: boolean; message?: string }) => {
+Notification.displayName = 'Notification';
+
+interface LoadingOverlayProps {
+  isLoading: boolean;
+  message?: string;
+}
+
+export const LoadingOverlay = React.memo<LoadingOverlayProps>(({ isLoading, message }) => {
   if (!isLoading) return null;
 
   return (
@@ -98,7 +128,9 @@ export const LoadingOverlay = ({ isLoading, message }: { isLoading: boolean; mes
       </div>
     </div>
   );
-};
+});
+
+LoadingOverlay.displayName = 'LoadingOverlay';
 
 export class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode }) {
@@ -135,20 +167,22 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
   }
 }
 
-export const Button = ({ 
-  children, 
-  onClick, 
-  disabled = false, 
-  variant = 'primary',
-  type = 'button',
-  className = ''
-}: {
+interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   variant?: 'primary' | 'secondary';
   type?: 'button' | 'submit';
   className?: string;
+}
+
+export const Button = React.memo<ButtonProps>(({
+  children,
+  onClick,
+  disabled = false,
+  variant = 'primary',
+  type = 'button',
+  className = ''
 }) => {
   const baseClasses = UI_CONFIG.buttonStyles[variant];
   const combinedClasses = `${baseClasses} ${className}`.trim();
@@ -163,4 +197,6 @@ export const Button = ({
       {children}
     </button>
   );
-};
+});
+
+Button.displayName = 'Button';

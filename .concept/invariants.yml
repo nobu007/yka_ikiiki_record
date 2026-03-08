@@ -1,0 +1,123 @@
+# PROJECT INVARIANTS
+# Immutable architectural constraints that MUST never be violated
+
+version: 1.0.0
+last_updated: 2025-03-08
+
+invariants:
+  # ARCHITECTURAL INVARIANTS
+  - id: INV-ARCH-001
+    name: Single_Responsibility_Enforcement
+    category: architecture
+    severity: CRITICAL
+    description: Every class/module must have exactly one reason to change
+    constraint: "Maximum 1 public responsibility per module"
+    validation: "Class line count < 300 OR explicit single-responsibility proof"
+    rationale: "Prevents god objects, maintains modularity"
+
+  - id: INV-ARCH-002
+    name: Layer_Separation
+    category: architecture
+    severity: CRITICAL
+    description: Domain, Application, and Infrastructure layers must never mix
+    constraint: "No cross-layer imports (Domain ← Infrastructure prohibited)"
+    validation: "Dependency graph validation on commit"
+    rationale: "Maintains architectural integrity"
+
+  - id: INV-ARCH-003
+    name: Reference_Based_Options_Propagation
+    category: architecture
+    severity: CRITICAL
+    description: Multi-layer options must use reference passing, never deepcopy
+    constraint: "Forbidden: deepcopy(options), copy.deepcopy(options)"
+    validation: "Grep check for deepcopy in options handling"
+    rationale: "Ensures parameter visibility across all layers"
+
+  # CODE QUALITY INVARIANTS
+  - id: INV-QUAL-001
+    name: No_Logger_Getter
+    category: quality
+    severity: CRITICAL
+    description: logging.getLogger() is forbidden (causes handler conflicts)
+    constraint: "Must use logging.Logger(module_name) instead"
+    validation: "grep -r 'logging.getLogger' src/ | wc -l = 0"
+    rationale: "Prevents duplicate handler hell"
+
+  - id: INV-QUAL-002
+    name: Fixed_Filename_Policy
+    category: quality
+    severity: CRITICAL
+    description: No timestamped or date-stamped filenames
+    constraint: "Fixed paths only, overwrite is mandatory"
+    validation: "find . -name '*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*' = 0"
+    rationale: "Prevents report explosion, enforces singularity"
+
+  - id: INV-QUAL-003
+    name: Common_Process_Reuse
+    category: quality
+    severity: HIGH
+    description: Must reuse existing utilities before implementing new ones
+    constraint: "95%+ common code reuse rate required"
+    validation: "Implementation requires pre-search grep for existing solutions"
+    rationale: "Prevents wheel reinvention"
+
+  # TESTING INVARIANTS
+  - id: INV-TEST-001
+    name: Test_Coverage_Floor
+    category: testing
+    severity: HIGH
+    description: All production code must have test coverage
+    constraint: "90%+ coverage required for new code"
+    validation: "Coverage report validation on commit"
+    rationale: "Maintains regression safety"
+
+  - id: INV-TEST-002
+    name: Dual_Verification_Required
+    category: testing
+    severity: HIGH
+    description: Tests must verify both new file creation AND existing file skip
+    constraint: "Both creation and skip scenarios must be tested"
+    validation: "Test audit for file state transitions"
+    rationale: "Prevents 'works once' failures"
+
+  # WORKFLOW INVARIANTS
+  - id: INV-WORK-001
+    name: SDEC_Cycle_Mandatory
+    category: workflow
+    severity: CRITICAL
+    description: All changes must follow Spec-Data-Eval-Change cycle
+    constraint: "No implementation without evidence collection"
+    validation: "Commit messages must reference evidence"
+    rationale: "Prevents assumption-based development"
+
+  - id: INV-WORK-002
+    name: Clean_Git_State
+    category: workflow
+    severity: MEDIUM
+    description: Working directory must be clean after feature completion
+    constraint: "No uncommitted changes after task completion"
+    validation: "git status --porcelain = 0"
+    rationale: "Maintains reproducibility"
+
+violation_handling:
+  critical:
+    action: "BLOCK_COMMIT"
+    message: "CRITICAL INVARIANT VIOLATION - Fix required before commit"
+  high:
+    action: "WARN_REQUIRE_FIX"
+    message: "HIGH SEVERITY VIOLATION - Fix strongly recommended"
+  medium:
+    action: "LOG_WARN"
+    message: "MEDIUM SEVERITY VIOLATION - Address in next iteration"
+
+monitoring:
+  automated_checks:
+    - name: logger_getter_check
+      command: "grep -r 'logging.getLogger' src/ --include='*.py' | wc -l"
+      threshold: 0
+    - name: date_filename_check
+      command: "find . -name '*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*' | wc -l"
+      threshold: 0
+    - name: common_reuse_check
+      command: "grep -r 'CLIProcessor\\|RateLimitAwareCLIProcessor' src/ --include='*.py' | wc -l"
+      threshold: 10  # Baseline expectation

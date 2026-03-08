@@ -24,16 +24,18 @@ describe('LoadingSpinner', () => {
 
   test('renders with small size', () => {
     render(<LoadingSpinner size="sm" />);
-    
+
     const svg = document.querySelector('svg');
-    expect(svg).toHaveClass('h-4', 'w-4');
+    expect(svg).toHaveClass('h-4');
+    expect(svg).toHaveClass('w-4');
   });
 
   test('renders with medium size', () => {
     render(<LoadingSpinner size="md" />);
-    
+
     const svg = document.querySelector('svg');
-    expect(svg).toHaveClass('h-8', 'w-8');
+    expect(svg).toHaveClass('h-8');
+    expect(svg).toHaveClass('w-8');
   });
 
   test('renders with primary color', () => {
@@ -110,36 +112,38 @@ describe('LoadingOverlay', () => {
 
   test('renders spinner within overlay', () => {
     render(<LoadingOverlay isLoading={true} />);
-    
+
     const svg = document.querySelector('svg');
     expect(svg).toBeInTheDocument();
-    expect(svg).toHaveClass('h-12', 'w-12', 'text-blue-600');
+    expect(svg).toHaveClass('h-12');
+    expect(svg).toHaveClass('w-12');
+    expect(svg).toHaveClass('text-blue-600');
   });
 
   test('applies correct overlay classes', () => {
     render(<LoadingOverlay isLoading={true} />);
-    
+
     const overlay = document.querySelector('.fixed.inset-0');
-    expect(overlay).toHaveClass(
-      'fixed',
-      'inset-0',
-      'bg-gray-600',
-      'bg-opacity-50',
-      'overflow-y-auto',
-      'h-full',
-      'w-full',
-      'z-50',
-      'flex',
-      'items-center',
-      'justify-center'
-    );
+    expect(overlay).toHaveClass('fixed');
+    expect(overlay).toHaveClass('inset-0');
+    expect(overlay).toHaveClass('bg-gray-600');
+    expect(overlay).toHaveClass('bg-opacity-50');
+    expect(overlay).toHaveClass('overflow-y-auto');
+    expect(overlay).toHaveClass('h-full');
+    expect(overlay).toHaveClass('w-full');
+    expect(overlay).toHaveClass('z-50');
+    expect(overlay).toHaveClass('flex');
+    expect(overlay).toHaveClass('items-center');
+    expect(overlay).toHaveClass('justify-center');
   });
 
   test('renders message text with correct styling', () => {
     render(<LoadingOverlay isLoading={true} message="Custom message" />);
-    
+
     const message = screen.getByText('Custom message');
-    expect(message).toHaveClass('mt-4', 'text-gray-700', 'text-center');
+    expect(message).toHaveClass('mt-4');
+    expect(message).toHaveClass('text-gray-700');
+    expect(message).toHaveClass('text-center');
   });
 
   test('renders content container with correct layout', () => {
@@ -151,16 +155,14 @@ describe('LoadingOverlay', () => {
 
   test('renders modal container with correct styling', () => {
     render(<LoadingOverlay isLoading={true} />);
-    
+
     const modal = document.querySelector('.bg-white.p-6.rounded-lg');
-    expect(modal).toHaveClass(
-      'bg-white',
-      'p-6',
-      'rounded-lg',
-      'shadow-xl',
-      'max-w-sm',
-      'w-full',
-      'mx-4'
-    );
+    expect(modal).toHaveClass('bg-white');
+    expect(modal).toHaveClass('p-6');
+    expect(modal).toHaveClass('rounded-lg');
+    expect(modal).toHaveClass('shadow-xl');
+    expect(modal).toHaveClass('max-w-sm');
+    expect(modal).toHaveClass('w-full');
+    expect(modal).toHaveClass('mx-4');
   });
 });

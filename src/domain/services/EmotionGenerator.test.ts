@@ -44,6 +44,7 @@ describe('EmotionGenerator', () => {
         ...DEFAULT_CONFIG,
         eventEffects: [
           {
+            name: 'Test Event',
             startDate: new Date('2025-05-10'),
             endDate: new Date('2025-05-20'),
             impact: 0.5
@@ -73,18 +74,20 @@ describe('EmotionGenerator', () => {
         ...DEFAULT_CONFIG,
         classCharacteristics: {
           volatility: 0.9,
-          baselineEmotion: 3.0
+          baselineEmotion: 3.0,
+          cohesion: 0.7
         }
       };
-      
+
       const configLowVolatility = {
         ...DEFAULT_CONFIG,
         classCharacteristics: {
           volatility: 0.1,
-          baselineEmotion: 3.0
+          baselineEmotion: 3.0,
+          cohesion: 0.7
         }
       };
-      
+
       const emotionHigh = generateEmotion(configHighVolatility, date, 0);
       const emotionLow = generateEmotion(configLowVolatility, date, 0);
       

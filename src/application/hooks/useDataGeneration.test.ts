@@ -1,7 +1,7 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { useDataGeneration } from './useDataGeneration';
 import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
-import type { EventEffect, ClassCharacteristics } from '@/domain/entities/DataGeneration';
+import type { EventEffect } from '@/domain/entities/DataGeneration';
 
 // Test constants
 const MIN_STUDENTS = 10;

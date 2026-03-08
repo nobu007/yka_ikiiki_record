@@ -76,7 +76,7 @@ describe('StatsService', () => {
 
       expect(mockRepository.saveStats).toHaveBeenCalledTimes(1);
 
-      const savedStats = mockRepository.saveStats.mock.calls[0][0];
+      const savedStats = mockRepository.saveStats.mock.calls[0][0] as Stats;
       expect(savedStats).toHaveProperty('overview');
       expect(savedStats).toHaveProperty('monthlyStats');
       expect(savedStats).toHaveProperty('studentStats');

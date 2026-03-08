@@ -1,5 +1,3 @@
-// Optimized API route for seed data generation
-
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { normalizeError, logError } from '@/lib/error-handler';
@@ -7,7 +5,6 @@ import { dataService, DataGenerationConfig } from '@/infrastructure/services/dat
 import { DailyEmotion } from '@/domain/entities/Emotion';
 import { APP_CONFIG } from '@/lib/config';
 
-// Validation schema
 const SeedRequestSchema = z.object({
   config: z.object({
     periodDays: z.number().min(1).max(365).default(APP_CONFIG.generation.defaultPeriodDays),
@@ -26,7 +23,6 @@ const SeedRequestSchema = z.object({
   })
 });
 
-// Improved in-memory storage with metadata
 interface StoredData {
   data: DailyEmotion[];
   timestamp: number;
@@ -34,9 +30,8 @@ interface StoredData {
 }
 
 let storedData: StoredData | null = null;
-const DATA_TTL = 30 * 60 * 1000; // 30 minutes
+const DATA_TTL = 30 * 60 * 1000;
 
-// Clean up old data
 const cleanupOldData = () => {
   if (storedData && Date.now() - storedData.timestamp > DATA_TTL) {
     storedData = null;

@@ -63,5 +63,10 @@ export const getButtonClasses = (variant: 'primary' | 'secondary' = 'primary', i
 
 // Common animation classes
 export const getAnimationClasses = (duration: 'fast' | 'normal' | 'slow' = 'normal') => {
-  return `transition-all duration-${UI_CONSTANTS.ANIMATION_DURATION[duration.toUpperCase() as keyof typeof UI_CONSTANTS.ANIMATION_DURATION]}`;
+  const durationMap: Record<'fast' | 'normal' | 'slow', number> = {
+    fast: UI_CONSTANTS.ANIMATION_DURATION.FAST,
+    normal: UI_CONSTANTS.ANIMATION_DURATION.NORMAL,
+    slow: UI_CONSTANTS.ANIMATION_DURATION.SLOW
+  };
+  return `transition-all duration-${durationMap[duration]}`;
 };

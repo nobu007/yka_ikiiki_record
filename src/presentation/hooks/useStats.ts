@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
 import { useStats as useApplicationStats } from '@/application/hooks/useStats';
-import { Stats } from '@/domain/entities/Stats';
 
 export const useStats = () => {
   const { stats, error, isLoading, refetch } = useApplicationStats();

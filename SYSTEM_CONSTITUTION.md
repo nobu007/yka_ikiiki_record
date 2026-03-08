@@ -291,7 +291,7 @@ describe('StatsService', () => {
 
 ### Absolutely Forbidden
 - `any` types
-- Type assertions (`as` keyword)
+- Type assertions (`as` keyword, except `as const` for immutable literals)
 - `console.log` in production code
 - Magic numbers or strings
 - Global variables
@@ -299,6 +299,13 @@ describe('StatsService', () => {
 - setTimeout/setInterval for business logic
 - Import loops
 - Circular dependencies
+
+### Type Assertion Exceptions
+The following forms of type assertions are permitted:
+- `as const` - For creating immutable literal types (enhances type safety by preventing mutation)
+- Type guards - When using `value is Type` predicate functions
+
+All other uses of the `as` keyword (including `as keyof`, `as Type`, etc.) are forbidden.
 
 ### Deprecated Patterns
 - Class components (use functional components only)

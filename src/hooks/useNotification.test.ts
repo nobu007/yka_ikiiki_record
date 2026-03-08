@@ -48,14 +48,12 @@ describe('useNotification', () => {
   test('hideNotification should hide notification', () => {
     const { result } = renderHook(() => useNotification());
 
-    // Show notification first
     act(() => {
       result.current.showSuccess('Test message');
     });
 
     expect(result.current.notification.show).toBe(true);
 
-    // Hide notification
     act(() => {
       result.current.hideNotification();
     });
@@ -72,7 +70,7 @@ describe('useNotification', () => {
 
     expect(result.current.notification.show).toBe(true);
 
-    // Fast-forward 3 seconds
+    
     act(() => {
       jest.advanceTimersByTime(3000);
     });
@@ -89,7 +87,6 @@ describe('useNotification', () => {
 
     expect(result.current.notification.show).toBe(true);
 
-    // Fast-forward 5 seconds
     act(() => {
       jest.advanceTimersByTime(5000);
     });
@@ -100,7 +97,6 @@ describe('useNotification', () => {
   test('should handle rapid successive notifications', () => {
     const { result } = renderHook(() => useNotification());
 
-    // Show multiple notifications rapidly
     act(() => {
       result.current.showSuccess('Message 1');
     });
@@ -116,7 +112,7 @@ describe('useNotification', () => {
     expect(result.current.notification.message).toBe('Message 3');
     expect(result.current.notification.type).toBe('success');
 
-    // Fast-forward 3 seconds
+    
     act(() => {
       jest.advanceTimersByTime(3000);
     });

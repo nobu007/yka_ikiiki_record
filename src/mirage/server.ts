@@ -65,7 +65,7 @@ export function makeServer({ environment = 'development' } = {}) {
           });
 
           return new Response(200, {}, { message: 'Data seeded successfully' });
-        } catch (error) {
+        } catch {
           return new Response(500, {}, { error: 'Failed to seed data' });
         }
       });
@@ -82,7 +82,7 @@ export function makeServer({ environment = 'development' } = {}) {
           }));
           
           return calculateMonthlyStats(transformedRecords);
-        } catch (error) {
+        } catch {
           return new Response(500, {}, { error: 'Failed to calculate stats' });
         }
       });

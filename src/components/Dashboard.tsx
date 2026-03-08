@@ -53,7 +53,8 @@ const DashboardComponent: React.FC<DashboardProps> = ({
       if (validated.success) {
         setStats(validated.data);
       }
-    } catch (error) {
+    } catch {
+      // Error is silently handled - stats will remain null
     } finally {
       setIsLoading(false);
     }

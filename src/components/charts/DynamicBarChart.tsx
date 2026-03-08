@@ -46,7 +46,8 @@ const DynamicBarChart = memo(function DynamicBarChart({
         name: String(item.name),
         value: Number(item.value)
       })).filter(item => !isNaN(item.value));
-    } catch (e) {
+    } catch {
+      // If data transformation fails, return empty array
       return [];
     }
   }, [data]);

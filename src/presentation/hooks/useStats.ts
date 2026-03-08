@@ -23,7 +23,8 @@ export const useStats = () => {
   const handleRefetch = useCallback(async () => {
     try {
       await refetch();
-    } catch (err) {
+    } catch {
+      // Error is silently handled - error state is managed by useApplicationStats
     }
   }, [refetch]);
 

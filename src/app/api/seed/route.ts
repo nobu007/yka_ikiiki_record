@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { normalizeError, logError } from '@/lib/error-handler';
-import { dataService, DataGenerationConfig } from '@/infrastructure/services/dataService';
+import { dataService, DataGenerationConfig, GeneratedStats } from '@/infrastructure/services/dataService';
 import { APP_CONFIG } from '@/lib/config';
 
 const SeedRequestSchema = z.object({
@@ -23,7 +23,7 @@ const SeedRequestSchema = z.object({
 });
 
 interface StoredData {
-  data: any;
+  data: GeneratedStats;
   timestamp: number;
   config: DataGenerationConfig;
 }

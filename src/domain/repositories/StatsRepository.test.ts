@@ -314,7 +314,7 @@ describe('StatsRepository Interface', () => {
       const incompleteStats = {
         overview: { count: 100, avgEmotion: 3.5 }
         // Missing required properties
-      } as any;
+      } as unknown as Stats;
 
       // Act & Assert
       // TypeScript should catch this at compile time, but we test runtime behavior

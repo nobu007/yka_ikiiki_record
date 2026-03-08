@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
@@ -28,14 +28,14 @@ const defaultColors = [
   '#EC4899',
 ];
 
-export const EmotionChart: React.FC<EmotionChartProps> = ({
+export const EmotionChart = React.memo<EmotionChartProps>(({
   data,
   title,
   height = 300,
   type = 'line',
   colors = defaultColors
 }) => {
-  const getChartOptions = () => {
+  const getChartOptions = useCallback(() => {
     const baseOptions = {
       chart: {
         type,
@@ -104,7 +104,7 @@ export const EmotionChart: React.FC<EmotionChartProps> = ({
         position: 'top' as const
       }
     };
-  };
+  }, [type, height, colors, title]);
 
   return (
     <div className="w-full">
@@ -116,16 +116,18 @@ export const EmotionChart: React.FC<EmotionChartProps> = ({
       />
     </div>
   );
-};
+});
 
-export const MonthlyEmotionChart: React.FC<{ data: Array<{ month: string; avgEmotion: number }> }> = ({ data }) => {
-  const chartData: ChartData = {
+EmotionChart.displayName = 'EmotionChart';
+
+export const MonthlyEmotionChart = React.memo<{ data: Array<{ month: string; avgEmotion: number }> }>(({ data }) => {
+  const chartData = useMemo(() => ({
     labels: data.map(d => d.month),
     series: [{
       name: '平均感情スコア',
       data: data.map(d => d.avgEmotion)
     }]
-  };
+  }), [data]);
 
   return (
     <EmotionChart
@@ -135,7 +137,9 @@ export const MonthlyEmotionChart: React.FC<{ data: Array<{ month: string; avgEmo
       height={350}
     />
   );
-};
+});
+
+MonthlyEmotionChart.displayName = 'MonthlyEmotionChart';
 
 export const DayOfWeekChart: React.FC<{ data: Array<{ day: string; avgEmotion: number }> }> = ({ data }) => {
   const chartData: ChartData = {

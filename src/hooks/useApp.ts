@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 import { APP_CONFIG, MESSAGES } from '@/lib/config';
 import { normalizeError, getUserFriendlyMessage, logError } from '@/lib/error-handler';
+import { SeedResponseSchema } from '@/schemas/api';
+import { validateDataSafe } from '@/lib/api/validation';
 
 interface NotificationState {
   show: boolean;
@@ -63,9 +65,15 @@ export function useDashboard() {
         throw new Error(MESSAGES.error.api(response.status, response.statusText));
       }
 
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.error || MESSAGES.error.generation);
+      const rawData = await response.json();
+
+      const [validated, validationError] = validateDataSafe(rawData, SeedResponseSchema);
+      if (validationError || !validated) {
+        throw new Error(validationError || 'API response validation failed');
+      }
+
+      if (!validated.success) {
+        throw new Error(validated.error || MESSAGES.error.generation);
       }
 
       showNotification(MESSAGES.success.dataGeneration, 'success');

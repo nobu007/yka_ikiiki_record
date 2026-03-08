@@ -2,6 +2,9 @@
 
 import React, { ReactNode, memo } from 'react';
 
+// Define chart constants to avoid magic numbers
+const DEFAULT_CHART_HEIGHT = 300;
+
 interface ChartWrapperProps {
   title?: string;
   height?: number;
@@ -13,7 +16,7 @@ interface ChartWrapperProps {
 
 export const ChartWrapper = memo<ChartWrapperProps>(({
   title,
-  height = 300,
+  height = DEFAULT_CHART_HEIGHT,
   isLoading,
   error,
   children,

@@ -1,27 +1,21 @@
-// Consolidated statistics calculator - merged from lib/utils.ts and utils/statsCalculator.ts
-
 import { EMOTION_CONFIG, UI_CONFIG } from '@/lib/config';
 
 type EmotionData = { date: Date; emotion: number; hour?: number; student?: number };
 
-// Basic math utilities
 export const clamp = (value: number, min: number, max: number): number => 
   Math.max(min, Math.min(max, value));
 
 export const average = (values: number[]): number => 
   values.length === 0 ? 0 : Number((values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(1));
 
-// Alias for backward compatibility
 export const calculateAverage = average;
 
-// Normal distribution generator (Box-Muller transform)
 export const generateNormalRandom = (): number => {
   const u1 = Math.random();
   const u2 = Math.random();
   return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
 };
 
-// Emotion calculation utilities
 export const clampEmotion = (emotion: number): number => 
   clamp(emotion, EMOTION_CONFIG.min, EMOTION_CONFIG.max);
 
@@ -48,7 +42,6 @@ export const calculateEventEffect = (date: Date, events: Array<{startDate: Date;
   }, 0);
 };
 
-// Time utilities
 export const getRandomHour = (): number => {
   const totalHours = UI_CONFIG.timeRanges.evening.end - UI_CONFIG.timeRanges.morning.start;
   return Math.floor(Math.random() * totalHours) + UI_CONFIG.timeRanges.morning.start;
@@ -57,7 +50,6 @@ export const getRandomHour = (): number => {
 const filterByTimeRange = (emotions: EmotionData[], start: number, end: number): EmotionData[] =>
   emotions.filter(({ hour }) => hour !== undefined && hour >= start && hour < end);
 
-// Grouping utilities
 const groupByMonth = (emotions: EmotionData[]): Map<string, number[]> => {
   const groups = new Map<string, number[]>();
   
@@ -84,7 +76,6 @@ const groupByStudent = (emotions: EmotionData[]): Map<number, number[]> => {
   return groups;
 };
 
-// Statistics calculation utilities
 export const calculateMonthlyStats = (emotions: EmotionData[]) => 
   Array.from(groupByMonth(emotions).entries())
     .map(([month, monthEmotions]) => ({
@@ -146,7 +137,6 @@ export const calculateEmotionTrend = (emotions: number[]): 'up' | 'down' | 'stab
   const recent = emotions.slice(-3);
   const earlier = emotions.slice(-6, -3);
   
-  // Handle case where we don't have enough earlier data
   if (earlier.length === 0) return 'stable';
   
   const recentAvg = average(recent);

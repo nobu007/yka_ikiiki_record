@@ -77,71 +77,107 @@ calculate_score() {
     echo $total_score
 }
 
-# Parse and prioritize opportunities
+# Parse opportunities using a simpler approach
 echo "🔍 Parsing and scoring opportunities..."
 echo ""
 
-current_category=""
-current_priority=""
+# Temporary file for parsed opportunities
+> "/tmp/sorted_opportunities.tmp"
 
-while IFS= read -r line; do
-    if [[ "$line" =~ ^\[.*\].* ]]; then
-        # Extract priority and category
-        current_priority=$(echo "$line" | sed 's/\[\(.*\)\].*/\1/')
-        current_category=$(echo "$line" | sed 's/\[.*\] \(.*\):.*/\1/')
-    elif [[ "$line" =~ ^.*:.* ]] && [[ -n "$current_category" ]]; then
-        # Extract description
-        description=$(echo "$line" | cut -d':' -f2- | sed 's/^ *//')
-        
-        # Read next lines for evidence and impact
-        read -r evidence_line
-        read -r impact_line
-        read -r blank_line
-        
-        evidence=$(echo "$evidence_line" | sed 's/.*: //')
-        impact=$(echo "$impact_line" | sed 's/.*: //')
-        
-        # Only process if we have valid data
-        if [[ -n "$description" && -n "$evidence" && -n "$impact" ]]; then
-            # Estimate effort based on category and description
-            effort="MEDIUM"
-            case $current_category in
-                "Code Quality")
-                    if [[ "$description" == *"size limit"* ]]; then
-                        effort="HIGH"
-                    else
+# Process the log file line by line
+{
+    priority=""
+    category=""
+    evidence=""
+    impact=""
+    
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^\[.*\].* ]]; then
+            # If we have a complete previous opportunity, save it
+            if [[ -n "$priority" && -n "$category" && -n "$evidence" && -n "$impact" ]]; then
+                # Estimate effort based on category
+                effort="MEDIUM"
+                case $category in
+                    "Code Quality")
                         effort="MEDIUM"
-                    fi
-                    ;;
-                "Testing")
-                    if [[ "$description" == *"Coverage"* ]]; then
-                        effort="HIGH"
-                    else
+                        ;;
+                    "Testing")
                         effort="MEDIUM"
-                    fi
-                    ;;
-                "Security")
-                    effort="HIGH"
-                    ;;
-                "Performance")
-                    effort="MEDIUM"
-                    ;;
-                "Documentation")
-                    effort="LOW"
-                    ;;
-                *)
-                    effort="MEDIUM"
-                    ;;
-            esac
+                        ;;
+                    "Security")
+                        effort="HIGH"
+                        ;;
+                    "Performance")
+                        effort="MEDIUM"
+                        ;;
+                    "Documentation")
+                        effort="LOW"
+                        ;;
+                    "Architecture")
+                        effort="LOW"
+                        ;;
+                    *)
+                        effort="MEDIUM"
+                        ;;
+                esac
+                
+                # Calculate score
+                score=$(calculate_score "$priority" "$impact" "$effort")
+                
+                # Store for sorting
+                echo "$score|$priority|$category|$category improvement opportunity|$evidence|$impact|$effort" >> "/tmp/sorted_opportunities.tmp"
+            fi
             
-            # Calculate score
-            score=$(calculate_score "$current_priority" "$impact" "$effort")
+            # Extract priority and category
+            priority=$(echo "$line" | sed 's/^\[\(.*\)\].*/\1/')
+            category=$(echo "$line" | sed 's/^\[.*\] \(.*\):.*/\1/')
             
-            # Store for sorting
-            echo "$score|$current_priority|$current_category|$description|$evidence|$impact|$effort" >> "/tmp/sorted_opportunities.tmp"
+            # Reset evidence and impact
+            evidence=""
+            impact=""
+            
+        elif [[ "$line" =~ ^.*Evidence:.* ]]; then
+            evidence=$(echo "$line" | sed 's/.*Evidence: //')
+        elif [[ "$line" =~ ^.*Impact:.* ]]; then
+            impact=$(echo "$line" | sed 's/.*Impact: //')
         fi
+    done
+    
+    # Save the last opportunity
+    if [[ -n "$priority" && -n "$category" && -n "$evidence" && -n "$impact" ]]; then
+        # Estimate effort based on category
+        effort="MEDIUM"
+        case $category in
+            "Code Quality")
+                effort="MEDIUM"
+                ;;
+            "Testing")
+                effort="MEDIUM"
+                ;;
+            "Security")
+                effort="HIGH"
+                ;;
+            "Performance")
+                effort="MEDIUM"
+                ;;
+            "Documentation")
+                effort="LOW"
+                ;;
+            "Architecture")
+                effort="LOW"
+                ;;
+            *)
+                effort="MEDIUM"
+                ;;
+        esac
+        
+        # Calculate score
+        score=$(calculate_score "$priority" "$impact" "$effort")
+        
+        # Store for sorting
+        echo "$score|$priority|$category|$category improvement opportunity|$evidence|$impact|$effort" >> "/tmp/sorted_opportunities.tmp"
     fi
-done < "$LATEST_LOG"
+} < "$LATEST_LOG"
 
 # Sort by score (descending)
 echo "📊 Ranking opportunities by priority score..."
@@ -177,9 +213,17 @@ while IFS='|' read -r score priority category description evidence impact effort
 done < "/tmp/ranked_opportunities.tmp"
 
 # Summary statistics
-total_opportunities=$(wc -l < "/tmp/ranked_opportunities.tmp")
-critical_count=$(grep -c "|CRITICAL|" "/tmp/ranked_opportunities.tmp" || echo "0")
-high_count=$(grep -c "|HIGH|" "/tmp/ranked_opportunities.tmp" || echo "0")
+total_opportunities=$(wc -l < "/tmp/ranked_opportunities.tmp" | tr -d ' \n\r')
+critical_count=$(grep -c "|CRITICAL|" "/tmp/ranked_opportunities.tmp" 2>/dev/null | tr -d ' \n\r' || echo "0")
+high_count=$(grep -c "|HIGH|" "/tmp/ranked_opportunities.tmp" 2>/dev/null | tr -d ' \n\r' || echo "0")
+
+# Ensure we have valid numbers
+total_opportunities=${total_opportunities:-0}
+critical_count=${critical_count:-0}
+high_count=${high_count:-0}
+
+# Debug output
+echo "Debug: total=$total_opportunities critical=$critical_count high=$high_count" >&2
 
 echo "## Summary Statistics" >> "$PRIORITIZED_PLAN"
 echo "- **Total Opportunities:** $total_opportunities" >> "$PRIORITIZED_PLAN"

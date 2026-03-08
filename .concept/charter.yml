@@ -40,9 +40,10 @@ success_criteria:
 
   architectural:
     - metric: single_responsibility_adherence
-      target: "100% classes < 300 lines"
-      current: "100% (0 files over 300 lines)"
+      target: "100% classes < 300 lines (ALL files including tests)"
+      current: "100% (0/11053 files over 300 lines - test files now governed)"
       status: "EXCELLENT"
+      note: "Test files refactored into focused modules; INV-ARCH-001 validation updated to include all files"
     - metric: layer_separation
       target: "0 cross-layer violations"
       current: "0 violations detected"
@@ -51,11 +52,11 @@ success_criteria:
   operational:
     - metric: test_pass_rate
       target: "100%"
-      current: "100% (409/409)"
+      current: "100% (435/435 tests passing)"
       status: "EXCELLENT"
     - metric: build_success_rate
       target: "100%"
-      current: "100% (2/2 commits passing)"
+      current: "100% (all commits passing)"
       status: "EXCELLENT"
 
 milestones:
@@ -93,6 +94,20 @@ milestones:
     deliverables:
       - "Architectural compliance report: metrics/reports/ARCHITECTURAL_COMPLIANCE_REPORT.md"
       - "Remediation plan: None required (0 violations)"
+
+  - id: M4
+    name: Universal_SRP_Compliance
+    description: "100% Single Responsibility Principle adherence across ALL files (including test files)"
+    status: "COMPLETE"
+    target_date: "2025-03-29"
+    completed_date: "2026-03-08"
+    dependencies:
+      - "M3"
+    deliverables:
+      - "Test module refactoring: 3 violating test files split into 9 focused modules"
+      - "INV-ARCH-001 validation updated: test file exclusion removed"
+      - "Charter updated: reflects 100% SRP adherence across entire codebase"
+      - "0/11053 files exceed 300 lines (previously 3 violations masked by exclusion)"
 
 development_principles:
   sdec_cycle:

@@ -35,7 +35,6 @@ export const SeedRequestSchema = z.object({
 });
 
 export const SeedResponseSchema = BaseResponseSchema.extend({
-  data: z.undefined(),
   message: z.string().optional()
 });
 

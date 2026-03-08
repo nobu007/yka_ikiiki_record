@@ -4,8 +4,8 @@ import { calculateMonthlyStats } from '@/utils/statsCalculator';
 type Record = {
   emotion: number;
   date: string;
-  student: number;
-  comment: string;
+  student: string;
+  comment: string | undefined;
 };
 
 export function makeServer({ environment = 'development' } = {}) {

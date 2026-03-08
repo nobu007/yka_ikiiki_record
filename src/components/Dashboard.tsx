@@ -4,7 +4,7 @@ import { Button, LoadingSpinner, CheckIcon, PlusIcon, Notification } from './ui'
 import { UsageInstructions } from './common/UsageInstructions';
 import { DataVisualization } from './dashboard/DataVisualization';
 import { GeneratedStats } from '@/infrastructure/services/dataService';
-import { SeedResponseSchema } from '@/schemas/api';
+import { StatsResponseSchema } from '@/schemas/api';
 import { validateDataSafe } from '@/lib/api/validation';
 import { normalizeError, logError } from '@/lib/error-handler';
 
@@ -28,8 +28,8 @@ const DashboardComponent: React.FC<DashboardProps> = ({
   const [stats, setStats] = useState<GeneratedStats | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const helpText = useMemo(() => 
-    isGenerating 
+  const helpText = useMemo(() =>
+    isGenerating
       ? MESSAGES.ui.dashboard.helpTextGenerating
       : MESSAGES.ui.dashboard.helpTextReady,
     [isGenerating]
@@ -39,19 +39,19 @@ const DashboardComponent: React.FC<DashboardProps> = ({
     try {
       setIsLoading(true);
       const response = await fetch('/api/seed');
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const rawData = await response.json();
 
-      const [validated, validationError] = validateDataSafe(rawData, SeedResponseSchema);
+      const [validated, validationError] = validateDataSafe(rawData, StatsResponseSchema);
       if (validationError || !validated) {
         throw new Error(validationError || 'API response validation failed');
       }
 
-      if (validated.success) {
+      if (validated.success && validated.data) {
         setStats(validated.data);
       }
     } catch (error) {

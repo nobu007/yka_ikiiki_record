@@ -40,7 +40,7 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
   colors = defaultColors
 }) => {
   const getChartOptions = useCallback(() => {
-    const baseOptions = {
+    const baseOptions: Record<string, unknown> = {
       chart: {
         type,
         height,
@@ -50,16 +50,8 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
         background: 'transparent'
       },
       colors,
-      title: title ? {
-        text: title,
-        style: {
-          fontSize: '16px',
-          fontWeight: 'bold',
-          color: '#374151'
-        }
-      } : undefined,
       theme: {
-        mode: 'light' satisfies ChartMode
+        mode: 'light' as ChartMode
       },
       responsive: [{
         breakpoint: 640,
@@ -68,18 +60,29 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
             height: height * 0.7
           },
           legend: {
-            position: 'bottom' satisfies LegendPosition
+            position: 'bottom' as LegendPosition
           }
         }
       }]
     };
+
+    if (title) {
+      baseOptions.title = {
+        text: title,
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          color: '#374151'
+        }
+      };
+    }
 
     if (type === 'pie' || type === 'donut') {
       return {
         ...baseOptions,
         labels: data.labels,
         legend: {
-          position: 'bottom' satisfies LegendPosition
+          position: 'bottom' as LegendPosition
         }
       };
     }
@@ -105,10 +108,10 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
         borderColor: '#E5E7EB'
       },
       legend: {
-        position: 'top' satisfies LegendPosition
+        position: 'top' as LegendPosition
       }
     };
-  }, [type, height, colors, title]);
+  }, [type, height, colors, title, data.labels]);
 
   return (
     <div className="w-full">

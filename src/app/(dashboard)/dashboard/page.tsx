@@ -5,7 +5,7 @@ import { useDashboard } from '@/hooks/useApp';
 import { ErrorBoundary, LoadingOverlay } from '@/components/ui';
 import { Dashboard } from '@/components/Dashboard';
 
-export default function DashboardPage() {
+const DashboardPage = React.memo(function DashboardPage() {
   const { isGenerating, notification, handleGenerate, isLoadingMessage } = useDashboard();
 
   const handleNotificationClose = useCallback(() => {
@@ -29,4 +29,8 @@ export default function DashboardPage() {
       />
     </ErrorBoundary>
   );
-}
+});
+
+DashboardPage.displayName = 'DashboardPage';
+
+export default DashboardPage;

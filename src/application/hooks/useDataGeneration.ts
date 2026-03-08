@@ -16,7 +16,6 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  // 生徒数の更新
   const updateStudentCount = useCallback((count: number) => {
     setConfig(prev => ({
       ...prev,
@@ -24,7 +23,6 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     }));
   }, []);
 
-  // 期間の更新
   const updatePeriodDays = useCallback((days: number) => {
     setConfig(prev => ({
       ...prev,
@@ -32,7 +30,6 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     }));
   }, []);
 
-  // 感情分布パターンの更新
   const updateDistributionPattern = useCallback((pattern: EmotionDistributionPattern) => {
     setConfig(prev => ({
       ...prev,
@@ -40,7 +37,6 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     }));
   }, []);
 
-  // 季節変動の有効/無効切り替え
   const toggleSeasonalEffects = useCallback(() => {
     setConfig(prev => ({
       ...prev,
@@ -48,7 +44,6 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     }));
   }, []);
 
-  // イベントの追加
   const addEvent = useCallback((event: EventEffect) => {
     setConfig(prev => ({
       ...prev,
@@ -56,7 +51,6 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     }));
   }, []);
 
-  // イベントの削除
   const removeEvent = useCallback((index: number) => {
     setConfig(prev => ({
       ...prev,
@@ -64,7 +58,6 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     }));
   }, []);
 
-  // クラス特性の更新
   const updateClassCharacteristics = useCallback((characteristics: Partial<ClassCharacteristics>) => {
     setConfig(prev => ({
       ...prev,
@@ -75,12 +68,10 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     }));
   }, []);
 
-  // 設定のリセット
   const resetConfig = useCallback(() => {
     setConfig(DEFAULT_CONFIG);
   }, []);
 
-  // データ生成の実行
   const generateData = useCallback(async () => {
     setIsGenerating(true);
     setError(null);

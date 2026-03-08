@@ -1,9 +1,6 @@
-// Simplified UI components
-
 import React from 'react';
 import { MESSAGES, UI_CONFIG } from '@/lib/config';
 
-// Loading spinner component
 export const LoadingSpinner = ({ size = 'md', color = 'blue' }: { size?: 'sm' | 'md'; color?: string }) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
@@ -19,7 +16,6 @@ export const LoadingSpinner = ({ size = 'md', color = 'blue' }: { size?: 'sm' | 
   );
 };
 
-// Icon components
 export const CheckIcon = () => (
   <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -49,7 +45,6 @@ export const NotificationIcon = ({ type }: { type: 'success' | 'error' | 'warnin
   );
 };
 
-// Notification component
 export const Notification = ({ show, message, type, onClose }: {
   show: boolean;
   message: string;
@@ -92,7 +87,6 @@ export const Notification = ({ show, message, type, onClose }: {
   );
 };
 
-// Loading overlay component
 export const LoadingOverlay = ({ isLoading, message }: { isLoading: boolean; message?: string }) => {
   if (!isLoading) return null;
 
@@ -106,7 +100,6 @@ export const LoadingOverlay = ({ isLoading, message }: { isLoading: boolean; mes
   );
 };
 
-// Error boundary component
 export class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode }) {
     super(props);
@@ -142,7 +135,6 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
   }
 }
 
-// Button component
 export const Button = ({ 
   children, 
   onClick, 

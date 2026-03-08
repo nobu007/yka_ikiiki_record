@@ -1,4 +1,4 @@
-import PageBreadcrumb from "@/components/common/PageBreadCrumb";
+import { PageBreadcrumb } from "@/components/common/PageBreadCrumb";
 import { Metadata } from "next";
 import BarChartContent from "./components/BarChartContent";
 

@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { Stats } from '@/domain/entities/Stats';
 
 const BaseResponseSchema = z.object({
   success: z.boolean(),
@@ -38,8 +37,47 @@ export const SeedResponseSchema = BaseResponseSchema.extend({
   message: z.string().optional()
 });
 
+const StatsOverviewSchema = z.object({
+  count: z.number().int().nonnegative(),
+  avgEmotion: z.number().min(1).max(5)
+});
+
+const MonthlyStatsSchema = z.object({
+  month: z.string(),
+  count: z.number().int().nonnegative(),
+  avgEmotion: z.number().min(1).max(5)
+});
+
+const StudentStatsSchema = z.object({
+  student: z.string(),
+  recordCount: z.number().int().nonnegative(),
+  avgEmotion: z.number().min(1).max(5),
+  trendline: z.array(z.number())
+});
+
+const DayOfWeekStatsSchema = z.object({
+  day: z.string(),
+  avgEmotion: z.number().min(1).max(5),
+  count: z.number().int().nonnegative()
+});
+
+const TimeOfDayStatsSchema = z.object({
+  morning: z.number().min(1).max(5),
+  afternoon: z.number().min(1).max(5),
+  evening: z.number().min(1).max(5)
+});
+
+const StatsDataSchema = z.object({
+  overview: StatsOverviewSchema,
+  monthlyStats: z.array(MonthlyStatsSchema),
+  studentStats: z.array(StudentStatsSchema),
+  dayOfWeekStats: z.array(DayOfWeekStatsSchema),
+  emotionDistribution: z.array(z.number()),
+  timeOfDayStats: TimeOfDayStatsSchema
+});
+
 export const StatsResponseSchema = BaseResponseSchema.extend({
-  data: z.custom<Stats>()
+  data: StatsDataSchema
 });
 
 export type EmotionDistributionPattern = z.infer<typeof EmotionDistributionPatternSchema>;

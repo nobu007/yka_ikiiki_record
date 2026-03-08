@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { handleApiError, withErrorHandler, parseRequestBody, parseRequestBodyWithJson, createError } from './error-handler';
+import { handleApiError, withErrorHandler, parseRequestBody, createError, JsonReadable } from './error-handler';
 import { AppError, NetworkError, logError, ERROR_CODES } from '@/lib/error-handler';
 
 // Mock the logError function
@@ -163,21 +163,25 @@ describe('API Error Handler', () => {
     });
   });
 
-  describe('parseRequestBodyWithJson', () => {
+  describe('parseRequestBody', () => {
     test('parses valid JSON successfully', async () => {
-      const mockJson = jest.fn().mockResolvedValue({ test: 'data' });
+      const mockSource: JsonReadable = {
+        json: jest.fn().mockResolvedValue({ test: 'data' })
+      };
 
-      const result = await parseRequestBodyWithJson(mockJson);
+      const result = await parseRequestBody(mockSource);
 
-      expect(mockJson).toHaveBeenCalled();
+      expect(mockSource.json).toHaveBeenCalled();
       expect(result).toEqual({ test: 'data' });
     });
 
     test('throws bad request error on JSON parse failure', async () => {
-      const mockJson = jest.fn().mockRejectedValue(new Error('Invalid JSON'));
+      const mockSource: JsonReadable = {
+        json: jest.fn().mockRejectedValue(new Error('Invalid JSON'))
+      };
 
-      await expect(parseRequestBodyWithJson(mockJson)).rejects.toThrow('リクエストボディの解析に失敗しました');
-      expect(mockJson).toHaveBeenCalled();
+      await expect(parseRequestBody(mockSource)).rejects.toThrow('リクエストボディの解析に失敗しました');
+      expect(mockSource.json).toHaveBeenCalled();
     });
   });
 });

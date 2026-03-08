@@ -72,22 +72,20 @@ export function withErrorHandler<T extends NextResponse>(
 }
 
 /**
- * リクエストデータの安全なパース
+ * Interface for objects that can provide JSON data
+ * Follows Dependency Inversion Principle - depends on abstraction, not concretion
  */
-export async function parseRequestBody(req: Request): Promise<unknown> {
-  try {
-    return await req.json();
-  } catch {
-    throw createError.badRequest('リクエストボディの解析に失敗しました');
-  }
+export interface JsonReadable {
+  json(): Promise<unknown>;
 }
 
 /**
- * Parse request body with injectable dependency for testing
+ * リクエストデータの安全なパース
+ * Works with any JsonReadable (Request, mock, etc.) - Dependency Inversion Principle
  */
-export async function parseRequestBodyWithJson(jsonFn: () => Promise<unknown>): Promise<unknown> {
+export async function parseRequestBody(source: JsonReadable): Promise<unknown> {
   try {
-    return await jsonFn();
+    return await source.json();
   } catch {
     throw createError.badRequest('リクエストボディの解析に失敗しました');
   }

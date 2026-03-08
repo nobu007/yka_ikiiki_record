@@ -19,21 +19,19 @@ export function makeServer({ environment = 'development' } = {}) {
     factories: {
       record: Factory.extend({
         emotion() {
-          // より自然な分布になるように調整
           const rand = Math.random();
-          if (rand < 0.1) return 1 + Math.random(); // 10%
-          if (rand < 0.3) return 2 + Math.random(); // 20%
-          if (rand < 0.7) return 3 + Math.random(); // 40%
-          if (rand < 0.9) return 4 + Math.random(); // 20%
-          return 4 + Math.random(); // 10%
+          if (rand < 0.1) return 1 + Math.random();
+          if (rand < 0.3) return 2 + Math.random();
+          if (rand < 0.7) return 3 + Math.random();
+          if (rand < 0.9) return 4 + Math.random();
+          return 4 + Math.random();
         },
         date() {
           const date = new Date();
-          // より現実的な時間分布
           const hour = Math.floor(Math.random() * 24);
           const minutes = Math.floor(Math.random() * 60);
           date.setHours(hour, minutes);
-          date.setDate(date.getDate() - Math.floor(Math.random() * 30)); // 過去30日
+          date.setDate(date.getDate() - Math.floor(Math.random() * 30));
           return date.toISOString();
         },
         student() {
@@ -53,7 +51,6 @@ export function makeServer({ environment = 'development' } = {}) {
     },
 
     seeds() {
-      // 初期データはシードAPIで生成するため、ここでは空にしています
     },
 
     routes() {
@@ -61,10 +58,8 @@ export function makeServer({ environment = 'development' } = {}) {
 
       this.post('/seed', function (schema) {
         try {
-          // 既存のデータをクリア
           schema.db.emptyData();
 
-          // 新しいデータを生成（25名×30日分）
           Array.from({ length: 750 }).forEach(() => {
             schema.create('record', {});
           });
@@ -79,11 +74,10 @@ export function makeServer({ environment = 'development' } = {}) {
         try {
           const records = schema.all('record').models;
           
-          // Transform Mirage records to match calculateStats expected format
           const transformedRecords = records.map((record: Record) => ({
             date: new Date(record.date),
             emotion: record.emotion,
-            student: parseInt(record.student.toString().replace('学生', '')) - 1, // Convert "学生1" to 0
+            student: parseInt(record.student.toString().replace('学生', '')) - 1,
             hour: new Date(record.date).getHours()
           }));
           

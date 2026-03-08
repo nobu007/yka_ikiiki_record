@@ -4,17 +4,10 @@ import {
   calculateDayOfWeekStats,
   calculateTimeOfDayStats,
   calculateEmotionDistribution,
-  calculateStudentStats,
-  clamp,
-  clampEmotion,
-  generateBaseEmotion,
-  calculateSeasonalEffect,
-  calculateEventEffect,
-  getRandomHour,
-  calculateEmotionTrend
+  calculateStudentStats
 } from './statsCalculator';
 
-describe('statsCalculator', () => {
+describe('statsCalculator Aggregation Functions', () => {
   const testDate = new Date('2025-05-23T10:00:00.000Z');
   const testEmotions = [
     { date: testDate, emotion: 3, student: 0, hour: 10 },
@@ -162,145 +155,6 @@ describe('statsCalculator', () => {
       const result = calculateStudentStats(noStudentData);
       expect(result).toHaveLength(1);
       expect(result[0]?.student).toBe('学生1'); // student 0 becomes 学生1
-    });
-  });
-
-  describe('clamp', () => {
-    test('値を範囲内に制限する', () => {
-      expect(clamp(5, 1, 10)).toBe(5);
-      expect(clamp(0, 1, 10)).toBe(1);
-      expect(clamp(15, 1, 10)).toBe(10);
-    });
-  });
-
-  describe('clampEmotion', () => {
-    test('感情値を1-5の範囲に制限する', () => {
-      expect(clampEmotion(0)).toBe(1);
-      expect(clampEmotion(3)).toBe(3);
-      expect(clampEmotion(6)).toBe(5);
-    });
-  });
-
-  describe('generateBaseEmotion', () => {
-    test('各パターンで感情値を生成する', () => {
-      const normal = generateBaseEmotion('normal');
-      const bimodal = generateBaseEmotion('bimodal');
-      const stress = generateBaseEmotion('stress');
-      const happy = generateBaseEmotion('happy');
-
-      expect(normal).toBeGreaterThanOrEqual(1);
-      expect(normal).toBeLessThanOrEqual(5);
-      expect(bimodal).toBeGreaterThanOrEqual(1);
-      expect(bimodal).toBeLessThanOrEqual(5);
-      expect(stress).toBeGreaterThanOrEqual(1);
-      expect(stress).toBeLessThanOrEqual(5);
-      expect(happy).toBeGreaterThanOrEqual(1);
-      expect(happy).toBeLessThanOrEqual(5);
-    });
-  });
-
-  describe('calculateSeasonalEffect', () => {
-    test('季節効果を計算する', () => {
-      const date = new Date('2025-05-23');
-      const effect = calculateSeasonalEffect(date);
-      expect(typeof effect).toBe('number');
-    });
-
-    test('すべての月で季節効果を計算する', () => {
-      for (let month = 0; month < 12; month++) {
-        const date = new Date(2025, month, 15);
-        const effect = calculateSeasonalEffect(date);
-        expect(typeof effect).toBe('number');
-        expect(isNaN(effect)).toBe(false);
-      }
-    });
-  });
-
-  describe('calculateEventEffect', () => {
-    test('イベント効果を計算する', () => {
-      const date = new Date('2025-05-23');
-      const events = [
-        {
-          startDate: new Date('2025-05-20'),
-          endDate: new Date('2025-05-25'),
-          impact: 0.5
-        }
-      ];
-      const effect = calculateEventEffect(date, events);
-      expect(typeof effect).toBe('number');
-      expect(effect).toBeGreaterThan(0);
-    });
-
-    test('期間外のイベントは影響しない', () => {
-      const date = new Date('2025-05-23');
-      const events = [
-        {
-          startDate: new Date('2025-05-20'),
-          endDate: new Date('2025-05-22'),
-          impact: 0.5
-        }
-      ];
-      const effect = calculateEventEffect(date, events);
-      expect(effect).toBe(0);
-    });
-
-    test('零期間イベントは除算ゼロを防ぐ', () => {
-      const date = new Date('2025-05-23');
-      const events = [
-        {
-          startDate: new Date('2025-05-23'),
-          endDate: new Date('2025-05-23'),
-          impact: 0.5
-        }
-      ];
-      const effect = calculateEventEffect(date, events);
-      expect(effect).toBe(0);
-    });
-
-    test('複数イベントの効果を累積する', () => {
-      const date = new Date('2025-05-23');
-      const events = [
-        {
-          startDate: new Date('2025-05-20'),
-          endDate: new Date('2025-05-25'),
-          impact: 0.3
-        },
-        {
-          startDate: new Date('2025-05-22'),
-          endDate: new Date('2025-05-24'),
-          impact: 0.2
-        }
-      ];
-      const effect = calculateEventEffect(date, events);
-      expect(effect).toBeGreaterThan(0);
-    });
-
-    test('空のイベント配列を処理する', () => {
-      const date = new Date('2025-05-23');
-      const effect = calculateEventEffect(date, []);
-      expect(effect).toBe(0);
-    });
-  });
-
-  describe('getRandomHour', () => {
-    test('有効な時間帯を生成する', () => {
-      const hour = getRandomHour();
-      expect(hour).toBeGreaterThanOrEqual(5);
-      expect(hour).toBeLessThan(24);
-    });
-  });
-
-  describe('calculateEmotionTrend', () => {
-    test('感情トレンドを計算する', () => {
-      expect(calculateEmotionTrend([])).toBe('stable');
-      expect(calculateEmotionTrend([3])).toBe('stable');
-      expect(calculateEmotionTrend([3, 4, 5])).toBe('stable'); // Not enough data for trend
-      expect(calculateEmotionTrend([5, 4, 3])).toBe('stable'); // Not enough data for trend
-      expect(calculateEmotionTrend([3, 3, 3])).toBe('stable');
-      // Test with enough data for trend calculation
-      expect(calculateEmotionTrend([2, 2, 2, 3, 4, 5])).toBe('up');
-      expect(calculateEmotionTrend([5, 5, 5, 4, 3, 2])).toBe('down');
-      expect(calculateEmotionTrend([3, 3, 3, 3, 3, 3])).toBe('stable');
     });
   });
 });

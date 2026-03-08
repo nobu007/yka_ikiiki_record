@@ -4,6 +4,8 @@ import { Button, LoadingSpinner, CheckIcon, PlusIcon, Notification } from './ui'
 import { UsageInstructions } from './common/UsageInstructions';
 import { DataVisualization } from './dashboard/DataVisualization';
 import { GeneratedStats } from '@/infrastructure/services/dataService';
+import { SeedResponseSchema } from '@/schemas/api';
+import { validateDataSafe } from '@/lib/api/validation';
 
 interface DashboardProps {
   isGenerating: boolean;
@@ -41,9 +43,15 @@ const DashboardComponent: React.FC<DashboardProps> = ({
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       
-      const result = await response.json();
-      if (result.success) {
-        setStats(result.data);
+      const rawData = await response.json();
+
+      const [validated, validationError] = validateDataSafe(rawData, SeedResponseSchema);
+      if (validationError || !validated) {
+        throw new Error(validationError || 'API response validation failed');
+      }
+
+      if (validated.success) {
+        setStats(validated.data);
       }
     } catch (error) {
     } finally {

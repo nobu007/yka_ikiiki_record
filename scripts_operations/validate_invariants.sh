@@ -4,8 +4,8 @@
 
 set -e
 
-echo "🔍 INVARIANT VALIDATION - Milestone M2"
-echo "======================================"
+echo "🔍 INVARIANT VALIDATION - Milestone M2+ (Test Files Governed)"
+echo "=============================================================="
 echo ""
 
 # Color codes
@@ -44,12 +44,12 @@ check_invariant() {
 }
 
 # INV-ARCH-001: Single Responsibility Enforcement
-# Exclude test files which may legitimately exceed 300 lines for comprehensive coverage
+# ALL files must comply (including test files) - achieved via test module refactoring
 check_invariant \
     "INV-ARCH-001" \
     "Single_Responsibility_Enforcement" \
     "CRITICAL" \
-    "find src -name '*.tsx' -o -name '*.ts' | grep -v '\.test\.' | grep -v '\.spec\.' | while read f; do wc -l < \"\$f\"; done | awk '\$1 > 300' | wc -l" \
+    "find src -name '*.tsx' -o -name '*.ts' | while read f; do wc -l < \"\$f\"; done | awk '\$1 > 300' | wc -l" \
     "0"
 
 # INV-ARCH-002: Layer Separation

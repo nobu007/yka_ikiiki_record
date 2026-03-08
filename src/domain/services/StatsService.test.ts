@@ -4,7 +4,6 @@ import { DataGenerationConfig } from '../entities/DataGeneration';
 import { Stats } from '../entities/Stats';
 import { generateEmotion } from './EmotionGenerator';
 
-// Mock the dependencies
 jest.mock('../repositories/StatsRepository');
 jest.mock('./EmotionGenerator');
 
@@ -22,7 +21,6 @@ describe('StatsService', () => {
       saveStats: jest.fn()
     } as jest.Mocked<StatsRepository>;
 
-    // Mock generateEmotion function
     mockGenerateEmotion.mockReturnValue(3.5);
 
     statsService = new StatsService(mockRepository);
@@ -61,7 +59,6 @@ describe('StatsService', () => {
 
       expect(mockRepository.saveStats).toHaveBeenCalledTimes(1);
       
-      // Verify the saved data structure
       const savedStats = mockRepository.saveStats.mock.calls[0][0];
       expect(savedStats).toHaveProperty('overview');
       expect(savedStats).toHaveProperty('monthlyStats');
@@ -94,8 +91,6 @@ describe('StatsService', () => {
 
       const savedStats = mockRepository.saveStats.mock.calls[0][0];
       
-      // Each student should have 1-3 records per day
-      // So total records should be between studentCount * periodDays and studentCount * periodDays * 3
       const minRecords = config.studentCount * config.periodDays;
       const maxRecords = config.studentCount * config.periodDays * 3;
       
@@ -133,12 +128,10 @@ describe('StatsService', () => {
 
       const savedStats = mockRepository.saveStats.mock.calls[0][0];
       
-      // Verify that all stats arrays have the expected structure
       expect(Array.isArray(savedStats.monthlyStats)).toBe(true);
       expect(Array.isArray(savedStats.studentStats)).toBe(true);
       expect(Array.isArray(savedStats.dayOfWeekStats)).toBe(true);
       expect(Array.isArray(savedStats.emotionDistribution)).toBe(true);
-      // timeOfDayStats is an object, not an array
       expect(typeof savedStats.timeOfDayStats).toBe('object');
       expect(savedStats.timeOfDayStats).toHaveProperty('morning');
       expect(savedStats.timeOfDayStats).toHaveProperty('afternoon');

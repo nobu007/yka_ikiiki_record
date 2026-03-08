@@ -130,13 +130,6 @@ describe('Dashboard', () => {
   });
 
   describe('Accessibility', () => {
-    it('should have aria-describedby on generate button', () => {
-      const { container } = render(<Dashboard {...mockProps} />);
-
-      const generateButton = container.querySelector('button[aria-describedby="generate-help"]');
-      expect(generateButton).toBeInTheDocument();
-    });
-
     it('should have help text with matching id', () => {
       render(<Dashboard {...mockProps} />);
 

@@ -167,13 +167,9 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
   }
 }
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
   variant?: 'primary' | 'secondary';
-  type?: 'button' | 'submit';
-  className?: string;
 }
 
 export const Button = React.memo<ButtonProps>(({
@@ -182,7 +178,8 @@ export const Button = React.memo<ButtonProps>(({
   disabled = false,
   variant = 'primary',
   type = 'button',
-  className = ''
+  className = '',
+  ...rest
 }) => {
   const baseClasses = UI_CONFIG.buttonStyles[variant];
   const combinedClasses = `${baseClasses} ${className}`.trim();
@@ -193,6 +190,7 @@ export const Button = React.memo<ButtonProps>(({
       disabled={disabled}
       type={type}
       className={combinedClasses}
+      {...rest}
     >
       {children}
     </button>

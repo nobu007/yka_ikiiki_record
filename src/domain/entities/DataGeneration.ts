@@ -1,7 +1,3 @@
-/**
- * データ生成の設定に関する型定義
- */
-
 export type EmotionDistributionPattern = 'normal' | 'bimodal' | 'stress' | 'happy';
 
 export type SeasonalEffect = {
@@ -15,13 +11,13 @@ export type EventEffect = {
   name: string;
   startDate: Date;
   endDate: Date;
-  impact: number; // -1.0 to 1.0
+  impact: number;
 };
 
 export type ClassCharacteristics = {
-  baselineEmotion: number; // 基準感情値（3.0前後）
-  volatility: number; // 変動の大きさ（0.1-1.0）
-  cohesion: number; // クラスの結束度（影響の伝播度）
+  baselineEmotion: number;
+  volatility: number;
+  cohesion: number;
 };
 
 export interface DataGenerationConfig {
@@ -46,7 +42,6 @@ export const DEFAULT_CONFIG: DataGenerationConfig = {
   }
 };
 
-// 感情値の生成に使用する定数
 export const EMOTION_CONSTANTS = {
   MIN_EMOTION: 1.0,
   MAX_EMOTION: 5.0,

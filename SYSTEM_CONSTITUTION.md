@@ -304,6 +304,7 @@ describe('StatsService', () => {
 The following forms of type assertions are permitted:
 - `as const` - For creating immutable literal types (enhances type safety by preventing mutation)
 - Type guards - When using `value is Type` predicate functions
+- `as unknown as Type` - Test mocks only (necessary for Jest mock objects that don't satisfy full interface requirements)
 
 All other uses of the `as` keyword (including `as keyof`, `as Type`, etc.) are forbidden.
 

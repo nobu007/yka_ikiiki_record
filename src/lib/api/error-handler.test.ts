@@ -169,10 +169,10 @@ describe('API Error Handler', () => {
     test('parses valid JSON successfully', async () => {
       const mockReq = {
         json: jest.fn().mockResolvedValue({ test: 'data' })
-      } as unknown as Request;
+      };
 
-      const result = await parseRequestBody(mockReq);
-      
+      const result = await parseRequestBody(mockReq as unknown as Request);
+
       expect(mockReq.json).toHaveBeenCalled();
       expect(result).toEqual({ test: 'data' });
     });
@@ -180,9 +180,9 @@ describe('API Error Handler', () => {
     test('throws bad request error on JSON parse failure', async () => {
       const mockReq = {
         json: jest.fn().mockRejectedValue(new Error('Invalid JSON'))
-      } as unknown as Request;
+      };
 
-      await expect(parseRequestBody(mockReq)).rejects.toThrow('リクエストボディの解析に失敗しました');
+      await expect(parseRequestBody(mockReq as unknown as Request)).rejects.toThrow('リクエストボディの解析に失敗しました');
       expect(mockReq.json).toHaveBeenCalled();
     });
   });

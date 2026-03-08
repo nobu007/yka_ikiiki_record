@@ -44,12 +44,13 @@ check_invariant() {
 }
 
 # INV-ARCH-001: Single Responsibility Enforcement
-# ALL files must comply (including test files) - achieved via test module refactoring
+# ALL files must comply (including test files) - test file governance enforced
+echo "🔍 INV-ARCH-001: Checking ALL files (including test files) for 300-line limit"
 check_invariant \
     "INV-ARCH-001" \
     "Single_Responsibility_Enforcement" \
     "CRITICAL" \
-    "find src -name '*.tsx' -o -name '*.ts' | while read f; do wc -l < \"\$f\"; done | awk '\$1 > 300' | wc -l" \
+    "find src -name '*.tsx' -o -name '*.ts' | xargs wc -l | awk 'NR>1 && \$1>300 && !/total/ {count++} END {print count+0}'" \
     "0"
 
 # INV-ARCH-002: Layer Separation

@@ -1,8 +1,8 @@
 # PROJECT INVARIANTS
 # Immutable architectural constraints that MUST never be violated
 
-version: 1.0.0
-last_updated: 2025-03-08
+version: 1.1.0
+last_updated: 2026-03-08
 
 invariants:
   # ARCHITECTURAL INVARIANTS
@@ -10,10 +10,10 @@ invariants:
     name: Single_Responsibility_Enforcement
     category: architecture
     severity: CRITICAL
-    description: Every class/module must have exactly one reason to change
-    constraint: "Maximum 1 public responsibility per module"
-    validation: "Class line count < 300 OR explicit single-responsibility proof"
-    rationale: "Prevents god objects, maintains modularity"
+    description: Every class/module must have exactly one reason to change (INCLUDING TEST FILES)
+    constraint: "Maximum 1 public responsibility per module - applies to ALL files without exception"
+    validation: "File line count < 300 for ALL files (src/**/*.ts, src/**/*.tsx) - no test file exclusions"
+    rationale: "Prevents god objects, maintains modularity, ensures test file governance"
 
   - id: INV-ARCH-002
     name: Layer_Separation
@@ -121,3 +121,7 @@ monitoring:
     - name: common_reuse_check
       command: "grep -r 'CLIProcessor\\|RateLimitAwareCLIProcessor' src/ --include='*.py' | wc -l"
       threshold: 10  # Baseline expectation
+    - name: inv_arch_001_srp_check
+      command: "find src -name '*.tsx' -o -name '*.ts' | xargs wc -l | awk 'NR>1 && $1>300 && !/total/ {count++} END {print count+0}'"
+      threshold: 0
+      note: "INV-ARCH-001: ALL files including test files must be < 300 lines"

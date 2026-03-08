@@ -27,7 +27,7 @@ export default function BarChartContent() {
     setIsLoading(true);
     setError(null);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await Promise.resolve();
     } catch (err) {
       setError(err instanceof Error ? err : new Error(String(err)));
     } finally {

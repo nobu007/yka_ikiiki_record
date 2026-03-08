@@ -17,6 +17,17 @@ const formatZodError = (error: z.ZodError): string => {
 };
 
 /**
+ * Type guard for SyntaxError with body property
+ * This is set by fetch API when JSON parsing fails
+ * Uses 'value is Type' predicate pattern per SYSTEM_CONSTITUTION.md
+ */
+function isSyntaxErrorWithBody(error: unknown): error is SyntaxError & { body: boolean } {
+  return error instanceof SyntaxError &&
+         'body' in error &&
+         (error as SyntaxError & { body: boolean }).body === true;
+}
+
+/**
  * Enhanced API error handler with better type safety
  */
 export function handleApiError(error: unknown): NextResponse {
@@ -26,8 +37,8 @@ export function handleApiError(error: unknown): NextResponse {
     return createErrorResponse(`入力データの検証に失敗しました: ${message}`, 400);
   }
 
-  // JSON parse errors
-  if (error instanceof SyntaxError && 'body' in error) {
+  // JSON parse errors with type guard for full type safety
+  if (isSyntaxErrorWithBody(error)) {
     return createErrorResponse('リクエストボディのJSON形式が正しくありません', 400);
   }
 

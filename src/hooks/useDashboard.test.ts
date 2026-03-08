@@ -45,12 +45,10 @@ describe('useDashboard', () => {
 
   it('handles successful generation', async () => {
     const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
-    mockFetch.mockResolvedValue(
-      createMockResponse({
-        ok: true,
-        json: async () => ({ success: true, data: undefined })
-      }) as unknown as Response
-    );
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true, data: undefined })
+    } as Response);
 
     const { result } = renderHook(() => useDashboard());
 
@@ -65,14 +63,12 @@ describe('useDashboard', () => {
 
   it('handles generation failure', async () => {
     const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
-    mockFetch.mockResolvedValue(
-      createMockResponse({
-        ok: false,
-        status: 500,
-        statusText: 'Internal Server Error',
-        json: async () => ({})
-      }) as unknown as Response
-    );
+    mockFetch.mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: 'Internal Server Error',
+      json: async () => ({})
+    } as Response);
 
     const { result } = renderHook(() => useDashboard());
 

@@ -286,7 +286,7 @@ describe('Stats Domain Entities', () => {
       expect(stats.monthlyStats).toHaveLength(12);
       expect(stats.studentStats).toHaveLength(25);
       expect(stats.dayOfWeekStats).toHaveLength(7);
-      expect(stats.studentStats[0].trendline).toHaveLength(7);
+      expect(stats.studentStats[0]?.trendline).toHaveLength(7);
       expect(stats.overview.count).toBe(1000);
     });
   });

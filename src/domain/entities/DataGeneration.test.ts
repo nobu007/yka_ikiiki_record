@@ -399,8 +399,8 @@ describe('DataGeneration Domain Entities', () => {
 
       // Assert
       expect(config.eventEffects).toHaveLength(3);
-      expect(config.eventEffects[0].impact).toBeGreaterThan(0);
-      expect(config.eventEffects[2].impact).toBeLessThan(0);
+      expect(config.eventEffects[0]?.impact).toBeGreaterThan(0);
+      expect(config.eventEffects[2]?.impact).toBeLessThan(0);
       expect(config.studentCount).toBe(35);
       expect(config.periodDays).toBe(180);
     });

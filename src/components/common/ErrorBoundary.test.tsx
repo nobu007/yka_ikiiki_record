@@ -80,8 +80,11 @@ describe('ErrorBoundary', () => {
 
     expect(window.location.reload).toHaveBeenCalledTimes(1);
 
-    // Restore original location
-    window.location = originalLocation;
+    // Restore original location using Object.defineProperty
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: originalLocation,
+    });
   });
 
   test('logs error to console when error occurs', () => {
@@ -103,11 +106,20 @@ describe('ErrorBoundary', () => {
     const originalNodeEnv = process.env.NODE_ENV;
 
     beforeAll(() => {
-      process.env.NODE_ENV = 'development';
+      // Use Object.defineProperty to set read-only property
+      Object.defineProperty(process, 'env', {
+        value: { ...process.env, NODE_ENV: 'development' },
+        writable: true,
+        configurable: true,
+      });
     });
 
     afterAll(() => {
-      process.env.NODE_ENV = originalNodeEnv;
+      Object.defineProperty(process, 'env', {
+        value: { ...process.env, NODE_ENV: originalNodeEnv },
+        writable: true,
+        configurable: true,
+      });
     });
 
     test('shows error details in development mode', () => {

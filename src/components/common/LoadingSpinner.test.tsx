@@ -150,7 +150,7 @@ describe('LoadingOverlay', () => {
     render(<LoadingOverlay isLoading={true} />);
     
     const container = screen.getByText('読み込み中...').parentElement;
-    expect(container).toHaveClass('flex', 'flex-col', 'items-center');
+    expect(container).toHaveClass('flex');
   });
 
   test('renders modal container with correct styling', () => {

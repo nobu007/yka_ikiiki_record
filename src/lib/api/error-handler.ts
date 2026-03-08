@@ -20,11 +20,14 @@ const formatZodError = (error: z.ZodError): string => {
  * Type guard for SyntaxError with body property
  * This is set by fetch API when JSON parsing fails
  * Uses 'value is Type' predicate pattern per SYSTEM_CONSTITUTION.md
+ * No type assertions used - runtime type checking only
  */
 function isSyntaxErrorWithBody(error: unknown): error is SyntaxError & { body: boolean } {
-  return error instanceof SyntaxError &&
-         'body' in error &&
-         (error.body as boolean) === true;
+  if (!(error instanceof SyntaxError)) {
+    return false;
+  }
+  const syntaxError = error;
+  return 'body' in syntaxError && syntaxError.body === true;
 }
 
 /**

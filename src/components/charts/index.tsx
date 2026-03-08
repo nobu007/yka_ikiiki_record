@@ -3,10 +3,6 @@ import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-// Define proper types without using 'as const'
-type ChartMode = 'light' | 'dark';
-type LegendPosition = 'top' | 'bottom' | 'left' | 'right';
-
 export interface ChartData {
   labels: string[];
   series: Array<{
@@ -21,6 +17,76 @@ export interface EmotionChartProps {
   height?: number;
   type?: 'line' | 'bar' | 'area' | 'pie' | 'donut';
   colors?: string[];
+}
+
+interface ChartTitle {
+  text: string;
+  style: {
+    fontSize: string;
+    fontWeight: string;
+    color: string;
+  };
+}
+
+interface ChartConfig {
+  type: 'line' | 'bar' | 'area' | 'pie' | 'donut';
+  height: number;
+  toolbar: {
+    show: boolean;
+  };
+  background: 'transparent' | string;
+}
+
+interface ResponsiveOptions {
+  breakpoint: number;
+  options: {
+    chart: {
+      height: number;
+    };
+    legend?: {
+      position: 'top' | 'bottom';
+    };
+  };
+}
+
+interface ChartTheme {
+  mode: 'light' | 'dark';
+}
+
+interface AxisLabels {
+  style: {
+    colors: string;
+  };
+}
+
+interface XAxis {
+  categories: string[];
+  labels: AxisLabels;
+}
+
+interface YAxis {
+  labels: AxisLabels;
+}
+
+interface Grid {
+  borderColor: string;
+}
+
+interface Legend {
+  position: 'top' | 'bottom';
+}
+
+interface BaseChartOptions {
+  chart: ChartConfig;
+  colors: string[];
+  theme: ChartTheme;
+  responsive: ResponsiveOptions[];
+  title?: ChartTitle;
+  xaxis?: XAxis;
+  yaxis?: YAxis;
+  grid?: Grid;
+  legend?: Legend;
+  labels?: string[];
 }
 
 const defaultColors = [
@@ -39,8 +105,8 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
   type = 'line',
   colors = defaultColors
 }) => {
-  const getChartOptions = useCallback(() => {
-    const baseOptions: Record<string, unknown> = {
+  const getChartOptions = useCallback((): BaseChartOptions => {
+    const baseOptions: BaseChartOptions = {
       chart: {
         type,
         height,
@@ -51,7 +117,7 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
       },
       colors,
       theme: {
-        mode: 'light' as ChartMode
+        mode: 'light'
       },
       responsive: [{
         breakpoint: 640,
@@ -60,7 +126,7 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
             height: height * 0.7
           },
           legend: {
-            position: 'bottom' as LegendPosition
+            position: 'bottom'
           }
         }
       }]
@@ -82,7 +148,7 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
         ...baseOptions,
         labels: data.labels,
         legend: {
-          position: 'bottom' as LegendPosition
+          position: 'bottom'
         }
       };
     }
@@ -108,7 +174,7 @@ export const EmotionChart = React.memo<EmotionChartProps>(({
         borderColor: '#E5E7EB'
       },
       legend: {
-        position: 'top' as LegendPosition
+        position: 'top'
       }
     };
   }, [type, height, colors, title, data.labels]);

@@ -31,8 +31,7 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+  override componentDidCatch(_error: Error, _errorInfo: ErrorInfo) {
   }
 
   private handleReload = (): void => {
@@ -80,7 +79,7 @@ export class ErrorBoundary extends Component<Props, State> {
     </div>
   );
 
-  render() {
+  override render() {
     return this.state.hasError 
       ? (this.props.fallback || this.renderDefaultError())
       : this.props.children;

@@ -1,7 +1,3 @@
-/**
- * 感情記録の統計情報に関するドメインエンティティ
- */
-
 export interface StatsOverview {
   count: number;
   avgEmotion: number;

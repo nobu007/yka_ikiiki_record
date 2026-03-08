@@ -117,11 +117,10 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+  override componentDidCatch(_error: Error, _errorInfo: React.ErrorInfo) {
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50">

@@ -48,7 +48,6 @@ const DashboardComponent: React.FC<DashboardProps> = ({
         setStats(result.data);
       }
     } catch (error) {
-      console.error('Failed to fetch data:', error);
     } finally {
       setIsLoading(false);
     }
@@ -95,7 +94,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
               show={notification.show}
               message={notification.message}
               type={notification.type}
-              onClose={onNotificationClose}
+              {...(onNotificationClose && { onClose: onNotificationClose })}
             />
           )}
           

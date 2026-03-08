@@ -130,6 +130,13 @@ describe('Dashboard', () => {
   });
 
   describe('Accessibility', () => {
+    it('should have aria-describedby on generate button', () => {
+      render(<Dashboard {...mockProps} />);
+
+      const generateButton = screen.getByRole('button', { name: /初期データを生成/ });
+      expect(generateButton).toHaveAttribute('aria-describedby', 'generate-help');
+    });
+
     it('should have help text with matching id', () => {
       render(<Dashboard {...mockProps} />);
 

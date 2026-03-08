@@ -4,7 +4,7 @@ import {
   calculateSeasonalEffect,
   calculateEventEffect,
   clampEmotion
-} from '@/utils/statsCalculator';
+} from './statsCalculator';
 
 export const generateEmotion = (
   config: DataGenerationConfig, 

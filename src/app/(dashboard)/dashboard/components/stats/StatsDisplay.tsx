@@ -97,4 +97,6 @@ const StatsDisplay = memo(function StatsDisplay({ data, isLoading, error, onRetr
   );
 });
 
+StatsDisplay.displayName = 'StatsDisplay';
+
 export default StatsDisplay;

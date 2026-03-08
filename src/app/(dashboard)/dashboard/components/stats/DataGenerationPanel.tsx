@@ -279,4 +279,6 @@ const DataGenerationPanel = memo(function DataGenerationPanel({ onGenerate, clas
   );
 });
 
+DataGenerationPanel.displayName = 'DataGenerationPanel';
+
 export default DataGenerationPanel;

@@ -14,6 +14,9 @@ export type EventEffect = {
   impact: number;
 };
 
+// Type alias for EventManager compatibility
+export type ClassEvent = EventEffect;
+
 export type ClassCharacteristics = {
   baselineEmotion: number;
   volatility: number;

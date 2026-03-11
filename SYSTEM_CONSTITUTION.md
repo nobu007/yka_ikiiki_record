@@ -23,38 +23,61 @@
 
 ## 📁 MANDATORY DIRECTORY STRUCTURE
 
+> **Framework Constraint**: This project uses **Next.js App Router**.
+> The directory structure below adapts Clean Architecture to Next.js conventions.
+> The `src/app/` directory is imposed by Next.js for file-based routing and MUST NOT be moved.
+
+### Canonical Structure (Next.js App Router Adaptation)
+
 ```
 src/
-├── domain/                    # PURE BUSINESS LOGIC
+├── app/                       # NEXT.JS APP ROUTER (framework-imposed)
+│   ├── (chart)/              # Route group: chart pages
+│   ├── (dashboard)/          # Route group: dashboard pages
+│   ├── api/                  # API routes (Next.js convention)
+│   └── landing/              # Landing page
+├── domain/                    # PURE BUSINESS LOGIC (no framework deps)
 │   ├── entities/             # Domain entities with rich behavior
 │   ├── services/             # Domain services
-│   ├── repositories/         # Repository interfaces only
-│   └── events/               # Domain events
+│   └── repositories/         # Repository interfaces only
 ├── application/              # USE CASES
-│   ├── usecases/            # Application use cases
-│   ├── hooks/               # React hooks for application logic
-│   ├── services/            # Application services
-│   └── dto/                 # Data transfer objects
+│   └── hooks/               # React hooks for application logic
 ├── infrastructure/          # EXTERNAL DEPENDENCIES
-│   ├── repositories/        # Repository implementations
-│   ├── external/           # External API clients
-│   ├── storage/            # Database/storage implementations
-│   └── config/             # Configuration
-├── presentation/           # UI LAYER
-│   ├── components/         # React components
-│   ├── pages/             # Next.js pages
-│   ├── hooks/             # UI-specific hooks
-│   └── styles/            # Styling
-├── shared/                 # CROSS-CUTTING
-│   ├── lib/               # Utility libraries
-│   ├── types/             # Shared types
-│   ├── constants/         # Application constants
-│   └── errors/            # Error definitions
-└── testing/               # TESTING INFRASTRUCTURE
-    ├── fixtures/          # Test data
-    ├── mocks/             # Mock implementations
-    └── utils/             # Testing utilities
+│   ├── services/            # External service implementations
+│   └── storage/             # Database/storage implementations
+├── presentation/           # UI LAYER (framework-aware abstractions)
+│   └── hooks/              # UI-specific hooks (e.g., useStats)
+├── components/             # REACT COMPONENTS (presentation widgets)
+│   ├── charts/             # Chart components
+│   ├── common/             # Shared UI components (ErrorBoundary, etc.)
+│   ├── dashboard/          # Dashboard-specific components
+│   └── ui/                 # Primitive UI elements
+├── lib/                    # CROSS-CUTTING UTILITIES
+│   ├── api/                # API client, validation, error handling
+│   ├── config/             # Configuration
+│   └── constants/          # Application constants
+├── schemas/                # ZOD SCHEMAS (runtime validation)
+├── hooks/                  # SHARED HOOKS (cross-cutting)
+├── context/                # REACT CONTEXT PROVIDERS
+├── types/                  # SHARED TYPE DEFINITIONS
+├── utils/                  # PURE UTILITY FUNCTIONS
+├── mirage/                 # MOCK SERVER (development only)
+└── test-utils/             # TESTING INFRASTRUCTURE
 ```
+
+### Clean Architecture ↔ Next.js Mapping
+
+| Clean Architecture Layer | Next.js Location | Rule |
+|--------------------------|-------------------|------|
+| Domain | `src/domain/` | MUST NOT import from any other layer |
+| Application | `src/application/` | MAY import Domain only |
+| Infrastructure | `src/infrastructure/`, `src/mirage/` | MAY import Domain + Application |
+| Presentation | `src/app/`, `src/components/`, `src/presentation/` | MAY import all layers |
+| Cross-cutting | `src/lib/`, `src/utils/`, `src/schemas/`, `src/types/` | MAY be imported by any layer |
+
+### Directory Creation Policy
+
+Directories listed above are **canonical**. Additional directories MUST NOT be created at the `src/` level without amending this constitution. Subdirectories within canonical directories may be created freely.
 
 ## 🔧 ENFORCED CODING STANDARDS
 
@@ -849,3 +872,22 @@ This constitution establishes the foundation for autonomous AI-driven developmen
 **Remember: The goal is not human-readable code, but autonomous, maintainable, and reliable systems that can evolve and improve without human intervention.**
 
 *This document is a living constitution and may be updated only through systematic AI-driven processes based on empirical evidence and technological advancement.*
+
+---
+
+## 📜 AMENDMENT PROCESS
+
+### Rules for Constitutional Amendments
+
+1. **Explicit Rationale**: Every change must include a 3-Hop rationale (What → Why → Structural Impact)
+2. **Anti-Degradation Gate**: Changes must not reduce specificity, constraint power, or architectural clarity
+3. **Purpose Singularity**: Core Mission must remain exactly ONE. Amendments that split purpose are rejected
+4. **Evidence-Based Only**: Amendments must reference concrete code evidence (grep results, test outcomes, structural analysis)
+5. **Documentation**: All amendments must be recorded in the log below with date and summary
+
+### Amendment Log
+
+| Date | Summary | Rationale |
+|------|---------|----------|
+| 2026-03-11 | Aligned MANDATORY DIRECTORY STRUCTURE with Next.js App Router reality; added Clean Architecture ↔ Next.js mapping table; added Directory Creation Policy | Constitution prescribed 22 directories of which 15 did not exist. AI agents following the constitution literally would break the Next.js app by moving files to non-existent prescribed paths. Amended to reflect actual canonical structure while preserving architectural layer separation rules. |
+| 2026-03-11 | Added Amendment Process section | Constitution had no mechanism for tracking its own evolution. Without this section, constitutional changes are untraceable and ungoverned. |

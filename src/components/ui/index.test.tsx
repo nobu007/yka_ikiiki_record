@@ -178,7 +178,7 @@ describe('UI Components', () => {
     it('catches errors and renders error UI', () => {
       const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      const { container } = render(
+      render(
         <ErrorBoundary>
           <ThrowError />
         </ErrorBoundary>
@@ -197,7 +197,7 @@ describe('UI Components', () => {
       delete (window as Partial<Window>).location;
       window.location = { ...originalLocation, reload: jest.fn() };
 
-      const { container } = render(
+      render(
         <ErrorBoundary>
           <ThrowError />
         </ErrorBoundary>
@@ -213,7 +213,7 @@ describe('UI Components', () => {
     });
 
     it('renders children when no error occurs', () => {
-      const { container } = render(
+      render(
         <ErrorBoundary>
           <div>Normal content</div>
         </ErrorBoundary>

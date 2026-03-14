@@ -1,6 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
 import { useNotification, useDashboard } from './useApp';
-import { APP_CONFIG } from '@/lib/config';
 
 // Mock fetch
 global.fetch = jest.fn();

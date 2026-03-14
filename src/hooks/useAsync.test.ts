@@ -103,4 +103,51 @@ describe('useAsync', () => {
 
     expect(arrayResult.current.data).toEqual([1, 2, 3]);
   });
+
+  test('should call onSuccess callback when provided', async () => {
+    const onSuccess = jest.fn();
+    const mockAsyncFn = jest.fn().mockResolvedValue('success data');
+    const { result } = renderHook(() => useAsync({ onSuccess }));
+
+    await act(async () => {
+      await result.current.execute(mockAsyncFn);
+    });
+
+    expect(onSuccess).toHaveBeenCalledWith('success data');
+    expect(onSuccess).toHaveBeenCalledTimes(1);
+  });
+
+  test('should call onError callback when provided', async () => {
+    const onError = jest.fn();
+    const mockError = new Error('Test error');
+    const mockAsyncFn = jest.fn().mockRejectedValue(mockError);
+    const { result } = renderHook(() => useAsync({ onError }));
+
+    await act(async () => {
+      try {
+        await result.current.execute(mockAsyncFn);
+      } catch {
+        // Expected to throw
+      }
+    });
+
+    expect(onError).toHaveBeenCalledWith(mockError);
+    expect(onError).toHaveBeenCalledTimes(1);
+  });
+
+  test('should handle non-Error objects in error case', async () => {
+    const mockAsyncFn = jest.fn().mockRejectedValue('string error');
+    const { result } = renderHook(() => useAsync());
+
+    await act(async () => {
+      try {
+        await result.current.execute(mockAsyncFn);
+      } catch {
+        // Expected to throw
+      }
+    });
+
+    expect(result.current.error).toBeInstanceOf(Error);
+    expect(result.current.error?.message).toBe('不明なエラーが発生しました');
+  });
 });

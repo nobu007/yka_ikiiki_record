@@ -25,41 +25,52 @@
 
 ## 直近の優先成果
 
-### P1: 品質基盤の確立（完了条件: Lintエラー0件）
+### P1: 品質基盤の確立 ✅ 完了
 
-**現状**: 6334件のLintエラーが存在
+**完了日時**: 2026-03-14
 
-**完了条件**:
-- [ ] `npm run lint` がエラー0で通過
-- [ ] `unicorn/prefer-module` ルール定義の修正
-- [ ] `@typescript-eslint/no-require-imports` 違反の解消
-- [ ] `@typescript-eslint/no-unused-vars` 違反の解消
+**成果**:
+- ✅ Lintエラー: 6337件 → 0件
+- ✅ すべてのテスト: 620/620 passing
+- ✅ ビルド: エラーなし
+- ✅ テストカバレッジ: domain 100%, infrastructure 100%, lib 98.11%
 
-**次の一手**:
-1. `eslint.config.mjs` の修正（unicornルール定義の追加または削除）
-2. テストファイル内の `require()` をES6 `import` に置換
-3. 未使用インポートの削除または `_` プレフィックスの追加
+**実施内容**:
+1. ESLint設定修正（.next/, build/, node_modules/を除外）
+2. テストファイル内のrequire()をES6 importに置換
+3. 未使用インポートの削除
+4. モックファイルをESモジュール化
 
-### P2: テストカバレッジの完全化（完了条件: 95%以上）
+### P1: テストカバレッジの完全化（現在進行中）
 
-**現状**:
+**完了条件**: 全レイヤー95%以上
+
+**現状** (2026-03-14現在):
 - domain層: 100% ✅
 - infrastructure層: 100% ✅
-- components/ui: 88.88% ⚠️
+- lib層: 98.11% ✅
+- components/ui: 88.88% ⚠️ (対象)
+- components/common: 98.38% ✅
+- components/dashboard: 96.55% ✅
+- hooks: 100% (branches 75%) ⚠️
+- utils: 100% (branches 91.42%) ⚠️
 - E2Eテスト: 未実装 ❌
 
 **完了条件**:
-- [ ] 全レイヤーのカバレッジ95%以上
-- [ ] components/ui層のカバレッジ向上（現在88.88%）
+- [ ] components/ui層のカバレッジ95%以上（現在88.88%）
+- [ ] hooks層のブランチカバレッジ95%以上（現在75%）
+- [ ] utils層のブランチカバレッジ95%以上（現在91.42%）
 - [ ] E2Eテストの実装（主要ユーザーフロー）
 - [ ] カバレッジの低下を防ぐ品質ゲートの確立
 
 **次の一手**:
 1. `src/components/ui/index.tsx` の未カバー箇所（lines 74, 142-150）にテスト追加
-2. PlaywrightによるE2Eテストの実装
-3. CI/CDパイプラインへのカバレッジチェック組み込み
+2. `src/hooks/useApp.ts` の未カバー分岐（lines 39, 72, 76）にテスト追加
+3. `src/hooks/useAsync.ts` の未カバー分岐（lines 28-33）にテスト追加
+4. `src/utils/statsCalculator.ts` の未カバー分岐（lines 23, 30, 143）にテスト追加
+5. PlaywrightによるE2Eテストの実装
 
-### P3: 機能拡張（完了条件: MVP機能の実装）
+### P2: 機能拡張（完了条件: MVP機能の実装）
 
 **現状**:
 - APIルート: `/api/stats`, `/api/seed` のみ

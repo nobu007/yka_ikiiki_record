@@ -6,18 +6,15 @@
 # Error details
 
 ```
-Error: browserType.launch: 
-╔══════════════════════════════════════════════════════╗
-║ Host system is missing dependencies to run browsers. ║
-║ Please install them with the following command:      ║
-║                                                      ║
-║     sudo npx playwright install-deps                 ║
-║                                                      ║
-║ Alternatively, use apt:                              ║
-║     sudo apt-get install libicu74                    ║
-║                                                      ║
-║ <3 Playwright Team                                   ║
-╚══════════════════════════════════════════════════════╝
+Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-playwright/webkit-2158/pw_run.sh
+╔═════════════════════════════════════════════════════════════════════════╗
+║ Looks like Playwright Test or Playwright was just installed or updated. ║
+║ Please run the following command to download new browsers:              ║
+║                                                                         ║
+║     npx playwright install                                              ║
+║                                                                         ║
+║ <3 Playwright Team                                                      ║
+╚═════════════════════════════════════════════════════════════════════════╝
 ```
 
 # Test source
@@ -31,7 +28,7 @@ Error: browserType.launch:
    6 |   });
    7 |
 >  8 |   test('ランディングページからダッシュボードへの遷移', async ({ page }) => {
-     |       ^ Error: browserType.launch: 
+     |       ^ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-playwright/webkit-2158/pw_run.sh
    9 |     // ランディングページの確認
    10 |     await expect(page.getByText('イキイキレコード デモ')).toBeVisible();
    11 |     await expect(page.getByRole('link', { name: '教師ダッシュボードを見る' })).toBeVisible();

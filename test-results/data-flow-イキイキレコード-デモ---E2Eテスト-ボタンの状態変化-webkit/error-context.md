@@ -6,18 +6,15 @@
 # Error details
 
 ```
-Error: browserType.launch: 
-╔══════════════════════════════════════════════════════╗
-║ Host system is missing dependencies to run browsers. ║
-║ Please install them with the following command:      ║
-║                                                      ║
-║     sudo npx playwright install-deps                 ║
-║                                                      ║
-║ Alternatively, use apt:                              ║
-║     sudo apt-get install libicu74                    ║
-║                                                      ║
-║ <3 Playwright Team                                   ║
-╚══════════════════════════════════════════════════════╝
+Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-playwright/webkit-2158/pw_run.sh
+╔═════════════════════════════════════════════════════════════════════════╗
+║ Looks like Playwright Test or Playwright was just installed or updated. ║
+║ Please run the following command to download new browsers:              ║
+║                                                                         ║
+║     npx playwright install                                              ║
+║                                                                         ║
+║ <3 Playwright Team                                                      ║
+╚═════════════════════════════════════════════════════════════════════════╝
 ```
 
 # Test source
@@ -73,7 +70,7 @@ Error: browserType.launch:
    48 |   });
    49 |
 >  50 |   test('ボタンの状態変化', async ({ page }) => {
-      |       ^ Error: browserType.launch: 
+      |       ^ Error: browserType.launch: Executable doesn't exist at /home/jinno/.cache/ms-playwright/webkit-2158/pw_run.sh
    51 |     await page.goto('/dashboard');
    52 |     
    53 |     const generateButton = page.getByRole('button', { name: '初期データを生成' });

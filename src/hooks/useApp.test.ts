@@ -47,6 +47,17 @@ describe('useNotification', () => {
     expect(result.current.notification.type).toBe('info');
   });
 
+  it('shows notification with explicit type parameter', () => {
+    const { result } = renderHook(() => useNotification());
+
+    act(() => {
+      result.current.showNotification('Warning message', 'warning');
+    });
+
+    expect(result.current.notification.type).toBe('warning');
+    expect(result.current.notification.message).toBe('Warning message');
+  });
+
   it('clears notification', () => {
     const { result } = renderHook(() => useNotification());
 
@@ -163,12 +174,15 @@ describe('useDashboard', () => {
 
     expect(result.current.notification.show).toBe(true);
     expect(result.current.notification.type).toBe('error');
+    expect(result.current.notification.message).toContain('Validation failed');
   });
 
-  it('handles API response with success: false', async () => {
+  it('handles validation errors with custom error message', async () => {
+    mockValidateDataSafe.mockReturnValue([null, new Error('Custom validation error')]);
+
     mockFetch.mockResolvedValue({
       ok: true,
-      json: async () => ({ success: false, error: 'Generation failed' }),
+      json: async () => ({ success: true }),
     } as Response);
 
     const { result } = renderHook(() => useDashboard());
@@ -179,6 +193,24 @@ describe('useDashboard', () => {
 
     expect(result.current.notification.show).toBe(true);
     expect(result.current.notification.type).toBe('error');
+    expect(result.current.notification.message).toContain('Custom validation error');
+  });
+
+  it('handles API response with custom error message', async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: false, error: 'Custom API error' }),
+    } as Response);
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.notification.show).toBe(true);
+    expect(result.current.notification.type).toBe('error');
+    expect(result.current.notification.message).toContain('Custom API error');
   });
 
   it('handles network errors', async () => {

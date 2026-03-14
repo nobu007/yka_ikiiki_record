@@ -110,6 +110,13 @@ describe('statsCalculator', () => {
         expect(val).toBeLessThanOrEqual(5);
       }
     });
+
+    it('handles invalid pattern key by falling back to normal', () => {
+      // @ts-expect-error - Testing invalid key
+      const val = generateBaseEmotion('invalid' as never);
+      expect(val).toBeGreaterThanOrEqual(1);
+      expect(val).toBeLessThanOrEqual(5);
+    });
   });
 
   describe('calculateSeasonalEffect', () => {
@@ -126,6 +133,14 @@ describe('statsCalculator', () => {
       const jan = calculateSeasonalEffect(new Date(2024, 0, 15));
       const may = calculateSeasonalEffect(new Date(2024, 4, 15));
       expect(jan).not.toBe(may);
+    });
+
+    it('handles invalid month index by falling back to default', () => {
+      // Create a date with invalid month (should not happen in practice)
+      const date = new Date(2024, 15, 15); // Month 15 is out of range
+      const effect = calculateSeasonalEffect(date);
+      expect(typeof effect).toBe('number');
+      expect(Number.isFinite(effect)).toBe(true);
     });
   });
 

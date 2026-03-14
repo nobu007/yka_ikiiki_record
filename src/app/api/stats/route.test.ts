@@ -28,12 +28,15 @@ const mockNotFound = jest.fn().mockImplementation((msg: string) => {
   return err;
 });
 
-jest.mock('@/lib/api/error-handler', () => ({
-  withErrorHandler: jest.fn().mockImplementation((handler: () => Promise<NextResponse>) => handler()),
-  createError: {
-    notFound: (...args: unknown[]) => mockNotFound(...args)
-  }
-}));
+jest.mock('@/lib/api/error-handler', () => {
+  const withErrorHandler = jest.fn().mockImplementation((handler: () => Promise<NextResponse>) => handler());
+  return {
+    withErrorHandler,
+    createError: {
+      notFound: (...args: unknown[]) => mockNotFound(...args)
+    }
+  };
+});
 
 // Mock StatsResponseSchema
 jest.mock('@/schemas/api', () => ({
@@ -117,13 +120,13 @@ describe('GET /api/stats', () => {
   });
 
   it('wraps handler with withErrorHandler', async () => {
-    const { withErrorHandler } = require('@/lib/api/error-handler');
+    const { withErrorHandler: mockWithErrorErrorHandler } = jest.requireMock('@/lib/api/error-handler');
     mockGetStats.mockResolvedValue({ overview: { count: 0, avgEmotion: 0 } });
 
     const req = createMockRequest();
     await GET(req as never);
 
-    expect(withErrorHandler).toHaveBeenCalledTimes(1);
-    expect(withErrorHandler).toHaveBeenCalledWith(expect.any(Function));
+    expect(mockWithErrorErrorHandler).toHaveBeenCalledTimes(1);
+    expect(mockWithErrorErrorHandler).toHaveBeenCalledWith(expect.any(Function));
   });
 });

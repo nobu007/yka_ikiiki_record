@@ -12,8 +12,8 @@
  * @returns {boolean} - true if successful, false to abort installation
  */
 async function install(options) {
-   
-  const { projectRoot, config, installedIDEs, logger } = options;
+
+  const { logger } = options;
 
   logger.log('Installing {module_display_name}...');
 
@@ -43,5 +43,4 @@ async function install(options) {
   }
 }
 
-// eslint-disable-next-line unicorn/prefer-module
 module.exports = { install };

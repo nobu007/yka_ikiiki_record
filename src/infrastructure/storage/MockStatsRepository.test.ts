@@ -1,5 +1,4 @@
 import { MockStatsRepository } from './MockStatsRepository';
-import { Stats } from '../../domain/entities/Stats';
 import { StatsRepository } from '../../domain/repositories/StatsRepository';
 import { createValidStats, createEmptyStats } from '@/test-utils/fixtures';
 

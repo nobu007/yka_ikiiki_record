@@ -1,5 +1,5 @@
 import { dataService } from './dataService';
-import type { DataGenerationConfig, GeneratedStats, EmotionRecord } from './dataService';
+import type { DataGenerationConfig } from './dataService';
 import { APP_CONFIG } from '@/lib/config';
 
 describe('DataService', () => {

@@ -18,7 +18,7 @@
  */
 'use strict';
 
-const React = require('react');
+import React from 'react';
 
 const MockChart = React.forwardRef(({ _options, series, type, height }, ref) => {
   return React.createElement('div', {
@@ -33,4 +33,4 @@ const MockChart = React.forwardRef(({ _options, series, type, height }, ref) => 
 
 MockChart.displayName = 'MockApexCharts';
 
-module.exports = MockChart;
+export default MockChart;

@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { POST, GET } from './route';
+import { dataService } from '@/infrastructure/services/dataService';
 
 // Mock dataService
 jest.mock('@/infrastructure/services/dataService', () => ({
@@ -18,10 +19,13 @@ jest.mock('@/infrastructure/services/dataService', () => ({
 }));
 
 // Mock logError to suppress console noise
-jest.mock('@/lib/error-handler', () => ({
-  ...jest.requireActual('@/lib/error-handler'),
-  logError: jest.fn(),
-}));
+jest.mock('@/lib/error-handler', () => {
+  const actual = jest.requireActual('@/lib/error-handler');
+  return {
+    ...actual,
+    logError: jest.fn(),
+  };
+});
 
 function createMockRequest(body: object): NextRequest {
   return {
@@ -55,7 +59,6 @@ describe('API seed route', () => {
     });
 
     it('calls dataService.generateStats with transformed config', async () => {
-      const { dataService } = require('@/infrastructure/services/dataService');
       const req = createMockRequest(validBody);
       await POST(req);
 
@@ -71,7 +74,6 @@ describe('API seed route', () => {
     });
 
     it('provides default classCharacteristics when not specified', async () => {
-      const { dataService } = require('@/infrastructure/services/dataService');
       const req = createMockRequest(validBody);
       await POST(req);
 
@@ -83,7 +85,6 @@ describe('API seed route', () => {
     });
 
     it('passes custom classCharacteristics when specified', async () => {
-      const { dataService } = require('@/infrastructure/services/dataService');
       const bodyWithChars = {
         config: {
           ...validBody.config,
@@ -127,7 +128,6 @@ describe('API seed route', () => {
     });
 
     it('accepts all distribution patterns', async () => {
-      const { dataService } = require('@/infrastructure/services/dataService');
       for (const pattern of ['normal', 'bimodal', 'stress', 'happy']) {
         const req = createMockRequest({
           config: { ...validBody.config, distributionPattern: pattern },

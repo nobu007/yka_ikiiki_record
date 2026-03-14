@@ -3,6 +3,12 @@ import { useSeedGeneration } from './useSeedGeneration';
 import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
 import { AppError, NetworkError } from '@/lib/error-handler';
 
+// Mock validation module
+const mockValidateDataSafe = jest.fn();
+jest.mock('@/lib/api/validation', () => ({
+  validateDataSafe: (...args: unknown[]) => mockValidateDataSafe(...args),
+}));
+
 const createMockConfig = (overrides: Partial<DataGenerationConfig> = {}): DataGenerationConfig => ({
   studentCount: 10,
   periodDays: 30,
@@ -20,6 +26,8 @@ const createMockConfig = (overrides: Partial<DataGenerationConfig> = {}): DataGe
 describe('useSeedGeneration', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // Reset to default successful validation
+    mockValidateDataSafe.mockImplementation((data: unknown) => [data, null]);
   });
 
   it('should initialize with correct default state', () => {
@@ -74,6 +82,32 @@ describe('useSeedGeneration', () => {
 
     expect(result.current.isGenerating).toBe(false);
     expect(result.current.error).toBeInstanceOf(NetworkError);
+  });
+
+  it('should handle validation error with custom message', async () => {
+    // Mock validateDataSafe to return validation error
+    mockValidateDataSafe.mockReturnValue([null, new Error('Custom validation failed')]);
+
+    const mockResponse = { success: true, message: 'Data generated' };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const { result } = renderHook(() => useSeedGeneration());
+    const mockConfig = createMockConfig();
+
+    await act(async () => {
+      try {
+        await result.current.generateSeed(mockConfig);
+      } catch {
+        // Expected to throw
+      }
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.error).toBeInstanceOf(AppError);
+    expect(result.current.error?.message).toContain('Custom validation failed');
   });
 
   it('should handle API error response', async () => {

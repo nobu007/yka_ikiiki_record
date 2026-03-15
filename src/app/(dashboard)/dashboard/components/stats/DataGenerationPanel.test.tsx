@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DataGenerationPanel from './DataGenerationPanel';
-import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
 
 describe('DataGenerationPanel', () => {
   const mockOnGenerate = jest.fn();

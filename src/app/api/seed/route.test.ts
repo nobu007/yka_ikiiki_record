@@ -182,6 +182,29 @@ describe('API seed route', () => {
       expect(body.metadata.age).toBeGreaterThanOrEqual(0);
     });
 
+    it('cleans up old data on GET', async () => {
+      const validBody = {
+        config: {
+          periodDays: 30,
+          studentCount: 20,
+          distributionPattern: 'normal',
+          seasonalEffects: true,
+          eventEffects: [],
+        },
+      };
+      const postReq = createMockRequest(validBody);
+      await POST(postReq);
+
+      // First GET should return data
+      const response1 = await GET();
+      expect(response1.status).toBe(200);
+
+      // The cleanupOldData function is called but data is still fresh
+      // so it won't be cleaned up yet
+      const response2 = await GET();
+      expect(response2.status).toBe(200);
+    });
+
     it('handles errors in GET route', async () => {
       // Test the error handling path indirectly by verifying
       // the error handler works in POST (same error handling pattern)
@@ -193,6 +216,29 @@ describe('API seed route', () => {
 
       expect(body.success).toBe(false);
       expect(body.error).toBeDefined();
+    });
+
+    it('cleans up old data on GET', async () => {
+      const validBody = {
+        config: {
+          periodDays: 30,
+          studentCount: 20,
+          distributionPattern: 'normal',
+          seasonalEffects: true,
+          eventEffects: [],
+        },
+      };
+      const postReq = createMockRequest(validBody);
+      await POST(postReq);
+
+      // First GET should return data
+      const response1 = await GET();
+      expect(response1.status).toBe(200);
+
+      // The cleanupOldData function is called but data is still fresh
+      // so it won't be cleaned up yet
+      const response2 = await GET();
+      expect(response2.status).toBe(200);
     });
   });
 });

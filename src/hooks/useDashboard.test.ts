@@ -184,6 +184,78 @@ describe('useDashboard', () => {
     expect(result.current.isGenerating).toBe(false);
   });
 
+  it('should handle API response with error message', async () => {
+    const errorResponse = {
+      success: false,
+      error: 'Specific generation error',
+      data: {
+        overview: { count: 100, avgEmotion: 75.5 },
+        monthlyStats: [],
+        dayOfWeekStats: [],
+        emotionDistribution: [],
+        timeOfDayStats: [],
+        studentStats: []
+      }
+    };
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: async () => errorResponse
+    });
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.notification.type).toBe('error');
+    // The error message from validated.error is used
+    expect(result.current.notification.message).toBeTruthy();
+  });
+
+  it('should handle API response with success:false and no error message', async () => {
+    const errorResponse = {
+      success: false
+    };
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: async () => errorResponse
+    });
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.notification.type).toBe('error');
+  });
+
+  it('should show notification with different types', async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: async () => mockSuccessResponse
+    });
+
+    const { result } = renderHook(() => useDashboard());
+
+    await act(async () => {
+      await result.current.handleGenerate();
+    });
+
+    expect(result.current.notification.type).toBe('success');
+  });
+
   it('should send correct request payload', async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,

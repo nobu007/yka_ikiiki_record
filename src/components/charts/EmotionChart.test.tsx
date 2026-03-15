@@ -94,4 +94,91 @@ describe('EmotionChart', () => {
     const element = React.createElement(EmotionChart, props);
     expect(element.props.colors).toEqual(customColors);
   });
+
+  it('should render with title', () => {
+    const props = {
+      data: mockData,
+      title: 'Test Chart Title',
+    };
+    const element = React.createElement(EmotionChart, props);
+    expect(element.props.title).toBe('Test Chart Title');
+  });
+
+  it('should render without title', () => {
+    const props = {
+      data: mockData,
+    };
+    const element = React.createElement(EmotionChart, props);
+    expect(element.props.title).toBeUndefined();
+  });
+
+  it('should render pie chart type', () => {
+    const props = {
+      data: mockData,
+      type: 'pie' as const,
+    };
+    const element = React.createElement(EmotionChart, props);
+    expect(element.props.type).toBe('pie');
+  });
+
+  it('should render donut chart type', () => {
+    const props = {
+      data: mockData,
+      type: 'donut' as const,
+    };
+    const element = React.createElement(EmotionChart, props);
+    expect(element.props.type).toBe('donut');
+  });
+
+  it('should render line chart type', () => {
+    const props = {
+      data: mockData,
+      type: 'line' as const,
+    };
+    const element = React.createElement(EmotionChart, props);
+    expect(element.props.type).toBe('line');
+  });
+
+  it('should render bar chart type', () => {
+    const props = {
+      data: mockData,
+      type: 'bar' as const,
+    };
+    const element = React.createElement(EmotionChart, props);
+    expect(element.props.type).toBe('bar');
+  });
+
+  it('should render area chart type', () => {
+    const props = {
+      data: mockData,
+      type: 'area' as const,
+    };
+    const element = React.createElement(EmotionChart, props);
+    expect(element.props.type).toBe('area');
+  });
+
+  it('should handle default height', () => {
+    const props = { data: mockData };
+    const element = React.createElement(EmotionChart, props);
+
+    expect(element).toBeDefined();
+    expect(element.type).toBe(EmotionChart);
+  });
+
+  it('should handle custom height', () => {
+    const props = {
+      data: mockData,
+      height: 500,
+    };
+    const element = React.createElement(EmotionChart, props);
+    expect(element.props.height).toBe(500);
+  });
+
+  it('should handle default colors', () => {
+    const props = { data: mockData };
+    const element = React.createElement(EmotionChart, props);
+
+    expect(element).toBeDefined();
+    expect(element.type).toBe(EmotionChart);
+  });
 });

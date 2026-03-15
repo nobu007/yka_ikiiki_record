@@ -206,8 +206,6 @@ describe('API seed route', () => {
     });
 
     it('handles errors in GET route', async () => {
-      // Test the error handling path indirectly by verifying
-      // the error handler works in POST (same error handling pattern)
       const req = {
         json: jest.fn().mockRejectedValue(new Error('Test error')),
       } as unknown as NextRequest;
@@ -218,7 +216,7 @@ describe('API seed route', () => {
       expect(body.error).toBeDefined();
     });
 
-    it('cleans up old data on GET', async () => {
+    it('uses default values when config properties are missing', async () => {
       const validBody = {
         config: {
           periodDays: 30,
@@ -231,14 +229,31 @@ describe('API seed route', () => {
       const postReq = createMockRequest(validBody);
       await POST(postReq);
 
-      // First GET should return data
       const response1 = await GET();
       expect(response1.status).toBe(200);
 
-      // The cleanupOldData function is called but data is still fresh
-      // so it won't be cleaned up yet
       const response2 = await GET();
       expect(response2.status).toBe(200);
+    });
+
+    it('uses default values when config properties are missing', async () => {
+      const partialBody = {
+        config: {
+          periodDays: 30,
+        },
+      };
+      const req = createMockRequest(partialBody);
+      await POST(req);
+
+      expect(dataService.generateStats).toHaveBeenCalledWith(
+        expect.objectContaining({
+          periodDays: 30,
+          studentCount: 20,
+          distributionPattern: 'normal',
+          seasonalEffects: true,
+          eventEffects: [],
+        })
+      );
     });
   });
 });

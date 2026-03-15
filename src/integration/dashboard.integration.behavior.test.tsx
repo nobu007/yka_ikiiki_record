@@ -1,10 +1,10 @@
 /**
- * Integration tests for the complete dashboard data flow
- * Tests the interaction between components, hooks, and API
+ * Integration tests for dashboard component behavior
+ * Tests component interaction, error handling, and performance
  */
 
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import DashboardPage from '@/app/(dashboard)/dashboard/page';
 import * as hooks from '@/hooks/useApp';
 
@@ -22,7 +22,7 @@ const createTestWrapper = () => {
   return TestWrapper;
 };
 
-describe('Dashboard Integration Tests', () => {
+describe('Dashboard Integration - Behavior', () => {
   const mockHandleInitialGeneration = jest.fn();
 
   beforeEach(() => {
@@ -37,131 +37,10 @@ describe('Dashboard Integration Tests', () => {
     });
   });
 
-  describe('Complete Data Flow', () => {
-    it('should render dashboard with all components', () => {
-      const Wrapper = createTestWrapper();
-      
-      render(
-        <Wrapper>
-          <DashboardPage />
-        </Wrapper>
-      );
-
-      // Check main elements are present
-      expect(screen.getByText('イキイキレコード - 教師ダッシュボード')).toBeInTheDocument();
-      expect(screen.getByText('生徒の学習データを生成・管理するダッシュボードです')).toBeInTheDocument();
-      expect(screen.getByText('データ生成')).toBeInTheDocument();
-      expect(screen.getByText('使い方')).toBeInTheDocument();
-    });
-
-    it('should handle data generation flow successfully', async () => {
-      const Wrapper = createTestWrapper();
-      
-      // Mock successful generation
-      mockHandleInitialGeneration.mockResolvedValue(undefined);
-      mockUseDashboard.mockReturnValue({
-        isGenerating: false,
-        notification: { show: false, message: '', type: 'success' },
-        handleGenerate: mockHandleInitialGeneration,
-        isLoadingMessage: null,
-      });
-
-      render(
-        <Wrapper>
-          <DashboardPage />
-        </Wrapper>
-      );
-
-      // Click generate button within act
-      await act(async () => {
-        const generateButton = screen.getByText('初期データを生成');
-        fireEvent.click(generateButton);
-      });
-
-      // Verify handler was called
-      expect(mockHandleInitialGeneration).toHaveBeenCalledTimes(1);
-    });
-
-    it('should show loading state during generation', () => {
-      const Wrapper = createTestWrapper();
-      
-      // Mock loading state
-      mockUseDashboard.mockReturnValue({
-        isGenerating: true,
-        notification: { show: false, message: '', type: 'success' },
-        handleGenerate: mockHandleInitialGeneration,
-        isLoadingMessage: 'データを生成中...',
-      });
-
-      render(
-        <Wrapper>
-          <DashboardPage />
-        </Wrapper>
-      );
-
-      // Check loading overlay is present
-      expect(screen.getByText('データを生成中...')).toBeInTheDocument();
-      
-      // Button should be disabled and show loading text
-      const generateButton = screen.getByText('生成中...');
-      expect(generateButton).toBeDisabled();
-    });
-
-    it('should display success notification after generation', () => {
-      const Wrapper = createTestWrapper();
-      
-      // Mock success notification
-      mockUseDashboard.mockReturnValue({
-        isGenerating: false,
-        notification: { 
-          show: true, 
-          message: 'テストデータの生成が完了しました', 
-          type: 'success' 
-        },
-        handleGenerate: mockHandleInitialGeneration,
-        isLoadingMessage: null,
-      });
-
-      render(
-        <Wrapper>
-          <DashboardPage />
-        </Wrapper>
-      );
-
-      // Check success notification is displayed
-      expect(screen.getByText('テストデータの生成が完了しました')).toBeInTheDocument();
-    });
-
-    it('should display error notification on generation failure', () => {
-      const Wrapper = createTestWrapper();
-      
-      // Mock error notification
-      mockUseDashboard.mockReturnValue({
-        isGenerating: false,
-        notification: { 
-          show: true, 
-          message: 'データの生成に失敗しました', 
-          type: 'error' 
-        },
-        handleGenerate: mockHandleInitialGeneration,
-        isLoadingMessage: null,
-      });
-
-      render(
-        <Wrapper>
-          <DashboardPage />
-        </Wrapper>
-      );
-
-      // Check error notification is displayed
-      expect(screen.getByText('データの生成に失敗しました')).toBeInTheDocument();
-    });
-  });
-
   describe('Component Interaction', () => {
     it('should display all features in the data section', () => {
       const Wrapper = createTestWrapper();
-      
+
       render(
         <Wrapper>
           <DashboardPage />
@@ -178,7 +57,7 @@ describe('Dashboard Integration Tests', () => {
 
     it('should display instruction steps correctly', () => {
       const Wrapper = createTestWrapper();
-      
+
       render(
         <Wrapper>
           <DashboardPage />
@@ -194,7 +73,7 @@ describe('Dashboard Integration Tests', () => {
 
     it('should display correct help text for different states', () => {
       const Wrapper = createTestWrapper();
-      
+
       // Test idle state
       mockUseDashboard.mockReturnValue({
         isGenerating: false,
@@ -210,7 +89,7 @@ describe('Dashboard Integration Tests', () => {
       );
 
       expect(screen.getByText('ボタンをクリックしてテストデータを生成してください')).toBeInTheDocument();
-      
+
       unmount();
 
       // Test generating state
@@ -235,14 +114,14 @@ describe('Dashboard Integration Tests', () => {
   describe('Error Handling', () => {
     it('should display error notification when error occurs', () => {
       const Wrapper = createTestWrapper();
-      
+
       // Mock error state
       mockUseDashboard.mockReturnValue({
         isGenerating: false,
-        notification: { 
-          show: true, 
-          message: 'ネットワーク接続を確認してください', 
-          type: 'error' 
+        notification: {
+          show: true,
+          message: 'ネットワーク接続を確認してください',
+          type: 'error'
         },
         handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
@@ -262,7 +141,7 @@ describe('Dashboard Integration Tests', () => {
   describe('Performance', () => {
     it('should not re-render unnecessarily', () => {
       const Wrapper = createTestWrapper();
-      
+
       const { rerender } = render(
         <Wrapper>
           <DashboardPage />

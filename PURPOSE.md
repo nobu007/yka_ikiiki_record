@@ -30,8 +30,9 @@
 **完了条件**: Lintエラー0件 + 全レイヤー95% coverage
 
 **現状** (2026-03-16):
-- ✅ Lintエラー: 6337件 → 3件（残りわずか）
 - ✅ すべてのテスト: 683/683 passing
+- ✅ テストファイル分割完了: 8つのモノリシックファイル → 21個のfocused files (SRP準拠)
+- ✅ ChartWrapper test coverage: 41.66% → 100%
 - ✅ Domain層: 100% coverage
 - ✅ Infrastructure層: 100% coverage
 - ✅ Application層: 100% statements, 83.33% branches
@@ -41,38 +42,33 @@
 - ✅ Components/common: 98.38% statements, 93.1% branches
 - ✅ Components/ui: 100% statements, 94.11% branches
 - ✅ Components/dashboard: 96.55% statements, 92.85% branches
+- ⚠️ **Lintエラー**: 3件 (ChartWrapper.test.tsx の未使用変数)
 - ⚠️ **全体カバレッジ**: 92.07% statements, **76.76% branches**
 - ❌ Charts層: 79.84% statements, **50% branches**
 - ❌ Dashboard stats components: **42.18% statements, 0% branches**
-- ❌ Presentation/hooks: **テストなし**
 
 **未完了の課題**:
-1. Lintエラー: ChartWrapper.test.tsx で3件の未使用変数
-2. Dashboard stats components: 実質的にテストされていない（42.18% statements）
-3. Presentation/hooks/useStats.ts: テストが存在しない
-4. DynamicBarChart: ブランチカバレッジ0%（重要なロジックが未カバー）
-5. 全体ブランチカバレッジ: 76.76% → 95%への改善
+1. Lintエラー: ChartWrapper.test.tsx:189,200,211 で3件の未使用変数 `container`
+2. Dashboard stats components: 実質的にテストされていない（42.18% statements, 0% branches）
+3. DynamicBarChart: ブランチカバレッジ0%（重要なロジックが未カバー）
+4. 全体ブランチカバレッジ: 76.76% → 95%への改善
 
 **次の一手**（優先順位順）:
 
 1. **Lintエラーの解消**（5分）
-   - ChartWrapper.test.tsx の未使用変数 `_container` にリネーム
+   - ChartWrapper.test.tsx:189,200,211 の未使用変数 `container` → `_container` にリネーム
 
-2. **Presentation/hooks のテスト追加**（30分）
-   - `src/presentation/hooks/useStats.test.ts` 新規作成
-   - UI層のエラー変換・リフェッチ処理をカバー
+2. **Dashboard stats components のカバレッジ改善**（2時間）
+   - `ClassCharacteristicsEditor.tsx` テスト追加 (現在50% statements, 関数カバレッジ0%)
+   - `EventManager.tsx` テスト追加 (現在23.8% statements)
+   - `GenerationControls.tsx` テスト追加 (現在50% statements)
+   - `StatsDisplay.tsx` テスト追加 (現在33.33% statements)
 
-3. **Dashboard stats components のカバレッジ改善**（2時間）
-   - `ClassCharacteristicsEditor.tsx` テスト追加
-   - `EventManager.tsx` テスト追加
-   - `GenerationControls.tsx` テスト追加
-   - `StatsDisplay.tsx` テスト追加
-
-4. **DynamicBarChart のカバレッジ改善**（1時間）
+3. **DynamicBarChart のカバレッジ改善**（1時間）
    - ブランチカバレッジ0% → 95%以上
    - グラフ描画ロジックの重要分岐をカバー
 
-5. **全体ブランチカバレッジの最終調整**（1時間）
+4. **全体ブランチカバレッジの最終調整**（1時間）
    - 76.76% → 95%以上
    - カバレッジ品質ゲートのCI/CD組み込み
 
@@ -175,5 +171,5 @@
 ---
 
 **最終更新**: 2026-03-16
-**更新理由**: 直近10件のコミット（テスト改善、lint改善、ファイル分割）を踏まえ、未完了課題を特定し、次の一手を明確化
+**更新理由**: 直近10件のコミット（ChartWrapper 100%カバレッジ達成、テストファイルSRP準拠分割、ブランチカバレッジ改善）を踏まえ、未完了課題を特定し、次の一手を明確化
 **現在のフェーズ**: Phase 1: 品質基盤確立（残り4〜5時間で完了予定）

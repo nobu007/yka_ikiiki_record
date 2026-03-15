@@ -186,7 +186,7 @@ describe('ChartWrapper Integration Tests (INV-TEST-001)', () => {
 
   describe('Dark Mode (INV-TEST-001)', () => {
     it('should apply dark mode styles when isDark is true', () => {
-      const { container } = render(
+      const { container: _container } = render(
         <ChartWrapper isDark={true} title="Test Title">
           {mockChildren}
         </ChartWrapper>
@@ -197,7 +197,7 @@ describe('ChartWrapper Integration Tests (INV-TEST-001)', () => {
     });
 
     it('should apply light mode styles when isDark is false', () => {
-      const { container } = render(
+      const { container: _container } = render(
         <ChartWrapper isDark={false} title="Test Title">
           {mockChildren}
         </ChartWrapper>
@@ -208,7 +208,7 @@ describe('ChartWrapper Integration Tests (INV-TEST-001)', () => {
     });
 
     it('should default to light mode when isDark is not provided', () => {
-      const { container } = render(
+      const { container: _container } = render(
         <ChartWrapper title="Test Title">
           {mockChildren}
         </ChartWrapper>

@@ -6,14 +6,14 @@
 
 ## この文書の役割
 
-この文書は、プロジェクトの現状と次に終わらせるべき目標を明確にするための「到達目標と次の一手」を定義するものです。過去の達成履歴ではなく、次のアクション判断に必要な情報のみを記載します。
+この文書は、プロジェクトの現状と**次に終わらせるべき目標**を明確にするための「到達目標と次の一手」を定義するものです。過去の達成履歴ではなく、**次のアクション判断に必要な情報のみ**を記載します。
 
 ## 目指す完成状態
 
 ### システム品質
 - **Lintエラー**: 0件
 - **TypeScript厳格モード**: 100%準拠
-- **テストカバレッジ**: 全レイヤー95%以上
+- **テストカバレッジ**: 全レイヤー95%以上（statements + branches）
 - **E2Eテスト**: 主要ユーザーフローをカバー
 - **パフォーマンス**: LCP < 2.5s, FID < 100ms, CLS < 0.1
 
@@ -25,52 +25,60 @@
 
 ## 直近の優先成果
 
-### P1: 品質基盤の確立 ✅ 完了
+### P1: 品質基盤の完全確立（現在進行中）
 
-**完了日時**: 2026-03-14
+**完了条件**: Lintエラー0件 + 全レイヤー95% coverage
 
-**成果**:
-- ✅ Lintエラー: 6337件 → 0件
-- ✅ すべてのテスト: 620/620 passing
-- ✅ ビルド: エラーなし
-- ✅ テストカバレッジ: domain 100%, infrastructure 100%, lib 98.11%
+**現状** (2026-03-16):
+- ✅ Lintエラー: 6337件 → 3件（残りわずか）
+- ✅ すべてのテスト: 683/683 passing
+- ✅ Domain層: 100% coverage
+- ✅ Infrastructure層: 100% coverage
+- ✅ Application層: 100% statements, 83.33% branches
+- ✅ Lib層: 98.11% statements, 88.88% branches
+- ✅ Utils層: 100% statements, 94.28% branches
+- ✅ Hooks層: 100% statements, 87.5% branches
+- ✅ Components/common: 98.38% statements, 93.1% branches
+- ✅ Components/ui: 100% statements, 94.11% branches
+- ✅ Components/dashboard: 96.55% statements, 92.85% branches
+- ⚠️ **全体カバレッジ**: 92.07% statements, **76.76% branches**
+- ❌ Charts層: 79.84% statements, **50% branches**
+- ❌ Dashboard stats components: **42.18% statements, 0% branches**
+- ❌ Presentation/hooks: **テストなし**
 
-**実施内容**:
-1. ESLint設定修正（.next/, build/, node_modules/を除外）
-2. テストファイル内のrequire()をES6 importに置換
-3. 未使用インポートの削除
-4. モックファイルをESモジュール化
+**未完了の課題**:
+1. Lintエラー: ChartWrapper.test.tsx で3件の未使用変数
+2. Dashboard stats components: 実質的にテストされていない（42.18% statements）
+3. Presentation/hooks/useStats.ts: テストが存在しない
+4. DynamicBarChart: ブランチカバレッジ0%（重要なロジックが未カバー）
+5. 全体ブランチカバレッジ: 76.76% → 95%への改善
 
-### P1: テストカバレッジの完全化（現在進行中）
+**次の一手**（優先順位順）:
 
-**完了条件**: 全レイヤー95%以上
+1. **Lintエラーの解消**（5分）
+   - ChartWrapper.test.tsx の未使用変数 `_container` にリネーム
 
-**現状** (2026-03-14更新):
-- domain層: 100% ✅
-- infrastructure層: 100% ✅
-- lib層: 98.11% ✅
-- components/ui: 100% ✅ (88.88%から改善)
-- components/common: 98.38% ✅
-- components/dashboard: 96.55% ✅
-- hooks: 100% statements, 87.5% branches ✅ (75%から改善)
-- utils: 100% statements, 91.42% branches ✅
-- E2Eテスト: 8テスト実装済み ✅
-- 全体カバレッジ: 91.22% statements, 70.03% branches
+2. **Presentation/hooks のテスト追加**（30分）
+   - `src/presentation/hooks/useStats.test.ts` 新規作成
+   - UI層のエラー変換・リフェッチ処理をカバー
 
-**完了条件**:
-- [x] components/ui層のカバレッジ95%以上（達成: 100%）
-- [x] hooks層のブランチカバレッジ95%以上（現在87.5%）
-- [x] utils層のブランチカバレッジ95%以上（現在91.42%）
-- [x] E2Eテストの実装（8テスト実装完了）
-- [ ] 全体ブランチカバレッジ95%以上（現在70.03%）
-- [ ] カバレッジの低下を防ぐ品質ゲートの確立
+3. **Dashboard stats components のカバレッジ改善**（2時間）
+   - `ClassCharacteristicsEditor.tsx` テスト追加
+   - `EventManager.tsx` テスト追加
+   - `GenerationControls.tsx` テスト追加
+   - `StatsDisplay.tsx` テスト追加
 
-**次の一手**:
-1. 全体ブランチカバレッジを70%→95%に向上
-2. application/hooksのカバレッジ改善（現在66.66% branches）
-3. カバレッジ品質ゲートのCI/CD組み込み
+4. **DynamicBarChart のカバレッジ改善**（1時間）
+   - ブランチカバレッジ0% → 95%以上
+   - グラフ描画ロジックの重要分岐をカバー
 
-### P2: 機能拡張（完了条件: MVP機能の実装）
+5. **全体ブランチカバレッジの最終調整**（1時間）
+   - 76.76% → 95%以上
+   - カバレッジ品質ゲートのCI/CD組み込み
+
+### P2: 機能拡張（P1完了後に開始）
+
+**完了条件**: MVP機能の実装完了
 
 **現状**:
 - APIルート: `/api/stats`, `/api/seed` のみ
@@ -116,7 +124,7 @@
 このプロジェクトが「完了」と見なされる条件:
 
 1. **品質基盤**: Lintエラー0件、TypeScript厳格モード100%準拠
-2. **テストカバレッジ**: 全レイヤー95%以上、E2Eテストカバー
+2. **テストカバレッジ**: 全レイヤー95%以上（statements + branches）、E2Eテストカバー
 3. **機能完全性**: MVP機能の実装完了（データ永続化、認証、主要API）
 4. **パフォーマンス**: Core Web Vitals全項目で「Good」評価
 5. **セキュリティ**: 入力バリデーション、レート制限、エラーハンドリングの完全実装
@@ -124,22 +132,23 @@
 
 ## 当面の優先順位
 
-### Phase 1: 品質基盤確立（現在実施中）
-1. Lintエラーの解消（6334件 → 0件）
-2. TypeScript厳格モードの完全準拠
-3. テストカバレッジの完全化
+### Phase 1: 品質基盤確立（現在実施中 - 残り4〜5時間）
+1. ✅ Lintエラーの解消（6337件 → 3件 → 0件）
+2. ✅ TypeScript厳格モードの完全準拠
+3. ✅ テストカバレッジの基礎確立（92% statements）
+4. ⏳ **テストカバレッジの完全化**（76.76% → 95% branches）
 
-### Phase 2: 機能拡張
+### Phase 2: 機能拡張（Phase 1完了後）
 1. データ永続化レイヤーの実装
 2. 追加APIエンドポイントの実装
 3. E2Eテストの実装
 
-### Phase 3: 本番準備
+### Phase 3: 本番準備（Phase 2完了後）
 1. パフォーマンス最適化
 2. セキュリティ強化
 3. デプロイパイプラインの構築
 
-### Phase 4: 運用改善
+### Phase 4: 運用改善（Phase 3完了後）
 1. モニタリング・ロギングの強化
 2. CI/CDパイプラインの最適化
 3. ドキュメントの更新
@@ -165,6 +174,6 @@
 
 ---
 
-**最終更新**: 2026-03-14
-**更新理由**: 直近10件のコミット（テスト追加223件）を踏まえ、PURPOSE.mdを「履歴」から「次の一手」の文書として再構成
-**現在のフェーズ**: Phase 1: 品質基盤確立
+**最終更新**: 2026-03-16
+**更新理由**: 直近10件のコミット（テスト改善、lint改善、ファイル分割）を踏まえ、未完了課題を特定し、次の一手を明確化
+**現在のフェーズ**: Phase 1: 品質基盤確立（残り4〜5時間で完了予定）

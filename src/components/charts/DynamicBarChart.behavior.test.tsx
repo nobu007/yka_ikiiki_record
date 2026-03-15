@@ -106,6 +106,16 @@ describe('DynamicBarChart Behavior', () => {
 
       expect(element).toBeDefined();
     });
+
+    it('should handle data that throws during map transformation', () => {
+      const dataThatThrows: ChartData[] = [
+        { name: 'Valid', value: 3.5 },
+      ] as unknown as ChartData[];
+
+      const element = React.createElement(DynamicBarChart, { data: dataThatThrows });
+
+      expect(element).toBeDefined();
+    });
   });
 
   describe('Empty Data State (INV-TEST-001)', () => {

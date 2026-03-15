@@ -115,7 +115,7 @@ describe('DashboardPage', () => {
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
-  it('should call handleNotificationClose when notification is not error', () => {
+  it('should display success notification', () => {
     const notification = {
       show: true,
       type: 'success' as const,
@@ -133,7 +133,7 @@ describe('DashboardPage', () => {
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
-  it('should call handleNotificationClose when notification type is error', () => {
+  it('should display error notification', () => {
     const notification = {
       show: true,
       type: 'error' as const,

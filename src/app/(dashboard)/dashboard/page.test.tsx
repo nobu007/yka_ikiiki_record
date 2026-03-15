@@ -20,7 +20,11 @@ jest.mock('next/dynamic', () => ({
     const dynamicModule = jest.requireActual('next/dynamic');
     const dynamicActualComp = dynamicModule.default;
     const RequiredComponent = dynamicActualComp(args[0]);
-    RequiredComponent.preload ? RequiredComponent.preload() : RequiredComponent.render.preload();
+    if (RequiredComponent.preload) {
+      RequiredComponent.preload();
+    } else if (RequiredComponent.render?.preload) {
+      RequiredComponent.render.preload();
+    }
     return RequiredComponent;
   },
 }));

@@ -28,30 +28,34 @@ const GenerationControls = memo(function GenerationControls({
   return (
     <>
       <div className="space-y-2">
-        <label className="block text-sm font-medium">
+        <label htmlFor="studentCount" className="block text-sm font-medium">
           生徒数: {config.studentCount}名
         </label>
         <input
+          id="studentCount"
           type="range"
           min="10"
           max="500"
           value={config.studentCount}
           onChange={(e) => onUpdateStudentCount(Number(e.target.value))}
           className="w-full"
+          aria-label="生徒数"
         />
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium">
+        <label htmlFor="periodDays" className="block text-sm font-medium">
           記録期間: {config.periodDays}日
         </label>
         <input
+          id="periodDays"
           type="range"
           min="7"
           max="365"
           value={config.periodDays}
           onChange={(e) => onUpdatePeriodDays(Number(e.target.value))}
           className="w-full"
+          aria-label="記録期間"
         />
       </div>
 

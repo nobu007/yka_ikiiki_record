@@ -52,8 +52,8 @@ describe('EventManager', () => {
         />
       );
 
-      expect(screen.getByText('テスト勉強会')).toBeInTheDocument();
-      expect(screen.getByText('運動会')).toBeInTheDocument();
+      expect(screen.getByText('テスト勉強会', { exact: false })).toBeInTheDocument();
+      expect(screen.getByText('運動会', { exact: false })).toBeInTheDocument();
     });
 
     it('should display event date ranges correctly', () => {
@@ -91,7 +91,8 @@ describe('EventManager', () => {
         />
       );
 
-      const dateInputs = screen.getAllByRole('textbox').filter(input =>
+      const allInputs = screen.getAllByDisplayValue('');
+      const dateInputs = allInputs.filter(input =>
         input.getAttribute('type') === 'date'
       );
       expect(dateInputs).toHaveLength(2);
@@ -109,10 +110,14 @@ describe('EventManager', () => {
         />
       );
 
-      await user.type(screen.getByPlaceholderText('イベント名'), '文化祭');
-      await user.type(screen.getAllByRole('textbox')[1], '2026-03-01');
-      await user.type(screen.getAllByRole('textbox')[2], '2026-03-05');
-      await user.type(screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)'), '0.7');
+      const nameInput = screen.getByPlaceholderText('イベント名');
+      const dateInputs = screen.getAllByDisplayValue('');
+      const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
+
+      await user.type(nameInput, '文化祭');
+      await user.type(dateInputs[1], '2026-03-01');
+      await user.type(dateInputs[2], '2026-03-05');
+      await user.type(impactInput, '0.7');
       await user.click(screen.getByText('イベントを追加'));
 
       expect(mockOnAddEvent).toHaveBeenCalledTimes(1);
@@ -134,9 +139,12 @@ describe('EventManager', () => {
         />
       );
 
-      await user.type(screen.getAllByRole('textbox')[1], '2026-03-01');
-      await user.type(screen.getAllByRole('textbox')[2], '2026-03-05');
-      await user.type(screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)'), '0.7');
+      const dateInputs = screen.getAllByDisplayValue('');
+      const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
+
+      await user.type(dateInputs[1], '2026-03-01');
+      await user.type(dateInputs[2], '2026-03-05');
+      await user.type(impactInput, '0.7');
       await user.click(screen.getByText('イベントを追加'));
 
       expect(mockOnAddEvent).not.toHaveBeenCalled();
@@ -152,9 +160,13 @@ describe('EventManager', () => {
         />
       );
 
-      await user.type(screen.getByPlaceholderText('イベント名'), '文化祭');
-      await user.type(screen.getAllByRole('textbox')[2], '2026-03-05');
-      await user.type(screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)'), '0.7');
+      const nameInput = screen.getByPlaceholderText('イベント名');
+      const dateInputs = screen.getAllByDisplayValue('');
+      const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
+
+      await user.type(nameInput, '文化祭');
+      await user.type(dateInputs[2], '2026-03-05');
+      await user.type(impactInput, '0.7');
       await user.click(screen.getByText('イベントを追加'));
 
       expect(mockOnAddEvent).not.toHaveBeenCalled();
@@ -170,9 +182,13 @@ describe('EventManager', () => {
         />
       );
 
-      await user.type(screen.getByPlaceholderText('イベント名'), '文化祭');
-      await user.type(screen.getAllByRole('textbox')[1], '2026-03-01');
-      await user.type(screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)'), '0.7');
+      const nameInput = screen.getByPlaceholderText('イベント名');
+      const dateInputs = screen.getAllByDisplayValue('');
+      const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
+
+      await user.type(nameInput, '文化祭');
+      await user.type(dateInputs[1], '2026-03-01');
+      await user.type(impactInput, '0.7');
       await user.click(screen.getByText('イベントを追加'));
 
       expect(mockOnAddEvent).not.toHaveBeenCalled();
@@ -188,9 +204,12 @@ describe('EventManager', () => {
         />
       );
 
-      await user.type(screen.getByPlaceholderText('イベント名'), '文化祭');
-      await user.type(screen.getAllByRole('textbox')[1], '2026-03-01');
-      await user.type(screen.getAllByRole('textbox')[2], '2026-03-05');
+      const nameInput = screen.getByPlaceholderText('イベント名');
+      const dateInputs = screen.getAllByDisplayValue('');
+
+      await user.type(nameInput, '文化祭');
+      await user.type(dateInputs[1], '2026-03-01');
+      await user.type(dateInputs[2], '2026-03-05');
       await user.click(screen.getByText('イベントを追加'));
 
       expect(mockOnAddEvent).not.toHaveBeenCalled();
@@ -206,14 +225,18 @@ describe('EventManager', () => {
         />
       );
 
-      await user.type(screen.getByPlaceholderText('イベント名'), '文化祭');
-      await user.type(screen.getAllByRole('textbox')[1], '2026-03-01');
-      await user.type(screen.getAllByRole('textbox')[2], '2026-03-05');
-      await user.type(screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)'), '0.7');
+      const nameInput = screen.getByPlaceholderText('イベント名');
+      const dateInputs = screen.getAllByDisplayValue('');
+      const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
+
+      await user.type(nameInput, '文化祭');
+      await user.type(dateInputs[1], '2026-03-01');
+      await user.type(dateInputs[2], '2026-03-05');
+      await user.type(impactInput, '0.7');
       await user.click(screen.getByText('イベントを追加'));
 
-      expect(screen.getByPlaceholderText('イベント名')).toHaveValue('');
-      expect(screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)')).toHaveValue('');
+      expect(nameInput).toHaveValue('');
+      expect(impactInput).toHaveValue(null);
     });
 
     it('should handle negative impact values', async () => {
@@ -226,10 +249,14 @@ describe('EventManager', () => {
         />
       );
 
-      await user.type(screen.getByPlaceholderText('イベント名'), 'テスト期間');
-      await user.type(screen.getAllByRole('textbox')[1], '2026-03-01');
-      await user.type(screen.getAllByRole('textbox')[2], '2026-03-10');
-      await user.type(screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)'), '-0.8');
+      const nameInput = screen.getByPlaceholderText('イベント名');
+      const dateInputs = screen.getAllByDisplayValue('');
+      const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
+
+      await user.type(nameInput, 'テスト期間');
+      await user.type(dateInputs[1], '2026-03-01');
+      await user.type(dateInputs[2], '2026-03-10');
+      await user.type(impactInput, '-0.8');
       await user.click(screen.getByText('イベントを追加'));
 
       expect(mockOnAddEvent).toHaveBeenCalledWith({
@@ -292,7 +319,7 @@ describe('EventManager', () => {
       await user.type(impactInput, '0.5');
       await user.clear(impactInput);
 
-      expect(impactInput).toHaveValue('');
+      expect(impactInput).toHaveValue(null);
     });
 
     it('should update input values on user input', async () => {

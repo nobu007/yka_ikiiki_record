@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import GenerationControls from './GenerationControls';
 import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
@@ -172,7 +172,6 @@ describe('GenerationControls', () => {
 
   describe('user interactions', () => {
     it('should call onUpdateStudentCount when slider changes', async () => {
-      const user = userEvent.setup();
       render(
         <GenerationControls
           config={mockConfig}
@@ -183,16 +182,15 @@ describe('GenerationControls', () => {
         />
       );
 
-      const input = screen.getByText(/生徒数:/).parentElement?.querySelector('input') as HTMLInputElement;
-      await user.clear(input);
-      await user.type(input, '50');
+      const inputs = screen.getAllByRole('slider');
+      const studentCountInput = inputs[0];
+      fireEvent.input(studentCountInput, { target: { value: '50' } });
 
       expect(mockOnUpdateStudentCount).toHaveBeenCalledTimes(1);
       expect(mockOnUpdateStudentCount).toHaveBeenCalledWith(50);
     });
 
     it('should call onUpdatePeriodDays when slider changes', async () => {
-      const user = userEvent.setup();
       render(
         <GenerationControls
           config={mockConfig}
@@ -203,9 +201,9 @@ describe('GenerationControls', () => {
         />
       );
 
-      const input = screen.getByText(/記録期間:/).parentElement?.querySelector('input') as HTMLInputElement;
-      await user.clear(input);
-      await user.type(input, '120');
+      const inputs = screen.getAllByRole('slider');
+      const periodDaysInput = inputs[1];
+      fireEvent.input(periodDaysInput, { target: { value: '120' } });
 
       expect(mockOnUpdatePeriodDays).toHaveBeenCalledTimes(1);
       expect(mockOnUpdatePeriodDays).toHaveBeenCalledWith(120);
@@ -269,7 +267,6 @@ describe('GenerationControls', () => {
     });
 
     it('should handle edge case values (minimum student count)', async () => {
-      const user = userEvent.setup();
       render(
         <GenerationControls
           config={mockConfig}
@@ -280,15 +277,14 @@ describe('GenerationControls', () => {
         />
       );
 
-      const input = screen.getByText(/生徒数:/).parentElement?.querySelector('input') as HTMLInputElement;
-      await user.clear(input);
-      await user.type(input, '10');
+      const inputs = screen.getAllByRole('slider');
+      const studentCountInput = inputs[0];
+      fireEvent.input(studentCountInput, { target: { value: '10' } });
 
       expect(mockOnUpdateStudentCount).toHaveBeenCalledWith(10);
     });
 
     it('should handle edge case values (maximum student count)', async () => {
-      const user = userEvent.setup();
       render(
         <GenerationControls
           config={mockConfig}
@@ -299,15 +295,14 @@ describe('GenerationControls', () => {
         />
       );
 
-      const input = screen.getByText(/生徒数:/).parentElement?.querySelector('input') as HTMLInputElement;
-      await user.clear(input);
-      await user.type(input, '500');
+      const inputs = screen.getAllByRole('slider');
+      const studentCountInput = inputs[0];
+      fireEvent.input(studentCountInput, { target: { value: '500' } });
 
       expect(mockOnUpdateStudentCount).toHaveBeenCalledWith(500);
     });
 
     it('should handle edge case values (minimum period days)', async () => {
-      const user = userEvent.setup();
       render(
         <GenerationControls
           config={mockConfig}
@@ -318,15 +313,14 @@ describe('GenerationControls', () => {
         />
       );
 
-      const input = screen.getByText(/記録期間:/).parentElement?.querySelector('input') as HTMLInputElement;
-      await user.clear(input);
-      await user.type(input, '7');
+      const inputs = screen.getAllByRole('slider');
+      const periodDaysInput = inputs[1];
+      fireEvent.input(periodDaysInput, { target: { value: '7' } });
 
       expect(mockOnUpdatePeriodDays).toHaveBeenCalledWith(7);
     });
 
     it('should handle edge case values (maximum period days)', async () => {
-      const user = userEvent.setup();
       render(
         <GenerationControls
           config={mockConfig}
@@ -337,9 +331,9 @@ describe('GenerationControls', () => {
         />
       );
 
-      const input = screen.getByText(/記録期間:/).parentElement?.querySelector('input') as HTMLInputElement;
-      await user.clear(input);
-      await user.type(input, '365');
+      const inputs = screen.getAllByRole('slider');
+      const periodDaysInput = inputs[1];
+      fireEvent.input(periodDaysInput, { target: { value: '365' } });
 
       expect(mockOnUpdatePeriodDays).toHaveBeenCalledWith(365);
     });

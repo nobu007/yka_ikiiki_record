@@ -13,12 +13,33 @@ module.exports = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/playwright/'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '^.+\\.(css|sass|scss)$': '<rootDir>/__mocks__/styleMock.js',
-    '^.+\\.(png|jpg|jpeg|gif|svg|ico|webp)$': '<rootDir>/__mocks__/fileMock.js',
-    'react-apexcharts': '<rootDir>/__mocks__/react-apexcharts.js',
-  },
+  projects: [
+    {
+      displayName: 'node',
+      testEnvironment: 'node',
+      testMatch: ['<rootDir>/src/infrastructure/repositories/**/*.test.ts'],
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/src/$1',
+      },
+      transform: {
+        '^.+\\.(ts|tsx)$': ['ts-jest', {
+          tsconfig: {
+            module: 'commonjs',
+          },
+        }],
+      },
+    },
+    {
+      displayName: 'jsdom',
+      testEnvironment: 'jsdom',
+      testMatch: ['<rootDir>/src/**/*.test.ts?(x)', '!<rootDir>/src/infrastructure/repositories/**/*.test.ts'],
+      setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/src/$1',
+        '^.+\\.(css|sass|scss)$': '<rootDir>/__mocks__/styleMock.js',
+        '^.+\\.(png|jpg|jpeg|gif|svg|ico|webp)$': '<rootDir>/__mocks__/fileMock.js',
+        'react-apexcharts': '<rootDir>/__mocks__/react-apexcharts.js',
+      },
   transform: {
     // Simplified ts-jest configuration - only override what differs from main tsconfig
     '^.+\\.(ts|tsx)$': ['ts-jest', {
@@ -41,4 +62,6 @@ module.exports = {
     // Removed: '^.+\\.module\\.(css|sass|scss)$' - CSS modules already mocked in moduleNameMapper
   ],
   cacheDirectory: '<rootDir>/.jest-cache',
+    },
+  ],
 };

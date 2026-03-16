@@ -228,3 +228,8 @@ next-env.d.ts
 
 # playwright
 playwright-report/
+
+# prisma
+/prisma/*.db
+/prisma/*.db-journal
+/dev.db

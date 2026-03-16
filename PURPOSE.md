@@ -18,42 +18,32 @@
 
 ## 現状
 
-開発品質目標を達成し、本番デプロイの準備が完了しました。
+コードベースは本番デプロイ可能な状態です。開発品質目標を達成し、機能的に完成しています。
 
 ### 品質メトリクス
 
 - **テスト**: 1031/1031 passing (136 suites)
-- **カバレッジ**: 98.68% statements, **94.73% branches**, 94.57% functions, 98.62% lines
+- **カバレッジ**: 98.68% statements, 94.73% branches, 94.57% functions, 98.62% lines
 - **TypeScript**: strict mode 完全準拠、any型0件、ESLint zero warnings
-- **アーキテクチャ**: Clean Architecture完全準拠、テストファイル分割完了（INV-ARCH-001）
+- **アーキテクチャ**: Clean Architecture完全準拠、全ファイル300行以下（INV-ARCH-001）
 
-### 残り0.27%のブランチカバレッジ
-
-以下はテスト不可能なコードであり、SYSTEM_CONSTITUTION.md「禁止事項」に基づきソースコード修正は行いません：
-
-- PrismaSeedRepository.ts line 37: デッドコード（コメント内のnullチェック）
-- Notification.tsx line 27: 到達不能パス（UIボタン非表示時のoptional chaining）
-- DynamicBarChart.tsx lines 108-126: 外部ライブラリ設定オブジェクト（ApexCharts formatters）
-
-**判断**: 実質的なテスト品質目標は達成済み。本番インフラ構築フェーズへ移行。
+**判断**: 実質的なテスト品質目標は達成済み（残り0.27%はテスト不可能なデッドコード・外部ライブラリ設定）。
 
 ## 直近の優先成果
 
-### P1: 開発品質目標達成 ✅ 完了
+### P1: 開発品質目標 ✅ 完了
 
-- [x] ブランチカバレッジ 94.73%（テスト可能な全ブランチを網羅）
-- [x] TypeScript strict mode 完全準拠（any型0件）
-- [x] ESLint zero warnings
-- [x] 1031/1031テスト合格
-- [x] INV-ARCH-001準拠（全ファイル300行以下）
+すべての品目標を達成し、コードベースは本番投入可能です。
 
-**最新の改善内容**:
-- テストファイル分割: PrismaStatsRepository.test.ts (322行) → 3ファイル、error-handler.test.ts (315行) → 4ファイル
-- ブランチカバレッジ改善: Dashboard HTTP error handling、DynamicBarChart error handling、validation error paths
+- ブランチカバレッジ 94.73%（テスト可能な全ブランチを網羅）
+- TypeScript strict mode 完全準拠（any型0件）
+- ESLint zero warnings
+- 1031/1031テスト合格
+- INV-ARCH-001準拠（全ファイル300行以下）
 
-### P2: 本番インフラ構築（現在のフェーズ）
+### P2: 本番インフラ構築（次のフェーズ）
 
-コードベースは機能的に完成しており、すぐにデプロイ可能です。
+コードベースは機能的に完成しており、デプロイ可能です。このフェーズを開始するには、以下のインフラ作業が必要です。
 
 **完了条件**:
 - [ ] Vercelプロジェクト作成
@@ -75,11 +65,13 @@ vercel link
 vercel env add DATABASE_URL production
 
 # 4. 本番デプロイ実行（5分）
-bash scripts/deploy-production.sh
+vercel --prod
 
 # 5. 本番検証（8分）
-bash scripts/verify-deployment.sh
+# 本番URLにアクセスし、基本動作を確認
 ```
+
+**重要**: このフェーズはインフラ作業であり、コード変更を伴いません。
 
 ### P3: 運用開始後の改善
 
@@ -93,21 +85,21 @@ bash scripts/verify-deployment.sh
 
 ## 完了の定義
 
-### P1完了条件 ✅
+### P1完了 ✅
 
-- [x] テスト可能なすべてのブランチをカバー（94.73%達成）
-- [x] TypeScript strict mode完全準拠
-- [x] ESLint zero warnings
-- [x] 1031/1031テスト合格
-- [x] INV-ARCH-001準拠（全テストファイル300行以下）
+- テスト可能なすべてのブランチをカバー（94.73%達成）
+- TypeScript strict mode完全準拠
+- ESLint zero warnings
+- 1031/1031テスト合格
+- INV-ARCH-001準拠（全テストファイル300行以下）
 
 ### P2完了条件
 
-- [ ] Vercelプロジェクト作成
-- [ ] PostgreSQLデータベース構築
-- [ ] DATABASE_URL環境変数設定
-- [ ] 本番デプロイ実行
-- [ ] 本番URLで動作確認
+- Vercelプロジェクト作成
+- PostgreSQLデータベース構築
+- DATABASE_URL環境変数設定
+- 本番デプロイ実行
+- 本番URLで動作確認
 
 ## 技術方針
 
@@ -148,6 +140,7 @@ export function createStatsService(): StatsService {
 1. **P2完了時**: 本番デプロイ完了後、P3（運用改善）へ移行
 2. **品質メトリクス変動時**: テスト数に±10以上の変動があった場合に更新
 3. **新機能開発時**: 新しい開発タスクが発生した場合に更新
+4. **定期的な再構成は禁止**: docs-onlyの定期的更新を行わず、実質的な進捗があった場合のみ更新
 
 ---
 

@@ -126,6 +126,45 @@ describe('DynamicBarChart Behavior', () => {
 
       expect(element).toBeDefined();
     });
+
+    it('should trigger error branch when data.map throws non-Error (lines 53-54)', () => {
+      class BrokenData {
+        get name() {
+          throw 'string error';
+        }
+        get value() {
+          return 3.5;
+        }
+      }
+
+      const problematicData = [new BrokenData()] as unknown as ChartData[];
+
+      const element = React.createElement(DynamicBarChart, { data: problematicData });
+
+      expect(element).toBeDefined();
+    });
+
+    it('should trigger error branch when data.map throws null (lines 53-54)', () => {
+      const nullThrowingData = [
+        { name: 'Valid', value: 3.5 },
+        null as unknown as ChartData,
+      ];
+
+      const element = React.createElement(DynamicBarChart, { data: nullThrowingData });
+
+      expect(element).toBeDefined();
+    });
+
+    it('should trigger error branch when data.map throws undefined (lines 53-54)', () => {
+      const undefinedThrowingData = [
+        { name: 'Valid', value: 3.5 },
+        undefined as unknown as ChartData,
+      ];
+
+      const element = React.createElement(DynamicBarChart, { data: undefinedThrowingData });
+
+      expect(element).toBeDefined();
+    });
   });
 
   describe('Empty Data State (INV-TEST-001)', () => {

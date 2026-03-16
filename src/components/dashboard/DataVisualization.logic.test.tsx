@@ -124,6 +124,24 @@ describe('DataVisualization Logic', () => {
       expect(studentDRow?.textContent).not.toContain('→');
     });
 
+    it('should handle empty trendline gracefully (line 23 prev undefined branch)', () => {
+      const statsWithEmptyTrendline: StatsData = {
+        ...mockStats,
+        studentStats: [
+          {
+            student: '生徒F',
+            recordCount: 0,
+            avgEmotion: 0,
+            trendline: []
+          }
+        ]
+      };
+
+      render(<DataVisualization data={statsWithEmptyTrendline} />);
+
+      expect(screen.getByText('生徒F')).toBeInTheDocument();
+    });
+
     it('should render upward trend for volatile increasing trendlines', () => {
       render(<DataVisualization data={mockStats} />);
 

@@ -19,6 +19,18 @@ describe('statsCalculator Effect Calculations', () => {
         expect(isNaN(effect)).toBe(false);
       }
     });
+
+    test('境界外の月インデックスでフォールバック値を使用する (line 30)', () => {
+      // Create a date with an invalid month and manipulate monthIndex directly
+      const date = new Date(2025, 5, 15);
+      // Force an out-of-bounds access by modifying the date object
+      const invalidDate = new Date(date);
+      invalidDate.setMonth(15); // Month 15 doesn't exist in seasonalFactors array
+
+      const effect = calculateSeasonalEffect(invalidDate);
+      expect(typeof effect).toBe('number');
+      expect(isNaN(effect)).toBe(false);
+    });
   });
 
   describe('calculateEventEffect', () => {

@@ -188,4 +188,22 @@ describe('EmotionChart - Branch Coverage (INV-TEST-001)', () => {
       expect(container.querySelector('div')).toBeInTheDocument();
     });
   });
+
+  describe('type default parameter (line 38)', () => {
+    it('should use default type "line" when type prop is undefined', () => {
+      const { container } = render(
+        <EmotionChart data={mockData} />
+      );
+
+      expect(container.querySelector('div')).toBeInTheDocument();
+    });
+
+    it('should use explicit type when provided', () => {
+      const { container } = render(
+        <EmotionChart data={mockData} type="bar" />
+      );
+
+      expect(container.querySelector('div')).toBeInTheDocument();
+    });
+  });
 });

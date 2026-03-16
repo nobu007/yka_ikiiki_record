@@ -80,6 +80,18 @@ describe('statsCalculator - Distribution & Trend Functions', () => {
     it('returns empty for empty input', () => {
       expect(calculateTrendline([])).toEqual([]);
     });
+
+    it('handles null/undefined values with fallback to 0 (line 143)', () => {
+      const inputWithNulls = [1, 2, null as unknown as number, 4, undefined as unknown as number, 6];
+      const result = calculateTrendline(inputWithNulls);
+      expect(result).toEqual([1.0, 2.0, 0.0, 4.0, 0.0, 6.0]);
+    });
+
+    it('handles all null/undefined values', () => {
+      const inputWithAllNulls = [null, null, undefined] as unknown as number[];
+      const result = calculateTrendline(inputWithAllNulls);
+      expect(result).toEqual([0.0, 0.0, 0.0]);
+    });
   });
 
   describe('calculateEmotionTrend', () => {

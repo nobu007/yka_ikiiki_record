@@ -28,7 +28,8 @@ const mockProps = {
     show: false,
     message: '',
     type: 'info' as const
-  }
+  },
+  onNotificationClose: undefined as (() => void) | undefined
 };
 
 describe('Dashboard', () => {
@@ -98,6 +99,65 @@ describe('Dashboard', () => {
       });
     });
 
+    it('should handle HTTP error responses (line 43 branch)', async () => {
+      const mockErrorResponse = {
+        ok: false,
+        status: 500,
+        statusText: 'Internal Server Error',
+        json: jest.fn().mockResolvedValue({
+          success: false,
+          error: 'Server error'
+        })
+      };
+
+      (global.fetch as jest.Mock).mockResolvedValueOnce(mockErrorResponse);
+
+      render(<Dashboard {...mockProps} />);
+
+      await waitFor(() => {
+        expect(global.fetch).toHaveBeenCalledWith('/api/seed');
+      });
+    });
+
+    it('should handle HTTP 404 error responses', async () => {
+      const mockErrorResponse = {
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+        json: jest.fn().mockResolvedValue({
+          success: false,
+          error: 'Not found'
+        })
+      };
+
+      (global.fetch as jest.Mock).mockResolvedValueOnce(mockErrorResponse);
+
+      render(<Dashboard {...mockProps} />);
+
+      await waitFor(() => {
+        expect(global.fetch).toHaveBeenCalledWith('/api/seed');
+      });
+    });
+
+    it('should handle validation error with default message (line 50)', async () => {
+      const mockResponse = {
+        ok: true,
+        status: 200,
+        json: jest.fn().mockResolvedValue({
+          success: false,
+          error: null
+        })
+      };
+
+      (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
+
+      render(<Dashboard {...mockProps} />);
+
+      await waitFor(() => {
+        expect(global.fetch).toHaveBeenCalledWith('/api/seed');
+      });
+    });
+
     it('should display data visualization when stats are loaded', async () => {
       const mockResponse = {
         ok: true,
@@ -164,6 +224,22 @@ describe('Dashboard', () => {
           message: 'Test notification',
           type: 'success' as const
         }
+      };
+
+      render(<Dashboard {...notificationProps} />);
+
+      expect(screen.getByText('Test notification')).toBeInTheDocument();
+    });
+
+    it('should pass onNotificationClose when provided (line 103)', () => {
+      const notificationProps = {
+        ...mockProps,
+        notification: {
+          show: true,
+          message: 'Test notification',
+          type: 'success' as const
+        },
+        onNotificationClose: jest.fn()
       };
 
       render(<Dashboard {...notificationProps} />);

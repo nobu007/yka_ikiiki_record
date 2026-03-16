@@ -14,13 +14,14 @@
 - カバレッジ: 98.26% statements, 91.49% branches, 94.52% functions, 98.15% lines
 - TypeScript: strict mode 完全準拠、**any型0件（Type Supremacy原則100%達成）**
 - ESLint: zero warnings
-- アーキテクチャ: Clean Architecture + Repository Factoryパターン
-- INV-ARCH-001準拠: 全テストファイルが300行未満（最大162行）
-- 直近改善:
-  - **Clean Architecture違反修正**: StatsData型をInfrastructure層からcross-cutting層（schemas/api.ts）へ移動（commit 68c3865）
-  - **型安全性完全達成**: 最後の`any`型を`Record`型に置き換え（commit f3bcc7b）
-  - **未使用コード削除**: `getRouteHandlers`未使用関数を削除（commit 178781f）
-  - テストファイル単一責務化完了（seed route: 329行→4ファイルへ分割）
+- アーキテクチャ: Clean Architecture + Repository Factoryパターン（完全準拠）
+- INV-ARCH-001準拠: 全テストファイルが300行未満
+
+## 直近完了した改善
+
+- Clean Architecture違反修正: Presentation層がInfrastructure層の型（GeneratedStats）に依存する問題を解消
+- 型安全性完全達成: 最後の`any`型を排除し、SYSTEM_CONSTITUTION.md Type Supremacy原則に100%準拠
+- 未使用コード削除: 重複排除原則に基づき未使用関数を削除
 
 ## 目指す完成状態
 
@@ -63,15 +64,15 @@ bash scripts/verify-deployment.sh
 - [ ] PostgreSQLにデータが保存されている
 - [ ] ダッシュボードが表示される
 
-**現在の状態**:
+**デプロイ準備完了項目**:
 - ✅ デプロイ自動化スクリプト完成 (`scripts/deploy-production.sh`, `scripts/verify-deployment.sh`)
 - ✅ 本番ビルド検証完了
 - ✅ デプロイ実行コマンド追加 (`npm run deploy:production`)
-- ⏳ 人間による実行待ち:
-  1. `vercel login` - Vercel認証
-  2. `npm run deploy:production` - 本番デプロイ実行
-  3. Vercelダッシュボードで `DATABASE_URL` 環境変数設定
-  4. `vercel exec -- npm run db:migrate:deploy` - データベースマイグレーション
+- ✅ PostgreSQLマイグレーションスクリプト完了
+
+**次のアクション**:
+- P1完了にはVercelアカウントとPostgreSQLデータベースのプロビジョニングが必要
+- デプロイ実行時は上記の手順コマンドを順次実行
 
 ### P2: 本番環境での動作確認と検証
 
@@ -158,13 +159,6 @@ export function createStatsService(): StatsService {
 
 ---
 
-**最終更新**: 2026-03-17 (直近10コミット反映完了 - commit 11dd7c2)
+**最終更新**: 2026-03-17 (直近10コミット反映完了)
 
-**現在の焦点**: P1「本番環境へのデプロイ完了」。デプロイ自動化スクリプト完成済み。人間による `vercel login` と `npm run deploy:production` 実行、DATABASE_URL設定が必要。
-
-**直近の品質改善**:
-- **Clean Architecture完全準拠**: Presentation層がInfrastructure層の型（GeneratedStats）に依存する違反を修正し、StatsData型をcross-cutting層（schemas/api.ts）へ移動（commit 68c3865）
-- **型安全性完全達成**: PrismaRecordRepository.query.test.tsで最後の `any` 型を `Record` 型に置き換え、SYSTEM_CONSTITUTION.md Type Supremacy原則に100%準拠（commit f3bcc7b）
-- **重複排除原則適用**: 未使用の `getRouteHandlers` 関数を削除（commit 178781f）
-- INV-ARCH-001完全準拠: テストファイル単一責務化（最大292行、全テストファイル300行未満を維持）
-- 本番デプロイ準備完了: 自動化スクリプト・検証スクリプト・ドキュメント完備
+**現在の焦点**: P1「本番環境へのデプロイ完了」。全自動化スクリプト完了済み。Vercelプロジェクト設定とPostgreSQLプロビジョニング後にデプロイ実行可能。

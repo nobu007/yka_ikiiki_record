@@ -18,7 +18,8 @@
 - ✅ 環境変数バリデーション: Zodベースの型安全なenv.ts実装完了
 - ✅ セキュリティ: プレースホルダー認証情報削除、本番設定適切化
 - ✅ インフラ: Prisma singletonクライアント実装（serverless対応）
-- ✅ Prisma providerカバレッジ: seed APIルートの本番パス94.28%（POST/GET両方カバー）
+- ✅ Prisma providerカバレッジ: seed APIルートの本番パス94.28%（POST/GET両方カバー、Mirage+Prisma両プロバイダー完備）
+- ✅ INV-ARCH-001準拠: 全テストファイルが300行未満（最大162行）に分割完了
 - ✅ デプロイ自動化: deploy-production.sh, verify-deployment.sh実装完了
 
 ## 目指す完成状態
@@ -56,7 +57,8 @@ bash scripts/verify-deployment.sh
 
 **技術的前提条件**: ✅ 全項目充足済み
 - ✅ コード品質: 971 tests passing、TypeScript strict mode完全準拠、98.26% coverage
-- ✅ Prisma providerカバレッジ: 本番コードパスのテスト完了（seed API 94.28%）
+- ✅ アーキテクチャ準拠: INV-ARCH-001（単一責務原則）全ファイル準拠（テストファイル分割完了）
+- ✅ Prisma providerカバレッジ: 本番コードパスのテスト完了（seed API 94.28%、Mirage+Prisma両プロバイダー完備）
 - ✅ アーキテクチャ: Clean Architecture、Repository Factoryパターン
 - ✅ データ層: Prisma + PostgreSQL、singletonクライアント実装済み
 - ✅ 環境変数: Zodバリデーション実装済み（env.ts）
@@ -141,11 +143,17 @@ export function createStatsService(): StatsService {
 
 **最終更新**: 2026-03-17
 
-**現在の焦点**: P1「本番環境へのデプロイ実行」が最優先。デプロイ自動化スクリプト完成済み（commit f8c030c）、次は実際に`vercel login`してデプロイを実行する。
+**現在の焦点**: P1「本番環境へのデプロイ実行」が最優先。デプロイ自動化スクリプト完成済み（commit f8c030c）、全ての技術的前提条件が充足済み。次は実際に`vercel login`してデプロイを実行するのみ。
+
+**最近の改善点**:
+- commit 5ba3669: テストファイルを単一責務原則（INV-ARCH-001）に準拠させて分割（329行→4ファイル、最大162行）
+- commit f8c030c: 本番デプロイ自動化スクリプト完備
+- commit f9c8cd3: Prisma providerカバレッジ拡充
 
 **品質メトリクス**:
 - 971 tests passing (126 suites)
-- 98.26% coverage statements
+- 98.26% coverage statements, 91.49% branches, 94.52% functions, 98.15% lines
 - TypeScript strict mode 完全準拠
-- Prisma providerカバレッジ: 94.28% (seed API route)
+- INV-ARCH-001完全準拠: 全テストファイルが300行未満
+- Prisma providerカバレッジ: 94.28% (seed API route, Mirage+Prisma両プロバイダー完備)
 - デプロイ自動化: deploy-production.sh, verify-deployment.sh 実装済み

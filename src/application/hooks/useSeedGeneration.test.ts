@@ -163,7 +163,7 @@ describe('useSeedGeneration', () => {
     const mockConfig = createMockConfig();
 
     let generationPromise: Promise<void>;
-    
+
     await act(async () => {
       generationPromise = result.current.generateSeed(mockConfig);
     });
@@ -181,5 +181,89 @@ describe('useSeedGeneration', () => {
 
     expect(result.current.isGenerating).toBe(false);
     expect(result.current.error).toBe(null);
+  });
+
+  it('should handle validation error with null validated and null validationError (line 31 default message)', async () => {
+    // Mock validateDataSafe to return [null, null]
+    mockValidateDataSafe.mockReturnValue([null, null]);
+
+    const mockResponse = { success: true, message: 'Data generated' };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const { result } = renderHook(() => useSeedGeneration());
+    const mockConfig = createMockConfig();
+
+    await act(async () => {
+      try {
+        await result.current.generateSeed(mockConfig);
+      } catch {
+        // Expected to throw
+      }
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.error).toBeInstanceOf(AppError);
+    expect(result.current.error?.message).toContain('API response validation failed');
+  });
+
+  it('should handle API error response with custom error message (line 35)', async () => {
+    // Mock validateDataSafe to return validated object with success=false and custom error
+    mockValidateDataSafe.mockReturnValue([
+      { success: false, error: 'Custom generation error from API' },
+      null
+    ]);
+
+    const mockResponse = { success: false, error: 'Custom generation error from API' };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const { result } = renderHook(() => useSeedGeneration());
+    const mockConfig = createMockConfig();
+
+    await act(async () => {
+      try {
+        await result.current.generateSeed(mockConfig);
+      } catch {
+        // Expected to throw
+      }
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.error).toBeInstanceOf(AppError);
+    expect(result.current.error?.message).toBe('Custom generation error from API');
+  });
+
+  it('should handle API error response with missing error field (line 35 default message)', async () => {
+    // Mock validateDataSafe to return validated object with success=false and no error
+    mockValidateDataSafe.mockReturnValue([
+      { success: false },
+      null
+    ]);
+
+    const mockResponse = { success: false };
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
+    });
+
+    const { result } = renderHook(() => useSeedGeneration());
+    const mockConfig = createMockConfig();
+
+    await act(async () => {
+      try {
+        await result.current.generateSeed(mockConfig);
+      } catch {
+        // Expected to throw
+      }
+    });
+
+    expect(result.current.isGenerating).toBe(false);
+    expect(result.current.error).toBeInstanceOf(AppError);
+    expect(result.current.error?.message).toContain('データ生成に失敗しました');
   });
 });

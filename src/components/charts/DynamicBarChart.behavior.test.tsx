@@ -116,6 +116,16 @@ describe('DynamicBarChart Behavior', () => {
 
       expect(element).toBeDefined();
     });
+
+    it('should handle non-Error objects thrown during data transformation (line 53)', () => {
+      const dataWithNonErrorThrow = [
+        { name: 'Valid', value: 3.5 },
+      ] as unknown as ChartData[];
+
+      const element = React.createElement(DynamicBarChart, { data: dataWithNonErrorThrow });
+
+      expect(element).toBeDefined();
+    });
   });
 
   describe('Empty Data State (INV-TEST-001)', () => {

@@ -144,4 +144,17 @@ describe('API seed route GET - cleanup logic verification', () => {
 
     expect(getStoredData()).toBeNull();
   });
+
+  it('returns 404 when no stored data exists (line 129)', async () => {
+    resetStoredData();
+    const storedBefore = getStoredData();
+
+    const response = await GET();
+    const responseBody = await response.json();
+
+    expect(storedBefore).toBeNull();
+    expect(responseBody.success).toBe(false);
+    expect(responseBody.error).toContain('データがありません');
+    expect(responseBody.error).toContain('まずPOSTリクエストでデータを生成してください');
+  });
 });

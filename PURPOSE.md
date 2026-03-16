@@ -2,7 +2,7 @@
 
 ## 北極星
 
-日本の教育現場における「生徒の心の成長」と「学級文化」を可視化する革新的な教育インフラを構築し、AIによる自律的ソフトウェア開発の実証実験として完全自律型開発システムを確立する。
+日本の教育現場における「生徒の心の成長」と「学級文化」を可視化する革新的な教育インフラを構築する。
 
 ## この文書の役割
 
@@ -12,14 +12,10 @@
 
 - ✅ テスト: 971/971 passing (126 suites)
 - ✅ カバレッジ: 98.26% statements, 91.49% branches, 94.52% functions, 98.15% lines
-- ✅ TypeScript: strict mode 完全準拠（テストファイルの型エラーも解消済み）
+- ✅ TypeScript: strict mode 完全準拠
 - ✅ ESLint: zero warnings
 - ✅ アーキテクチャ: Clean Architecture + Repository Factoryパターン
-- ✅ 環境変数バリデーション: Zodベースの型安全なenv.ts実装完了
-- ✅ セキュリティ: プレースホルダー認証情報削除、本番設定適切化
-- ✅ インフラ: Prisma singletonクライアント実装（serverless対応）
-- ✅ Prisma providerカバレッジ: seed APIルートの本番パス94.28%（POST/GET両方カバー、Mirage+Prisma両プロバイダー完備）
-- ✅ INV-ARCH-001準拠: 全テストファイルが300行未満（最大162行）に分割完了
+- ✅ INV-ARCH-001準拠: 全テストファイルが300行未満（最大162行）
 - ✅ デプロイ自動化: deploy-production.sh, verify-deployment.sh実装完了
 
 ## 目指す完成状態
@@ -30,13 +26,11 @@
 
 ## 直近の優先成果
 
-### P1: 本番環境へのデプロイ実行（実行待ち）
+### P1: 本番環境へのデプロイ実行
 
 **完了条件**: Vercelで本番環境が稼働し、PostgreSQLデータベースが接続されている
 
-**完了していない理由**: デプロイ自動化スクリプトは完成済みだが、実際のデプロイ実行（`vercel login`、本番環境へのデプロイコマンド実行）がまだ行われていない。
-
-**実行手順（自動化スクリプト使用）**:
+**実行手順**:
 ```bash
 # 1. Vercelログイン（初回のみ）
 vercel login
@@ -55,19 +49,7 @@ vercel exec -- npm run db:migrate:deploy
 bash scripts/verify-deployment.sh
 ```
 
-**技術的前提条件**: ✅ 全項目充足済み
-- ✅ コード品質: 971 tests passing、TypeScript strict mode完全準拠、98.26% coverage
-- ✅ アーキテクチャ準拠: INV-ARCH-001（単一責務原則）全ファイル準拠（テストファイル分割完了）
-- ✅ Prisma providerカバレッジ: 本番コードパスのテスト完了（seed API 94.28%、Mirage+Prisma両プロバイダー完備）
-- ✅ アーキテクチャ: Clean Architecture、Repository Factoryパターン
-- ✅ データ層: Prisma + PostgreSQL、singletonクライアント実装済み
-- ✅ 環境変数: Zodバリデーション実装済み（env.ts）
-- ✅ セキュリティ: .env.exampleからプレースホルダー認証情報削除済み
-- ✅ デプロイ設定: vercel.json、README手順完備
-- ✅ デプロイ自動化: scripts/deploy-production.sh, scripts/verify-deployment.sh実装済み
-- ✅ README更新: 本番デプロイ手順、データベース設定手順完備
-
-**現在の状態**: 全ての準備作業は完了。次は実際にデプロイコマンドを実行し、本番環境を立ち上げるのみ。
+**現在の状態**: デプロイ自動化スクリプト完成済み。全技術的前提条件充足済み。実行のみ待機中。
 
 ### P2: 本番環境での動作確認とE2Eテスト実行
 
@@ -88,13 +70,13 @@ bash scripts/verify-deployment.sh
 
 ## 完了の定義
 
-このプロジェクトのMVPが「完了」と見なされる条件:
+このプロジェクトのMVP完了条件:
 
-1. **品質基盤**: ✅ 達成済み（971 tests passing、98.26% coverage、TypeScript strict mode）
-2. **データ永続化**: ✅ 達成済み（Prisma + PostgreSQL、singletonクライアント）
-3. **環境設定**: ✅ 達成済み（Zodバリデーション、セキュリティ fixes）
-4. **デプロイ自動化**: ✅ 達成済み（scripts/deploy-production.sh, verify-deployment.sh実装完了）
-5. **本番デプロイ実行**: ⏳ P1実行待ち（技術準備・自動化完了、実行のみ）
+1. **品質基盤**: ✅ 達成済み
+2. **データ永続化**: ✅ 達成済み
+3. **環境設定**: ✅ 達成済み
+4. **デプロイ自動化**: ✅ 達成済み
+5. **本番デプロイ実行**: ⏳ P1実行待ち
 6. **本番動作確認**: ⏳ P2未着手（P1完了後に開始）
 
 ## 技術方針
@@ -135,25 +117,10 @@ export function createStatsService(): StatsService {
 
 1. **P1/P2完了時**: 完了したタスクを完了済みに移動
 2. **品質メトリクス変動時**: テスト数に大幅な変動があった場合（±10テスト以上）
-3. **アーキテクチャ変更時**: 新しいパターン導入時
-4. **技術的前提条件完了時**: P1/P2のブロッカーが解消された場合
-5. **定期的再評価**: 直近10コミットの実態に基づき、優先順位を再検証
+3. **直近10コミットに基づく再評価**: 優先順位の再検証
 
 ---
 
 **最終更新**: 2026-03-17
 
-**現在の焦点**: P1「本番環境へのデプロイ実行」が最優先。デプロイ自動化スクリプト完成済み（commit f8c030c）、全ての技術的前提条件が充足済み。次は実際に`vercel login`してデプロイを実行するのみ。
-
-**最近の改善点**:
-- commit 5ba3669: テストファイルを単一責務原則（INV-ARCH-001）に準拠させて分割（329行→4ファイル、最大162行）
-- commit f8c030c: 本番デプロイ自動化スクリプト完備
-- commit f9c8cd3: Prisma providerカバレッジ拡充
-
-**品質メトリクス**:
-- 971 tests passing (126 suites)
-- 98.26% coverage statements, 91.49% branches, 94.52% functions, 98.15% lines
-- TypeScript strict mode 完全準拠
-- INV-ARCH-001完全準拠: 全テストファイルが300行未満
-- Prisma providerカバレッジ: 94.28% (seed API route, Mirage+Prisma両プロバイダー完備)
-- デプロイ自動化: deploy-production.sh, verify-deployment.sh 実装済み
+**現在の焦点**: P1「本番環境へのデプロイ実行」。デプロイ自動化スクリプト完成済み。全技術的前提条件充足済み。実行のみ待機中。

@@ -1,0 +1,15 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["hnd1"],
+  "env": {
+    "DATABASE_PROVIDER": "prisma"
+  },
+  "build": {
+    "env": {
+      "DATABASE_PROVIDER": "prisma"
+    }
+  }
+}

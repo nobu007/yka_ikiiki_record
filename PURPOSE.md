@@ -18,14 +18,12 @@
 
 ## 品質基盤の現状
 
-- テスト: 974/974 passing (126 suites, 214 TypeScript files)
-- カバレッジ: 98.26% statements, 91.49% branches, 94.52% functions, 98.15% lines
-- TypeScript: strict mode 完全準拠、**any型0件**（Type Supremacy原則100%達成）
+- テスト: 974/974 passing (126 suites)
+- カバレッジ: 98.35% statements, 91.81% branches, 94.57% functions, 98.25% lines
+- TypeScript: strict mode 完全準拠、**any型0件**
 - ESLint: zero warnings
 - アーキテクチャ: Clean Architecture + Repository Factoryパターン（完全準拠）
-- 全テストファイル300行未満（INV-ARCH-001準拠）
-- Clean Architecture違反修正済み: `StatsData`型をcross-cutting層(schemas)へ移植(2026-03-17)
-- seed API TTL cleanup機能のテストカバレッジ向上: 94.28% → 97.67% (2026-03-17)
+- 全テストファイル300行未満
 
 ## 直近の優先成果
 
@@ -126,7 +124,7 @@ MVP完了条件:
 - [ ] P1: インフラプロビジョニング完了（Vercelプロジェクト作成 + PostgreSQL構築 + DATABASE_URL設定）
 - [ ] P2: 本番デプロイ完了（アプリケーションデプロイ + データベースマイグレーション）
 - [ ] P3: 本番動作確認完了（主要API正常動作 + ダッシュボード表示）
-- [ ] 品質メトリクス維持（テスト971件、カバレッジ95%以上、全ファイル300行未満）
+- [ ] 品質メトリクス維持（テスト974件、カバレッジ95%以上、全ファイル300行未満）
 
 ## 技術方針
 
@@ -171,10 +169,6 @@ export function createStatsService(): StatsService {
 
 ---
 
-**最終更新**: 2026-03-17 (直近10コミット反映完了)
+**最終更新**: 2026-03-17
 
-**直近10コミットの実績**:
-- コード改善: Clean Architecture違反修正、seed APIテストカバレッジ向上、any型削除
-- 品質維持: テスト971件→974件、カバレッジ維持、TS strict mode完全準拠
-
-**現在の焦点**: P1「インフラストラクチャのプロビジョニング」。デプロイスクリプトは完成しているが、**Vercelプロジェクト未作成・PostgreSQL未構築**がボトルネック。まずVercelプロジェクトを作成し、PostgreSQLデータベースをプロビジョニングすること。
+**現在の焦点**: P1「インフラストラクチャのプロビジョニング」。コードベースはデプロイ準備完了。

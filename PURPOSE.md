@@ -12,11 +12,15 @@
 
 - テスト: 971/971 passing (126 suites, 214 TypeScript files)
 - カバレッジ: 98.26% statements, 91.49% branches, 94.52% functions, 98.15% lines
-- TypeScript: strict mode 完全準拠
+- TypeScript: strict mode 完全準拠、**any型0件（Type Supremacy原則100%達成）**
 - ESLint: zero warnings
 - アーキテクチャ: Clean Architecture + Repository Factoryパターン
 - INV-ARCH-001準拠: 全テストファイルが300行未満（最大162行）
-- 直近改善: テストファイル単一責務化完了（seed route: 329行→4ファイルへ分割）
+- 直近改善:
+  - **Clean Architecture違反修正**: StatsData型をInfrastructure層からcross-cutting層（schemas/api.ts）へ移動（commit 68c3865）
+  - **型安全性完全達成**: 最後の`any`型を`Record`型に置き換え（commit f3bcc7b）
+  - **未使用コード削除**: `getRouteHandlers`未使用関数を削除（commit 178781f）
+  - テストファイル単一責務化完了（seed route: 329行→4ファイルへ分割）
 
 ## 目指す完成状態
 
@@ -125,8 +129,10 @@ MVP完了条件:
 **重要な制約**:
 - ❌ Client Componentsから直接Domain/Infrastructureをimportしない
 - ❌ Domain層からPrisma/Next.jsをimportしない
+- ❌ Presentation層からInfrastructure層の型を直接importしない（cross-cutting/schemasを使用）
 - ✅ Server Components/API RoutesはDomain Serviceを直接使用
 - ✅ Client ComponentsはSWR/fetchでServer Componentsと通信
+- ✅ 共有型はcross-cutting層（schemas）で定義し、全レイヤーからimport可能
 
 ### Repository Factoryパターン
 
@@ -152,12 +158,13 @@ export function createStatsService(): StatsService {
 
 ---
 
-**最終更新**: 2026-03-17 (直近10コミット反映完了 - commit f3bcc7b)
+**最終更新**: 2026-03-17 (直近10コミット反映完了 - commit 68c3865)
 
 **現在の焦点**: P1「本番環境へのデプロイ完了」。デプロイ自動化スクリプト完成済み。人間による `vercel login` と `npm run deploy:production` 実行、DATABASE_URL設定が必要。
 
 **直近の品質改善**:
-- 型安全性完全達成: PrismaRecordRepository.query.test.tsで最後の `any` 型を排除し、SYSTEM_CONSTITUTION.md Type Supremacy原則に100%準拠（commit f3bcc7b）
+- **Clean Architecture完全準拠**: Presentation層がInfrastructure層の型（GeneratedStats）に依存する違反を修正し、StatsData型をcross-cutting層（schemas/api.ts）へ移動（commit 68c3865）
+- **型安全性完全達成**: PrismaRecordRepository.query.test.tsで最後の `any` 型を `Record` 型に置き換え、SYSTEM_CONSTITUTION.md Type Supremacy原則に100%準拠（commit f3bcc7b）
+- **重複排除原則適用**: 未使用の `getRouteHandlers` 関数を削除（commit 178781f）
 - INV-ARCH-001完全準拠: テストファイル単一責務化（seed route: 329行→162/109/97/79行へ分割）
-- 未使用コード削除: 重複排除原則に従いgetRouteHandlers未使用関数を削除
 - 本番デプロイ準備完了: 自動化スクリプト・検証スクリプト・ドキュメント完備

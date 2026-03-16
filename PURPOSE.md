@@ -18,13 +18,14 @@
 
 ## 品質基盤の現状
 
-- テスト: 971/971 passing (126 suites, 214 TypeScript files)
+- テスト: 974/974 passing (126 suites, 214 TypeScript files)
 - カバレッジ: 98.26% statements, 91.49% branches, 94.52% functions, 98.15% lines
 - TypeScript: strict mode 完全準拠、**any型0件**（Type Supremacy原則100%達成）
 - ESLint: zero warnings
 - アーキテクチャ: Clean Architecture + Repository Factoryパターン（完全準拠）
 - 全テストファイル300行未満（INV-ARCH-001準拠）
 - Clean Architecture違反修正済み: `StatsData`型をcross-cutting層(schemas)へ移植(2026-03-17)
+- seed API TTL cleanup機能のテストカバレッジ向上: 94.28% → 97.67% (2026-03-17)
 
 ## 直近の優先成果
 
@@ -171,5 +172,9 @@ export function createStatsService(): StatsService {
 ---
 
 **最終更新**: 2026-03-17 (直近10コミット反映完了)
+
+**直近10コミットの実績**:
+- コード改善: Clean Architecture違反修正、seed APIテストカバレッジ向上、any型削除
+- 品質維持: テスト971件→974件、カバレッジ維持、TS strict mode完全準拠
 
 **現在の焦点**: P1「インフラストラクチャのプロビジョニング」。デプロイスクリプトは完成しているが、**Vercelプロジェクト未作成・PostgreSQL未構築**がボトルネック。まずVercelプロジェクトを作成し、PostgreSQLデータベースをプロビジョニングすること。

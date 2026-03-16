@@ -16,14 +16,14 @@
 2. **データ永続化**: PostgreSQLで生徒の記録が保存される
 3. **品質維持**: すべてのテストがパスし、カバレッジ95%以上を維持
 
-## 現状: 品質改善・保守フェーズ
+## 現状: テスト品質向上フェーズ
 
 ### 開発品質の現状
 
-**コア機能は実装完了しており、現在は品質向上とテストカバレッジの改善に注力しています。**
+**コア機能は実装完了しており、ブランチカバレッジ95%達成に向けてテスト補強を継続しています。**
 
-- **テスト**: 974/974 passing (126 suites) - 完全合格
-- **カバレッジ**: 98.35% statements, 91.81% branches, 94.57% functions, 98.25% lines
+- **テスト**: 1008/1008 passing (128 suites) - 完全合格
+- **カバレッジ**: 98.52% statements, 92.39% branches, 94.57% functions, 98.44% lines
 - **TypeScript**: strict mode 完全準拠、**any型0件**
 - **ESLint**: zero warnings
 - **アーキテクチャ**: Clean Architecture完全準拠
@@ -42,15 +42,21 @@
 
 ### P1: テストカバレッジ改善（現在進行中）
 
-**直近の実績（コミット 9c308e5）**:
-- Seed APIのTTL cleanupロジックに対するテストを追加
-- `app/api/seed/route.ts`のカバレッジ: 94.28% → 97.67% (+3.39%)
-- テスト数: 971 → 974 (+3件)
+**直近の実績（コミット a45dae1）**:
+- EmotionChartのgetChartOptions条件分岐テスト（pie/donut vs standard）
+- useDataGenerationの境界値テスト（student count: 10-500, period days: 7-365）
+- error-handlerの非テスト環境ログフォーマットテスト
+- PrismaStatsRepositoryの境界外インデックスフォールバックテスト
+- ブランチカバレッジ: 91.81% → 92.39% (+0.58%)
+- テスト数: 974 → 1008 (+34件)
 
-**次の重点対象**:
-- ブランチカバレッジの向上（現在91.81% → 目標95%以上）
-- エッジケースのテスト補強
-- 境界値テストの追加
+**次の重点対象（未カバー分岐の特定）**:
+- `useSeedGeneration.ts`: 77.77% branches (lines 31, 35未カバー)
+- `app/api/seed/route.ts`: 88.88% branches (line 129未カバー)
+- `DynamicBarChart.tsx`: 89.47% branches
+- `useApp.ts`: 84.61% branches (lines 39, 72未カバー)
+
+**目標**: ブランチカバレッジ 92.39% → 95%以上 (+2.61%)
 
 ### P2: 本番インフラ構築（P1完了後）
 
@@ -94,9 +100,13 @@
 
 ### P1完了条件（テスト品質向上）
 
-- [ ] ブランチカバレッジ 95%以上（現在91.81%）
-- [ ] すべての重要なエッジケースをテスト済み
-- [ ] カバレッジの抜け漏れ箇所を特定・補完済み
+- [ ] ブランチカバレッジ 95%以上（現在92.39%）
+- [ ] 残りの未カバー分岐を特定・テスト追加:
+  - [ ] useSeedGeneration.ts (lines 31, 35)
+  - [ ] app/api/seed/route.ts (line 129)
+  - [ ] DynamicBarChart.tsx (未カバー分岐)
+  - [ ] useApp.ts (lines 39, 72)
+- [ ] 境界値テストの完全網羅
 
 ### P2完了条件（インフラ設定）
 
@@ -151,4 +161,4 @@ export function createStatsService(): StatsService {
 
 **最終更新**: 2026-03-17
 
-**現在の状態**: 機能実装完了、テスト品質向上フェーズ。直近のコミットではseed APIのTTL cleanupロジックに対するテスト補強を実施（カバレッジ94.28% → 97.67%）。次はブランチカバレッジの向上とエッジケースのテスト補強が優先。
+**現在の状態**: 機能実装完了、テスト品質向上フェーズ。直近のコミット(a45dae1)ではEmotionChart/useDataGeneration/error-handler/PrismaStatsRepositoryに対して境界値テストと条件分岐テストを追加（ブランチカバレッジ91.81% → 92.39%、テスト数974 → 1008）。次は未カバー分岐の特定とテスト補強を行い、ブランチカバレッジ95%達成を目指す。

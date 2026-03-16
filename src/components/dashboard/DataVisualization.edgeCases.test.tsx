@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { DataVisualization } from './DataVisualization';
-import { GeneratedStats } from '@/infrastructure/services/dataService';
+import { StatsData } from '@/schemas/api';
 
-const mockStats: GeneratedStats = {
+const mockStats: StatsData = {
   overview: {
     count: 1000,
     avgEmotion: 75.5
@@ -61,7 +61,7 @@ const mockStats: GeneratedStats = {
 describe('DataVisualization Edge Cases', () => {
   describe('Edge Cases', () => {
     it('should handle empty stats gracefully', () => {
-      const emptyStats: GeneratedStats = {
+      const emptyStats: StatsData = {
         overview: { count: 0, avgEmotion: 0 },
         monthlyStats: [],
         dayOfWeekStats: [],
@@ -80,7 +80,7 @@ describe('DataVisualization Edge Cases', () => {
     });
 
     it('should handle very large record counts', () => {
-      const largeStats: GeneratedStats = {
+      const largeStats: StatsData = {
         ...mockStats,
         overview: { count: 1000000, avgEmotion: 75.5 }
       };
@@ -102,7 +102,7 @@ describe('DataVisualization Edge Cases', () => {
     });
 
     it('should handle missing trendline data', () => {
-      const statsWithMissingTrend: GeneratedStats = {
+      const statsWithMissingTrend: StatsData = {
         ...mockStats,
         studentStats: [
           {
@@ -120,7 +120,7 @@ describe('DataVisualization Edge Cases', () => {
     });
 
     it('should handle single student', () => {
-      const singleStudentStats: GeneratedStats = {
+      const singleStudentStats: StatsData = {
         ...mockStats,
         studentStats: [
           {
@@ -145,7 +145,7 @@ describe('DataVisualization Edge Cases', () => {
         trendline: [70, 75, 80]
       }));
 
-      const manyStudentStats: GeneratedStats = {
+      const manyStudentStats: StatsData = {
         ...mockStats,
         studentStats: manyStudents
       };
@@ -157,7 +157,7 @@ describe('DataVisualization Edge Cases', () => {
     });
 
     it('should handle extreme emotion values', () => {
-      const extremeEmotionStats: GeneratedStats = {
+      const extremeEmotionStats: StatsData = {
         ...mockStats,
         overview: { count: 100, avgEmotion: 0 }
       };
@@ -182,7 +182,7 @@ describe('DataVisualization Edge Cases', () => {
     });
 
     it('should render quickly with large datasets', () => {
-      const largeStats: GeneratedStats = {
+      const largeStats: StatsData = {
         ...mockStats,
         studentStats: Array.from({ length: 100 }, (_, i) => ({
           student: `生徒${i + 1}`,

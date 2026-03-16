@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Dashboard } from './Dashboard';
-import { GeneratedStats } from '@/infrastructure/services/dataService';
+import { StatsData } from '@/schemas/api';
 
 global.fetch = jest.fn();
 
-const mockStats: GeneratedStats = {
+const mockStats: StatsData = {
   overview: {
     count: 100,
     avgEmotion: 3.5

@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { withErrorHandler } from '@/lib/api/error-handler';
 import { createSuccessResponse } from '@/lib/api/response';
 import { createStatsService, isPrismaProvider } from '@/infrastructure/factories/repositoryFactory';
-import { dataService, DataGenerationConfig, GeneratedStats } from '@/infrastructure/services/dataService';
+import { dataService, DataGenerationConfig } from '@/infrastructure/services/dataService';
+import { StatsData } from '@/schemas/api';
 import { APP_CONFIG } from '@/lib/config';
 
 const SeedRequestSchema = z.object({
@@ -25,7 +26,7 @@ const SeedRequestSchema = z.object({
 });
 
 interface StoredData {
-  data: GeneratedStats;
+  data: StatsData;
   timestamp: number;
   config: DataGenerationConfig;
 }

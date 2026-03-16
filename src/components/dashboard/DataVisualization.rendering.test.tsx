@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { DataVisualization } from './DataVisualization';
-import { GeneratedStats } from '@/infrastructure/services/dataService';
+import { StatsData } from '@/schemas/api';
 
-const mockStats: GeneratedStats = {
+const mockStats: StatsData = {
   overview: {
     count: 1000,
     avgEmotion: 75.5

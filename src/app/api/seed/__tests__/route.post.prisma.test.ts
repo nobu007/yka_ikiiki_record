@@ -38,7 +38,7 @@ jest.mock('@/infrastructure/services/dataService', () => ({
     generateStats: jest.fn(),
   },
   DataGenerationConfig: {},
-  GeneratedStats: {},
+  StatsData: {},
 }));
 
 function createMockRequest(body: object): NextRequest {

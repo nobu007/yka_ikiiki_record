@@ -1,8 +1,8 @@
-import { 
-  generateBaseEmotion, 
-  calculateSeasonalEffect, 
-  calculateEventEffect, 
-  clampEmotion, 
+import {
+  generateBaseEmotion,
+  calculateSeasonalEffect,
+  calculateEventEffect,
+  clampEmotion,
   getRandomHour,
   average,
   calculateMonthlyStats,
@@ -12,6 +12,7 @@ import {
   calculateTimeOfDayStats
 } from '@/utils/statsCalculator';
 import { APP_CONFIG } from '@/lib/config';
+import { StatsData } from '@/schemas/api';
 
 export interface DataGenerationConfig {
   periodDays: number;
@@ -29,40 +30,11 @@ export interface DataGenerationConfig {
   }>;
 }
 
-export interface EmotionRecord {
+interface EmotionRecord {
   date: Date;
   student: number;
   emotion: number;
   hour: number;
-}
-
-export interface GeneratedStats {
-  overview: {
-    count: number;
-    avgEmotion: number;
-  };
-  monthlyStats: Array<{
-    month: string;
-    avgEmotion: number;
-    count: number;
-  }>;
-  studentStats: Array<{
-    student: string;
-    recordCount: number;
-    avgEmotion: number;
-    trendline: number[];
-  }>;
-  dayOfWeekStats: Array<{
-    day: string;
-    avgEmotion: number;
-    count: number;
-  }>;
-  emotionDistribution: number[];
-  timeOfDayStats: {
-    morning: number;
-    afternoon: number;
-    evening: number;
-  };
 }
 
 class DataService {
@@ -113,7 +85,7 @@ class DataService {
     return records;
   }
 
-  generateStats(config: DataGenerationConfig): GeneratedStats {
+  generateStats(config: DataGenerationConfig): StatsData {
     const allEmotions = this.generateEmotionRecords(config);
     const emotions = allEmotions.map(e => e.emotion);
     const avgEmotion = average(emotions);
@@ -132,13 +104,14 @@ class DataService {
   }
 
   createDefaultConfig(): DataGenerationConfig {
-    return {
+    const config: DataGenerationConfig = {
       periodDays: APP_CONFIG.generation.defaultPeriodDays,
       studentCount: APP_CONFIG.generation.defaultStudentCount,
       distributionPattern: APP_CONFIG.generation.defaultPattern,
       seasonalEffects: true,
       eventEffects: []
     };
+    return config;
   }
 }
 

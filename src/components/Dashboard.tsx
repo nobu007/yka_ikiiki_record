@@ -3,8 +3,7 @@ import { APP_CONFIG, MESSAGES } from '@/lib/config';
 import { Button, LoadingSpinner, CheckIcon, PlusIcon, Notification } from './ui';
 import { UsageInstructions } from './common/UsageInstructions';
 import { DataVisualization } from './dashboard/DataVisualization';
-import { GeneratedStats } from '@/infrastructure/services/dataService';
-import { StatsResponseSchema } from '@/schemas/api';
+import { StatsResponseSchema, StatsData } from '@/schemas/api';
 import { validateDataSafe } from '@/lib/api/validation';
 import { normalizeError, logError } from '@/lib/error-handler';
 
@@ -25,7 +24,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
   notification,
   onNotificationClose
 }) => {
-  const [stats, setStats] = useState<GeneratedStats | null>(null);
+  const [stats, setStats] = useState<StatsData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const helpText = useMemo(() =>

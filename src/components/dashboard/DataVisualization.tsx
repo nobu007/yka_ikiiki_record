@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { 
+import {
   MonthlyEmotionChart,
   DayOfWeekChart,
   EmotionDistributionChart,
@@ -7,10 +7,10 @@ import {
   StudentEmotionChart,
   EmotionTrendChart
 } from '@/components/charts';
-import { GeneratedStats } from '@/infrastructure/services/dataService';
+import { StatsData } from '@/schemas/api';
 
 interface DataVisualizationProps {
-  data: GeneratedStats;
+  data: StatsData;
 }
 
 export const DataVisualization = React.memo<DataVisualizationProps>(({ data }) => {

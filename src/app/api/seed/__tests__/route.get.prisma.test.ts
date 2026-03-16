@@ -37,7 +37,7 @@ jest.mock('@/infrastructure/services/dataService', () => ({
     generateStats: jest.fn(),
   },
   DataGenerationConfig: {},
-  GeneratedStats: {},
+  StatsData: {},
 }));
 
 describe('API seed route GET (Prisma provider)', () => {

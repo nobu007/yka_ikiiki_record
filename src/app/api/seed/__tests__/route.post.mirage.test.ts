@@ -29,7 +29,7 @@ jest.mock('@/infrastructure/services/dataService', () => ({
     }),
   },
   DataGenerationConfig: {},
-  GeneratedStats: {},
+  StatsData: {},
 }));
 
 const mockIsPrismaProvider = false;

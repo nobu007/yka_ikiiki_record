@@ -11,7 +11,7 @@ describe('DataService - Generate Stats', () => {
   };
 
   describe('generateStats - Basic Output', () => {
-    it('should return all required GeneratedStats fields', () => {
+    it('should return all required StatsData fields', () => {
       const stats = dataService.generateStats(minimalConfig);
 
       expect(stats).toHaveProperty('overview');

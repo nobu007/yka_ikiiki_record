@@ -87,6 +87,7 @@ export type DataGenerationConfig = z.infer<typeof DataGenerationConfigSchema>;
 export type SeedRequest = z.infer<typeof SeedRequestSchema>;
 export type SeedResponse = z.infer<typeof SeedResponseSchema>;
 export type StatsResponse = z.infer<typeof StatsResponseSchema>;
+export type StatsData = z.infer<typeof StatsDataSchema>;
 
 export type ApiResponse<T = unknown> = {
   success: boolean;

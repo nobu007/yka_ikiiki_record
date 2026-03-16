@@ -1,8 +1,3 @@
-import { createStatsRepository, createStatsService, isPrismaProvider } from '@/infrastructure/factories/repositoryFactory';
-import { MockStatsRepository } from '@/infrastructure/storage/MockStatsRepository';
-import { PrismaStatsRepository } from '@/infrastructure/repositories/PrismaStatsRepository';
-import { StatsService } from '@/domain/services/StatsService';
-
 describe('repositoryFactory', () => {
   const originalProvider = process.env.DATABASE_PROVIDER;
   const originalDatabaseUrl = process.env.DATABASE_URL;
@@ -29,7 +24,6 @@ describe('repositoryFactory', () => {
       process.env.DATABASE_PROVIDER = 'mirage';
 
       const { createStatsRepository } = require('@/infrastructure/factories/repositoryFactory');
-      const { MockStatsRepository } = require('@/infrastructure/storage/MockStatsRepository');
       const repository = createStatsRepository();
 
       expect(repository.constructor.name).toBe('MockStatsRepository');
@@ -39,7 +33,6 @@ describe('repositoryFactory', () => {
       delete process.env.DATABASE_PROVIDER;
 
       const { createStatsRepository } = require('@/infrastructure/factories/repositoryFactory');
-      const { MockStatsRepository } = require('@/infrastructure/storage/MockStatsRepository');
       const repository = createStatsRepository();
 
       expect(repository.constructor.name).toBe('MockStatsRepository');
@@ -50,7 +43,6 @@ describe('repositoryFactory', () => {
       process.env.DATABASE_URL = 'postgresql://localhost:5432/test';
 
       const { createStatsRepository } = require('@/infrastructure/factories/repositoryFactory');
-      const { PrismaStatsRepository } = require('@/infrastructure/repositories/PrismaStatsRepository');
       const repository = createStatsRepository();
 
       expect(repository.constructor.name).toBe('PrismaStatsRepository');
@@ -79,7 +71,6 @@ describe('repositoryFactory', () => {
       process.env.DATABASE_PROVIDER = 'mirage';
 
       const { createStatsService } = require('@/infrastructure/factories/repositoryFactory');
-      const { StatsService } = require('@/domain/services/StatsService');
       const service = createStatsService();
 
       expect(service.constructor.name).toBe('StatsService');
@@ -90,7 +81,6 @@ describe('repositoryFactory', () => {
       process.env.DATABASE_URL = 'postgresql://localhost:5432/test';
 
       const { createStatsService } = require('@/infrastructure/factories/repositoryFactory');
-      const { StatsService } = require('@/domain/services/StatsService');
       const service = createStatsService();
 
       expect(service.constructor.name).toBe('StatsService');

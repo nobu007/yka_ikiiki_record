@@ -1,14 +1,27 @@
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
-
 describe('env configuration', () => {
   const originalEnv = { ...process.env };
 
+  const setEnv = (key: string, value: string | undefined) => {
+    if (value === undefined) {
+      delete process.env[key];
+    } else {
+      process.env[key] = value;
+    }
+  };
+
   beforeEach(() => {
-    process.env = { ...originalEnv };
+    jest.resetModules();
   });
 
   afterEach(() => {
-    process.env = originalEnv;
+    for (const key of Object.keys(process.env)) {
+      if (!(key in originalEnv)) {
+        delete process.env[key];
+      }
+    }
+    for (const [key, value] of Object.entries(originalEnv)) {
+      process.env[key] = value;
+    }
   });
 
   describe('validateEnv', () => {
@@ -17,8 +30,8 @@ describe('env configuration', () => {
     });
 
     it('should return default values when env vars are not set', () => {
-      delete process.env.NODE_ENV;
-      delete process.env.DATABASE_PROVIDER;
+      setEnv('NODE_ENV', undefined);
+      setEnv('DATABASE_PROVIDER', undefined);
 
       const { getEnv } = require('./env');
       const env = getEnv();
@@ -28,9 +41,9 @@ describe('env configuration', () => {
     });
 
     it('should return custom values when env vars are set', () => {
-      process.env.NODE_ENV = 'production';
-      process.env.DATABASE_PROVIDER = 'prisma';
-      process.env.DATABASE_URL = 'postgresql://localhost:5432/test';
+      setEnv('NODE_ENV', 'production');
+      setEnv('DATABASE_PROVIDER', 'prisma');
+      setEnv('DATABASE_URL', 'postgresql://localhost:5432/test');
 
       const { getEnv } = require('./env');
       const env = getEnv();
@@ -41,8 +54,8 @@ describe('env configuration', () => {
     });
 
     it('should throw error when DATABASE_PROVIDER=prisma but DATABASE_URL is missing', () => {
-      process.env.DATABASE_PROVIDER = 'prisma';
-      delete process.env.DATABASE_URL;
+      setEnv('DATABASE_PROVIDER', 'prisma');
+      setEnv('DATABASE_URL', undefined);
 
       const { getEnv } = require('./env');
 
@@ -52,7 +65,7 @@ describe('env configuration', () => {
     });
 
     it('should throw error for invalid NODE_ENV', () => {
-      process.env.NODE_ENV = 'invalid' as never;
+      setEnv('NODE_ENV', 'invalid');
 
       const { getEnv } = require('./env');
 
@@ -60,7 +73,7 @@ describe('env configuration', () => {
     });
 
     it('should throw error for invalid DATABASE_PROVIDER', () => {
-      process.env.DATABASE_PROVIDER = 'invalid' as never;
+      setEnv('DATABASE_PROVIDER', 'invalid');
 
       const { getEnv } = require('./env');
 
@@ -68,7 +81,7 @@ describe('env configuration', () => {
     });
 
     it('should throw error for invalid DATABASE_URL format', () => {
-      process.env.DATABASE_URL = 'not-a-valid-url';
+      setEnv('DATABASE_URL', 'not-a-valid-url');
 
       const { getEnv } = require('./env');
 
@@ -76,8 +89,8 @@ describe('env configuration', () => {
     });
 
     it('should cache env validation result', () => {
-      process.env.DATABASE_PROVIDER = 'prisma';
-      process.env.DATABASE_URL = 'postgresql://localhost:5432/test';
+      setEnv('DATABASE_PROVIDER', 'prisma');
+      setEnv('DATABASE_URL', 'postgresql://localhost:5432/test');
 
       const { getEnv } = require('./env');
       const env1 = getEnv();
@@ -93,8 +106,8 @@ describe('env configuration', () => {
     });
 
     it('should return true when DATABASE_PROVIDER is prisma', () => {
-      process.env.DATABASE_PROVIDER = 'prisma';
-      process.env.DATABASE_URL = 'postgresql://localhost:5432/test';
+      setEnv('DATABASE_PROVIDER', 'prisma');
+      setEnv('DATABASE_URL', 'postgresql://localhost:5432/test');
 
       const { isPrismaProvider } = require('./env');
 
@@ -102,7 +115,7 @@ describe('env configuration', () => {
     });
 
     it('should return false when DATABASE_PROVIDER is mirage', () => {
-      process.env.DATABASE_PROVIDER = 'mirage';
+      setEnv('DATABASE_PROVIDER', 'mirage');
 
       const { isPrismaProvider } = require('./env');
 
@@ -116,7 +129,7 @@ describe('env configuration', () => {
     });
 
     it('should return true in development', () => {
-      process.env.NODE_ENV = 'development';
+      setEnv('NODE_ENV', 'development');
 
       const { isDevelopment } = require('./env');
 
@@ -124,7 +137,7 @@ describe('env configuration', () => {
     });
 
     it('should return false in production', () => {
-      process.env.NODE_ENV = 'production';
+      setEnv('NODE_ENV', 'production');
 
       const { isDevelopment } = require('./env');
 
@@ -138,7 +151,7 @@ describe('env configuration', () => {
     });
 
     it('should return true in production', () => {
-      process.env.NODE_ENV = 'production';
+      setEnv('NODE_ENV', 'production');
 
       const { isProduction } = require('./env');
 
@@ -146,7 +159,7 @@ describe('env configuration', () => {
     });
 
     it('should return false in development', () => {
-      process.env.NODE_ENV = 'development';
+      setEnv('NODE_ENV', 'development');
 
       const { isProduction } = require('./env');
 
@@ -160,7 +173,7 @@ describe('env configuration', () => {
     });
 
     it('should return true in test environment', () => {
-      process.env.NODE_ENV = 'test';
+      setEnv('NODE_ENV', 'test');
 
       const { isTest } = require('./env');
 
@@ -168,7 +181,7 @@ describe('env configuration', () => {
     });
 
     it('should return false in development', () => {
-      process.env.NODE_ENV = 'development';
+      setEnv('NODE_ENV', 'development');
 
       const { isTest } = require('./env');
 

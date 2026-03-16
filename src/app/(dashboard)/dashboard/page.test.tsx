@@ -38,7 +38,7 @@ describe('DashboardPage', () => {
       isGenerating: false,
       notification: { show: false, type: 'info', message: '' },
       handleGenerate: jest.fn(),
-      isLoadingMessage: '',
+      isLoadingMessage: null,
     });
   });
 
@@ -52,7 +52,7 @@ describe('DashboardPage', () => {
       isGenerating: true,
       notification: { show: false, type: 'info', message: '' },
       handleGenerate: jest.fn(),
-      isLoadingMessage: 'Generating data...',
+      isLoadingMessage: 'データを生成中...',
     });
 
     render(<DashboardPage />);
@@ -70,7 +70,7 @@ describe('DashboardPage', () => {
       isGenerating: false,
       notification,
       handleGenerate: jest.fn(),
-      isLoadingMessage: '',
+      isLoadingMessage: null,
     });
 
     render(<DashboardPage />);
@@ -84,7 +84,7 @@ describe('DashboardPage', () => {
       isGenerating: false,
       notification: { show: false, type: 'info', message: '' },
       handleGenerate,
-      isLoadingMessage: '',
+      isLoadingMessage: null,
     });
 
     render(<DashboardPage />);
@@ -96,7 +96,7 @@ describe('DashboardPage', () => {
       isGenerating: true,
       notification: { show: false, type: 'info', message: '' },
       handleGenerate: jest.fn(),
-      isLoadingMessage: 'Generating test data...',
+      isLoadingMessage: 'データを生成中...',
     });
 
     render(<DashboardPage />);
@@ -108,7 +108,7 @@ describe('DashboardPage', () => {
       isGenerating: true,
       notification: { show: false, type: 'info', message: '' },
       handleGenerate: jest.fn(),
-      isLoadingMessage: '',
+      isLoadingMessage: null,
     });
 
     render(<DashboardPage />);
@@ -126,7 +126,7 @@ describe('DashboardPage', () => {
       isGenerating: false,
       notification,
       handleGenerate: jest.fn(),
-      isLoadingMessage: '',
+      isLoadingMessage: null,
     });
 
     render(<DashboardPage />);
@@ -144,7 +144,7 @@ describe('DashboardPage', () => {
       isGenerating: false,
       notification,
       handleGenerate: jest.fn(),
-      isLoadingMessage: '',
+      isLoadingMessage: null,
     });
 
     render(<DashboardPage />);
@@ -161,7 +161,7 @@ describe('DashboardPage', () => {
       isGenerating: false,
       notification: { show: false, type: 'info', message: '' },
       handleGenerate: jest.fn(),
-      isLoadingMessage: '',
+      isLoadingMessage: null,
     });
 
     render(<DashboardPage />);
@@ -179,7 +179,7 @@ describe('DashboardPage', () => {
       isGenerating: true,
       notification: { show: false, type: 'info', message: '' },
       handleGenerate: jest.fn(),
-      isLoadingMessage: 'New message',
+      isLoadingMessage: 'データを生成中...',
     });
 
     rerender(<DashboardPage />);

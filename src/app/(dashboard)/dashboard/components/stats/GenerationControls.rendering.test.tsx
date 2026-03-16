@@ -49,7 +49,7 @@ describe('GenerationControls - Rendering', () => {
       renderGenerationControls();
 
       const normalButton = screen.getByText('正規分布');
-      expect(normalButton).toHaveClass('bg-blue-500', 'text-white');
+      expect(normalButton).toHaveClass('bg-blue-500 text-white');
 
       const bimodalButton = screen.getByText('二峰分布');
       expect(bimodalButton).toHaveClass('bg-gray-100');

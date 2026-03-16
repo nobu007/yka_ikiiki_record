@@ -67,7 +67,7 @@ describe('StatsDisplay - State Management', () => {
 
       const retryButton = screen.getByText('再試行');
       expect(retryButton).toBeInTheDocument();
-      expect(retryButton).toHaveClass('px-4', 'py-2', 'bg-primary', 'text-white', 'rounded');
+      expect(retryButton).toHaveClass('px-4 py-2 bg-primary text-white rounded');
     });
 
     it('should call onRetry when retry button clicked', async () => {

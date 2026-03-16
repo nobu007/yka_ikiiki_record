@@ -2,13 +2,14 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import GenerationControls from './GenerationControls';
-import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
+import { DataGenerationConfig, DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
 
 /**
  * Shared test utilities and mocks for GenerationControls tests
  */
 
 export const mockConfig: DataGenerationConfig = {
+  ...DEFAULT_CONFIG,
   studentCount: 30,
   periodDays: 90,
   distributionPattern: 'normal',

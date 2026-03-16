@@ -3,23 +3,10 @@ import { StatsService } from '@/domain/services/StatsService';
 import { MockStatsRepository } from '@/infrastructure/storage/MockStatsRepository';
 import { PrismaStatsRepository } from '@/infrastructure/repositories/PrismaStatsRepository';
 import { PrismaRecordRepository } from '@/infrastructure/repositories/PrismaRecordRepository';
-
-type DatabaseProvider = 'mirage' | 'prisma';
-
-function getProvider(): DatabaseProvider {
-  const provider = process.env.DATABASE_PROVIDER || 'mirage';
-
-  if (provider !== 'mirage' && provider !== 'prisma') {
-    throw new Error(`Invalid DATABASE_PROVIDER: ${provider}. Must be 'mirage' or 'prisma'`);
-  }
-
-  return provider as DatabaseProvider;
-}
+import { isPrismaProvider as checkIsPrismaProvider } from '@/lib/config/env';
 
 export function createStatsRepository(): StatsRepository {
-  const provider = getProvider();
-
-  if (provider === 'prisma') {
+  if (checkIsPrismaProvider()) {
     const recordRepository = new PrismaRecordRepository();
     return new PrismaStatsRepository(recordRepository);
   }
@@ -33,5 +20,5 @@ export function createStatsService(): StatsService {
 }
 
 export function isPrismaProvider(): boolean {
-  return getProvider() === 'prisma';
+  return checkIsPrismaProvider();
 }

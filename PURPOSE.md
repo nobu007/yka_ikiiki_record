@@ -10,12 +10,13 @@
 
 ## 品質基盤の現状
 
-- テスト: 971/971 passing (126 suites)
+- テスト: 971/971 passing (126 suites, 214 TypeScript files)
 - カバレッジ: 98.26% statements, 91.49% branches, 94.52% functions, 98.15% lines
 - TypeScript: strict mode 完全準拠
 - ESLint: zero warnings
 - アーキテクチャ: Clean Architecture + Repository Factoryパターン
 - INV-ARCH-001準拠: 全テストファイルが300行未満（最大162行）
+- 直近改善: テストファイル単一責務化完了（seed route: 329行→4ファイルへ分割）
 
 ## 目指す完成状態
 
@@ -58,18 +59,44 @@ bash scripts/verify-deployment.sh
 - [ ] PostgreSQLにデータが保存されている
 - [ ] ダッシュボードが表示される
 
-**現在の状態**: デプロイ自動化スクリプト完成済み。人間によるVercelログインとDATABASE_URL設定が必要。
+**現在の状態**:
+- ✅ デプロイ自動化スクリプト完成 (`scripts/deploy-production.sh`, `scripts/verify-deployment.sh`)
+- ✅ 本番ビルド検証完了
+- ✅ デプロイ実行コマンド追加 (`npm run deploy:production`)
+- ⏳ 人間による実行待ち:
+  1. `vercel login` - Vercel認証
+  2. `npm run deploy:production` - 本番デプロイ実行
+  3. Vercelダッシュボードで `DATABASE_URL` 環境変数設定
+  4. `vercel exec -- npm run db:migrate:deploy` - データベースマイグレーション
 
 ### P2: 本番環境での動作確認と検証
 
 **完了条件**: 本番環境で主要機能が動作し、E2Eテストがパスする
 
+**検証手順**:
+```bash
+# P1完了後に自動検証スクリプトを実行
+bash scripts/verify-deployment.sh
+
+# または手動検証
+curl -X POST https://<production-url>/api/seed
+curl https://<production-url>/api/stats
+# ブラウザで /dashboard にアクセス
+```
+
 **検証項目**:
-- [ ] ダッシュボード表示（統計データ、グラフ）
-- [ ] テストデータ生成 (`/api/seed`)
-- [ ] 統計API動作 (`/api/stats`)
-- [ ] PostgreSQLデータ永続化の確認
-- [ ] E2Eテストスイート実行
+- [ ] ランディングページ表示 (`/`)
+- [ ] ダッシュボード表示 (`/dashboard` - 統計データ、グラフ)
+- [ ] テストデータ生成 (`POST /api/seed` - 200/201 status)
+- [ ] 統計API動作 (`GET /api/stats` - データ返却)
+- [ ] PostgreSQLデータ永続化確認（再アクセス時にデータ保持）
+- [ ] E2Eテストスイート実行 (`BASE_URL=<prod-url> npm run test:e2e`)
+
+**完了の定義**:
+- [ ] 全エンドポイントが200系レスポンスを返す
+- [ ] ダッシュボードがデータを正しく表示
+- [ ] PostgreSQLにデータが保存されている
+- [ ] E2Eテストが全件パス
 
 **依存関係**: P1完了後に実行
 
@@ -81,9 +108,9 @@ bash scripts/verify-deployment.sh
 
 MVP完了条件:
 
-- [ ] P1: 本番デプロイ完了（実行待ち）
+- [ ] P1: 本番デプロイ完了（実行待ち - スクリプト完成済み）
 - [ ] P2: 本番動作確認完了（P1完了後に実施）
-- [ ] 品質メトリクス維持（テスト971件、カバレッジ98%以上）
+- [ ] 品質メトリクス維持（テスト971件、カバレッジ98%以上、全ファイル300行未満）
 
 ## 技術方針
 
@@ -125,6 +152,11 @@ export function createStatsService(): StatsService {
 
 ---
 
-**最終更新**: 2026-03-17
+**最終更新**: 2026-03-17 (直近10コミット反映完了)
 
-**現在の焦点**: P1「本番環境へのデプロイ完了」。Vercelへのログインと環境変数設定、デプロイ実行が必要。
+**現在の焦点**: P1「本番環境へのデプロイ完了」。デプロイ自動化スクリプト完成済み。人間による `vercel login` と `npm run deploy:production` 実行、DATABASE_URL設定が必要。
+
+**直近の品質改善**:
+- INV-ARCH-001完全準拠: テストファイル単一責務化（seed route: 329行→162/109/97/79行へ分割）
+- 未使用コード削除: 重複排除原則に従いgetRouteHandlers未使用関数を削除
+- 本番デプロイ準備完了: 自動化スクリプト・検証スクリプト・ドキュメント完備

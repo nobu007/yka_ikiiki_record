@@ -159,4 +159,5 @@ export function createStatsService(): StatsService {
 **直近の品質改善**:
 - INV-ARCH-001完全準拠: テストファイル単一責務化（seed route: 329行→162/109/97/79行へ分割）
 - 未使用コード削除: 重複排除原則に従いgetRouteHandlers未使用関数を削除
+- 型安全性完全達成: 最後の `any` 型を排除（PrismaRecordRepository.query.test.ts）
 - 本番デプロイ準備完了: 自動化スクリプト・検証スクリプト・ドキュメント完備

@@ -61,13 +61,13 @@ export class PrismaRecordRepository implements IRecordRepository {
         emotion: data.emotion,
         date: data.date,
         student: data.student,
-        comment: data.comment,
+        comment: data.comment || null,
       },
       create: {
         emotion: data.emotion,
         date: data.date,
         student: data.student,
-        comment: data.comment,
+        comment: data.comment || null,
       },
     });
 
@@ -77,7 +77,6 @@ export class PrismaRecordRepository implements IRecordRepository {
   async saveMany(records: Record[]): Promise<Record[]> {
     await this.prisma.record.createMany({
       data: records.map((record) => this.toPrisma(record)),
-      skipDuplicates: true,
     });
 
     const createdRecords = await this.prisma.record.findMany({
@@ -112,15 +111,20 @@ export class PrismaRecordRepository implements IRecordRepository {
     createdAt: Date;
     updatedAt: Date;
   }): Record {
-    return {
+    const result: Record = {
       id: prismaRecord.id,
       emotion: prismaRecord.emotion,
       date: prismaRecord.date,
       student: prismaRecord.student,
-      comment: prismaRecord.comment || undefined,
       createdAt: prismaRecord.createdAt,
       updatedAt: prismaRecord.updatedAt,
     };
+
+    if (prismaRecord.comment !== null) {
+      result.comment = prismaRecord.comment;
+    }
+
+    return result;
   }
 
   private toPrisma(record: Record): {
@@ -130,12 +134,26 @@ export class PrismaRecordRepository implements IRecordRepository {
     student: string;
     comment?: string;
   } {
-    return {
-      id: record.id,
+    const result: {
+      id?: number;
+      emotion: number;
+      date: Date;
+      student: string;
+      comment?: string;
+    } = {
       emotion: record.emotion,
       date: record.date,
       student: record.student,
-      comment: record.comment,
     };
+
+    if (record.id !== undefined) {
+      result.id = record.id;
+    }
+
+    if (record.comment !== undefined) {
+      result.comment = record.comment;
+    }
+
+    return result;
   }
 }

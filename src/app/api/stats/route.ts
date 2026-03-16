@@ -4,9 +4,22 @@ import { createSuccessResponse } from '@/lib/api/response';
 import { withErrorHandler } from '@/lib/api/error-handler';
 import { StatsService } from '@/domain/services/StatsService';
 import { MockStatsRepository } from '@/infrastructure/storage/MockStatsRepository';
+import { PrismaStatsRepository } from '@/infrastructure/repositories/PrismaStatsRepository';
+import { PrismaRecordRepository } from '@/infrastructure/repositories/PrismaRecordRepository';
 import { createError } from '@/lib/api/error-handler';
 
-const repository = new MockStatsRepository();
+function getRepository() {
+  const provider = process.env.DATABASE_PROVIDER || 'mirage';
+
+  if (provider === 'prisma') {
+    const recordRepository = new PrismaRecordRepository();
+    return new PrismaStatsRepository(recordRepository);
+  }
+
+  return new MockStatsRepository();
+}
+
+const repository = getRepository();
 const statsService = new StatsService(repository);
 
 export async function GET(_req: NextRequest): Promise<NextResponse> {

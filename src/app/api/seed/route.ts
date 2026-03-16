@@ -3,6 +3,9 @@ import { z } from 'zod';
 import { normalizeError, logError } from '@/lib/error-handler';
 import { dataService, DataGenerationConfig, GeneratedStats } from '@/infrastructure/services/dataService';
 import { APP_CONFIG } from '@/lib/config';
+import { StatsService } from '@/domain/services/StatsService';
+import { PrismaStatsRepository } from '@/infrastructure/repositories/PrismaStatsRepository';
+import { PrismaRecordRepository } from '@/infrastructure/repositories/PrismaRecordRepository';
 
 const SeedRequestSchema = z.object({
   config: z.object({
@@ -39,10 +42,22 @@ const cleanupOldData = () => {
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
+    const provider = process.env.DATABASE_PROVIDER || 'mirage';
+
+    if (provider === 'prisma') {
+      const recordRepository = new PrismaRecordRepository();
+      const statsRepository = new PrismaStatsRepository(recordRepository);
+      const statsService = new StatsService(statsRepository);
+      await statsService.generateSeedData();
+      return NextResponse.json({
+        success: true,
+        message: 'テストデータの生成が完了しました'
+      });
+    }
+
     const body = await req.json();
     const { config } = SeedRequestSchema.parse(body);
-    
-    // Transform the parsed config to match DataGenerationConfig requirements
+
     const transformedConfig: DataGenerationConfig = {
       studentCount: config.studentCount,
       periodDays: config.periodDays,
@@ -54,7 +69,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         baselineEmotion: 3.0
       }
     };
-    
+
     const stats = dataService.generateStats(transformedConfig);
     storedData = {
       data: stats,
@@ -69,11 +84,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch (error) {
     const appError = normalizeError(error);
     logError(appError, 'API:seed:POST');
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
-        error: appError.message 
+      {
+        success: false,
+        error: appError.message
       },
       { status: appError.statusCode || 500 }
     );
@@ -82,13 +97,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 export async function GET(): Promise<NextResponse> {
   try {
+    const provider = process.env.DATABASE_PROVIDER || 'mirage';
+
+    if (provider === 'prisma') {
+      const recordRepository = new PrismaRecordRepository();
+      const statsRepository = new PrismaStatsRepository(recordRepository);
+      const statsService = new StatsService(statsRepository);
+      const stats = await statsService.getStats();
+
+      return NextResponse.json({
+        success: true,
+        data: stats
+      });
+    }
+
     cleanupOldData();
-    
+
     if (!storedData) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'データがありません。まずPOSTリクエストでデータを生成してください。' 
+        {
+          success: false,
+          error: 'データがありません。まずPOSTリクエストでデータを生成してください。'
         },
         { status: 404 }
       );
@@ -106,11 +135,11 @@ export async function GET(): Promise<NextResponse> {
   } catch (error) {
     const appError = normalizeError(error);
     logError(appError, 'API:seed:GET');
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
-        error: appError.message 
+      {
+        success: false,
+        error: appError.message
       },
       { status: appError.statusCode || 500 }
     );

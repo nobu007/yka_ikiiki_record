@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 const COMMENTS = [
   '今日は充実した一日でした',
@@ -10,9 +8,7 @@ const COMMENTS = [
   'チームでの作業が上手くいきました',
 ];
 
-async function main() {
-  console.log('Start seeding...');
-
+export async function generateSeedData() {
   await prisma.record.deleteMany({});
 
   const records = Array.from({ length: 750 }, () => {
@@ -46,15 +42,5 @@ async function main() {
     data: records,
   });
 
-  console.log(`Seeding finished with ${records.length} records.`);
+  return records.length;
 }
-
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });

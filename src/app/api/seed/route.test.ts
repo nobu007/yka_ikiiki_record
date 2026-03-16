@@ -2,6 +2,16 @@ import { NextRequest } from 'next/server';
 import { POST, GET } from './route';
 import { dataService } from '@/infrastructure/services/dataService';
 
+const originalEnv = process.env.DATABASE_PROVIDER;
+
+beforeAll(() => {
+  process.env.DATABASE_PROVIDER = 'mirage';
+});
+
+afterAll(() => {
+  process.env.DATABASE_PROVIDER = originalEnv;
+});
+
 // Mock dataService
 jest.mock('@/infrastructure/services/dataService', () => ({
   dataService: {
@@ -26,6 +36,29 @@ jest.mock('@/lib/error-handler', () => {
     logError: jest.fn(),
   };
 });
+
+// Mock Prisma repositories
+jest.mock('@/infrastructure/repositories/PrismaRecordRepository', () => ({
+  PrismaRecordRepository: jest.fn(),
+}));
+
+jest.mock('@/infrastructure/repositories/PrismaStatsRepository', () => ({
+  PrismaStatsRepository: jest.fn(),
+}));
+
+jest.mock('@/domain/services/StatsService', () => ({
+  StatsService: jest.fn().mockImplementation(() => ({
+    generateSeedData: jest.fn().mockResolvedValue(undefined),
+    getStats: jest.fn().mockResolvedValue({
+      overview: { count: 100, avgEmotion: 3.5 },
+      monthlyStats: [],
+      studentStats: [],
+      dayOfWeekStats: [],
+      emotionDistribution: [10, 20, 40, 20, 10],
+      timeOfDayStats: { morning: 3.2, afternoon: 3.5, evening: 3.0 },
+    }),
+  })),
+}));
 
 function createMockRequest(body: object): NextRequest {
   return {

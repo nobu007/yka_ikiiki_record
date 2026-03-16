@@ -18,7 +18,7 @@
     "test:e2e:chromium": "playwright test --project=chromium",
     "test:e2e:headed": "playwright test --headed",
     "db:seed": "tsx prisma/seed.ts",
-    "db:reset": "prisma migrate reset && npm run db:seed",
+    "db:reset": "prisma migrate reset && pnpm run db:seed",
     "postinstall": "prisma generate"
   },
   "prisma": {

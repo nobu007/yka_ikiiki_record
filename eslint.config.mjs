@@ -18,7 +18,8 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "dist/**",
-      "node_modules/**"
+      "node_modules/**",
+      "coverage/**"
     ],
   },
   {

@@ -23,9 +23,13 @@ describe('EventManager - adding events', () => {
     const dateInputs = screen.getAllByDisplayValue('');
     const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
 
+    const startDateInput = dateInputs[1];
+    const endDateInput = dateInputs[2];
+    if (!startDateInput || !endDateInput) throw new Error('Date inputs not found');
+
     await user.type(nameInput, '文化祭');
-    await user.type(dateInputs[1], '2026-03-01');
-    await user.type(dateInputs[2], '2026-03-05');
+    await user.type(startDateInput, '2026-03-01');
+    await user.type(endDateInput, '2026-03-05');
     await user.type(impactInput, '0.7');
     await user.click(screen.getByText('イベントを追加'));
 
@@ -51,8 +55,12 @@ describe('EventManager - adding events', () => {
     const dateInputs = screen.getAllByDisplayValue('');
     const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
 
-    await user.type(dateInputs[1], '2026-03-01');
-    await user.type(dateInputs[2], '2026-03-05');
+    const startDateInput = dateInputs[1];
+    const endDateInput = dateInputs[2];
+    if (!startDateInput || !endDateInput) throw new Error('Date inputs not found');
+
+    await user.type(startDateInput, '2026-03-01');
+    await user.type(endDateInput, '2026-03-05');
     await user.type(impactInput, '0.7');
     await user.click(screen.getByText('イベントを追加'));
 
@@ -73,8 +81,11 @@ describe('EventManager - adding events', () => {
     const dateInputs = screen.getAllByDisplayValue('');
     const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
 
+    const endDateInput = dateInputs[2];
+    if (!endDateInput) throw new Error('End date input not found');
+
     await user.type(nameInput, '文化祭');
-    await user.type(dateInputs[2], '2026-03-05');
+    await user.type(endDateInput, '2026-03-05');
     await user.type(impactInput, '0.7');
     await user.click(screen.getByText('イベントを追加'));
 
@@ -95,8 +106,11 @@ describe('EventManager - adding events', () => {
     const dateInputs = screen.getAllByDisplayValue('');
     const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
 
+    const startDateInput = dateInputs[1];
+    if (!startDateInput) throw new Error('Start date input not found');
+
     await user.type(nameInput, '文化祭');
-    await user.type(dateInputs[1], '2026-03-01');
+    await user.type(startDateInput, '2026-03-01');
     await user.type(impactInput, '0.7');
     await user.click(screen.getByText('イベントを追加'));
 
@@ -116,9 +130,13 @@ describe('EventManager - adding events', () => {
     const nameInput = screen.getByPlaceholderText('イベント名');
     const dateInputs = screen.getAllByDisplayValue('');
 
+    const startDateInput = dateInputs[1];
+    const endDateInput = dateInputs[2];
+    if (!startDateInput || !endDateInput) throw new Error('Date inputs not found');
+
     await user.type(nameInput, '文化祭');
-    await user.type(dateInputs[1], '2026-03-01');
-    await user.type(dateInputs[2], '2026-03-05');
+    await user.type(startDateInput, '2026-03-01');
+    await user.type(endDateInput, '2026-03-05');
     await user.click(screen.getByText('イベントを追加'));
 
     expect(mockOnAddEvent).not.toHaveBeenCalled();
@@ -138,9 +156,13 @@ describe('EventManager - adding events', () => {
     const dateInputs = screen.getAllByDisplayValue('');
     const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
 
+    const startDateInput = dateInputs[1];
+    const endDateInput = dateInputs[2];
+    if (!startDateInput || !endDateInput) throw new Error('Date inputs not found');
+
     await user.type(nameInput, '文化祭');
-    await user.type(dateInputs[1], '2026-03-01');
-    await user.type(dateInputs[2], '2026-03-05');
+    await user.type(startDateInput, '2026-03-01');
+    await user.type(endDateInput, '2026-03-05');
     await user.type(impactInput, '0.7');
     await user.click(screen.getByText('イベントを追加'));
 
@@ -162,9 +184,13 @@ describe('EventManager - adding events', () => {
     const dateInputs = screen.getAllByDisplayValue('');
     const impactInput = screen.getByPlaceholderText('影響度 (-1.0 〜 1.0)');
 
+    const startDateInput = dateInputs[1];
+    const endDateInput = dateInputs[2];
+    if (!startDateInput || !endDateInput) throw new Error('Date inputs not found');
+
     await user.type(nameInput, 'テスト期間');
-    await user.type(dateInputs[1], '2026-03-01');
-    await user.type(dateInputs[2], '2026-03-10');
+    await user.type(startDateInput, '2026-03-01');
+    await user.type(endDateInput, '2026-03-10');
     await user.type(impactInput, '-0.8');
     await user.click(screen.getByText('イベントを追加'));
 

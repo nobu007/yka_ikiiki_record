@@ -20,7 +20,9 @@ describe('EventManager - removing events', () => {
     );
 
     const deleteButtons = screen.getAllByText('削除');
-    await user.click(deleteButtons[0]);
+    const firstButton = deleteButtons[0];
+    if (!firstButton) throw new Error('Delete button not found');
+    await user.click(firstButton);
 
     expect(mockOnRemoveEvent).toHaveBeenCalledTimes(1);
     expect(mockOnRemoveEvent).toHaveBeenCalledWith(0);
@@ -37,7 +39,9 @@ describe('EventManager - removing events', () => {
     );
 
     const deleteButtons = screen.getAllByText('削除');
-    await user.click(deleteButtons[1]);
+    const secondButton = deleteButtons[1];
+    if (!secondButton) throw new Error('Delete button not found');
+    await user.click(secondButton);
 
     expect(mockOnRemoveEvent).toHaveBeenCalledTimes(1);
     expect(mockOnRemoveEvent).toHaveBeenCalledWith(1);

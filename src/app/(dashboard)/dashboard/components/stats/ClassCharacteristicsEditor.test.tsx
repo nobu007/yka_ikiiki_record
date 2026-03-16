@@ -79,7 +79,9 @@ describe('ClassCharacteristicsEditor', () => {
         />
       );
 
-      const input = container.querySelectorAll('input[type="range"]')[0];
+      const inputs = container.querySelectorAll('input[type="range"]');
+      const input = inputs[0];
+      if (!input) throw new Error('Input not found');
       fireEvent.change(input, { target: { value: '3.2' } });
       fireEvent.input(input, { target: { value: '3.2' } });
 
@@ -94,7 +96,9 @@ describe('ClassCharacteristicsEditor', () => {
         />
       );
 
-      const input = container.querySelectorAll('input[type="range"]')[1];
+      const inputs = container.querySelectorAll('input[type="range"]');
+      const input = inputs[1];
+      if (!input) throw new Error('Input not found');
       fireEvent.change(input, { target: { value: '0.8' } });
       fireEvent.input(input, { target: { value: '0.8' } });
 
@@ -109,7 +113,9 @@ describe('ClassCharacteristicsEditor', () => {
         />
       );
 
-      const input = container.querySelectorAll('input[type="range"]')[2];
+      const inputs = container.querySelectorAll('input[type="range"]');
+      const input = inputs[2];
+      if (!input) throw new Error('Input not found');
       fireEvent.change(input, { target: { value: '0.9' } });
       fireEvent.input(input, { target: { value: '0.9' } });
 
@@ -124,7 +130,9 @@ describe('ClassCharacteristicsEditor', () => {
         />
       );
 
-      const input = container.querySelectorAll('input[type="range"]')[0];
+      const inputs = container.querySelectorAll('input[type="range"]');
+      const input = inputs[0];
+      if (!input) throw new Error('Input not found');
       fireEvent.change(input, { target: { value: '2.5' } });
       fireEvent.input(input, { target: { value: '2.5' } });
 
@@ -139,7 +147,9 @@ describe('ClassCharacteristicsEditor', () => {
         />
       );
 
-      const input = container.querySelectorAll('input[type="range"]')[0];
+      const inputs = container.querySelectorAll('input[type="range"]');
+      const input = inputs[0];
+      if (!input) throw new Error('Input not found');
       fireEvent.change(input, { target: { value: '3.5' } });
       fireEvent.input(input, { target: { value: '3.5' } });
 

@@ -2,7 +2,6 @@ import { fireEvent } from '@testing-library/react';
 import { screen } from '@testing-library/react';
 import GenerationControls from './GenerationControls';
 import {
-  mockConfig,
   mockOnUpdateStudentCount,
   mockOnUpdatePeriodDays,
   renderGenerationControls,
@@ -20,6 +19,7 @@ describe('GenerationControls - Edge Cases', () => {
 
       const inputs = screen.getAllByRole('slider');
       const studentCountInput = inputs[0];
+      if (!studentCountInput) throw new Error('Student count input not found');
       fireEvent.input(studentCountInput, { target: { value: '10' } });
 
       expect(mockOnUpdateStudentCount).toHaveBeenCalledWith(10);
@@ -30,6 +30,7 @@ describe('GenerationControls - Edge Cases', () => {
 
       const inputs = screen.getAllByRole('slider');
       const studentCountInput = inputs[0];
+      if (!studentCountInput) throw new Error('Student count input not found');
       fireEvent.input(studentCountInput, { target: { value: '500' } });
 
       expect(mockOnUpdateStudentCount).toHaveBeenCalledWith(500);
@@ -42,6 +43,7 @@ describe('GenerationControls - Edge Cases', () => {
 
       const inputs = screen.getAllByRole('slider');
       const periodDaysInput = inputs[1];
+      if (!periodDaysInput) throw new Error('Period days input not found');
       fireEvent.input(periodDaysInput, { target: { value: '7' } });
 
       expect(mockOnUpdatePeriodDays).toHaveBeenCalledWith(7);
@@ -52,6 +54,7 @@ describe('GenerationControls - Edge Cases', () => {
 
       const inputs = screen.getAllByRole('slider');
       const periodDaysInput = inputs[1];
+      if (!periodDaysInput) throw new Error('Period days input not found');
       fireEvent.input(periodDaysInput, { target: { value: '365' } });
 
       expect(mockOnUpdatePeriodDays).toHaveBeenCalledWith(365);

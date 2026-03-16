@@ -1,8 +1,6 @@
 import { fireEvent } from '@testing-library/react';
 import { screen } from '@testing-library/react';
-import GenerationControls from './GenerationControls';
 import {
-  mockConfig,
   mockOnUpdateStudentCount,
   mockOnUpdatePeriodDays,
   mockOnUpdateDistributionPattern,
@@ -23,6 +21,7 @@ describe('GenerationControls - User Interactions', () => {
 
       const inputs = screen.getAllByRole('slider');
       const studentCountInput = inputs[0];
+      if (!studentCountInput) throw new Error('Student count input not found');
       fireEvent.input(studentCountInput, { target: { value: '50' } });
 
       expect(mockOnUpdateStudentCount).toHaveBeenCalledTimes(1);
@@ -36,6 +35,7 @@ describe('GenerationControls - User Interactions', () => {
 
       const inputs = screen.getAllByRole('slider');
       const periodDaysInput = inputs[1];
+      if (!periodDaysInput) throw new Error('Period days input not found');
       fireEvent.input(periodDaysInput, { target: { value: '120' } });
 
       expect(mockOnUpdatePeriodDays).toHaveBeenCalledTimes(1);

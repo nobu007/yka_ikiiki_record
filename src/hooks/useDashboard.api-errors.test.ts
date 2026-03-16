@@ -1,4 +1,4 @@
-import { renderDashboardHook, executeHandleGenerate, expectErrorState, clearAllMocks, mockSuccessResponse, mockErrorResponse, createMockResponse, setupMockFetch } from './useDashboard.test.helpers';
+import { renderDashboardHook, executeHandleGenerate, expectErrorState, clearAllMocks, mockErrorResponse, createMockResponse, setupMockFetch } from './useDashboard.test.helpers';
 
 global.fetch = jest.fn();
 

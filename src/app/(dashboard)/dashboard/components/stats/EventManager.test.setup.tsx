@@ -1,4 +1,3 @@
-import React from 'react';
 import { ClassEvent } from '@/domain/entities/DataGeneration';
 
 /**

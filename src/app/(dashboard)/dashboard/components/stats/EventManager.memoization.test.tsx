@@ -1,4 +1,3 @@
-import React from 'react';
 import EventManager from './EventManager';
 
 describe('EventManager - memoization', () => {

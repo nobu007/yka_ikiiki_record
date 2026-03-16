@@ -234,7 +234,11 @@ describe('PrismaStatsRepository', () => {
         studentStats: [],
         dayOfWeekStats: [],
         emotionDistribution: [],
-        timeOfDayStats: [],
+        timeOfDayStats: {
+          morning: 0,
+          afternoon: 0,
+          evening: 0,
+        },
       };
 
       mockRecordRepository.saveMany.mockResolvedValue([]);
@@ -254,7 +258,11 @@ describe('PrismaStatsRepository', () => {
         studentStats: [],
         dayOfWeekStats: [],
         emotionDistribution: [],
-        timeOfDayStats: [],
+        timeOfDayStats: {
+          morning: 0,
+          afternoon: 0,
+          evening: 0,
+        },
       };
 
       mockRecordRepository.saveMany.mockResolvedValue([]);

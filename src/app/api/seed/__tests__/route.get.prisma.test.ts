@@ -1,10 +1,5 @@
 import { GET } from '../route';
 
-const getRouteHandlers = () => {
-  const route = require('../route');
-  return { GET: route.GET };
-};
-
 const originalEnv = process.env.DATABASE_PROVIDER;
 
 beforeAll(() => {

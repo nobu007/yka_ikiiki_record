@@ -2,11 +2,6 @@ import { NextRequest } from 'next/server';
 import { POST, GET } from '../route';
 import { dataService } from '@/infrastructure/services/dataService';
 
-const getRouteHandlers = () => {
-  const route = require('../route');
-  return { POST: route.POST, GET: route.GET };
-};
-
 const originalEnv = process.env.DATABASE_PROVIDER;
 
 beforeAll(() => {

@@ -45,7 +45,7 @@ export const createMockResponse = (ok: boolean, status: number, statusText: stri
   ok,
   status,
   statusText,
-  ...(data && { json: async () => data })
+  ...(data !== undefined && { json: async () => data })
 });
 
 export const renderDashboardHook = () => renderHook(() => useDashboard());

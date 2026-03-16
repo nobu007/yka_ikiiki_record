@@ -105,8 +105,8 @@ describe('IRecordRepository - save', () => {
       const saved = await repository.saveMany(records);
 
       expect(saved).toHaveLength(2);
-      expect(saved[0].id).toBeDefined();
-      expect(saved[1].id).toBeDefined();
+      expect(saved[0]!.id).toBeDefined();
+      expect(saved[1]!.id).toBeDefined();
     });
 
     it('should assign unique ids to all saved records', async () => {

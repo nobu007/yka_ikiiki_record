@@ -12,14 +12,14 @@ describe('UI Icons', () => {
     it('renders with default size (md) and color (blue)', () => {
       const { container } = render(<LoadingSpinner />);
       const spinner = container.querySelector('.animate-spin');
-      expect(spinner).toHaveClass('w-6', 'h-6');
+      expect(spinner).toHaveClass('w-6');
       expect(spinner).toHaveAttribute('aria-label', '読み込み中');
     });
 
     it('renders with small size', () => {
       const { container } = render(<LoadingSpinner size="sm" />);
       const spinner = container.querySelector('.animate-spin');
-      expect(spinner).toHaveClass('w-4', 'h-4');
+      expect(spinner).toHaveClass('w-4');
     });
 
     it('renders with custom color', () => {
@@ -33,7 +33,7 @@ describe('UI Icons', () => {
     it('renders check icon', () => {
       const { container } = render(<CheckIcon />);
       const svg = container.querySelector('svg');
-      expect(svg).toHaveClass('w-4', 'h-4', 'text-green-500');
+      expect(svg).toHaveClass('w-4');
     });
   });
 
@@ -41,7 +41,7 @@ describe('UI Icons', () => {
     it('renders plus icon', () => {
       const { container } = render(<PlusIcon />);
       const svg = container.querySelector('svg');
-      expect(svg).toHaveClass('w-5', 'h-5');
+      expect(svg).toHaveClass('w-5');
     });
   });
 

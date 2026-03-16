@@ -9,27 +9,21 @@ const mockStats: GeneratedStats = {
     avgEmotion: 75.5
   },
   monthlyStats: [
-    { month: '2025-01', avgEmotion: 70, recordCount: 100 },
-    { month: '2025-02', avgEmotion: 75, recordCount: 120 },
-    { month: '2025-03', avgEmotion: 80, recordCount: 110 }
+    { month: '2025-01', avgEmotion: 70, count: 100 },
+    { month: '2025-02', avgEmotion: 75, count: 120 },
+    { month: '2025-03', avgEmotion: 80, count: 110 }
   ],
   dayOfWeekStats: [
-    { dayOfWeek: 0, avgEmotion: 72, recordCount: 140 },
-    { dayOfWeek: 1, avgEmotion: 76, recordCount: 150 },
-    { dayOfWeek: 2, avgEmotion: 74, recordCount: 145 }
+    { day: '0', avgEmotion: 72, count: 140 },
+    { day: '1', avgEmotion: 76, count: 150 },
+    { day: '2', avgEmotion: 74, count: 145 }
   ],
-  emotionDistribution: [
-    { emotion: 1, count: 50 },
-    { emotion: 2, count: 80 },
-    { emotion: 3, count: 120 },
-    { emotion: 4, count: 150 },
-    { emotion: 5, count: 100 }
-  ],
-  timeOfDayStats: [
-    { hour: 8, avgEmotion: 70, recordCount: 50 },
-    { hour: 12, avgEmotion: 75, recordCount: 80 },
-    { hour: 18, avgEmotion: 73, recordCount: 60 }
-  ],
+  emotionDistribution: [50, 80, 120, 150, 100],
+  timeOfDayStats: {
+    morning: 70,
+    afternoon: 75,
+    evening: 73
+  },
   studentStats: [
     {
       student: '生徒A',
@@ -72,7 +66,11 @@ describe('DataVisualization Edge Cases', () => {
         monthlyStats: [],
         dayOfWeekStats: [],
         emotionDistribution: [],
-        timeOfDayStats: [],
+        timeOfDayStats: {
+          morning: 0,
+          afternoon: 0,
+          evening: 0
+        },
         studentStats: []
       };
 

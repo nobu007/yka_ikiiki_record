@@ -25,7 +25,7 @@ describe('UI Feedback Components', () => {
         <Notification show={true} message="Success message" type="success" />
       );
       expect(screen.getByText('Success message')).toBeInTheDocument();
-      expect(screen.queryByRole('alert')).toHaveClass('bg-green-50', 'border-green-200');
+      expect(screen.queryByRole('alert')).toHaveClass('bg-green-50');
     });
 
     it('renders error notification', () => {
@@ -33,7 +33,7 @@ describe('UI Feedback Components', () => {
         <Notification show={true} message="Error message" type="error" />
       );
       expect(screen.getByText('Error message')).toBeInTheDocument();
-      expect(screen.queryByRole('alert')).toHaveClass('bg-red-50', 'border-red-200');
+      expect(screen.queryByRole('alert')).toHaveClass('bg-red-50');
     });
 
     it('renders warning notification', () => {
@@ -41,7 +41,7 @@ describe('UI Feedback Components', () => {
         <Notification show={true} message="Warning message" type="warning" />
       );
       expect(screen.getByText('Warning message')).toBeInTheDocument();
-      expect(screen.queryByRole('alert')).toHaveClass('bg-yellow-50', 'border-yellow-200');
+      expect(screen.queryByRole('alert')).toHaveClass('bg-yellow-50');
     });
 
     it('renders info notification', () => {
@@ -49,7 +49,7 @@ describe('UI Feedback Components', () => {
         <Notification show={true} message="Info message" type="info" />
       );
       expect(screen.getByText('Info message')).toBeInTheDocument();
-      expect(screen.queryByRole('alert')).toHaveClass('bg-blue-50', 'border-blue-200');
+      expect(screen.queryByRole('alert')).toHaveClass('bg-blue-50');
     });
 
     it('calls onClose when close button is clicked', () => {

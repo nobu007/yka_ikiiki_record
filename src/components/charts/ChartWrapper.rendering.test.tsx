@@ -19,7 +19,7 @@ describe('ChartWrapper Normal Rendering State (INV-TEST-001)', () => {
     );
 
     expect(screen.getByTestId('chart-content')).toBeInTheDocument();
-    expect(screen.queryByRole('status', { ariaLabel: 'グラフローディング中' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('status', { name: 'グラフローディング中' })).not.toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
@@ -31,7 +31,7 @@ describe('ChartWrapper Normal Rendering State (INV-TEST-001)', () => {
     );
 
     expect(screen.getByText('Test Chart Title')).toBeInTheDocument();
-    expect(screen.getByRole('region', { ariaLabel: 'Test Chart Title' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Test Chart Title' })).toBeInTheDocument();
   });
 
   it('should not render title when not provided', () => {
@@ -42,7 +42,7 @@ describe('ChartWrapper Normal Rendering State (INV-TEST-001)', () => {
     );
 
     expect(screen.queryByRole('heading')).not.toBeInTheDocument();
-    expect(screen.getByRole('region', { ariaLabel: '統計グラフ' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: '統計グラフ' })).toBeInTheDocument();
   });
 
   it('should render empty title as empty string', () => {
@@ -62,7 +62,7 @@ describe('ChartWrapper Normal Rendering State (INV-TEST-001)', () => {
       </ChartWrapper>
     );
 
-    expect(screen.getByRole('region', { ariaLabel: 'Test Chart With Spaces' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Test Chart With Spaces' })).toBeInTheDocument();
   });
 
   it('should use default aria-label when title is not provided', () => {
@@ -72,7 +72,7 @@ describe('ChartWrapper Normal Rendering State (INV-TEST-001)', () => {
       </ChartWrapper>
     );
 
-    expect(screen.getByRole('region', { ariaLabel: '統計グラフ' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: '統計グラフ' })).toBeInTheDocument();
   });
 });
 

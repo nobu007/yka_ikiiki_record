@@ -48,11 +48,11 @@ describe('statsCalculator - Distribution & Trend Functions', () => {
       ];
       const result = calculateStudentStats(emotions);
       expect(result).toHaveLength(2);
-      expect(result[0].student).toBe('学生1');
-      expect(result[0].recordCount).toBe(2);
-      expect(result[0].avgEmotion).toBe(3.5);
-      expect(result[1].student).toBe('学生2');
-      expect(result[1].recordCount).toBe(1);
+      expect(result[0]!.student).toBe('学生1');
+      expect(result[0]!.recordCount).toBe(2);
+      expect(result[0]!.avgEmotion).toBe(3.5);
+      expect(result[1]!.student).toBe('学生2');
+      expect(result[1]!.recordCount).toBe(1);
     });
 
     it('returns empty array for empty input', () => {
@@ -62,7 +62,7 @@ describe('statsCalculator - Distribution & Trend Functions', () => {
     it('defaults to student 0 when student is undefined', () => {
       const emotions = [{ date: new Date(), emotion: 3.0 }];
       const result = calculateStudentStats(emotions);
-      expect(result[0].student).toBe('学生1');
+      expect(result[0]!.student).toBe('学生1');
     });
   });
 

@@ -25,9 +25,12 @@ describe('ErrorBoundary', () => {
 
   it('reloads page when reload button is clicked', () => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    const originalLocation = window.location;
-    delete (window as Partial<Window>).location;
-    window.location = { ...originalLocation, reload: jest.fn() };
+    const reloadMock = jest.fn();
+    Object.defineProperty(window, 'location', {
+      value: { reload: reloadMock },
+      writable: true,
+      configurable: true
+    });
 
     render(
       <ErrorBoundary>
@@ -38,9 +41,8 @@ describe('ErrorBoundary', () => {
     const reloadButton = screen.getByText('再読み込み');
     fireEvent.click(reloadButton);
 
-    expect(window.location.reload).toHaveBeenCalledTimes(1);
+    expect(reloadMock).toHaveBeenCalledTimes(1);
 
-    window.location = originalLocation;
     consoleError.mockRestore();
   });
 

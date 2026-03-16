@@ -48,7 +48,6 @@ describe('statsCalculator - Emotion & Event Functions', () => {
     });
 
     it('handles invalid pattern key by falling back to normal', () => {
-      // @ts-expect-error - Testing invalid key
       const val = generateBaseEmotion('invalid' as never);
       expect(val).toBeGreaterThanOrEqual(1);
       expect(val).toBeLessThanOrEqual(5);

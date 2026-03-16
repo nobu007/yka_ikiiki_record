@@ -29,7 +29,7 @@ describe('ChartWrapper Loading State (INV-TEST-001)', () => {
       </ChartWrapper>
     );
 
-    expect(screen.queryByRole('status', { ariaLabel: 'グラフローディング中' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('status', { name: 'グラフローディング中' })).not.toBeInTheDocument();
     expect(screen.getByTestId('chart-content')).toBeInTheDocument();
   });
 
@@ -40,7 +40,7 @@ describe('ChartWrapper Loading State (INV-TEST-001)', () => {
       </ChartWrapper>
     );
 
-    expect(screen.queryByRole('status', { ariaLabel: 'グラフローディング中' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('status', { name: 'グラフローディング中' })).not.toBeInTheDocument();
     expect(screen.getByTestId('chart-content')).toBeInTheDocument();
   });
 
@@ -52,7 +52,7 @@ describe('ChartWrapper Loading State (INV-TEST-001)', () => {
       </ChartWrapper>
     );
 
-    expect(screen.getByRole('status', { ariaLabel: 'グラフローディング中' })).toBeInTheDocument();
+    expect(screen.getByRole('status', { name: 'グラフローディング中' })).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 });

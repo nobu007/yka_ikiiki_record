@@ -18,7 +18,7 @@ describe('ChartWrapper Accessibility (INV-TEST-001)', () => {
       </ChartWrapper>
     );
 
-    expect(screen.getByRole('status', { ariaLabel: 'グラフローディング中' })).toBeInTheDocument();
+    expect(screen.getByRole('status', { name: 'グラフローディング中' })).toBeInTheDocument();
   });
 
   it('should have proper aria-label for error state', () => {
@@ -29,7 +29,7 @@ describe('ChartWrapper Accessibility (INV-TEST-001)', () => {
       </ChartWrapper>
     );
 
-    expect(screen.getByRole('alert', { ariaLabel: 'グラフエラー' })).toBeInTheDocument();
+    expect(screen.getByRole('alert', { name: 'グラフエラー' })).toBeInTheDocument();
   });
 
   it('should have proper aria-label for chart region with title', () => {
@@ -39,7 +39,7 @@ describe('ChartWrapper Accessibility (INV-TEST-001)', () => {
       </ChartWrapper>
     );
 
-    expect(screen.getByRole('region', { ariaLabel: 'Test Chart' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Test Chart' })).toBeInTheDocument();
   });
 
   it('should have proper aria-label for chart region without title', () => {
@@ -49,7 +49,7 @@ describe('ChartWrapper Accessibility (INV-TEST-001)', () => {
       </ChartWrapper>
     );
 
-    expect(screen.getByRole('region', { ariaLabel: '統計グラフ' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: '統計グラフ' })).toBeInTheDocument();
   });
 
   it('should have proper heading id linked to region', () => {

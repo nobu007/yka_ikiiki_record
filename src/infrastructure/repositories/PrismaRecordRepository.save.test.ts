@@ -135,7 +135,7 @@ describe('PrismaRecordRepository - save', () => {
         emotion: 60.0,
         date: new Date('2024-01-15T10:30:00'),
         student: '学生4',
-        comment: undefined,
+        // Omit comment property entirely instead of setting to undefined
         createdAt: new Date(),
         updatedAt: new Date(),
       };

@@ -24,7 +24,7 @@ jest.mock('@/lib/api/response', () => ({
 // Mock withErrorHandler to execute the handler, and createError
 const mockNotFound = jest.fn().mockImplementation((msg: string) => {
   const err = new Error(msg);
-  (err as Record<string, unknown>).statusCode = 404;
+  (err as Error & { statusCode: number }).statusCode = 404;
   return err;
 });
 

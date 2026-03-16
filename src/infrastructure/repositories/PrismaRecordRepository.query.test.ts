@@ -104,9 +104,9 @@ describe('PrismaRecordRepository - query', () => {
       const records = await repository.findAll();
 
       expect(records).toHaveLength(3);
-      expect(records[0].student).toBe('学生2');
-      expect(records[1].student).toBe('学生3');
-      expect(records[2].student).toBe('学生1');
+      expect(records[0]!.student).toBe('学生2');
+      expect(records[1]!.student).toBe('学生3');
+      expect(records[2]!.student).toBe('学生1');
       expect(prisma.record.findMany).toHaveBeenCalledWith({
         orderBy: { date: 'desc' },
       });
@@ -147,8 +147,8 @@ describe('PrismaRecordRepository - query', () => {
       const records = await repository.findAll();
 
       expect(records).toHaveLength(2);
-      expect(records[0].comment).toBeUndefined();
-      expect(records[1].comment).toBe('コメントあり');
+      expect(records[0]!.comment).toBeUndefined();
+      expect(records[1]!.comment).toBe('コメントあり');
     });
   });
 

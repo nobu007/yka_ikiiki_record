@@ -27,11 +27,11 @@ describe('statsCalculator - Time-Based Statistics', () => {
     it('groups by month and calculates averages', () => {
       const result = calculateMonthlyStats(emotions);
       expect(result).toHaveLength(2);
-      expect(result[0].month).toBe('2024-04');
-      expect(result[0].avgEmotion).toBe(3.5);
-      expect(result[0].count).toBe(2);
-      expect(result[1].month).toBe('2024-05');
-      expect(result[1].count).toBe(1);
+      expect(result[0]!.month).toBe('2024-04');
+      expect(result[0]!.avgEmotion).toBe(3.5);
+      expect(result[0]!.count).toBe(2);
+      expect(result[1]!.month).toBe('2024-05');
+      expect(result[1]!.count).toBe(1);
     });
 
     it('sorts by month ascending', () => {
@@ -40,8 +40,8 @@ describe('statsCalculator - Time-Based Statistics', () => {
         { date: new Date('2024-01-01'), emotion: 3.0 },
       ];
       const result = calculateMonthlyStats(reversed);
-      expect(result[0].month).toBe('2024-01');
-      expect(result[1].month).toBe('2024-12');
+      expect(result[0]!.month).toBe('2024-01');
+      expect(result[1]!.month).toBe('2024-12');
     });
 
     it('returns empty array for empty input', () => {

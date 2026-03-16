@@ -148,10 +148,10 @@ describe('IRecordRepository - delete', () => {
       const saved = await repository.saveMany(records);
       expect(await repository.count()).toBe(3);
 
-      await repository.delete(saved[0].id!);
+      await repository.delete(saved[0]!.id!);
       expect(await repository.count()).toBe(2);
 
-      await repository.delete(saved[1].id!);
+      await repository.delete(saved[1]!.id!);
       expect(await repository.count()).toBe(1);
     });
   });

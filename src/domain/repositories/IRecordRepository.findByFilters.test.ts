@@ -38,7 +38,7 @@ describe('IRecordRepository - findByFilters', () => {
       const found = await repository.findByDateRange(startDate, endDate);
 
       expect(found).toHaveLength(1);
-      expect(found[0].student).toBe('学生2');
+      expect(found[0]!.student).toBe('学生2');
     });
 
     it('should return empty array when no records in range', async () => {
@@ -99,7 +99,7 @@ describe('IRecordRepository - findByFilters', () => {
       const found = await repository.findByStudent('学生1');
 
       expect(found).toHaveLength(2);
-      expect(found[0].date.getTime()).toBeLessThan(found[1].date.getTime());
+      expect(found[0]!.date.getTime()).toBeLessThan(found[1]!.date.getTime());
     });
   });
 });

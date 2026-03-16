@@ -58,9 +58,9 @@ describe('IRecordRepository - findAll', () => {
       const found = await repository.findAll();
 
       expect(found).toHaveLength(3);
-      expect(found[0].student).toBe('学生1');
-      expect(found[1].student).toBe('学生2');
-      expect(found[2].student).toBe('学生3');
+      expect(found[0]!.student).toBe('学生1');
+      expect(found[1]!.student).toBe('学生2');
+      expect(found[2]!.student).toBe('学生3');
     });
 
     it('should return all records with complete data', async () => {
@@ -74,10 +74,10 @@ describe('IRecordRepository - findAll', () => {
       const found = await repository.findAll();
 
       expect(found).toHaveLength(1);
-      expect(found[0].emotion).toBe(4.5);
-      expect(found[0].date).toEqual(new Date('2026-03-16T10:00:00Z'));
-      expect(found[0].student).toBe('学生1');
-      expect(found[0].id).toBeDefined();
+      expect(found[0]!.emotion).toBe(4.5);
+      expect(found[0]!.date).toEqual(new Date('2026-03-16T10:00:00Z'));
+      expect(found[0]!.student).toBe('学生1');
+      expect(found[0]!.id).toBeDefined();
     });
   });
 });

@@ -91,8 +91,8 @@ describe('PrismaStatsRepository', () => {
       const stats = await repository.getStats();
 
       expect(stats.monthlyStats).toHaveLength(2);
-      expect(stats.monthlyStats[0].month).toContain('2024-01');
-      expect(stats.monthlyStats[0].count).toBe(2);
+      expect(stats.monthlyStats[0]!.month).toContain('2024-01');
+      expect(stats.monthlyStats[0]!.count).toBe(2);
     });
 
     it('should calculate student stats', async () => {
@@ -125,9 +125,9 @@ describe('PrismaStatsRepository', () => {
       const stats = await repository.getStats();
 
       expect(stats.studentStats).toHaveLength(3);
-      expect(stats.studentStats[0].student).toBe('学生1');
-      expect(stats.studentStats[0].avgEmotion).toBe(85);
-      expect(stats.studentStats[0].recordCount).toBe(1);
+      expect(stats.studentStats[0]!.student).toBe('学生1');
+      expect(stats.studentStats[0]!.avgEmotion).toBe(85);
+      expect(stats.studentStats[0]!.recordCount).toBe(1);
     });
 
     it('should calculate day of week stats', async () => {

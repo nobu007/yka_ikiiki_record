@@ -28,7 +28,7 @@ describe('PrismaSeedRepository', () => {
   let mockPrisma: MockPrisma;
 
   beforeAll(() => {
-    mockPrisma = prisma;
+    mockPrisma = prisma as unknown as MockPrisma;
   });
 
   afterEach(() => {

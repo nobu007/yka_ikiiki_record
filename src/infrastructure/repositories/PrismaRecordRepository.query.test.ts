@@ -1,4 +1,5 @@
 import { setupTest } from './PrismaRecordRepository.setup';
+import type { Record } from '@/domain/entities/Record';
 
 describe('PrismaRecordRepository - query', () => {
   let repository: ReturnType<typeof setupTest>['repository'];
@@ -234,7 +235,7 @@ describe('PrismaRecordRepository - query', () => {
       const records = await repository.findByStudent('学生1');
 
       expect(records).toHaveLength(2);
-      expect(records.every((r: any) => r.student === '学生1')).toBe(true);
+      expect(records.every((r: Record) => r.student === '学生1')).toBe(true);
       expect(prisma.record.findMany).toHaveBeenCalledWith({
         where: { student: '学生1' },
         orderBy: { date: 'desc' },

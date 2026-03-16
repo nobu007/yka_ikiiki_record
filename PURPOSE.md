@@ -19,7 +19,9 @@
 
 ### 完了したマイルストーン
 - ✅ **E2Eテスト基盤** - Playwrightによる包括的なE2Eテスト、CI統合完了
-- ✅ **Prismaデータ永続化レイヤー** - `IRecordRepository`、`PrismaRecordRepository`、Recordエンティティ、Prismaスキーマ、マイグレーション、シード（750件）
+- ✅ **Prismaインフラ層** - `IRecordRepository`、`PrismaRecordRepository`、Recordエンティティ、Prismaスキーマ、マイグレーション、シード（750件）
+
+**注記**: PrismaRecordRepositoryは実装済みだが、アプリケーション層での統合は未完了。APIルートはまだMockStatsRepositoryを使用中。
 
 ## 直近の優先成果（次に終わらせるべきこと）
 
@@ -127,5 +129,5 @@ Presentation層:
 ---
 
 **最終更新**: 2026-03-17
-**更新理由**: 直近10コミットの分析に基づき、Prismaレイヤー（bca3efa）は完了しているがアプリケーション統合が未着手であることを確認。P1の実装範囲を具体化し、完了条件を明確化。履歴的説明を削除し、次に取るべきアクションに集中。
+**更新理由**: 直近10コミットの分析に基づき、Prismaインフラ層（bca3efa）は完了しているが、アプリケーション統合が未着手であることを確認。APIルート（`/api/stats`）がまだ`MockStatsRepository`を使用していることを実地検証。P1の実装範囲を具体化し、完了条件を明確化。
 **現在のフェーズ**: 統合フェーズ。Prismaリポジトリをアプリケーション層に統合。

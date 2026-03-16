@@ -28,36 +28,25 @@ jest.mock('@/infrastructure/services/dataService', () => ({
   GeneratedStats: {},
 }));
 
-// Mock logError to suppress console noise
-jest.mock('@/lib/error-handler', () => {
-  const actual = jest.requireActual('@/lib/error-handler');
-  return {
-    ...actual,
-    logError: jest.fn(),
-  };
+// Mock repository factory
+const mockGenerateSeedData = jest.fn().mockResolvedValue(undefined);
+const mockGetStats = jest.fn().mockResolvedValue({
+  overview: { count: 100, avgEmotion: 3.5 },
+  monthlyStats: [],
+  studentStats: [],
+  dayOfWeekStats: [],
+  emotionDistribution: [10, 20, 40, 20, 10],
+  timeOfDayStats: { morning: 3.2, afternoon: 3.5, evening: 3.0 },
 });
 
-// Mock Prisma repositories
-jest.mock('@/infrastructure/repositories/PrismaRecordRepository', () => ({
-  PrismaRecordRepository: jest.fn(),
-}));
+const mockStatsService = {
+  generateSeedData: mockGenerateSeedData,
+  getStats: mockGetStats
+};
 
-jest.mock('@/infrastructure/repositories/PrismaStatsRepository', () => ({
-  PrismaStatsRepository: jest.fn(),
-}));
-
-jest.mock('@/domain/services/StatsService', () => ({
-  StatsService: jest.fn().mockImplementation(() => ({
-    generateSeedData: jest.fn().mockResolvedValue(undefined),
-    getStats: jest.fn().mockResolvedValue({
-      overview: { count: 100, avgEmotion: 3.5 },
-      monthlyStats: [],
-      studentStats: [],
-      dayOfWeekStats: [],
-      emotionDistribution: [10, 20, 40, 20, 10],
-      timeOfDayStats: { morning: 3.2, afternoon: 3.5, evening: 3.0 },
-    }),
-  })),
+jest.mock('@/infrastructure/factories/repositoryFactory', () => ({
+  createStatsService: jest.fn(() => mockStatsService),
+  isPrismaProvider: jest.fn(() => false),
 }));
 
 function createMockRequest(body: object): NextRequest {

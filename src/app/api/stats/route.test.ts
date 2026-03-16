@@ -1,16 +1,13 @@
 import { NextResponse } from 'next/server';
 
-// Mock StatsService
+// Mock createStatsService
 const mockGetStats = jest.fn();
-jest.mock('@/domain/services/StatsService', () => ({
-  StatsService: jest.fn().mockImplementation(() => ({
-    getStats: mockGetStats
-  }))
-}));
+const mockStatsService = {
+  getStats: mockGetStats
+};
 
-// Mock MockStatsRepository
-jest.mock('@/infrastructure/storage/MockStatsRepository', () => ({
-  MockStatsRepository: jest.fn()
+jest.mock('@/infrastructure/factories/repositoryFactory', () => ({
+  createStatsService: jest.fn(() => mockStatsService)
 }));
 
 // Mock createSuccessResponse

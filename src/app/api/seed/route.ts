@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { normalizeError, logError } from '@/lib/error-handler';
+import { withErrorHandler } from '@/lib/api/error-handler';
+import { createSuccessResponse } from '@/lib/api/response';
+import { createStatsService, isPrismaProvider } from '@/infrastructure/factories/repositoryFactory';
 import { dataService, DataGenerationConfig, GeneratedStats } from '@/infrastructure/services/dataService';
 import { APP_CONFIG } from '@/lib/config';
-import { StatsService } from '@/domain/services/StatsService';
-import { PrismaStatsRepository } from '@/infrastructure/repositories/PrismaStatsRepository';
-import { PrismaRecordRepository } from '@/infrastructure/repositories/PrismaRecordRepository';
 
 const SeedRequestSchema = z.object({
   config: z.object({
@@ -41,15 +40,12 @@ const cleanupOldData = () => {
 };
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  try {
-    const provider = process.env.DATABASE_PROVIDER || 'mirage';
-
-    if (provider === 'prisma') {
-      const recordRepository = new PrismaRecordRepository();
-      const statsRepository = new PrismaStatsRepository(recordRepository);
-      const statsService = new StatsService(statsRepository);
+  return withErrorHandler(async () => {
+    if (isPrismaProvider()) {
+      const statsService = createStatsService();
       await statsService.generateSeedData();
-      return NextResponse.json({
+
+      return createSuccessResponse({
         success: true,
         message: 'テストデータの生成が完了しました'
       });
@@ -77,35 +73,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       config: transformedConfig
     };
 
-    return NextResponse.json({
+    return createSuccessResponse({
       success: true,
       message: 'テストデータの生成が完了しました'
     });
-  } catch (error) {
-    const appError = normalizeError(error);
-    logError(appError, 'API:seed:POST');
-
-    return NextResponse.json(
-      {
-        success: false,
-        error: appError.message
-      },
-      { status: appError.statusCode || 500 }
-    );
-  }
+  });
 }
 
 export async function GET(): Promise<NextResponse> {
-  try {
-    const provider = process.env.DATABASE_PROVIDER || 'mirage';
-
-    if (provider === 'prisma') {
-      const recordRepository = new PrismaRecordRepository();
-      const statsRepository = new PrismaStatsRepository(recordRepository);
-      const statsService = new StatsService(statsRepository);
+  return withErrorHandler(async () => {
+    if (isPrismaProvider()) {
+      const statsService = createStatsService();
       const stats = await statsService.getStats();
 
-      return NextResponse.json({
+      return createSuccessResponse({
         success: true,
         data: stats
       });
@@ -123,7 +104,7 @@ export async function GET(): Promise<NextResponse> {
       );
     }
 
-    return NextResponse.json({
+    return createSuccessResponse({
       success: true,
       data: storedData.data,
       metadata: {
@@ -132,16 +113,5 @@ export async function GET(): Promise<NextResponse> {
         config: storedData.config
       }
     });
-  } catch (error) {
-    const appError = normalizeError(error);
-    logError(appError, 'API:seed:GET');
-
-    return NextResponse.json(
-      {
-        success: false,
-        error: appError.message
-      },
-      { status: appError.statusCode || 500 }
-    );
-  }
+  });
 }

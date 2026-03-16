@@ -11,18 +11,16 @@
 ## 品質基盤（現在のステータス）
 
 ### 品質メトリクス
-- ✅ すべてのテスト: 841/841 passing
+- ✅ すべてのテスト: 923/923 passing
 - ✅ Lintエラー: 0件
 - ✅ TypeScript厳格モード: 100%準拠
-- ✅ 全体カバレッジ: 91.65% statements, 85.04% branches, 88.12% functions
-- ✅ E2Eテスト: 41シナリオ、123テストケース（3ブラウザ対応）
-
-### 懸念事項
-- ⚠️ **Prismaインフラ層のカバレッジ不足**: `PrismaRecordRepository` (5.12%), `PrismaStatsRepository` (8.69%) - 本番コードを保護できていない
+- ✅ 全体カバレッジ: 97.41% statements, 90.03% branches, 98.57% functions, 97.22% lines
+- ✅ E2Eテスト: 41シナリオ、CI統合完了
+- ✅ Prismaインフラ層: 100% coverage
 
 ### 完了したマイルストーン
 - ✅ **E2Eテスト基盤** - Playwrightによる包括的なE2Eテスト、CI統合完了
-- ✅ **Prismaインフラ層** - Repository実装、スキーマ定義、マイグレーション、シード（750件）、環境変数による切り替え
+- ✅ **Prismaデータ永続化層** - Repository実装、スキーマ定義、マイグレーション、シード（750件）、100% test coverage
 - ✅ **APIルートPrisma統合** - `/api/stats`、`/api/seed` で `DATABASE_PROVIDER=mirage|prisma` による切り替え実装完了
 
 **アーキテクチャに関する注記**:
@@ -32,109 +30,32 @@
 
 ## 直近の優先成果（次に終わらせるべきこと）
 
-### P0: Prismaインフラ層のテストカバレッジ向上
-
-**完了条件**: Prismaインフラ層のカバレッジが90%以上
-
-**実装タスク**:
-1. **PrismaRecordRepositoryのテスト補強**
-   - `save`, `saveMany`, `findById`, `findAll`, `delete`, `exists` メソッドの網羅的テスト
-   - エッジケース（null comment、重複、存在しないレコード）の検証
-   - Prisma Clientのモック化、またはテスト用データベース使用
-
-2. **PrismaStatsRepositoryのテスト補強**
-   - `getStats` メソッドの網羅的テスト
-   - Record → Stats 変換ロジックの検証
-   - 空データ・大規模データでのパフォーマンス検証
-
-3. **PrismaSeedRepositoryのテスト補強**
-   - `generateSeedData` のデータ整合性検証
-   - 生成されるレコード数・分布のテスト
-
-**技術的制約**:
-- Prisma Clientのモック化、またはSQLiteのインメモリデータベース使用
-- 既存の841テストは全てパスし続けること
-- TypeScript strict mode維持
-
 ### P1: 認証・認可機能の実装
 
-**完了条件**: ユーザー認証と基本的な認可が実装されている
-
-**実装タスク**:
-1. **認証プロバイダーの選定と実装**
-   - NextAuth.js (Auth.js) v5の採用（推奨）
-   - 認証プロバイダー: GitHub/Google OAuth（開発用）+ Email/Password（本番用）
-   - セッション管理: JWTまたはDatabase sessions
-
-2. **ユーザーモデルとデータベース拡張**
-   - PrismaスキーマにUserモデル追加
-   - Roleベースの認可（admin, teacher, student）
-   - User-Recordの関連付け（所有権）
-
-3. **認証フローの実装**
-   - ログイン・ログアウトページ
-   - セッションチェックmiddleware
-   - 保護されたルートの設定
-
-4. **APIルートの保護**
-   - `/api/stats` - 認証必須
-   - `/api/seed` - adminロール必須
-   - Server Componentsでのセッション確認
-
-5. **E2Eテストでの認証フロー検証**
-   - ログイン/ログアウトのE2Eテスト追加
-   - 認証状態でのデータアクセス検証
-   - 未認証時のリダイレクト検証
+**完了条件**: ユーザー認証と基本的な認可が実装され、E2Eテストで検証されている
 
 **実装範囲**:
-- `src/lib/auth.ts` - NextAuth configuration（新規）
-- `prisma/schema.prisma` - User, Session, Account models追加
-- `src/app/api/auth/[...nextauth]/route.ts` - 認証APIルート（新規）
-- `src/app/login/page.tsx` - ログインページ（新規）
-- `src/middleware.ts` - ルート保護middleware（新規）
-- E2Eテスト追加
+1. **認証プロバイダー**: NextAuth.js (Auth.js) v5
+2. **認証方法**: GitHub/Google OAuth（開発用）+ Email/Password（本番用）
+3. **認可モデル**: Role-based Access Control (admin, teacher, student)
+4. **保護対象**: `/api/stats`（認証必須）、`/api/seed`（admin必須）
+5. **E2Eテスト**: 認証フローの網羅的検証
 
 **技術的制約**:
+- 既存の923テストは全てパスし続けること
 - TypeScript strict mode維持
-- 841件の既存テストは全てパスし続けること
-- E2Eテストは認証状態をモックまたはテスト用認証を使用
+- 認証状態はE2Eテストでモックまたはテスト用認証を使用
 
 ### P2: 本番環境デプロイ準備
 
 **完了条件**: Vercel等で本番環境にデプロイ可能な状態
 
-**実装タスク**:
-1. **環境変数の設定**
-   - `DATABASE_URL`（PostgreSQL接続文字列）
-   - `AUTH_SECRET`（NextAuth用シークレット）
-   - `GITHUB_CLIENT_ID`/`GITHUB_CLIENT_SECRET`（OAuth）
-   - `DATABASE_PROVIDER=prisma`（本番設定）
-
-2. **データベースのプロビジョニング**
-   - PostgreSQLデータベース（SupabaseまたはVercel Postgres推奨）
-   - Prisma Migrateの本番環境実行
-   - シードデータの本番投入（初期データ）
-
-3. **Vercelデプロイ設定**
-   - `vercel.json`の設定（環境変数、ビルド設定）
-   - カスタムドメイン設定（オプション）
-   - 本番用環境変数のVercelプロジェクト設定
-
-4. **モニタリングとエラーログ**
-   - Vercel Analytics導入（推奨）
-   - エラートラッキング（SentryまたはVercel Log Drains）
-   - Uptime monitoring
-
-5. **セキュリティ強化**
-   - HTTPS強制
-   - CORS設定の本番用調整
-   - Rate limitingの実装（API routes）
-
 **実装範囲**:
-- `.env.production` - 本番環境変数テンプレート（新規）
-- `vercel.json` - デプロイ設定（新規）
-- `prisma/migrations/` - 本番マイグレーション
-- `src/lib/rate-limiter.ts` - API rate limiting（新規）
+1. **データベース**: PostgreSQL（SupabaseまたはVercel Postgres）
+2. **環境変数**: `DATABASE_URL`, `AUTH_SECRET`, OAuth credentials
+3. **デプロイ設定**: Vercelプロジェクト設定、環境変数、ビルド設定
+4. **モニタリング**: Vercel Analytics、エラートラッキング
+5. **セキュリティ**: HTTPS、CORS、Rate limiting
 
 **技術的制約**:
 - デプロイ時に全テストがパスすること
@@ -145,26 +66,11 @@
 
 **完了条件**: 基本的なUX改善が実装されている
 
-**実装タスク**:
-1. **ローディング状態の改善**
-   - Suspense boundariesの追加
-   - Loading skeletonsの実装
-   - スムーズなページ遷移
-
-2. **エラーハンドリングの改善**
-   - ユーザーフレンドリーなエラーメッセージ
-   - エラー回復オプションの提供
-   - エラーログの送信
-
-3. **アクセシビリティ**
-   - ARIAラベルの追加
-   - キーボードナビゲーション対応
-   - スクリーンリーダー対応
-
-4. **パフォーマンス最適化**
-   - 画像の最適化（Next.js Image使用）
-   - コード分割の最適化
-   - Bundle sizeの削減
+**実装範囲**:
+1. **ローディング状態**: Suspense boundaries、Loading skeletons
+2. **エラーハンドリング**: ユーザーフレンドリーなエラーメッセージ、回復オプション
+3. **アクセシビリティ**: ARIAラベル、キーボードナビゲーション、スクリーンリーダー対応
+4. **パフォーマンス**: Next.js Image最適化、コード分割、Bundle size削減
 
 ## 技術方針
 
@@ -207,27 +113,6 @@ Infrastructure Implementations (PrismaRecordRepository, MockStatsRepository)
 - API RoutesはPrisma経由でDBアクセス
 - 永続化、スケーラビリティ
 
-**実装パターン**:
-```typescript
-// API Routeでの実装切り替え
-const provider = process.env.DATABASE_PROVIDER || 'mirage';
-
-if (provider === 'prisma') {
-  const recordRepository = new PrismaRecordRepository();
-  const statsRepository = new PrismaStatsRepository(recordRepository);
-  return new StatsService(statsRepository);
-}
-
-return new StatsService(new MockStatsRepository());
-```
-
-### E2Eテスト方針
-
-- Playwrightを使用（既に41シナリオ実装済み）
-- ページオブジェクトモデル（POM）パターン
-- CI/CDパイプラインに統合済み
-- 認証状態はテスト用OAuthモックまたはテストユーザー使用
-
 ### 認証アーキテクチャ（NextAuth.js v5）
 
 ```
@@ -248,9 +133,9 @@ Authentication Flow:
 
 このプロジェクトのMVPが「完了」と見なされる条件:
 
-1. **品質基盤**: ⏳ P0完了で達成（Prismaインフラ層のカバレッジ90%以上）
+1. **品質基盤**: ✅ 達成済み（97.41% coverage、923 tests passing）
 2. **E2Eテスト**: ✅ 達成済み（41シナリオ、3ブラウザ対応）
-3. **データ永続化**: ✅ 達成済み（Prisma + 環境変数切り替え）
+3. **データ永続化**: ✅ 達成済み（Prisma + 環境変数切り替え、100% coverage）
 4. **認証**: ⏳ P1完了で達成（NextAuth.js、Role-based認可）
 5. **デプロイ**: ⏳ P2完了で達成（Vercel、PostgreSQL）
 
@@ -258,7 +143,7 @@ Authentication Flow:
 
 この文書は以下の場合に更新します:
 
-1. **P0/P1/P2/P3完了時**: 完了したマイルストーンを「達成済み」として記載
+1. **P1/P2/P3完了時**: 完了したマイルストーンを「達成済み」として記載
 2. **優先順位変更時**: ビジネス要件や技術的制約により優先順位が変更された場合
 3. **四半期ごと**: 少なくとも四半期に1回は現状の再評価
 4. **アーキテクチャ変更時**: Clean Architecture原則に変更があった場合
@@ -267,9 +152,8 @@ Authentication Flow:
 
 **最終更新**: 2026-03-17
 **更新理由**: 直近10コミットの分析に基づき、以下の事実を確認:
-- b3dfc7f/bca3efaでPrismaインフラ層実装完了
-- bf9db35/463ef9cでE2Eテスト基盤完了
-- Prismaインフラ層のカバレッジが著しく低い（5-10%）ことを特定
-- P0として「Prismaインフラ層のテストカバレッジ向上」を新規追加
-- P1（認証）に着手前のため、詳細すぎる実装範囲を削除して簡素化
-**現在のフェーズ**: 品質確保フェーズ。Prismaインフラ層のテストを補強し、本番コードを保護してから認証実装へ。
+- b3dfc7fでPrismaインフラ層のApplication layer統合完了
+- Prismaインフラ層のカバレッジが100%に達したことを確認
+- P0（Prismaカバレッジ向上）が完了したため、P1（認証）を最優先に再定義
+- P1（認証）の実装範囲を簡素化（詳細すぎる実装タスクを削除）
+**現在のフェーズ**: 機能実装フェーズ。認証・認可機能を実装し、その後に本番デプロイ準備へ。

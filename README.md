@@ -165,21 +165,36 @@ This project follows Clean Architecture principles:
 - **Infrastructure Layer**: External dependencies and data access
 - **Presentation Layer**: UI components and user interfaces
 
-## 🚀 Deployment
+## 🚀 Production Deployment
 
 ### Prerequisites
 
 The project is fully prepared for production deployment with:
 - ✅ PostgreSQL database schema (Prisma)
-- ✅ Database migrations ready
+- ✅ Database migrations ready (`20260317000000_init_postgresql`)
 - ✅ Vercel configuration (`vercel.json`)
 - ✅ TypeScript strict mode compliance
-- ✅ Comprehensive test coverage (96.99%)
-- ✅ All 941 tests passing
+- ✅ Comprehensive test coverage (98.26%)
+- ✅ All 971 tests passing
+- ✅ Prisma provider coverage: 100% (seed API route)
 
-### Vercel Deployment (Recommended)
+### Automated Deployment Scripts
 
-The easiest way to deploy is using [Vercel Platform](https://vercel.com/new):
+The project includes automated deployment scripts for production:
+
+```bash
+# One-command production deployment
+npm run deploy:production
+
+# Verify production deployment
+bash scripts/verify-deployment.sh
+```
+
+### Manual Deployment Steps
+
+If you prefer manual deployment or need to customize:
+
+#### 1. Install and Login to Vercel
 
 ```bash
 # Install Vercel CLI
@@ -187,17 +202,61 @@ npm i -g vercel
 
 # Login to Vercel
 vercel login
+```
 
-# Deploy to Vercel
-vercel
+#### 2. Create Production Database
 
-# For production deployment
+**Option A: Vercel Postgres (Recommended)**
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Select your project → Storage → Create Database → Postgres
+3. Copy the `DATABASE_URL` from Vercel
+
+**Option B: External PostgreSQL (Supabase, Neon, etc.)**
+1. Create a PostgreSQL database
+2. Copy the connection string
+3. Set environment variable:
+   ```bash
+   vercel env add DATABASE_URL production
+   # Paste your connection string when prompted
+   ```
+
+#### 3. Deploy to Production
+
+```bash
+# Deploy to Vercel production
 vercel --prod
+
+# Or use the automated script
+npm run deploy:production
+```
+
+#### 4. Run Database Migrations
+
+```bash
+# Deploy Prisma migrations to production
+vercel exec -- npm run db:migrate:deploy
+
+# Or manually:
+vercel env pull .env.production
+npx prisma migrate deploy
+```
+
+#### 5. Verify Deployment
+
+```bash
+# Run verification script
+bash scripts/verify-deployment.sh
+
+# Or manually test:
+# 1. Visit production URL
+# 2. Test POST /api/seed to populate data
+# 3. Verify GET /api/stats returns data
+# 4. Check /dashboard displays correctly
 ```
 
 ### Environment Variables (Production)
 
-In Vercel, set the following environment variables:
+Required environment variables for production:
 
 ```env
 DATABASE_PROVIDER=prisma

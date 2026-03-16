@@ -19,6 +19,8 @@
     "test:e2e:headed": "playwright test --headed",
     "db:seed": "tsx prisma/seed.ts",
     "db:reset": "prisma migrate reset && pnpm run db:seed",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "deploy:production": "bash scripts/deploy-production.sh",
     "postinstall": "prisma generate"
   },
   "prisma": {

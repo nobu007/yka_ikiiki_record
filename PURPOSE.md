@@ -10,7 +10,7 @@
 
 ## 品質基盤（全項目達成済み）
 
-- ✅ テスト: 971/971 passing (123 suites)
+- ✅ テスト: 971/971 passing (126 suites)
 - ✅ カバレッジ: 98.26% statements, 91.49% branches, 94.52% functions, 98.15% lines
 - ✅ TypeScript: strict mode 完全準拠（テストファイルの型エラーも解消済み）
 - ✅ ESLint: zero warnings
@@ -18,7 +18,8 @@
 - ✅ 環境変数バリデーション: Zodベースの型安全なenv.ts実装完了
 - ✅ セキュリティ: プレースホルダー認証情報削除、本番設定適切化
 - ✅ インフラ: Prisma singletonクライアント実装（serverless対応）
-- ✅ Prisma providerカバレッジ: seed APIルートの本番パス100%カバー
+- ✅ Prisma providerカバレッジ: seed APIルートの本番パス94.28%（POST/GET両方カバー）
+- ✅ デプロイ自動化: deploy-production.sh, verify-deployment.sh実装完了
 
 ## 目指す完成状態
 
@@ -28,29 +29,29 @@
 
 ## 直近の優先成果
 
-### P1: 本番環境へのデプロイ実行（最優先・技術準備完了）
+### P1: 本番環境へのデプロイ実行（実行待ち）
 
 **完了条件**: Vercelで本番環境が稼働し、PostgreSQLデータベースが接続されている
 
-**実行手順**:
+**完了していない理由**: デプロイ自動化スクリプトは完成済みだが、実際のデプロイ実行（`vercel login`、本番環境へのデプロイコマンド実行）がまだ行われていない。
+
+**実行手順（自動化スクリプト使用）**:
 ```bash
-# 1. Vercelプロジェクト作成
+# 1. Vercelログイン（初回のみ）
 vercel login
-vercel
 
-# 2. データベース作成（選択肢）
-#    - Option A: Vercel Postgres
-#    - Option B: Supabase
+# 2. デプロイ自動化スクリプト実行
+npm run deploy:production
 
-# 3. 環境変数設定（Vercelダッシュボード）
-DATABASE_URL=<your-connection-string>
-DATABASE_PROVIDER=prisma
+# 3. データベース環境変数設定（Vercelダッシュボード）
+#    DATABASE_URL=<your-connection-string>
+#    DATABASE_PROVIDER=prisma
 
-# 4. 本番デプロイ
-vercel --prod
+# 4. データベースマイグレーション実行
+vercel exec -- npm run db:migrate:deploy
 
-# 5. データベースマイグレーション
-prisma migrate deploy
+# 5. デプロイ検証スクリプト実行
+bash scripts/verify-deployment.sh
 ```
 
 **技術的前提条件**: ✅ 全項目充足済み
@@ -61,8 +62,10 @@ prisma migrate deploy
 - ✅ 環境変数: Zodバリデーション実装済み（env.ts）
 - ✅ セキュリティ: .env.exampleからプレースホルダー認証情報削除済み
 - ✅ デプロイ設定: vercel.json、README手順完備
+- ✅ デプロイ自動化: scripts/deploy-production.sh, scripts/verify-deployment.sh実装済み
+- ✅ README更新: 本番デプロイ手順、データベース設定手順完備
 
-**現在の状態**: 技術的ブロッカーは全て解消。デプロイ実行のみ。
+**現在の状態**: 全ての準備作業は完了。次は実際にデプロイコマンドを実行し、本番環境を立ち上げるのみ。
 
 ### P2: 本番環境での動作確認とE2Eテスト実行
 
@@ -73,6 +76,7 @@ prisma migrate deploy
 - ✅ テストデータ生成 (`/api/seed`)
 - ✅ 統計API動作 (`/api/stats`)
 - ✅ PostgreSQLデータ永続化
+- ✅ E2Eテストスイート実行
 
 **依存関係**: P1完了後
 
@@ -87,8 +91,8 @@ prisma migrate deploy
 1. **品質基盤**: ✅ 達成済み（971 tests passing、98.26% coverage、TypeScript strict mode）
 2. **データ永続化**: ✅ 達成済み（Prisma + PostgreSQL、singletonクライアント）
 3. **環境設定**: ✅ 達成済み（Zodバリデーション、セキュリティ fixes）
-4. **デプロイ準備**: ✅ 達成済み（技術的前提条件・手順書充足）
-5. **本番デプロイ**: ⏳ P1実行待ち（技術準備完了）
+4. **デプロイ自動化**: ✅ 達成済み（scripts/deploy-production.sh, verify-deployment.sh実装完了）
+5. **本番デプロイ実行**: ⏳ P1実行待ち（技術準備・自動化完了、実行のみ）
 6. **本番動作確認**: ⏳ P2未着手（P1完了後に開始）
 
 ## 技術方針
@@ -137,10 +141,11 @@ export function createStatsService(): StatsService {
 
 **最終更新**: 2026-03-17
 
-**現在の焦点**: P1「本番環境へのデプロイ実行」が最優先。技術準備100%完了、実行のみ。
+**現在の焦点**: P1「本番環境へのデプロイ実行」が最優先。デプロイ自動化スクリプト完成済み（commit f8c030c）、次は実際に`vercel login`してデプロイを実行する。
 
 **品質メトリクス**:
-- 971 tests passing (123 suites)
+- 971 tests passing (126 suites)
 - 98.26% coverage statements
 - TypeScript strict mode 完全準拠
-- Prisma providerカバレッジ: 本番パス100% (seed API route)
+- Prisma providerカバレッジ: 94.28% (seed API route)
+- デプロイ自動化: deploy-production.sh, verify-deployment.sh 実装済み

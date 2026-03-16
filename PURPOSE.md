@@ -24,32 +24,71 @@
 - ESLint: zero warnings
 - アーキテクチャ: Clean Architecture + Repository Factoryパターン（完全準拠）
 - 全テストファイル300行未満（INV-ARCH-001準拠）
+- Clean Architecture違反修正済み: `StatsData`型をcross-cutting層(schemas)へ移植(2026-03-17)
 
 ## 直近の優先成果
 
-### P1: 本番環境へのデプロイ完了
+### P1: インフラストラクチャのプロビジョニング
 
-**完了条件**: Vercelで本番環境が稼働し、PostgreSQLデータベースが接続されている
+**完了条件**: VercelプロジェクトとPostgreSQLデータベースが実際に作成され、アクセス可能
 
 **完了の定義**:
-- [ ] Vercelで本番URLが発行されている
-- [ ] 本番環境で `/api/stats` が正常に動作する
-- [ ] 本番環境で `/api/seed` が正常に動作する
-- [ ] PostgreSQLにデータが保存されている
-- [ ] ダッシュボードが表示される
+- [ ] Vercelプロジェクトが作成されている（`vercel link` 完了）
+- [ ] PostgreSQLデータベースがプロビジョニングされている
+  - Vercel Postgres または
+  - 外部PostgreSQL（Supabase/Neon等）
+- [ ] 本番環境の`DATABASE_URL`が環境変数に設定されている
+  - 確認コマンド: `vercel env ls DATABASE_URL production`
 
 **実行方法**:
 ```bash
-# デプロイ実行（スクリプト完成済み）
-npm run deploy:production
+# 1. Vercelプロジェクトの作成・リンク
+vercel link
 
-# 検証（スクリプト完成済み）
-bash scripts/verify-deployment.sh
+# 2a. Vercel Postgresの場合（推奨）
+# Vercel Dashboard: https://vercel.com/dashboard
+# プロジェクト → Storage → Create Database → Postgres
+
+# 2b. 外部PostgreSQLの場合
+# データベースを作成し、接続文字列を取得
+
+# 3. 環境変数の設定
+vercel env add DATABASE_URL production
+# 接続文字列をペースト
+
+# 4. 設定の確認
+vercel env ls . | grep DATABASE_URL
 ```
 
-**現状**: 全自動化スクリプト完成済み。次はVercelプロジェクト設定とPostgreSQLプロビジョニングのみ。
+**現状**: デプロイスクリプト完成済みだが、**インフラ未構築**。Vercelプロジェクト未作成、PostgreSQL未プロビジョニング。
 
-### P2: 本番環境での動作確認と検証
+### P2: 本番環境へのデプロイ実行
+
+**完了条件**: Vercelで本番環境が稼働し、アプリケーションがアクセス可能
+
+**完了の定義**:
+- [ ] 本番URLが発行されている
+- [ ] アプリケーションが本番環境でビルドされている
+- [ ] データベースマイグレーションが実行されている
+
+**実行方法**:
+```bash
+# デプロイ実行（自動化スクリプト使用）
+bash scripts/deploy-production.sh
+
+# または手動実行
+npm run build
+vercel --prod --yes
+
+# データベースマイグレーション
+vercel exec -- npm run db:migrate:deploy
+```
+
+**依存関係**: P1完了後に実行
+
+**現状**: スクリプト完成済みだが、**P1未完了のため実行不可**。
+
+### P3: 本番環境での動作確認と検証
 
 **完了条件**: 本番環境で主要機能が動作し、E2Eテストがパスする
 
@@ -63,7 +102,19 @@ bash scripts/verify-deployment.sh
 
 **依存関係**: P1完了後に実行
 
-### P3: 認証・認可機能の実装（将来検討）
+**実行方法**:
+```bash
+# 検証スクリプト実行
+bash scripts/verify-deployment.sh
+
+# または手動検証
+curl https://your-app.vercel.app/api/stats
+curl -X POST https://your-app.vercel.app/api/seed \
+  -H "Content-Type: application/json" \
+  -d '{"periodDays": 30, "studentCount": 20}'
+```
+
+**依存関係**: P1完了後に実行
 
 本番デプロイと動作確認完了後に検討。現在のMVPスコープでは必須ではない。
 
@@ -71,8 +122,9 @@ bash scripts/verify-deployment.sh
 
 MVP完了条件:
 
-- [ ] P1: 本番デプロイ完了（実行待ち - スクリプト完成済み）
-- [ ] P2: 本番動作確認完了（P1完了後に実施）
+- [ ] P1: インフラプロビジョニング完了（Vercelプロジェクト作成 + PostgreSQL構築 + DATABASE_URL設定）
+- [ ] P2: 本番デプロイ完了（アプリケーションデプロイ + データベースマイグレーション）
+- [ ] P3: 本番動作確認完了（主要API正常動作 + ダッシュボード表示）
 - [ ] 品質メトリクス維持（テスト971件、カバレッジ95%以上、全ファイル300行未満）
 
 ## 技術方針
@@ -111,12 +163,13 @@ export function createStatsService(): StatsService {
 
 ## 更新ルール
 
-1. **P1/P2完了時**: 完了したタスクのチェックボックスをオンにする
+1. **P1/P2/P3完了時**: 完了したタスクのチェックボックスをオンにする
 2. **品質メトリクス変動時**: テスト数に±10以上の変動があった場合に更新
 3. **直近10コミットに基づく再評価**: 優先順位の再検証が必要な場合に更新
+4. **インフラ変更時**: Vercelプロジェクト作成、データベース構築等のインフラ変更を反映
 
 ---
 
 **最終更新**: 2026-03-17 (直近10コミット反映完了)
 
-**現在の焦点**: P1「本番環境へのデプロイ完了」。全自動化スクリプト完了済み。Vercelプロジェクト設定とPostgreSQLプロビジョニング後にデプロイ実行可能。
+**現在の焦点**: P1「インフラストラクチャのプロビジョニング」。デプロイスクリプトは完成しているが、**Vercelプロジェクト未作成・PostgreSQL未構築**がボトルネック。まずVercelプロジェクトを作成し、PostgreSQLデータベースをプロビジョニングすること。

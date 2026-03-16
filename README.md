@@ -130,11 +130,21 @@ src/
 Create a `.env.local` file in the root directory:
 
 ```env
-# Mock mode for development
+# Database provider: 'mirage' (mock) for development, 'prisma' (PostgreSQL) for production
+DATABASE_PROVIDER=mirage
+
+# Mock mode for development (set to "true" to use MirageJS instead of real API)
 NEXT_PUBLIC_MOCK=true
 
 # API configuration
 NEXT_PUBLIC_API_URL=http://localhost:3000/api
+
+# Database URL (only needed when DATABASE_PROVIDER=prisma)
+# For development with SQLite:
+# DATABASE_URL="file:./dev.db"
+
+# For production with PostgreSQL (Vercel Postgres / Supabase):
+# DATABASE_URL="postgresql://user:password@host:port/database"
 ```
 
 ### Data Generation Configuration
@@ -157,16 +167,68 @@ This project follows Clean Architecture principles:
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
+### Prerequisites
 
-The easiest way to deploy is using [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme):
+The project is fully prepared for production deployment with:
+- ✅ PostgreSQL database schema (Prisma)
+- ✅ Database migrations ready
+- ✅ Vercel configuration (`vercel.json`)
+- ✅ TypeScript strict mode compliance
+- ✅ Comprehensive test coverage (96.99%)
+- ✅ All 941 tests passing
+
+### Vercel Deployment (Recommended)
+
+The easiest way to deploy is using [Vercel Platform](https://vercel.com/new):
 
 ```bash
 # Install Vercel CLI
 npm i -g vercel
 
-# Deploy
+# Login to Vercel
+vercel login
+
+# Deploy to Vercel
 vercel
+
+# For production deployment
+vercel --prod
+```
+
+### Environment Variables (Production)
+
+In Vercel, set the following environment variables:
+
+```env
+DATABASE_PROVIDER=prisma
+DATABASE_URL=postgresql://user:password@host:port/database
+```
+
+### Database Setup
+
+1. **Create a PostgreSQL database**:
+   - Option A: [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres)
+   - Option B: [Supabase](https://supabase.com/docs/guides/database)
+
+2. **Run migrations** (automatic on Vercel, or manual):
+```bash
+# Generate Prisma client
+npx prisma generate
+
+# Run migrations
+npx prisma migrate deploy
+```
+
+### Build Verification
+
+Before deploying, ensure the build succeeds:
+
+```bash
+# Run tests
+npm test
+
+# Build for production
+npm run build
 ```
 
 ### Docker

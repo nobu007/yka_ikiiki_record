@@ -1,4 +1,4 @@
-import { IStatsRepository } from '@/domain/repositories/StatsRepository.types';
+import { StatsRepository } from '@/domain/repositories/StatsRepository';
 import { StatsService } from '@/domain/services/StatsService';
 import { MockStatsRepository } from '@/infrastructure/storage/MockStatsRepository';
 import { PrismaStatsRepository } from '@/infrastructure/repositories/PrismaStatsRepository';
@@ -16,7 +16,7 @@ function getProvider(): DatabaseProvider {
   return provider as DatabaseProvider;
 }
 
-export function createStatsRepository(): IStatsRepository {
+export function createStatsRepository(): StatsRepository {
   const provider = getProvider();
 
   if (provider === 'prisma') {

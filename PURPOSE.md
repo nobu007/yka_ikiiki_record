@@ -8,54 +8,43 @@
 
 この文書は、プロジェクトの**次に終わらせるべき目標**を明確にするための「到達目標と次の一手」を定義するものです。過去の達成履歴ではなく、**次のアクション判断に必要な情報のみ**を記載します。
 
-## 達成済みの品質基盤（2026-03-16時点）
+## 品質基盤（現在のステータス）
 
 ### 品質メトリクス
-- ✅ すべてのテスト: 841/841 passing（819単体 + 22リポジトリ）
+- ✅ すべてのテスト: 841/841 passing
 - ✅ Lintエラー: 0件
 - ✅ TypeScript厳格モード: 100%準拠
 - ✅ 全体カバレッジ: 98.39% statements, 91.49% branches, 98.38% functions
-- ✅ E2Eテスト: 41シナリオ、123テストケース（Chromium, Firefox, WebKit対応）
+- ✅ E2Eテスト: 41シナリオ、123テストケース（3ブラウザ対応）
 
 ### 完了したマイルストーン
-- ✅ **P1: E2Eテスト基盤** - Playwrightによる包括的なE2Eテスト覆盖
-  - ランディングページ → ダッシュボード遷移
-  - データ生成フロー（生徒数・日数・感情種類の設定）
-  - 統計データの表示確認
-  - エモーションチャートの描画（6チャートタイプ）
-  - CI自動実行設定済み（`.github/workflows/ci.yml`）
-
-- ✅ **P2: データ永続化レイヤーの設計と実装** - Prisma + SQLiteによるClean Architecture準拠のデータ永続化
-  - `IRecordRepository` インターフェース（Domain層）
-  - `PrismaRecordRepository` 実装（Infrastructure層）
-  - RecordエンティティとRepositoryの包括的なテスト（22テスト）
-  - Prismaスキーマ、マイグレーション、シードスクリプト（750件のサンプルデータ）
-  - Clean Architecture維持（Domain層はPrisma非依存）
+- ✅ **E2Eテスト基盤** - Playwrightによる包括的なE2Eテスト、CI統合完了
+- ✅ **Prismaデータ永続化レイヤー** - `IRecordRepository`、`PrismaRecordRepository`、Recordエンティティ、Prismaスキーマ、マイグレーション、シード（750件）
 
 ## 直近の優先成果（次に終わらせるべきこと）
 
 ### P1: Prismaリポジトリのアプリケーション統合
 
-**現状**: `PrismaRecordRepository`は実装済みだが、アプリケーション層で未使用。Mirageモックが依然として動作している。
+**現状**: `PrismaRecordRepository`は実装済みだが、アプリケーション層で未使用。APIルートとフックがMirageモックを使用中。
 
 **完了条件**:
-1. Application層のフック（`useDataGeneration`, `useSeedGeneration`）をPrismaリポジトリに接続
-2. APIルート（`/api/stats`, `/api/seed`）をPrismaデータソースに切り替え
-3. Mirageを開発用モックとして残しつつ、本番データフローを確立
-4. 環境変数によるデータソースの切り替え機能（Mirage/Prisma）
-5. E2Eテストによる統合動作確認
+1. APIルート（`/api/stats`, `/api/seed`）をPrismaデータソースに切り替え
+2. Application層フック（`useDataGeneration`, `useSeedGeneration`）をPrismaリポジトリに接続
+3. 環境変数によるデータソース切り替え（Mirage/Prisma）
+4. E2Eテストによる統合動作確認
 
-**実装タスク**:
-1. `src/infrastructure/repositories/PrismaRecordRepository.ts`のインスタンス化
-2. `src/application/hooks/` 内のフックでPrisma repoを使用
-3. `src/app/api/` ルートでPrisma repoを呼び出し
-4. `.env` で `DATABASE_PROVIDER=mirage|prisma` を選択可能にする
-5. Prisma Clientのシングルトン初期化（`src/lib/prisma.ts`）
+**実装範囲**:
+- `src/app/api/stats/route.ts` - `MockStatsRepository` → `PrismaRecordRepository`
+- `src/app/api/seed/route.ts` - Mirage seed → Prisma seed呼び出し
+- `src/application/hooks/useDataGeneration.ts` - Prisma repo統合
+- `src/application/hooks/useSeedGeneration.ts` - Prisma seed統合
+- `src/lib/prisma.ts` - Prisma Clientシングルトン（新規）
+- `.env.local` - `DATABASE_PROVIDER=mirage|prisma`環境変数
 
-**注意点**:
-- Clean Architectureを維持：Domain層はPrismaに依存しない
-- Mirage開発モックを完全に削除せず、開発・テスト用途に残す
-- データ移行スクリプトは不要（初期データはPrisma seedで生成）
+**制約事項**:
+- Clean Architecture維持：Domain層はPrisma非依存
+- Mirageは開発・テスト用途に残す（完全削除禁止）
+- 既存テスト（841件）は全てパスし続けること
 
 ### P2: 認証・認可機能の追加
 
@@ -65,8 +54,8 @@
 1. 認証プロバイダーの選定（NextAuth.js推奨）
 2. ユーザーモデルの実装
 3. ログイン・ログアウトフローの実装
-4. APIルートの保護（認証済みユーザーのみアクセス可能）
-5. E2Eテストでの認証フローの検証
+4. APIルートの保護
+5. E2Eテストでの認証フロー検証
 
 ### P3: 本番環境デプロイ
 
@@ -137,6 +126,6 @@ Presentation層:
 
 ---
 
-**最終更新**: 2026-03-16
-**更新理由**: 直近10コミットの分析に基づき、P1（E2Eテスト基盤）とP2（Prismaデータ永続化レイヤー）が完了していることを確認。次の最優先タスクとしてP1（Prismaリポジトリのアプリケーション統合）、P2（認証機能）、P3（本番デプロイ）を具体化。MirageからPrismaへの移行ステップを明確化。
+**最終更新**: 2026-03-17
+**更新理由**: 直近10コミットの分析に基づき、Prismaレイヤー（bca3efa）は完了しているがアプリケーション統合が未着手であることを確認。P1の実装範囲を具体化し、完了条件を明確化。履歴的説明を削除し、次に取るべきアクションに集中。
 **現在のフェーズ**: 統合フェーズ。Prismaリポジトリをアプリケーション層に統合。

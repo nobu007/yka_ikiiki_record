@@ -14,14 +14,16 @@
 - ✅ すべてのテスト: 841/841 passing
 - ✅ Lintエラー: 0件
 - ✅ TypeScript厳格モード: 100%準拠
-- ✅ 全体カバレッジ: 98.39% statements, 91.49% branches, 98.38% functions
+- ✅ 全体カバレッジ: 91.65% statements, 85.04% branches, 88.12% functions
 - ✅ E2Eテスト: 41シナリオ、123テストケース（3ブラウザ対応）
+
+### 懸念事項
+- ⚠️ **Prismaインフラ層のカバレッジ不足**: `PrismaRecordRepository` (5.12%), `PrismaStatsRepository` (8.69%) - 本番コードを保護できていない
 
 ### 完了したマイルストーン
 - ✅ **E2Eテスト基盤** - Playwrightによる包括的なE2Eテスト、CI統合完了
-- ✅ **Prismaインフラ層** - `IRecordRepository`、`PrismaRecordRepository`、Recordエンティティ、Prismaスキーマ、マイグレーション、シード（750件）
-- ✅ **APIルートPrisma統合** - `/api/stats`、`/api/seed` で環境変数 `DATABASE_PROVIDER=mirage|prisma` による切り替え実装完了
-- ✅ **データ永続化アーキテクチャ** - Domain層（IRecordRepository, StatsService）、Infrastructure層（MockStatsRepository, PrismaRecordRepository, PrismaStatsRepository）、API Routes（Server Components）の3層分離完了
+- ✅ **Prismaインフラ層** - Repository実装、スキーマ定義、マイグレーション、シード（750件）、環境変数による切り替え
+- ✅ **APIルートPrisma統合** - `/api/stats`、`/api/seed` で `DATABASE_PROVIDER=mirage|prisma` による切り替え実装完了
 
 **アーキテクチャに関する注記**:
 - Next.js App Routerでは、Server Components/API Routesがアプリケーション境界となる
@@ -29,6 +31,30 @@
 - 現在の実装（Application hooks → API Routes → Domain Services）はClean Architectureの原則に従っている
 
 ## 直近の優先成果（次に終わらせるべきこと）
+
+### P0: Prismaインフラ層のテストカバレッジ向上
+
+**完了条件**: Prismaインフラ層のカバレッジが90%以上
+
+**実装タスク**:
+1. **PrismaRecordRepositoryのテスト補強**
+   - `save`, `saveMany`, `findById`, `findAll`, `delete`, `exists` メソッドの網羅的テスト
+   - エッジケース（null comment、重複、存在しないレコード）の検証
+   - Prisma Clientのモック化、またはテスト用データベース使用
+
+2. **PrismaStatsRepositoryのテスト補強**
+   - `getStats` メソッドの網羅的テスト
+   - Record → Stats 変換ロジックの検証
+   - 空データ・大規模データでのパフォーマンス検証
+
+3. **PrismaSeedRepositoryのテスト補強**
+   - `generateSeedData` のデータ整合性検証
+   - 生成されるレコード数・分布のテスト
+
+**技術的制約**:
+- Prisma Clientのモック化、またはSQLiteのインメモリデータベース使用
+- 既存の841テストは全てパスし続けること
+- TypeScript strict mode維持
 
 ### P1: 認証・認可機能の実装
 
@@ -222,7 +248,7 @@ Authentication Flow:
 
 このプロジェクトのMVPが「完了」と見なされる条件:
 
-1. **品質基盤**: ✅ 達成済み（Lint 0件、厳格モード、98%+ coverage、841テスト全パス）
+1. **品質基盤**: ⏳ P0完了で達成（Prismaインフラ層のカバレッジ90%以上）
 2. **E2Eテスト**: ✅ 達成済み（41シナリオ、3ブラウザ対応）
 3. **データ永続化**: ✅ 達成済み（Prisma + 環境変数切り替え）
 4. **認証**: ⏳ P1完了で達成（NextAuth.js、Role-based認可）
@@ -232,7 +258,7 @@ Authentication Flow:
 
 この文書は以下の場合に更新します:
 
-1. **P1/P2/P3完了時**: 完了したマイルストーンを「達成済み」として記載
+1. **P0/P1/P2/P3完了時**: 完了したマイルストーンを「達成済み」として記載
 2. **優先順位変更時**: ビジネス要件や技術的制約により優先順位が変更された場合
 3. **四半期ごと**: 少なくとも四半期に1回は現状の再評価
 4. **アーキテクチャ変更時**: Clean Architecture原則に変更があった場合
@@ -241,9 +267,9 @@ Authentication Flow:
 
 **最終更新**: 2026-03-17
 **更新理由**: 直近10コミットの分析に基づき、以下の事実を確認:
-- b3dfc7fでAPIルートのPrisma統合完了
-- bca3efaでPrismaインフラ層実装完了
+- b3dfc7f/bca3efaでPrismaインフラ層実装完了
 - bf9db35/463ef9cでE2Eテスト基盤完了
-- アーキテクチャを再評価：Application hooks → API RoutesのパターンはNext.js App Routerでは正しい
-- P1を「認証・認可機能の実装」に再定義（以前のP1は完了済みのため）
-**現在のフェーズ**: MVP完成フェーズ。認証と本番デプロイを完了させリリース準備。
+- Prismaインフラ層のカバレッジが著しく低い（5-10%）ことを特定
+- P0として「Prismaインフラ層のテストカバレッジ向上」を新規追加
+- P1（認証）に着手前のため、詳細すぎる実装範囲を削除して簡素化
+**現在のフェーズ**: 品質確保フェーズ。Prismaインフラ層のテストを補強し、本番コードを保護してから認証実装へ。

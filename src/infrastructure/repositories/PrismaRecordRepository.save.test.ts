@@ -1,9 +1,9 @@
-import { setupTest, createMockRecord } from './PrismaRecordRepository.setup';
+import { setupTest } from './PrismaRecordRepository.setup';
 import { Record } from '@/domain/entities/Record';
 
 describe('PrismaRecordRepository - save', () => {
-  let repository: any;
-  let prisma: any;
+  let repository: ReturnType<typeof setupTest>['repository'];
+  let prisma: ReturnType<typeof setupTest>['prisma'];
 
   beforeAll(() => {
     const setup = setupTest();

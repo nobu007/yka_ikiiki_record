@@ -1,8 +1,8 @@
 import { setupTest } from './PrismaRecordRepository.setup';
 
 describe('PrismaRecordRepository - query', () => {
-  let repository: any;
-  let prisma: any;
+  let repository: ReturnType<typeof setupTest>['repository'];
+  let prisma: ReturnType<typeof setupTest>['prisma'];
 
   beforeAll(() => {
     const setup = setupTest();

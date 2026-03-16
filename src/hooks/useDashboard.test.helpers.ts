@@ -23,7 +23,7 @@ export const mockValidationResponse = {
   invalid: 'data'
 };
 
-export const setupMockFetch = (response: any, delay?: number) => {
+export const setupMockFetch = (response: unknown, delay?: number) => {
   if (delay) {
     (global.fetch as jest.Mock).mockImplementation(
       () => new Promise(resolve => {
@@ -41,7 +41,7 @@ export const setupMockFetchError = (error: Error) => {
   (global.fetch as jest.Mock).mockRejectedValueOnce(error);
 };
 
-export const createMockResponse = (ok: boolean, status: number, statusText: string, data?: any) => ({
+export const createMockResponse = (ok: boolean, status: number, statusText: string, data?: unknown) => ({
   ok,
   status,
   statusText,
@@ -50,19 +50,19 @@ export const createMockResponse = (ok: boolean, status: number, statusText: stri
 
 export const renderDashboardHook = () => renderHook(() => useDashboard());
 
-export const executeHandleGenerate = async (result: any) => {
+export const executeHandleGenerate = async (result: ReturnType<typeof renderDashboardHook>['result']) => {
   await act(async () => {
     await result.current.handleGenerate();
   });
 };
 
-export const waitForGenerationComplete = async (result: any) => {
+export const _waitForGenerationComplete = async (result: ReturnType<typeof renderDashboardHook>['result']) => {
   await waitFor(() => {
     expect(result.current.isGenerating).toBe(false);
   });
 };
 
-export const expectDefaultState = (result: any) => {
+export const expectDefaultState = (result: ReturnType<typeof renderDashboardHook>['result']) => {
   expect(result.current.isGenerating).toBe(false);
   expect(result.current.notification).toEqual({
     show: false,
@@ -72,7 +72,7 @@ export const expectDefaultState = (result: any) => {
   expect(result.current.isLoadingMessage).toBeNull();
 };
 
-export const expectSuccessState = (result: any) => {
+export const expectSuccessState = (result: ReturnType<typeof renderDashboardHook>['result']) => {
   expect(result.current.isGenerating).toBe(false);
   expect(result.current.notification).toEqual({
     show: true,
@@ -82,14 +82,14 @@ export const expectSuccessState = (result: any) => {
   expect(result.current.isLoadingMessage).toBeNull();
 };
 
-export const expectErrorState = (result: any) => {
+export const expectErrorState = (result: ReturnType<typeof renderDashboardHook>['result']) => {
   expect(result.current.isGenerating).toBe(false);
   expect(result.current.notification.show).toBe(true);
   expect(result.current.notification.type).toBe('error');
   expect(result.current.isLoadingMessage).toBeNull();
 };
 
-export const expectLoadingState = (result: any) => {
+export const expectLoadingState = (result: ReturnType<typeof renderDashboardHook>['result']) => {
   expect(result.current.isGenerating).toBe(true);
   expect(result.current.isLoadingMessage).toBe(MESSAGES.loading.generating);
 };

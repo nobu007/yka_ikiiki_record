@@ -29,6 +29,13 @@ const eslintConfig = [
       ],
       "react-hooks/exhaustive-deps": "off"
     }
+  },
+  {
+    files: ["**/*.test.ts", "**/*.test.tsx", "**/*.test.setup.ts", "**/*.test.helpers.ts", "**/*.setup.ts", "**/*.types.ts"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-require-imports": "off"
+    }
   }
 ];
 

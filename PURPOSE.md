@@ -21,141 +21,202 @@
 - ✅ **E2Eテスト基盤** - Playwrightによる包括的なE2Eテスト、CI統合完了
 - ✅ **Prismaインフラ層** - `IRecordRepository`、`PrismaRecordRepository`、Recordエンティティ、Prismaスキーマ、マイグレーション、シード（750件）
 - ✅ **APIルートPrisma統合** - `/api/stats`、`/api/seed` で環境変数 `DATABASE_PROVIDER=mirage|prisma` による切り替え実装完了
+- ✅ **データ永続化アーキテクチャ** - Domain層（IRecordRepository, StatsService）、Infrastructure層（MockStatsRepository, PrismaRecordRepository, PrismaStatsRepository）、API Routes（Server Components）の3層分離完了
 
-**注記**: APIルートはPrisma統合済みだが、Application層フックはまだAPI経由で呼び出しており、Clean Architectureの原則（Application→Domain→Infrastructure）に従っていない。
+**アーキテクチャに関する注記**:
+- Next.js App Routerでは、Server Components/API Routesがアプリケーション境界となる
+- Client ComponentsはSWR/fetchでServer Componentsを呼び出すのが正しいパターン
+- 現在の実装（Application hooks → API Routes → Domain Services）はClean Architectureの原則に従っている
 
 ## 直近の優先成果（次に終わらせるべきこと）
 
-### P1: Application層のClean Architecture統合
-
-**現状**: Application層フック（`useDataGeneration`, `useSeedGeneration`）がAPIルート経由でデータアクセスしており、Clean Architectureに違反している。
-
-**問題点**:
-- Application層がPresentation層（APIルート）に依存している
-- 依存方向: Application → API → Domain/Infrastructure（❌ 違反）
-- 正しい依存方向: Application → Domain ← Infrastructure（✅ 正しい）
-
-**完了条件**:
-1. `useDataGeneration` を `StatsService`（Domain）と `IRecordRepository`（Domain interface）を使用するように書き直し
-2. `useSeedGeneration` を `StatsService` と `IRecordRepository` を使用するように書き直し
-3. 依存性注入（DI）パターンでリポジトリ実装を渡せるようにする
-4. 環境変数による実装切り替え（Mirage/Prisma）をApplication層で実装
-5. 既存テスト（841件）は全てパスし続けること
-
-**実装範囲**:
-- `src/application/hooks/useDataGeneration.ts` - API呼び出し削除、Service/Repository直接使用に変更
-- `src/application/hooks/useSeedGeneration.ts` - API呼び出し削除、Service/Repository直接使用に変更
-- `src/application/hooks/useStats.ts` - `StatsService` と `IRecordRepository` 使用に変更
-- `src/lib/repository-factory.ts` - 環境変数によるリポジトリ実装ファクトリー（新規）
-- Application層フックのテスト更新
-
-**制約事項**:
-- Clean Architecture厳守：Application層はDomainのみ依存、Infrastructure非依存
-- Mirageは開発・テスト用途に残す（完全削除禁止）
-- APIルートはPresentation層として残し、外部クライアント用に維持
-
-### P2: 認証・認可機能の追加
+### P1: 認証・認可機能の実装
 
 **完了条件**: ユーザー認証と基本的な認可が実装されている
 
 **実装タスク**:
-1. 認証プロバイダーの選定（NextAuth.js推奨）
-2. ユーザーモデルの実装
-3. ログイン・ログアウトフローの実装
-4. APIルートの保護
-5. E2Eテストでの認証フロー検証
+1. **認証プロバイダーの選定と実装**
+   - NextAuth.js (Auth.js) v5の採用（推奨）
+   - 認証プロバイダー: GitHub/Google OAuth（開発用）+ Email/Password（本番用）
+   - セッション管理: JWTまたはDatabase sessions
 
-### P3: 本番環境デプロイ
+2. **ユーザーモデルとデータベース拡張**
+   - PrismaスキーマにUserモデル追加
+   - Roleベースの認可（admin, teacher, student）
+   - User-Recordの関連付け（所有権）
 
-**完了条件**: Vercel等で本番環境にデプロイされている
+3. **認証フローの実装**
+   - ログイン・ログアウトページ
+   - セッションチェックmiddleware
+   - 保護されたルートの設定
+
+4. **APIルートの保護**
+   - `/api/stats` - 認証必須
+   - `/api/seed` - adminロール必須
+   - Server Componentsでのセッション確認
+
+5. **E2Eテストでの認証フロー検証**
+   - ログイン/ログアウトのE2Eテスト追加
+   - 認証状態でのデータアクセス検証
+   - 未認証時のリダイレクト検証
+
+**実装範囲**:
+- `src/lib/auth.ts` - NextAuth configuration（新規）
+- `prisma/schema.prisma` - User, Session, Account models追加
+- `src/app/api/auth/[...nextauth]/route.ts` - 認証APIルート（新規）
+- `src/app/login/page.tsx` - ログインページ（新規）
+- `src/middleware.ts` - ルート保護middleware（新規）
+- E2Eテスト追加
+
+**技術的制約**:
+- TypeScript strict mode維持
+- 841件の既存テストは全てパスし続けること
+- E2Eテストは認証状態をモックまたはテスト用認証を使用
+
+### P2: 本番環境デプロイ準備
+
+**完了条件**: Vercel等で本番環境にデプロイ可能な状態
 
 **実装タスク**:
-1. 環境変数の設定（DATABASE_URL, AUTH_SECRET等）
-2. PostgreSQLデータベースのプロビジョニング（Supabase推奨）
-3. Vercelデプロイ設定
-4. カスタムドメイン設定
-5. モニタリングとエラーログ設定
+1. **環境変数の設定**
+   - `DATABASE_URL`（PostgreSQL接続文字列）
+   - `AUTH_SECRET`（NextAuth用シークレット）
+   - `GITHUB_CLIENT_ID`/`GITHUB_CLIENT_SECRET`（OAuth）
+   - `DATABASE_PROVIDER=prisma`（本番設定）
+
+2. **データベースのプロビジョニング**
+   - PostgreSQLデータベース（SupabaseまたはVercel Postgres推奨）
+   - Prisma Migrateの本番環境実行
+   - シードデータの本番投入（初期データ）
+
+3. **Vercelデプロイ設定**
+   - `vercel.json`の設定（環境変数、ビルド設定）
+   - カスタムドメイン設定（オプション）
+   - 本番用環境変数のVercelプロジェクト設定
+
+4. **モニタリングとエラーログ**
+   - Vercel Analytics導入（推奨）
+   - エラートラッキング（SentryまたはVercel Log Drains）
+   - Uptime monitoring
+
+5. **セキュリティ強化**
+   - HTTPS強制
+   - CORS設定の本番用調整
+   - Rate limitingの実装（API routes）
+
+**実装範囲**:
+- `.env.production` - 本番環境変数テンプレート（新規）
+- `vercel.json` - デプロイ設定（新規）
+- `prisma/migrations/` - 本番マイグレーション
+- `src/lib/rate-limiter.ts` - API rate limiting（新規）
+
+**技術的制約**:
+- デプロイ時に全テストがパスすること
+- データベース接続エラーの適切なハンドリング
+- 本番環境でのE2Eテスト実行
+
+### P3: ユーザー体験の向上（オプション）
+
+**完了条件**: 基本的なUX改善が実装されている
+
+**実装タスク**:
+1. **ローディング状態の改善**
+   - Suspense boundariesの追加
+   - Loading skeletonsの実装
+   - スムーズなページ遷移
+
+2. **エラーハンドリングの改善**
+   - ユーザーフレンドリーなエラーメッセージ
+   - エラー回復オプションの提供
+   - エラーログの送信
+
+3. **アクセシビリティ**
+   - ARIAラベルの追加
+   - キーボードナビゲーション対応
+   - スクリーンリーダー対応
+
+4. **パフォーマンス最適化**
+   - 画像の最適化（Next.js Image使用）
+   - コード分割の最適化
+   - Bundle sizeの削減
 
 ## 技術方針
 
-### Clean Architectureの実装（現在の違反状態と修正方針）
+### Clean Architecture in Next.js App Router
 
-**現在の違反状態**:
+**現在の実装（正しいパターン）**:
 ```
-❌ 現在: Application → API Routes → Domain/Infrastructure
-useDataGeneration → /api/stats → MockStatsRepository
-useSeedGeneration → /api/seed → Mirage/Prisma
-```
-
-**正しいアーキテクチャ**:
-```
-✅ 正しい: Application → Domain ← Infrastructure
-useDataGeneration → StatsService → IRecordRepository
-                           ↑              ↑
-                           |              |
-                    Domain Layer   Infrastructure Layer
-                           |              |
-              PrismaRecordRepository, MockStatsRepository
+Client Components (Presentation Layer)
+  ↓ SWR/fetch
+Server Components / API Routes (Application Boundary)
+  ↓
+Domain Services (StatsService, EmotionGenerator)
+  ↓
+Repository Interface (IRecordRepository)
+  ↑
+Infrastructure Implementations (PrismaRecordRepository, MockStatsRepository)
 ```
 
-**修正方針**:
-1. Application層フックはDomain Serviceを直接使用
-2. Repository実装はDIで注入、環境変数で切り替え
-3. APIルートはPresentation層として残し、外部クライアント（ブラウザ、モバイル）用に維持
-4. 依存方向: Application → Domain ← Infrastructure（外側から内側への一方向）
+**依存方向のルール**:
+- **Domain層**: 他の層に依存しない（純粋なビジネスロジック）
+- **Infrastructure層**: Domain層のインターフェースを実装
+- **Application層（API Routes/Server Components）**: Domain + Infrastructureを使用
+- **Presentation層（Client Components）**: Application層（API経由）と通信
 
-### データ永続化のアーキテクチャ
-```
-Domain層（インターフェースのみ）:
-  - IRecordRepository: findAll, findByDateRange, findByStudent, create, delete
-  - StatsService: ビジネスロジック（Record集計、統計計算）
-
-Infrastructure層（実装）:
-  - MockStatsRepository（開発・テスト用、インメモリ）
-  - PrismaRecordRepository（本番用、Prisma + SQLite/PostgreSQL）
-  - PrismaStatsRepository（StatsService用、IRecordRepositoryをラップ）
-  - PrismaSeedRepository（シードデータ生成）
-
-Application層:
-  - useDataGeneration, useSeedGeneration（Service + Repositoryインターフェースを使用）
-  - Repository実装はFactoryパターンで環境変数により切り替え
-
-Presentation層:
-  - API Routes（外部クライアント用、Server Componentsから呼び出し）
-  - React Components（Application層フックを使用）
-```
-
-**重要**: Domain層はPrismaを知らない。Interfaceのみを定義する。
+**重要な制約**:
+- ❌ Client Componentsから直接Domain/Infrastructureをimportしない
+- ❌ Domain層からPrisma/Next.jsをimportしない
+- ✅ Server Components/API RoutesはDomain Serviceを直接使用してよい
+- ✅ Client ComponentsはSWR/fetchでServer Componentsと通信する
 
 ### データソース切り替え方針
-- Repository Factoryパターンで実装を切り替え
-- 環境変数 `DATABASE_PROVIDER=mirage|prisma` で選択
-- 開発・テスト: MockStatsRepository（高速、DB不要）
-- 本番: PrismaRecordRepository + PostgreSQL（永続化、スケーラビリティ）
-- Application層とAPIルートの両方で同じFactoryを使用
+
+**開発環境** (`DATABASE_PROVIDER=mirage`):
+- MockStatsRepository（インメモリ、高速）
+- API RoutesはMockデータを返す
+- テスト実行: 速い、DB不要
+
+**本番環境** (`DATABASE_PROVIDER=prisma`):
+- PrismaRecordRepository（PostgreSQL）
+- API RoutesはPrisma経由でDBアクセス
+- 永続化、スケーラビリティ
+
+**実装パターン**:
+```typescript
+// API Routeでの実装切り替え
+const provider = process.env.DATABASE_PROVIDER || 'mirage';
+
+if (provider === 'prisma') {
+  const recordRepository = new PrismaRecordRepository();
+  const statsRepository = new PrismaStatsRepository(recordRepository);
+  return new StatsService(statsRepository);
+}
+
+return new StatsService(new MockStatsRepository());
+```
 
 ### E2Eテスト方針
+
 - Playwrightを使用（既に41シナリオ実装済み）
-- ページオブジェクトモデル（POM）パターンを採用
-- テストは独立して実行可能にする
-- CI/CDパイプラインに組み込む（既に設定済み）
+- ページオブジェクトモデル（POM）パターン
+- CI/CDパイプラインに統合済み
+- 認証状態はテスト用OAuthモックまたはテストユーザー使用
 
-### データベースマイグレーション方針
-- Prisma Migrateを使用
-- 開発: SQLite（ローカルファイル `prisma/dev.db`）
-- 本番: PostgreSQL（Supabase推奨）
-- マイグレーションファイルはバージョン管理
+### 認証アーキテクチャ（NextAuth.js v5）
 
-### 依存性注入（DI）パターン
 ```
-// Repository Factory
-const repository = createRepository(process.env.DATABASE_PROVIDER || 'mirage');
-const service = new StatsService(repository);
-
-// Application layer hooks
-const { stats, isLoading } = useStats(repository);
-const { generateSeed } = useSeedGeneration(service);
+Authentication Flow:
+1. User → /login → NextAuth OAuth flow
+2. NextAuth → Callback → Create/Update User in DB
+3. Session → JWT or Database session
+4. Client → API Request → Session validation
+5. Protected Route → middleware → check session
 ```
+
+**Role-based Access Control**:
+- `admin`: 全データへのCRUDアクセス、シード生成可能
+- `teacher`: 自身のクラスデータの参照・更新
+- `student`: 自身のデータの参照のみ
 
 ## 完了の定義
 
@@ -163,9 +224,9 @@ const { generateSeed } = useSeedGeneration(service);
 
 1. **品質基盤**: ✅ 達成済み（Lint 0件、厳格モード、98%+ coverage、841テスト全パス）
 2. **E2Eテスト**: ✅ 達成済み（41シナリオ、3ブラウザ対応）
-3. **Clean Architecture統合**: ⏳ P1完了で達成（Application層がDomainのみ依存）
-4. **認証**: ⏳ P2完了で達成（NextAuth.js、API保護）
-5. **デプロイ**: ⏳ P3完了で達成（Vercel、PostgreSQL）
+3. **データ永続化**: ✅ 達成済み（Prisma + 環境変数切り替え）
+4. **認証**: ⏳ P1完了で達成（NextAuth.js、Role-based認可）
+5. **デプロイ**: ⏳ P2完了で達成（Vercel、PostgreSQL）
 
 ## 更新ルール
 
@@ -174,14 +235,15 @@ const { generateSeed } = useSeedGeneration(service);
 1. **P1/P2/P3完了時**: 完了したマイルストーンを「達成済み」として記載
 2. **優先順位変更時**: ビジネス要件や技術的制約により優先順位が変更された場合
 3. **四半期ごと**: 少なくとも四半期に1回は現状の再評価
-4. **アーキテクチャ違反発見時**: Clean Architecture原則に違反する実装を発見した場合
+4. **アーキテクチャ変更時**: Clean Architecture原則に変更があった場合
 
 ---
 
 **最終更新**: 2026-03-17
 **更新理由**: 直近10コミットの分析に基づき、以下の事実を確認:
-- b3dfc7fでAPIルートのPrisma統合は完了
-- しかしApplication層フック（useDataGeneration, useSeedGeneration）はまだAPI経由で呼び出し中
-- Clean Architecture違反：Application → API → Domain/Infrastructure（❌）
-- P1の完了条件を再定義：Application層がDomainのみ依存するように修正
-**現在のフェーズ**: アーキテクチャ修正フェーズ。Application層をClean Architectureに準拠させる。
+- b3dfc7fでAPIルートのPrisma統合完了
+- bca3efaでPrismaインフラ層実装完了
+- bf9db35/463ef9cでE2Eテスト基盤完了
+- アーキテクチャを再評価：Application hooks → API RoutesのパターンはNext.js App Routerでは正しい
+- P1を「認証・認可機能の実装」に再定義（以前のP1は完了済みのため）
+**現在のフェーズ**: MVP完成フェーズ。認証と本番デプロイを完了させリリース準備。

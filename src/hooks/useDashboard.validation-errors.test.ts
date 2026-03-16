@@ -37,7 +37,7 @@ describe('useDashboard - Validation Error Branches (lines 39, 72)', () => {
   });
 
   it('should handle validation error with custom validationError message (line 72)', async () => {
-    mockValidateDataSafe.mockReturnValue([null, new Error('Custom validation failure')]);
+    mockValidateDataSafe.mockReturnValue([null, 'Custom validation failure']);
 
     (fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,

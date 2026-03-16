@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { EmotionChart, ChartData } from './index';
 
 describe('EmotionChart - Branch Coverage (INV-TEST-001)', () => {

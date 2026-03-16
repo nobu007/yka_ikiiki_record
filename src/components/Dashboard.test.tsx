@@ -28,8 +28,7 @@ const mockProps = {
     show: false,
     message: '',
     type: 'info' as const
-  },
-  onNotificationClose: undefined as (() => void) | undefined
+  }
 };
 
 describe('Dashboard', () => {

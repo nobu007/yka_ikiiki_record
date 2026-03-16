@@ -212,10 +212,11 @@ describe('error-handler', () => {
     });
 
     test('logs error with detailed format in non-test environment', () => {
-      const originalEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'production';
-
       const error = new AppError('Error with details', ERROR_CODES.VALIDATION, 400, { field: 'email' });
+
+      // Temporarily switch to production environment
+      const originalEnv = process.env.NODE_ENV;
+      process.env = { ...process.env, NODE_ENV: 'production' };
 
       logError(error, 'TestContext');
 
@@ -228,7 +229,8 @@ describe('error-handler', () => {
         stack: error.stack
       });
 
-      process.env.NODE_ENV = originalEnv;
+      // Restore original environment
+      process.env = { ...process.env, NODE_ENV: originalEnv };
     });
   });
 

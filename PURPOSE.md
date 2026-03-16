@@ -25,7 +25,7 @@
 
 ## 直近の優先成果
 
-### P1: 本番環境へのデプロイ（最優先）
+### P1: 本番環境へのデプロイ実行（最優先）
 
 **完了条件**: Vercelで本番環境が稼働し、PostgreSQLデータベースが接続されている
 
@@ -35,12 +35,16 @@
 3. 環境変数設定: `DATABASE_URL`, `DATABASE_PROVIDER=prisma`
 4. デプロイ実行
 5. 本番URLで動作確認
+6. Prismaマイグレーション実行: `prisma migrate deploy`
 
-**現在の状態**: デプロイ準備完了
-- Prismaスキーマ: PostgreSQLに切り替え済み (ff6b575)
-- Vercel設定: `vercel.json` 作成済み
-- マイグレーション: PostgreSQL用に作成済み (3360ae3)
-- postinstallスクリプト: `prisma generate` 設定済み
+**準備完了項目**:
+- ✅ Prismaスキーマ: PostgreSQLに切り替え済み (ff6b575)
+- ✅ Vercel設定: `vercel.json` 作成済み
+- ✅ マイグレーション: PostgreSQL用に作成済み (3360ae3)
+- ✅ postinstallスクリプト: `prisma generate` 設定済み
+- ✅ TypeScript strict mode: 全テストファイル準拠済み (152e886, 7f9ecb7)
+- ✅ ESLint: test files設定完了 (edfc0a6)
+- ✅ 941 tests: 全件パス確認済み
 
 ### P2: 認証・認可機能の実装
 
@@ -109,4 +113,4 @@
 ---
 
 **最終更新**: 2026-03-17
-**更新理由**: 直近10コミットの分析に基づき、本番デプロイ準備が完了していることを確認。P1を「本番デプロイ実行」として再定義。
+**更新理由**: 直近10コミットの分析に基づき、本番デプロイの**準備段階が完了**していることを確認。P1を「本番デプロイ実行」として明確化し、TypeScript strict mode準拠とESLFint設定完了を反映。

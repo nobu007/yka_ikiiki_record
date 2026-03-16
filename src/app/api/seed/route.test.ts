@@ -1,7 +1,6 @@
 import { NextRequest } from 'next/server';
 import { POST, GET } from './route';
 import { dataService } from '@/infrastructure/services/dataService';
-import { createStatsService, isPrismaProvider } from '@/infrastructure/factories/repositoryFactory';
 
 const getRouteHandlers = () => {
   const route = require('./route');

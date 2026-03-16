@@ -269,6 +269,41 @@ describe('PrismaStatsRepository', () => {
 
       await expect(repository.saveStats(stats)).resolves.not.toThrow();
     });
+
+    it('should handle out of bounds student index with fallback to Unknown', async () => {
+      const stats = {
+        overview: {
+          count: 2,
+          avgEmotion: 82.5,
+        },
+        monthlyStats: [
+          {
+            month: '2024-01',
+            count: 2,
+            avgEmotion: 82.5,
+          },
+        ],
+        studentStats: [],
+        dayOfWeekStats: [],
+        emotionDistribution: [],
+        timeOfDayStats: {
+          morning: 0,
+          afternoon: 0,
+          evening: 0,
+        },
+      };
+
+      mockRecordRepository.saveMany.mockResolvedValue([]);
+
+      await repository.saveStats(stats);
+
+      expect(mockRecordRepository.saveMany).toHaveBeenCalled();
+      const savedRecords = mockRecordRepository.saveMany.mock.calls[0]![0] as Array<{ student: string }>;
+      // When studentStats is empty, random index will be out of bounds, should use 'Unknown'
+      savedRecords.forEach(record => {
+        expect(record.student).toBe('Unknown');
+      });
+    });
   });
 
   describe('generateSeedData', () => {

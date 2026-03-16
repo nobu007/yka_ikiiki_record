@@ -210,6 +210,26 @@ describe('error-handler', () => {
       // In test environment, logError uses simplified format
       expect(mockConsoleError).toHaveBeenCalledWith('[APP] VALIDATION_ERROR: Error with details');
     });
+
+    test('logs error with detailed format in non-test environment', () => {
+      const originalEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'production';
+
+      const error = new AppError('Error with details', ERROR_CODES.VALIDATION, 400, { field: 'email' });
+
+      logError(error, 'TestContext');
+
+      // In non-test environment, logError uses detailed format
+      expect(mockConsoleError).toHaveBeenCalledWith('[TestContext] Error:', {
+        code: 'VALIDATION_ERROR',
+        message: 'Error with details',
+        status: 400,
+        details: { field: 'email' },
+        stack: error.stack
+      });
+
+      process.env.NODE_ENV = originalEnv;
+    });
   });
 
   describe('errorTypeGuards', () => {

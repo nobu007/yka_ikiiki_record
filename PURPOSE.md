@@ -158,7 +158,7 @@ export function createStatsService(): StatsService {
 
 ---
 
-**最終更新**: 2026-03-17 (直近10コミット反映完了 - commit 68c3865)
+**最終更新**: 2026-03-17 (直近10コミット反映完了 - commit 11dd7c2)
 
 **現在の焦点**: P1「本番環境へのデプロイ完了」。デプロイ自動化スクリプト完成済み。人間による `vercel login` と `npm run deploy:production` 実行、DATABASE_URL設定が必要。
 
@@ -166,5 +166,5 @@ export function createStatsService(): StatsService {
 - **Clean Architecture完全準拠**: Presentation層がInfrastructure層の型（GeneratedStats）に依存する違反を修正し、StatsData型をcross-cutting層（schemas/api.ts）へ移動（commit 68c3865）
 - **型安全性完全達成**: PrismaRecordRepository.query.test.tsで最後の `any` 型を `Record` 型に置き換え、SYSTEM_CONSTITUTION.md Type Supremacy原則に100%準拠（commit f3bcc7b）
 - **重複排除原則適用**: 未使用の `getRouteHandlers` 関数を削除（commit 178781f）
-- INV-ARCH-001完全準拠: テストファイル単一責務化（seed route: 329行→162/109/97/79行へ分割）
+- INV-ARCH-001完全準拠: テストファイル単一責務化（最大292行、全テストファイル300行未満を維持）
 - 本番デプロイ準備完了: 自動化スクリプト・検証スクリプト・ドキュメント完備

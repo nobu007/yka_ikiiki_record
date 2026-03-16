@@ -16,63 +16,64 @@
 2. **データ永続化**: PostgreSQLで生徒の記録が保存される
 3. **品質維持**: すべてのテストがパスし、カバレッジ95%以上を維持
 
-## 品質基盤の現状
+## 現状: コード完了、デプロイ準備完了
 
-- テスト: 974/974 passing (126 suites)
-- カバレッジ: 98.35% statements, 91.81% branches, 94.57% functions, 98.25% lines
-- TypeScript: strict mode 完全準拠、**any型0件**
-- ESLint: zero warnings
-- アーキテクチャ: Clean Architecture + Repository Factoryパターン（完全準拠）
-- 全テストファイル300行未満
+### 開発品質の現状
+
+- **テスト**: 974/974 passing (126 suites) - 完全合格
+- **カバレッジ**: 98.35% statements, 91.81% branches, 94.57% functions, 98.25% lines
+- **TypeScript**: strict mode 完全準拠、**any型0件**
+- **ESLint**: zero warnings
+- **アーキテクチャ**: Clean Architecture完全準拠（最近の改善でStatsData型をcross-cutting層に移動）
+- **テスト品質**: 全テストファイル300行未満、Seed API TTL cleanupテストカバレッジ97.67%
+
+### 完了済みの開発作業
+
+- ✅ デプロイスクリプト完成 (`scripts/deploy-production.sh`)
+- ✅ 検証スクリプト完成 (`scripts/verify-deployment.sh`)
+- ✅ Clean Architecture違反修正 (StatsData型をInfrastructure→cross-cutting/schemasに移動)
+- ✅ Seed API TTL cleanupテスト強化 (94.28% → 97.67%)
+- ✅ Repository Factoryパターン実装 (Mirage/Prisma環境切り替え可能)
 
 ## 直近の優先成果
 
-### P1: インフラストラクチャのプロビジョニング
+### 現在の焦点: 運用デプロイの実行
 
-**完了条件**: VercelプロジェクトとPostgreSQLデータベースが実際に作成され、アクセス可能
+**重要**: コードベースは完全にデプロイ準備完了。残りは**運用作業のみ**（開発作業はすべて完了）。
 
-**完了の定義**:
-- [ ] Vercelプロジェクトが作成されている（`vercel link` 完了）
-- [ ] PostgreSQLデータベースがプロビジョニングされている
-  - Vercel Postgres または
-  - 外部PostgreSQL（Supabase/Neon等）
-- [ ] 本番環境の`DATABASE_URL`が環境変数に設定されている
-  - 確認コマンド: `vercel env ls DATABASE_URL production`
+#### ステップ1: Vercelプロジェクト作成（5分）
 
-**実行方法**:
 ```bash
-# 1. Vercelプロジェクトの作成・リンク
+# プロジェクトをVercelにリンク
+cd /home/jinno/yka_ikiiki_record
 vercel link
+```
 
-# 2a. Vercel Postgresの場合（推奨）
-# Vercel Dashboard: https://vercel.com/dashboard
-# プロジェクト → Storage → Create Database → Postgres
+#### ステップ2: PostgreSQLデータベース構築（10分）
 
-# 2b. 外部PostgreSQLの場合
-# データベースを作成し、接続文字列を取得
+**選択肢A: Vercel Postgres（推奨）**
+1. Vercel Dashboardを開く: https://vercel.com/dashboard
+2. プロジェクトを選択 → Storage → Create Database → Postgres
+3. DATABASE_URLをコピー
 
-# 3. 環境変数の設定
+**選択肢B: 外部PostgreSQL（Supabase/Neon等）**
+1. 外部サービスでデータベースを作成
+2. 接続文字列（postgresql://...）を取得
+
+#### ステップ3: 環境変数設定（2分）
+
+```bash
 vercel env add DATABASE_URL production
 # 接続文字列をペースト
 
-# 4. 設定の確認
+# 確認
 vercel env ls . | grep DATABASE_URL
 ```
 
-**現状**: デプロイスクリプト完成済みだが、**インフラ未構築**。Vercelプロジェクト未作成、PostgreSQL未プロビジョニング。
+#### ステップ4: 本番デプロイ実行（5分）
 
-### P2: 本番環境へのデプロイ実行
-
-**完了条件**: Vercelで本番環境が稼働し、アプリケーションがアクセス可能
-
-**完了の定義**:
-- [ ] 本番URLが発行されている
-- [ ] アプリケーションが本番環境でビルドされている
-- [ ] データベースマイグレーションが実行されている
-
-**実行方法**:
 ```bash
-# デプロイ実行（自動化スクリプト使用）
+# 自動化スクリプト実行
 bash scripts/deploy-production.sh
 
 # または手動実行
@@ -83,48 +84,54 @@ vercel --prod --yes
 vercel exec -- npm run db:migrate:deploy
 ```
 
-**依存関係**: P1完了後に実行
+#### ステップ5: 本番検証（5分）
 
-**現状**: スクリプト完成済みだが、**P1未完了のため実行不可**。
-
-### P3: 本番環境での動作確認と検証
-
-**完了条件**: 本番環境で主要機能が動作し、E2Eテストがパスする
-
-**完了の定義**:
-- [ ] ランディングページ表示 (`/`)
-- [ ] ダッシュボード表示 (`/dashboard` - 統計データ、グラフ)
-- [ ] テストデータ生成 (`POST /api/seed` - 200/201 status)
-- [ ] 統計API動作 (`GET /api/stats` - データ返却)
-- [ ] PostgreSQLデータ永続化確認（再アクセス時にデータ保持）
-- [ ] E2Eテストスイート実行 (`BASE_URL=<prod-url> npm run test:e2e`)
-
-**依存関係**: P1完了後に実行
-
-**実行方法**:
 ```bash
 # 検証スクリプト実行
 bash scripts/verify-deployment.sh
 
 # または手動検証
-curl https://your-app.vercel.app/api/stats
-curl -X POST https://your-app.vercel.app/api/seed \
+PROD_URL=$(vercel ls --prod | grep lively-demo | awk '{print $2}')
+curl https://${PROD_URL}/api/stats
+curl -X POST https://${PROD_URL}/api/seed \
   -H "Content-Type: application/json" \
   -d '{"periodDays": 30, "studentCount": 20}'
 ```
 
-**依存関係**: P1完了後に実行
+### 完了チェックリスト
 
-本番デプロイと動作確認完了後に検討。現在のMVPスコープでは必須ではない。
+運用作業の完了定義:
+
+- [ ] Vercelプロジェクト作成完了 (`vercel link`)
+- [ ] PostgreSQLデータベース構築完了
+- [ ] DATABASE_URL環境変数設定完了
+- [ ] 本番デプロイ実行完了 (`bash scripts/deploy-production.sh`)
+- [ ] 本番URLで主要API動作確認 (`/api/stats`, `/api/seed`)
+- [ ] ダッシュボード表示確認 (`/dashboard`)
+- [ ] 品質メトリクス維持確認（テスト974件、カバレッジ95%以上）
 
 ## 完了の定義
 
-MVP完了条件:
+### MVP完了条件（運用作業）
 
-- [ ] P1: インフラプロビジョニング完了（Vercelプロジェクト作成 + PostgreSQL構築 + DATABASE_URL設定）
-- [ ] P2: 本番デプロイ完了（アプリケーションデプロイ + データベースマイグレーション）
-- [ ] P3: 本番動作確認完了（主要API正常動作 + ダッシュボード表示）
-- [ ] 品質メトリクス維持（テスト974件、カバレッジ95%以上、全ファイル300行未満）
+- [ ] Vercelプロジェクト作成 (`vercel link`)
+- [ ] PostgreSQLデータベース構築
+- [ ] DATABASE_URL環境変数設定
+- [ ] 本番デプロイ実行 (`bash scripts/deploy-production.sh`)
+- [ ] 本番URLで動作確認 (`bash scripts/verify-deployment.sh`)
+- [ ] 品質メトリクス維持（テスト974件、カバレッジ95%以上）
+
+### 次のフェーズへの移行条件
+
+MVP完了後、以下の機能拡張を検討：
+
+- 認証・認可システム（教師/生徒/保護者ロール）
+- 複数クラス対応
+- データエクスポート機能（CSV/JSON）
+- 詳細な分析レポート
+- E2Eテストスイートの本番環境実行
+
+**重要**: これらはMVP完了後の検討事項であり、現在はデプロイ完了を最優先する。
 
 ## 技術方針
 
@@ -171,4 +178,4 @@ export function createStatsService(): StatsService {
 
 **最終更新**: 2026-03-17
 
-**現在の焦点**: P1「インフラストラクチャのプロビジョニング」。コードベースはデプロイ準備完了。
+**現在の焦点**: 運用デプロイの実行。コードベースは完全に完了済みで、すべての開発作業・テスト・アーキテクチャ改善が完了している。残るのはVercelプロジェクト作成とPostgreSQLデータベース構築の運用作業のみ。

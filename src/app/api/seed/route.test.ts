@@ -1,6 +1,12 @@
 import { NextRequest } from 'next/server';
 import { POST, GET } from './route';
 import { dataService } from '@/infrastructure/services/dataService';
+import { createStatsService, isPrismaProvider } from '@/infrastructure/factories/repositoryFactory';
+
+const getRouteHandlers = () => {
+  const route = require('./route');
+  return { POST: route.POST, GET: route.GET };
+};
 
 const originalEnv = process.env.DATABASE_PROVIDER;
 
@@ -44,9 +50,11 @@ const mockStatsService = {
   getStats: mockGetStats
 };
 
+let mockIsPrismaProvider = false;
+
 jest.mock('@/infrastructure/factories/repositoryFactory', () => ({
   createStatsService: jest.fn(() => mockStatsService),
-  isPrismaProvider: jest.fn(() => false),
+  isPrismaProvider: jest.fn(() => mockIsPrismaProvider),
 }));
 
 function createMockRequest(body: object): NextRequest {
@@ -72,6 +80,7 @@ describe('API seed route', () => {
     };
 
     it('returns success response for valid config', async () => {
+      const { POST } = getRouteHandlers();
       const req = createMockRequest(validBody);
       const response = await POST(req);
       const body = await response.json();
@@ -158,10 +167,8 @@ describe('API seed route', () => {
       }
       expect(dataService.generateStats).toHaveBeenCalledTimes(4);
     });
-  });
 
-  describe('GET', () => {
-    it('returns cached data when available', async () => {
+    it('handles errors in GET route', async () => {
       const validBody = {
         config: {
           periodDays: 30,
@@ -174,6 +181,33 @@ describe('API seed route', () => {
       const postReq = createMockRequest(validBody);
       await POST(postReq);
 
+      const req = {
+        json: jest.fn().mockRejectedValue(new Error('Test error')),
+      } as unknown as NextRequest;
+      const response = await POST(req);
+      const body = await response.json();
+
+      expect(body.success).toBe(false);
+      expect(body.error).toBeDefined();
+    });
+  });
+
+  describe('GET', () => {
+    beforeEach(async () => {
+      const validBody = {
+        config: {
+          periodDays: 30,
+          studentCount: 20,
+          distributionPattern: 'normal',
+          seasonalEffects: true,
+          eventEffects: [],
+        },
+      };
+      const postReq = createMockRequest(validBody);
+      await POST(postReq);
+    });
+
+    it('returns cached data when available', async () => {
       const response = await GET();
       const body = await response.json();
 
@@ -185,18 +219,6 @@ describe('API seed route', () => {
     });
 
     it('includes age in metadata', async () => {
-      const validBody = {
-        config: {
-          periodDays: 30,
-          studentCount: 20,
-          distributionPattern: 'normal',
-          seasonalEffects: true,
-          eventEffects: [],
-        },
-      };
-      const postReq = createMockRequest(validBody);
-      await POST(postReq);
-
       const response = await GET();
       const body = await response.json();
 
@@ -205,55 +227,12 @@ describe('API seed route', () => {
     });
 
     it('cleans up old data on GET', async () => {
-      const validBody = {
-        config: {
-          periodDays: 30,
-          studentCount: 20,
-          distributionPattern: 'normal',
-          seasonalEffects: true,
-          eventEffects: [],
-        },
-      };
-      const postReq = createMockRequest(validBody);
-      await POST(postReq);
-
       // First GET should return data
       const response1 = await GET();
       expect(response1.status).toBe(200);
 
       // The cleanupOldData function is called but data is still fresh
       // so it won't be cleaned up yet
-      const response2 = await GET();
-      expect(response2.status).toBe(200);
-    });
-
-    it('handles errors in GET route', async () => {
-      const req = {
-        json: jest.fn().mockRejectedValue(new Error('Test error')),
-      } as unknown as NextRequest;
-      const response = await POST(req);
-      const body = await response.json();
-
-      expect(body.success).toBe(false);
-      expect(body.error).toBeDefined();
-    });
-
-    it('uses default values when config properties are missing', async () => {
-      const validBody = {
-        config: {
-          periodDays: 30,
-          studentCount: 20,
-          distributionPattern: 'normal',
-          seasonalEffects: true,
-          eventEffects: [],
-        },
-      };
-      const postReq = createMockRequest(validBody);
-      await POST(postReq);
-
-      const response1 = await GET();
-      expect(response1.status).toBe(200);
-
       const response2 = await GET();
       expect(response2.status).toBe(200);
     });
@@ -276,6 +255,76 @@ describe('API seed route', () => {
           eventEffects: [],
         })
       );
+    });
+  });
+
+  describe('POST (Prisma provider)', () => {
+    beforeAll(() => {
+      mockIsPrismaProvider = true;
+    });
+
+    afterAll(() => {
+      mockIsPrismaProvider = false;
+    });
+
+    it('calls generateSeedData when using Prisma provider', async () => {
+      const req = createMockRequest({});
+      const response = await POST(req);
+      const body = await response.json();
+
+      expect(mockGenerateSeedData).toHaveBeenCalledTimes(1);
+      expect(body.success).toBe(true);
+      expect(body.message).toBe('テストデータの生成が完了しました');
+    });
+
+    it('ignores request body and uses Prisma seed logic', async () => {
+      const req = createMockRequest({
+        config: { studentCount: 999 },
+      });
+      await POST(req);
+
+      expect(mockGenerateSeedData).toHaveBeenCalledTimes(1);
+      expect(dataService.generateStats).not.toHaveBeenCalled();
+    });
+
+    it('handles errors from generateSeedData', async () => {
+      mockGenerateSeedData.mockRejectedValueOnce(new Error('Database connection failed'));
+
+      const req = createMockRequest({});
+      const response = await POST(req);
+      const body = await response.json();
+
+      expect(body.success).toBe(false);
+      expect(body.error).toBeDefined();
+    });
+  });
+
+  describe('GET (Prisma provider)', () => {
+    beforeAll(() => {
+      mockIsPrismaProvider = true;
+    });
+
+    afterAll(() => {
+      mockIsPrismaProvider = false;
+    });
+
+    it('returns stats from Prisma database', async () => {
+      const response = await GET();
+      const body = await response.json();
+
+      expect(mockGetStats).toHaveBeenCalledTimes(1);
+      expect(body.success).toBe(true);
+      expect(body.data).toBeDefined();
+    });
+
+    it('handles errors from getStats', async () => {
+      mockGetStats.mockRejectedValueOnce(new Error('Query failed'));
+
+      const response = await GET();
+      const body = await response.json();
+
+      expect(body.success).toBe(false);
+      expect(body.error).toBeDefined();
     });
   });
 });

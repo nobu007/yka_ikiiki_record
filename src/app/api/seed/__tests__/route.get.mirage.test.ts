@@ -102,3 +102,46 @@ describe('API seed route GET (Mirage provider)', () => {
     );
   });
 });
+
+describe('API seed route GET - cleanup logic verification', () => {
+  const { resetStoredData, setStoredDataWithTimestamp, getStoredData, cleanupOldData } = require('../route');
+
+  beforeEach(() => {
+    resetStoredData();
+  });
+
+  it('cleanupOldData removes expired data', () => {
+    const now = Date.now();
+    const thirtyOneMinutesAgo = now - (31 * 60 * 1000);
+
+    setStoredDataWithTimestamp(thirtyOneMinutesAgo);
+    expect(getStoredData()).not.toBeNull();
+
+    cleanupOldData();
+
+    expect(getStoredData()).toBeNull();
+  });
+
+  it('cleanupOldData preserves fresh data', () => {
+    const now = Date.now();
+    const oneMinuteAgo = now - (60 * 1000);
+
+    setStoredDataWithTimestamp(oneMinuteAgo);
+    expect(getStoredData()).not.toBeNull();
+
+    cleanupOldData();
+
+    expect(getStoredData()).not.toBeNull();
+  });
+
+  it('resetStoredData clears all data', () => {
+    const now = Date.now();
+    setStoredDataWithTimestamp(now);
+
+    expect(getStoredData()).not.toBeNull();
+
+    resetStoredData();
+
+    expect(getStoredData()).toBeNull();
+  });
+});

@@ -40,6 +40,36 @@ const cleanupOldData = () => {
   }
 };
 
+if (process.env.NODE_ENV === 'test') {
+  module.exports.resetStoredData = () => {
+    storedData = null;
+  };
+
+  module.exports.setStoredDataWithTimestamp = (timestamp: number) => {
+    storedData = {
+      data: {
+        overview: { count: 100, avgEmotion: 3.5 },
+        monthlyStats: [],
+        studentStats: [],
+        dayOfWeekStats: [],
+        emotionDistribution: [10, 20, 40, 20, 10],
+        timeOfDayStats: { morning: 3.2, afternoon: 3.5, evening: 3.0 },
+      },
+      timestamp,
+      config: {
+        studentCount: 20,
+        periodDays: 30,
+        distributionPattern: 'normal',
+        seasonalEffects: true,
+        eventEffects: [],
+      },
+    };
+  };
+
+  module.exports.getStoredData = () => storedData;
+  module.exports.cleanupOldData = cleanupOldData;
+}
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   return withErrorHandler(async () => {
     if (isPrismaProvider()) {

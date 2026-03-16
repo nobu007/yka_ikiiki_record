@@ -1,5 +1,4 @@
 import { PrismaRecordRepository } from './PrismaRecordRepository';
-import { PrismaClient } from '@prisma/client';
 import { Record } from '@/domain/entities/Record';
 
 jest.mock('@prisma/client', () => {

@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * DynamicBarChart Component Definition Tests
  *
  * Tests component structure, props, and memoization
  */
 
-import React from 'react';
-import { memo } from 'react';
 import DynamicBarChart from './DynamicBarChart';
 import type { ChartData } from './DynamicBarChart';
 

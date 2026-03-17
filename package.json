@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint -c eslint.config.mjs --fix .",
+    "lint": "eslint --fix .",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

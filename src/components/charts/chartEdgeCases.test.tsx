@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * Chart Component Edge Cases Tests
  *
  * Shared edge case tests for chart components
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { EmotionChart, ChartData } from './index';
 
 describe('Chart Component Edge Cases', () => {

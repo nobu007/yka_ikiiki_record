@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * EmotionChart Component Tests
  *
  * Tests the base EmotionChart component with props validation and edge cases
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { EmotionChart, ChartData } from './index';
 
 describe('EmotionChart', () => {

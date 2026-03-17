@@ -1,5 +1,4 @@
 import React from 'react';
-import { memo } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DataGenerationPanel from './DataGenerationPanel';
 

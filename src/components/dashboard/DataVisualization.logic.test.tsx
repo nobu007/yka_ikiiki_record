@@ -1,5 +1,3 @@
-import React from 'react';
-import { memo } from 'react';
 import { render, screen } from '@testing-library/react';
 import { DataVisualization } from './DataVisualization';
 import { StatsData } from '@/schemas/api';

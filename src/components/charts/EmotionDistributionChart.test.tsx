@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * EmotionDistributionChart Component Tests
  *
  * Tests the emotion distribution visualization component
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { EmotionDistributionChart } from './index';
 
 describe('EmotionDistributionChart', () => {

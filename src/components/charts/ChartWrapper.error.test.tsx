@@ -5,8 +5,6 @@
  * INV-TEST-001
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { render, screen } from '@testing-library/react';
 import ChartWrapper from './ChartWrapper';
 import { mockChildren } from './ChartWrapper.test.setup';

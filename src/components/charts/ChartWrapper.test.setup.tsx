@@ -4,7 +4,6 @@
  * Shared mocks, helpers, and fixtures for ChartWrapper tests
  */
 
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ChartWrapper from './ChartWrapper';
 

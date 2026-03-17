@@ -1,5 +1,4 @@
 import React from 'react';
-import { memo } from 'react';
 import { StatsDisplay } from './StatsDisplay.test.setup';
 
 describe('StatsDisplay - Component Behavior', () => {

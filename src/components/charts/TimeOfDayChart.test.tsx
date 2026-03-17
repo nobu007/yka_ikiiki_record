@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * TimeOfDayChart Component Tests
  *
  * Tests the time-of-day emotion visualization component
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { TimeOfDayChart } from './index';
 
 describe('TimeOfDayChart', () => {

@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * EmotionTrendChart Component Tests
  *
  * Tests the emotion trend visualization component
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { EmotionTrendChart } from './index';
 
 describe('EmotionTrendChart', () => {

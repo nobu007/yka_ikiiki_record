@@ -5,8 +5,6 @@
  * to achieve 95%+ branch coverage
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { render, screen } from '@testing-library/react';
 import DynamicBarChart from './DynamicBarChart';
 import type { ChartData } from './DynamicBarChart';

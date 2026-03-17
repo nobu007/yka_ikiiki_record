@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * StudentEmotionChart Component Tests
  *
  * Tests the student-specific emotion visualization component
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { StudentEmotionChart } from './index';
 
 describe('StudentEmotionChart', () => {

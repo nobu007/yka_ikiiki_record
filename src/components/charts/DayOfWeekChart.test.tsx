@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * DayOfWeekChart Component Tests
  *
  * Tests the day-of-week emotion visualization component
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { DayOfWeekChart } from './index';
 
 describe('DayOfWeekChart', () => {

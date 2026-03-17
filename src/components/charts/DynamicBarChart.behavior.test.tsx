@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * DynamicBarChart Behavior Tests
  *
  * Tests data transformation, error states, dark mode, and chart configuration
  */
 
-import React from 'react';
-import { memo } from 'react';
 import DynamicBarChart from './DynamicBarChart';
 import type { ChartData } from './DynamicBarChart';
 

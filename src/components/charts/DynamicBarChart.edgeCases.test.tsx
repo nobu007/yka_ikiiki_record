@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * DynamicBarChart Edge Cases Tests
  *
  * Tests data validation edge cases, props edge cases, and error handling
  */
 
-import React from 'react';
-import { memo } from 'react';
 import DynamicBarChart from './DynamicBarChart';
 import type { ChartData } from './DynamicBarChart';
 

@@ -5,8 +5,6 @@
  * INV-TEST-001
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { render } from '@testing-library/react';
 import { EmotionChart, ChartData } from './index';
 

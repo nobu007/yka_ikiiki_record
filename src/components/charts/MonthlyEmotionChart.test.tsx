@@ -1,11 +1,10 @@
+import React from 'react';
 /**
  * MonthlyEmotionChart Component Tests
  *
  * Tests the monthly emotion visualization component
  */
 
-import React from 'react';
-import { memo } from 'react';
 import { MonthlyEmotionChart } from './index';
 
 describe('MonthlyEmotionChart', () => {

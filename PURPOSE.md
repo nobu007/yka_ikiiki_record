@@ -16,66 +16,70 @@
 2. **データ永続化**: PostgreSQLで生徒の記録が保存される
 3. **品質維持**: すべてのテストがパスし、カバレッジ95%以上を維持
 
-## 現状
+## 直近の優先成果
 
-コードベースは本番デプロイ可能な状態です。開発品質目標を達成し、機能的に完成しています。
+### P1: 開発品質維持（継続）
 
-### 品質メトリクス
+コードベースは本番デプロイ可能な品質を維持しています。品質メトリクス：
 
 - **テスト**: 1031/1031 passing (136 suites)
 - **カバレッジ**: 98.68% statements, 94.73% branches, 94.57% functions, 98.62% lines
-- **TypeScript**: strict mode 完全準拠、any型0件、ESLint zero warnings
+- **TypeScript**: strict mode 完全準拠、any型0件
+- **ESLint**: zero warnings（FlatConfig移転済み）
 - **アーキテクチャ**: Clean Architecture完全準拠、全ファイル300行以下（INV-ARCH-001）
+- **セキュリティ**: Next.js 16.1.7（12件の高深刻な脆弱性を修正）
 
-**判断**: 実質的なテスト品質目標は達成済み（残り0.27%はテスト不可能なデッドコード・外部ライブラリ設定）。
+**次の品質タスク**:
+- 新機能追加時のテスト・カバレッジ維持
+- ESLint/TypeScriptエラーの即時修正
+- 重要な脆弱性の速やかなアップデート
 
-## 直近の優先成果
+### P2: 本番デプロイ実行（現在の焦点）
 
-### P1: 開発品質目標 ✅ 完了
+**ブロック中**: デプロイ準備は完了していますが、以下の決定が必要です：
 
-すべての品目標を達成し、コードベースは本番投入可能です。
+**決定事項**:
+1. **デプロイ先の選択**:
+   - Vercelプロジェクトは未作成（`vercel.json` は準備済み）
+   - リポジトリ: `https://github.com/nobu007/yka_ikiiki_record`
 
-- ブランチカバレッジ 94.73%（テスト可能な全ブランチを網羅）
-- TypeScript strict mode 完全準拠（any型0件）
-- ESLint zero warnings
-- 1031/1031テスト合格
-- INV-ARCH-001準拠（全ファイル300行以下）
+2. **データベースの選択**:
+   - Vercel Postgres（推奨・Vercelと統合）
+   - Supabase（外部PostgreSQL）
+   - Neon（サーバーレスPostgreSQL）
 
-### P2: 本番インフラ構築（次のフェーズ）
+3. **環境変数の設定**:
+   - `DATABASE_URL`: PostgreSQL接続文字列
+   - `DATABASE_PROVIDER`: "prisma"
 
-コードベースは機能的に完成しており、デプロイ可能です。このフェーズを開始するには、以下のインフラ作業が必要です。
+**デプロイ手順（決定後の実行）**:
+```bash
+# 1. Vercelプロジェクト作成
+vercel link
+
+# 2. PostgreSQLデータベース構築
+# （選択したプロバイダーのコンソールで実行）
+
+# 3. 環境変数設定
+vercel env add DATABASE_URL production
+vercel env add DATABASE_PROVIDER production
+
+# 4. 本番デプロイ
+vercel --prod
+
+# 5. 本番URLで動作確認
+```
 
 **完了条件**:
 - [ ] Vercelプロジェクト作成
 - [ ] PostgreSQLデータベース構築
 - [ ] DATABASE_URL環境変数設定
 - [ ] 本番デプロイ実行
-- [ ] 本番URLで動作確認
-
-**実行手順**:
-```bash
-# 1. Vercelプロジェクト作成（5分）
-vercel link
-
-# 2. PostgreSQLデータベース構築（10分）
-# 選択肢A: Vercel Postgres（推奨）
-# 選択肢B: 外部PostgreSQL（Supabase/Neon等）
-
-# 3. 環境変数設定（2分）
-vercel env add DATABASE_URL production
-
-# 4. 本番デプロイ実行（5分）
-vercel --prod
-
-# 5. 本番検証（8分）
-# 本番URLにアクセスし、基本動作を確認
-```
-
-**重要**: このフェーズはインフラ作業であり、コード変更を伴いません。
+- [ ] 本番URLで基本動作確認（Landingページ、Dashboard表示、データ生成）
 
 ### P3: 運用開始後の改善
 
-本番デプロイ完了後、実際の使用に基づいて以下を検討：
+P2完了後、実際の使用に基づいて以下を検討：
 
 - 認証・認可システム（教師/生徒/保護者ロール）
 - 複数クラス対応
@@ -85,21 +89,24 @@ vercel --prod
 
 ## 完了の定義
 
-### P1完了 ✅
+### P1完了条件
 
-- テスト可能なすべてのブランチをカバー（94.73%達成）
-- TypeScript strict mode完全準拠
-- ESLint zero warnings
-- 1031/1031テスト合格
-- INV-ARCH-001準拠（全テストファイル300行以下）
+- テスト成功率: 100%（1031/1031）
+- カバレッジ: statements ≥ 95%, branches ≥ 90%, functions ≥ 95%, lines ≥ 95%
+- TypeScript strict mode: 完全準拠（any型0件）
+- ESLint: zero warnings
+- INV-ARCH-001: 全テストファイル300行以下
+
+**現在の状態**: すべての条件を満たしています。継続的な維持が必要です。
 
 ### P2完了条件
 
-- Vercelプロジェクト作成
-- PostgreSQLデータベース構築
-- DATABASE_URL環境変数設定
-- 本番デプロイ実行
-- 本番URLで動作確認
+- Vercelプロジェクトが公開URLでアクセス可能
+- PostgreSQLデータベースが稼働し、データ永続化が機能
+- 本番URLでLandingページ、Dashboard、データ生成機能が正常動作
+- デプロイ手順がドキュメント化され、再現可能
+
+**現在の状態**: デプロイ準備完了。データベースプロバイダーの選択と設定が必要です。
 
 ## 技術方針
 
@@ -146,4 +153,4 @@ export function createStatsService(): StatsService {
 
 **最終更新**: 2026-03-17
 
-**現在の状態**: 開発品質フェーズ完了（ブランチカバレッジ94.73%、残り0.27%はテスト不可能なデッドコード・外部ライブラリ設定）。TypeScript strict mode完全準拠、ESLint zero warnings、INV-ARCH-001準拠。コードベースは本番デプロイ可能。次はP2（本番インフラ構築）の実施。
+**現在の焦点**: P2（本番デプロイ）の実施。コードベースはデプロイ準備完了。データベースプロバイダーの選択とVercelプロジェクトの作成が必要です。

@@ -18,65 +18,64 @@
 
 ## 直近の優先成果
 
-### P1: 開発品質維持（完了・維持フェーズ）
+### P1: 開発品質維持（維持フェーズ）
 
-コードベースは本番デプロイ可能な品質を維持しています。品質メトリクス：
+コードベースは本番デプロイ可能な品質を維持しています。
 
+**最新の品質メトリクス**:
 - **テスト**: 1031/1031 passing (136 suites)
 - **カバレッジ**: 98.68% statements, 94.73% branches, 94.57% functions, 98.62% lines
 - **TypeScript**: strict mode 完全準拠、any型0件
 - **ESLint**: zero warnings（FlatConfig移転済み、circular reference解消済み）
-- **アーキテクチャ**: Clean Architecture完全準拠（Client Componentsの直接Domain import違反を修正 2026-03-17）、全テストファイル300行以下（INV-ARCH-001達成）
-- **セキュリティ**: Next.js 16.1.7（高深刻な脆弱性修正済み）
+- **アーキテクチャ**: Clean Architecture完全準拠
+- **セキュリティ**: Next.js 16.1.7
+
+**直近の完了タスク**:
+- Clean Architecture layer separation違反の修正（Client Components → cross-cutting schemas）
+- ESLint FlatConfig移転とcircular reference解消
+- テストファイルから未使用importの削除
 
 **品質維持タスク**（新機能開発時のみ実行）:
 - 新機能追加時のテスト・カバレッジ維持
 - ESLint/TypeScriptエラーの即時修正
 - 重要な脆弱性の速やかなアップデート
 
-**完了状態**: P1のすべての完了条件を満たしています。継続的な維持のみが必要です。
+### P2: 本番デプロイ実行（人間作業待ち）
 
-### P2: 本番デプロイ実行（現在の焦点）
+**コードベースはデプロイ準備完了**。以下のインフラ設定は人間による作業が必要です。
 
-**コードベースはデプロイ準備完了**。以下のインフラ設定のみが必要です。
-
-**決定事項**:
-1. **デプロイ先**: Vercel（プロジェクト未作成、`vercel.json` は準備済み）
+**必要な作業**:
+1. **Vercelプロジェクト作成**:
    - リポジトリ: `https://github.com/nobu007/yka_ikiiki_record`
+   - `vercel.json` は準備済み
 
-2. **データベース選択**（いずれかを選択）:
+2. **PostgreSQLデータベース構築**（いずれかを選択）:
    - Vercel Postgres（推奨・Vercelと統合）
    - Supabase（外部PostgreSQL）
    - Neon（サーバーレスPostgreSQL）
 
 3. **環境変数設定**:
-   - `DATABASE_URL`: PostgreSQL接続文字列
-   - `DATABASE_PROVIDER`: "prisma"
+   ```bash
+   DATABASE_URL=<PostgreSQL接続文字列>
+   DATABASE_PROVIDER=prisma
+   ```
 
-**デプロイ手順**:
-```bash
-# 1. Vercelプロジェクト作成
-vercel link
-
-# 2. PostgreSQLデータベース構築
-# （選択したプロバイダーのコンソールで実行）
-
-# 3. 環境変数設定
-vercel env add DATABASE_URL production
-vercel env add DATABASE_PROVIDER production
-
-# 4. 本番デプロイ
-vercel --prod
-
-# 5. 本番URLで動作確認
-```
+4. **デプロイ実行**:
+   ```bash
+   vercel link
+   vercel env add DATABASE_URL production
+   vercel env add DATABASE_PROVIDER production
+   vercel --prod
+   ```
 
 **完了条件**:
 - [ ] Vercelプロジェクト作成
 - [ ] PostgreSQLデータベース構築
-- [ ] DATABASE_URL環境変数設定
+- [ ] 環境変数設定
 - [ ] 本番デプロイ実行
-- [ ] 本番URLで基本動作確認（Landingページ、Dashboard表示、データ生成）
+- [ ] 本番URLで基本動作確認
+
+**注意**: AIエージェントはこのタスクを実行できません。インフラ設定には人間の作業が必要です。
 
 ### P3: 運用開始後の改善
 
@@ -92,22 +91,20 @@ P2完了後、実際の使用に基づいて以下を検討：
 
 ### P1完了条件
 
-- テスト成功率: 100%（1031/1031）
+- テスト成功率: 100%
 - カバレッジ: statements ≥ 95%, branches ≥ 90%, functions ≥ 95%, lines ≥ 95%
-- TypeScript strict mode: 完全準拠（any型0件）
+- TypeScript strict mode: 完全準拠
 - ESLint: zero warnings
-- INV-ARCH-001: 全テストファイル300行以下
 
-**現在の状態**: すべての条件を満たしています。継続的な維持が必要です。
+**現在の状態**: すべての条件を満たしています。
 
 ### P2完了条件
 
 - Vercelプロジェクトが公開URLでアクセス可能
-- PostgreSQLデータベースが稼働し、データ永続化が機能
-- 本番URLでLandingページ、Dashboard、データ生成機能が正常動作
-- デプロイ手順がドキュメント化され、再現可能
+- PostgreSQLデータベースが稼働
+- 本番URLで基本機能が正常動作
 
-**現在の状態**: デプロイ準備完了。データベースプロバイダーの選択と設定が必要です。
+**現在の状態**: デプロイ準備完了。人間によるインフラ設定が必要です。
 
 ## 技術方針
 
@@ -147,11 +144,12 @@ export function createStatsService(): StatsService {
 
 1. **P2完了時**: 本番デプロイ完了後、P3（運用改善）へ移行
 2. **新機能開発時**: P3移行後、新しい開発タスクが発生した場合に更新
+3. **品質メトリクス変化時**: P1の状態が大きく変わった場合に更新
 
 ---
 
 **最終更新**: 2026-03-17
 
-**現在の焦点**: P2（本番デプロイ）の実施。コードベースはデプロイ準備完了。技術的負債なし。直近の品質改善：Clean Architecture layer separation修正（Client Components → cross-cutting schemas）、ESLint FlatConfig移行完了。
+**現在の焦点**: P2（本番デプロイ）は人間によるインフラ設定待ち。コードベースはデプロイ準備完了。
 
-**🛑 AGENT NOTICE**: P2 requires human infrastructure setup (Vercel project creation, database configuration). No automated code changes are needed. DO NOT update this document until P2 is complete.
+**🛑 AIエージェントへ**: P2はインフラ設定タスクのため、コード変更は不要です。P2が完了するまでこのドキュメントを更新しないでください。

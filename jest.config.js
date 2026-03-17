@@ -46,14 +46,14 @@ module.exports = {
       tsconfig: {
         // Only override module for Jest (requires CommonJS)
         module: 'commonjs',
-        // jsx: 'react' is inferred from main tsconfig
+        jsx: 'react-jsx',
         // esModuleInterop, allowSyntheticDefaultImports inferred from main tsconfig
       },
     }],
     '^.+\\.(js|jsx)$': ['ts-jest', {
       tsconfig: {
         allowJs: true,
-        jsx: 'react',
+        jsx: 'react-jsx',
       },
     }],
   },

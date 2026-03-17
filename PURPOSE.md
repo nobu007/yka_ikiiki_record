@@ -25,30 +25,35 @@
 - **テスト**: 1031/1031 passing (136 suites)
 - **カバレッジ**: 98.68% statements, 94.73% branches, 94.57% functions, 98.62% lines
 - **TypeScript**: strict mode 完全準拠、any型0件
-- **ESLint**: zero warnings（FlatConfig移転済み）
-- **アーキテクチャ**: Clean Architecture完全準拠、全ファイル300行以下（INV-ARCH-001）
-- **セキュリティ**: Next.js 16.1.7（12件の高深刻な脆弱性を修正）
+- **ESLint**: zero warnings（FlatConfig移転済み、circular reference解消済み）
+- **アーキテクチャ**: Clean Architecture完全準拠、全テストファイル300行以下（INV-ARCH-001達成）
+- **セキュリティ**: Next.js 16.1.7（12件の高深刻な脆弱性を修正済み）
+
+**直近の品質改善実績**（2026-03-17）:
+- Next.js 13.5.11 → 16.1.7 へのセキュリティアップデート完了
+- JSXコンパイルエラー解消（jest.config.jsのtsx設定をreact-jsxに統合）
+- ESLint circular referenceエラー解消（FlatCompat廃止、直接flat config採用）
+- 未使用import除去（testファイルからReact/memoの不必要なimportを削除）
 
 **次の品質タスク**:
 - 新機能追加時のテスト・カバレッジ維持
 - ESLint/TypeScriptエラーの即時修正
 - 重要な脆弱性の速やかなアップデート
 
-### P2: 本番デプロイ実行（現在の焦点）
+### P2: 本番デプロイ実行（次の焦点）
 
-**ブロック中**: デプロイ準備は完了していますが、以下の決定が必要です：
+**準備完了**: コードベースはデプロイ準備完了。以下のインフラ決定と設定が必要です。
 
 **決定事項**:
-1. **デプロイ先の選択**:
-   - Vercelプロジェクトは未作成（`vercel.json` は準備済み）
+1. **デプロイ先**: Vercel（プロジェクト未作成、`vercel.json` は準備済み）
    - リポジトリ: `https://github.com/nobu007/yka_ikiiki_record`
 
-2. **データベースの選択**:
+2. **データベース選択**:
    - Vercel Postgres（推奨・Vercelと統合）
    - Supabase（外部PostgreSQL）
    - Neon（サーバーレスPostgreSQL）
 
-3. **環境変数の設定**:
+3. **環境変数設定**:
    - `DATABASE_URL`: PostgreSQL接続文字列
    - `DATABASE_PROVIDER`: "prisma"
 
@@ -144,13 +149,13 @@ export function createStatsService(): StatsService {
 
 ## 更新ルール
 
-1. **P2完了時**: 本番デプロイ完了後、P3（運用改善）へ移行
-2. **品質メトリクス変動時**: テスト数に±10以上の変動があった場合に更新
-3. **新機能開発時**: 新しい開発タスクが発生した場合に更新
+1. **品質メトリクス変動時**: テスト数に±10以上の変動があった場合に更新
+2. **新機能開発時**: 新しい開発タスクが発生した場合に更新
+3. **P2完了時**: 本番デプロイ完了後、P3（運用改善）へ移行
 4. **定期的な再構成は禁止**: docs-onlyの定期的更新を行わず、実質的な進捗があった場合のみ更新
 
 ---
 
 **最終更新**: 2026-03-17
 
-**現在の焦点**: P2（本番デプロイ）の実施。コードベースはデプロイ準備完了。データベースプロバイダーの選択とVercelプロジェクトの作成が必要です。
+**現在の焦点**: P2（本番デプロイ）の実施。コードベースはデプロイ準備完了。直近では品質メンテナンス（Next.jsアップグレード、ESLint修正）が完了しており、技術的負債なし。データベースプロバイダーの選択とVercelプロジェクトの作成が必要です。

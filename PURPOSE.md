@@ -145,15 +145,8 @@ export function createStatsService(): StatsService {
 
 ## 更新ルール
 
-1. **品質メトリクス変動時**: テスト数に±10以上の変動があった場合に更新
-2. **新機能開発時**: 新しい開発タスクが発生した場合に更新
-3. **P2完了時**: 本番デプロイ完了後、P3（運用改善）へ移行
-4. **23系SOP実行の完全停止**:
-   - **現在の状況**: 直近10コミットのうち5件がdocs-only PURPOSE.md更新となっており、ドキュメント更新ループに陥っている
-   - **本質的な課題**: コードベースは完璧な状態だが、インフラ設定（Vercelプロジェクト作成・データベース選定）が完了していない
-   - **対応方針**: **P2（本番デプロイ）が完了するまで、23系SOPの実行を完全に停止する**
-   - **完了詐称の防止**: 実質的な進展（Vercelプロジェクト作成、データベース設定、または本番デプロイ実行）がない限り、本文書を更新しないこと
-   - **この更新の例外**: P1の品質メトリクス更新（Clean Architecture修正完了の反映）と、23系SOP停止ルールの明示化のための最小限の更新
+1. **P2完了時**: 本番デプロイ完了後、P3（運用改善）へ移行
+2. **新機能開発時**: P3移行後、新しい開発タスクが発生した場合に更新
 
 ---
 
@@ -161,8 +154,4 @@ export function createStatsService(): StatsService {
 
 **現在の焦点**: P2（本番デプロイ）の実施。コードベースはデプロイ準備完了。技術的負債なし。
 
-**重要な警告**:
-- 直近10コミットのうち5件がdocs-onlyのPURPOSE.md更新です
-- 本更新自体もdocs-onlyです
-- **次回の23系SOP実行は、P2（本番デプロイ）が完了してから行ってください**
-- コードベースに問題はないため、インフラ設定（Vercelプロジェクト作成・データベース選定）を進めてください
+**🛑 AGENT NOTICE**: P2 requires human infrastructure setup (Vercel project creation, database configuration). No automated code changes are needed. DO NOT update this document until P2 is complete.

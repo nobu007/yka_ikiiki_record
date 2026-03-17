@@ -37,8 +37,8 @@ describe('PrismaSeedRepository', () => {
 
   describe('generateSeedData', () => {
     it('should generate exactly 750 records', async () => {
-      (mockPrisma.record.deleteMany as jest.Mock).mockResolvedValue({});
-      (mockPrisma.record.createMany as jest.Mock).mockResolvedValue({ count: 750 });
+      (mockPrisma.record.deleteMany).mockResolvedValue({});
+      (mockPrisma.record.createMany).mockResolvedValue({ count: 750 });
 
       const count = await generateSeedData();
 
@@ -50,8 +50,8 @@ describe('PrismaSeedRepository', () => {
     });
 
     it('should clear existing data before generating', async () => {
-      (mockPrisma.record.deleteMany as jest.Mock).mockResolvedValue({});
-      (mockPrisma.record.createMany as jest.Mock).mockResolvedValue({ count: 750 });
+      (mockPrisma.record.deleteMany).mockResolvedValue({});
+      (mockPrisma.record.createMany).mockResolvedValue({ count: 750 });
 
       await generateSeedData();
 
@@ -60,10 +60,10 @@ describe('PrismaSeedRepository', () => {
     });
 
     it('should generate records with valid emotion values', async () => {
-      (mockPrisma.record.deleteMany as jest.Mock).mockResolvedValue({});
+      (mockPrisma.record.deleteMany).mockResolvedValue({});
 
       let capturedData: MockPrismaRecord[] = [];
-      (mockPrisma.record.createMany as jest.Mock).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
+      (mockPrisma.record.createMany).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
         capturedData = data;
         return Promise.resolve({ count: data.length });
       });
@@ -75,10 +75,10 @@ describe('PrismaSeedRepository', () => {
     });
 
     it('should generate records with dates within last 31 days', async () => {
-      (mockPrisma.record.deleteMany as jest.Mock).mockResolvedValue({});
+      (mockPrisma.record.deleteMany).mockResolvedValue({});
 
       let capturedData: MockPrismaRecord[] = [];
-      (mockPrisma.record.createMany as jest.Mock).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
+      (mockPrisma.record.createMany).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
         capturedData = data;
         return Promise.resolve({ count: data.length });
       });
@@ -94,10 +94,10 @@ describe('PrismaSeedRepository', () => {
     });
 
     it('should generate records with valid student names', async () => {
-      (mockPrisma.record.deleteMany as jest.Mock).mockResolvedValue({});
+      (mockPrisma.record.deleteMany).mockResolvedValue({});
 
       let capturedData: MockPrismaRecord[] = [];
-      (mockPrisma.record.createMany as jest.Mock).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
+      (mockPrisma.record.createMany).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
         capturedData = data;
         return Promise.resolve({ count: data.length });
       });
@@ -111,10 +111,10 @@ describe('PrismaSeedRepository', () => {
     });
 
     it('should distribute students across records', async () => {
-      (mockPrisma.record.deleteMany as jest.Mock).mockResolvedValue({});
+      (mockPrisma.record.deleteMany).mockResolvedValue({});
 
       let capturedData: MockPrismaRecord[] = [];
-      (mockPrisma.record.createMany as jest.Mock).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
+      (mockPrisma.record.createMany).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
         capturedData = data;
         return Promise.resolve({ count: data.length });
       });
@@ -128,10 +128,10 @@ describe('PrismaSeedRepository', () => {
     });
 
     it('should generate records with comments from predefined list', async () => {
-      (mockPrisma.record.deleteMany as jest.Mock).mockResolvedValue({});
+      (mockPrisma.record.deleteMany).mockResolvedValue({});
 
       let capturedData: MockPrismaRecord[] = [];
-      (mockPrisma.record.createMany as jest.Mock).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
+      (mockPrisma.record.createMany).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
         capturedData = data;
         return Promise.resolve({ count: data.length });
       });
@@ -153,10 +153,10 @@ describe('PrismaSeedRepository', () => {
     });
 
     it('should include records with comments', async () => {
-      (mockPrisma.record.deleteMany as jest.Mock).mockResolvedValue({});
+      (mockPrisma.record.deleteMany).mockResolvedValue({});
 
       let capturedData: MockPrismaRecord[] = [];
-      (mockPrisma.record.createMany as jest.Mock).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
+      (mockPrisma.record.createMany).mockImplementation(({ data }: { data: MockPrismaRecord[] }) => {
         capturedData = data;
         return Promise.resolve({ count: data.length });
       });

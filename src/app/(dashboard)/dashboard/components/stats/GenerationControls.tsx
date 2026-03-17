@@ -1,7 +1,7 @@
 'use client';
 
 import { memo } from 'react';
-import { DataGenerationConfig, EmotionDistributionPattern } from '@/domain/entities/DataGeneration';
+import type { DataGenerationConfig, EmotionDistributionPattern } from '@/schemas/api';
 
 const DISTRIBUTION_PATTERNS: { label: string; value: EmotionDistributionPattern }[] = [
   { label: '正規分布', value: 'normal' },

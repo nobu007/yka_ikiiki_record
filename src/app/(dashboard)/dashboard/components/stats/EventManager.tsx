@@ -1,7 +1,7 @@
 'use client';
 
 import { memo, useState } from 'react';
-import { ClassEvent } from '@/domain/entities/DataGeneration';
+import type { ClassEvent } from '@/schemas/api';
 
 interface NewEventForm {
   name: string;

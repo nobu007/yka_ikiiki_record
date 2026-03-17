@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import GenerationControls from './GenerationControls';
-import { DataGenerationConfig, DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
+import type { DataGenerationConfig } from '@/schemas/api';
+import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
 
 /**
  * Shared test utilities and mocks for GenerationControls tests

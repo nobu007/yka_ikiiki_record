@@ -1,7 +1,7 @@
 'use client';
 
 import { memo } from 'react';
-import { ClassCharacteristics } from '@/domain/entities/DataGeneration';
+import type { ClassCharacteristics } from '@/schemas/api';
 
 interface Props {
   characteristics: ClassCharacteristics;

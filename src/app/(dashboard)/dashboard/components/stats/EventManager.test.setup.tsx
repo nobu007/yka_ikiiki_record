@@ -1,4 +1,4 @@
-import { ClassEvent } from '@/domain/entities/DataGeneration';
+import type { ClassEvent } from '@/schemas/api';
 
 /**
  * Mock events for testing

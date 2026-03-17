@@ -82,6 +82,7 @@ export const StatsResponseSchema = BaseResponseSchema.extend({
 
 export type EmotionDistributionPattern = z.infer<typeof EmotionDistributionPatternSchema>;
 export type EventEffect = z.infer<typeof EventEffectSchema>;
+export type ClassEvent = EventEffect;
 export type ClassCharacteristics = z.infer<typeof ClassCharacteristicsSchema>;
 export type DataGenerationConfig = z.infer<typeof DataGenerationConfigSchema>;
 export type SeedRequest = z.infer<typeof SeedRequestSchema>;

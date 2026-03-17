@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 import { useDataGeneration } from '@/application/hooks/useDataGeneration';
-import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
+import type { DataGenerationConfig } from '@/schemas/api';
 import GenerationControls from './GenerationControls';
 import EventManager from './EventManager';
 import ClassCharacteristicsEditor from './ClassCharacteristicsEditor';

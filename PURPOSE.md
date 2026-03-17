@@ -152,6 +152,6 @@ export function createStatsService(): StatsService {
 
 **最終更新**: 2026-03-17
 
-**現在の焦点**: P2（本番デプロイ）の実施。コードベースはデプロイ準備完了。技術的負債なし。
+**現在の焦点**: P2（本番デプロイ）の実施。コードベースはデプロイ準備完了。技術的負債なし。直近の品質改善：Clean Architecture layer separation修正（Client Components → cross-cutting schemas）、ESLint FlatConfig移行完了。
 
 **🛑 AGENT NOTICE**: P2 requires human infrastructure setup (Vercel project creation, database configuration). No automated code changes are needed. DO NOT update this document until P2 is complete.

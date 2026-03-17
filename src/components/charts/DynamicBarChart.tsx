@@ -1,6 +1,6 @@
 'use client';
 
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
 import ChartWrapper from './ChartWrapper';

@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { memo } from 'react';
 import { EmotionChart, ChartData } from './index';
 
 describe('Chart Component Edge Cases', () => {

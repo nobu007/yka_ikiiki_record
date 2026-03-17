@@ -1,4 +1,5 @@
 import React from 'react';
+import { memo } from 'react';
 import { render, screen } from '@testing-library/react';
 import EventManager from './EventManager';
 import { clearMocks, defaultProps } from './EventManager.test.setup';

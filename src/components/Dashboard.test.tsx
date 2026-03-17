@@ -1,4 +1,5 @@
 import React from 'react';
+import { memo } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Dashboard } from './Dashboard';
 import { StatsData } from '@/schemas/api';

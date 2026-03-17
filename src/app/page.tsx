@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
-import React from 'react';
+import { memo } from 'react';
 
-const Home = React.memo(function Home() {
+const Home = memo(function Home() {
   redirect('/landing');
   return null;
 });

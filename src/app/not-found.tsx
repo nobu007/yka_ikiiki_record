@@ -1,9 +1,9 @@
 import GridShape from "@/components/common/GridShape";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { memo } from "react";
 
-const NotFound = React.memo(function NotFound() {
+const NotFound = memo(function NotFound() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen p-6 overflow-hidden z-1">
       <GridShape />

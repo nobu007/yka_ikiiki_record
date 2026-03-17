@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 
 // Define proper types without using 'as const'
 type NotificationType = 'success' | 'error' | 'warning' | 'info';
@@ -8,7 +8,7 @@ interface IconProps {
   ariaHidden?: boolean;
 }
 
-export const CheckIcon: React.FC<IconProps> = React.memo(({ className = '', ariaHidden = true }) => (
+export const CheckIcon: React.FC<IconProps> = memo(({ className = '', ariaHidden = true }) => (
   <svg 
     className={`h-4 w-4 text-green-500 mr-2 flex-shrink-0 ${className}`} 
     fill="currentColor" 
@@ -24,7 +24,7 @@ export const CheckIcon: React.FC<IconProps> = React.memo(({ className = '', aria
 ));
 CheckIcon.displayName = 'CheckIcon';
 
-export const PlusIcon: React.FC<IconProps> = React.memo(({ className = '', ariaHidden = true }) => (
+export const PlusIcon: React.FC<IconProps> = memo(({ className = '', ariaHidden = true }) => (
   <svg 
     className={`h-5 w-5 mr-2 ${className}`} 
     fill="none" 
@@ -42,7 +42,7 @@ export const PlusIcon: React.FC<IconProps> = React.memo(({ className = '', ariaH
 ));
 PlusIcon.displayName = 'PlusIcon';
 
-export const ExclamationIcon: React.FC<IconProps> = React.memo(({ className = '', ariaHidden = true }) => (
+export const ExclamationIcon: React.FC<IconProps> = memo(({ className = '', ariaHidden = true }) => (
   <svg className={`h-6 w-6 text-red-400 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden={ariaHidden}>
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
   </svg>
@@ -67,7 +67,7 @@ const NOTIFICATION_COLORS = {
   info: 'text-blue-500'
 } satisfies Record<NotificationType, string>;
 
-export const NotificationIcon: React.FC<NotificationIconProps> = React.memo(({ type, className = '', ariaHidden = true }) => (
+export const NotificationIcon: React.FC<NotificationIconProps> = memo(({ type, className = '', ariaHidden = true }) => (
   <svg 
     className={`h-5 w-5 mr-3 flex-shrink-0 ${NOTIFICATION_COLORS[type]} ${className}`} 
     fill="currentColor" 

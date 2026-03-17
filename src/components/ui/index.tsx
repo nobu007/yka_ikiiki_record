@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import { MESSAGES, UI_CONFIG } from '@/lib/config';
 
 interface LoadingSpinnerProps {
@@ -6,7 +6,7 @@ interface LoadingSpinnerProps {
   color?: string;
 }
 
-export const LoadingSpinner = React.memo<LoadingSpinnerProps>(({ size = 'md', color = 'blue' }) => {
+export const LoadingSpinner = memo<LoadingSpinnerProps>(({ size = 'md', color = 'blue' }) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-6 h-6'
@@ -23,7 +23,7 @@ export const LoadingSpinner = React.memo<LoadingSpinnerProps>(({ size = 'md', co
 
 LoadingSpinner.displayName = 'LoadingSpinner';
 
-export const CheckIcon = React.memo(() => (
+export const CheckIcon = memo(() => (
   <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
   </svg>
@@ -31,7 +31,7 @@ export const CheckIcon = React.memo(() => (
 
 CheckIcon.displayName = 'CheckIcon';
 
-export const PlusIcon = React.memo(() => (
+export const PlusIcon = memo(() => (
   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
   </svg>
@@ -43,7 +43,7 @@ interface NotificationIconProps {
   type: 'success' | 'error' | 'warning' | 'info';
 }
 
-export const NotificationIcon = React.memo<NotificationIconProps>(({ type }) => {
+export const NotificationIcon = memo<NotificationIconProps>(({ type }) => {
   const iconConfig = {
     success: { color: 'text-green-500', path: 'M5 13l4 4L19 7' },
     error: { color: 'text-red-500', path: 'M6 18L18 6M6 6l12 12' },
@@ -69,7 +69,7 @@ interface NotificationProps {
   onClose?: () => void;
 }
 
-export const Notification = React.memo<NotificationProps>(({ show, message, type, onClose }) => {
+export const Notification = memo<NotificationProps>(({ show, message, type, onClose }) => {
   const handleClose = useCallback(() => {
     onClose?.();
   }, [onClose]);
@@ -117,7 +117,7 @@ interface LoadingOverlayProps {
   message?: string;
 }
 
-export const LoadingOverlay = React.memo<LoadingOverlayProps>(({ isLoading, message }) => {
+export const LoadingOverlay = memo<LoadingOverlayProps>(({ isLoading, message }) => {
   if (!isLoading) return null;
 
   return (
@@ -172,7 +172,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
 }
 
-export const Button = React.memo<ButtonProps>(({
+export const Button = memo<ButtonProps>(({
   children,
   onClick,
   disabled = false,

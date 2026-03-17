@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { APP_CONFIG, MESSAGES } from '@/lib/config';
 import { Button, LoadingSpinner, CheckIcon, PlusIcon, Notification } from './ui';
 import { UsageInstructions } from './common/UsageInstructions';
@@ -176,7 +176,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
   );
 };
 
-const Dashboard = React.memo(DashboardComponent);
+const Dashboard = memo(DashboardComponent);
 Dashboard.displayName = 'Dashboard';
 
 export { Dashboard };

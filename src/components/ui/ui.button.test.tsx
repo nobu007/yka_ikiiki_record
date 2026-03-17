@@ -1,4 +1,5 @@
 import React from 'react';
+import { memo } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Button } from './index';
 

@@ -1,4 +1,6 @@
-import React, { useCallback } from 'react';
+'use client';
+
+import { useCallback, memo } from 'react';
 import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
@@ -31,7 +33,7 @@ const defaultColors = [
   '#EC4899',
 ] as const;
 
-export const EmotionChart = React.memo<EmotionChartProps>(({
+export const EmotionChart = memo<EmotionChartProps>(({
   data,
   title,
   height = DEFAULT_CHART_HEIGHT,

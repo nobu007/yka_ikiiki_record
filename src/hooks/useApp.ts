@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useCallback } from 'react';
 import { APP_CONFIG, MESSAGES } from '@/lib/config';
 import { normalizeError, getUserFriendlyMessage, logError } from '@/lib/error-handler';

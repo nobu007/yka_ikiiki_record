@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, memo } from 'react';
 import {
   MonthlyEmotionChart,
   DayOfWeekChart,
@@ -13,7 +13,7 @@ interface DataVisualizationProps {
   data: StatsData;
 }
 
-export const DataVisualization = React.memo<DataVisualizationProps>(({ data }) => {
+export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
   const formatTrendArrow = useCallback((trendline: number[]) => {
     if (trendline.length < 2) return '';
     const lastIndex = trendline.length - 1;

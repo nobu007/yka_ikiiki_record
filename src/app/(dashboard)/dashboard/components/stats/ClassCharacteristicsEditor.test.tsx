@@ -1,4 +1,5 @@
 import React from 'react';
+import { memo } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ClassCharacteristicsEditor from './ClassCharacteristicsEditor';
 
@@ -162,7 +163,7 @@ describe('ClassCharacteristicsEditor', () => {
       expect(ClassCharacteristicsEditor.displayName).toBe('ClassCharacteristicsEditor');
     });
 
-    it('should be wrapped with React.memo', () => {
+    it('should be wrapped with memo', () => {
       const memoizedComponent = ClassCharacteristicsEditor;
       expect(memoizedComponent).toBeDefined();
       expect(typeof memoizedComponent).toBe('object');

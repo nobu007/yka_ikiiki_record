@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, memo } from "react";
 
 type SidebarContextType = {
   isExpanded: boolean;
@@ -24,7 +24,7 @@ export const useSidebar = () => {
   return context;
 };
 
-export const SidebarProvider = React.memo<{ children: React.ReactNode }>(({ 
+export const SidebarProvider = memo<{ children: React.ReactNode }>(({ 
   children 
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);

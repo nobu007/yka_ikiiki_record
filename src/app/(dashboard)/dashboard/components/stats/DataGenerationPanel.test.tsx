@@ -1,4 +1,5 @@
 import React from 'react';
+import { memo } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DataGenerationPanel from './DataGenerationPanel';
 
@@ -130,7 +131,7 @@ describe('DataGenerationPanel', () => {
       expect(DataGenerationPanel.displayName).toBe('DataGenerationPanel');
     });
 
-    it('should be wrapped with React.memo', () => {
+    it('should be wrapped with memo', () => {
       const memoizedComponent = DataGenerationPanel;
       expect(memoizedComponent).toBeDefined();
       expect(typeof memoizedComponent).toBe('object');

@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import { EmotionChart } from './EmotionChart';
 
-export const StudentEmotionChart = React.memo<{ data: Array<{ student: string; avgEmotion: number }> }>(({ data }) => {
+export const StudentEmotionChart = memo<{ data: Array<{ student: string; avgEmotion: number }> }>(({ data }) => {
   const chartData = useMemo(() => ({
     labels: data.map(d => d.student),
     series: [{

@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import { EmotionChart } from './EmotionChart';
 
 // Define chart constants to avoid magic numbers
 const EMOTION_TREND_CHART_HEIGHT = 350;
 
-export const EmotionTrendChart = React.memo<{ data: Array<{ student: string; trendline: number[] }> }>(({ data }) => {
+export const EmotionTrendChart = memo<{ data: Array<{ student: string; trendline: number[] }> }>(({ data }) => {
   const chartData = useMemo(() => ({
     labels: ['7日前', '6日前', '5日前', '4日前', '3日前', '2日前', '1日前'],
     series: data.slice(0, 5).map(student => ({

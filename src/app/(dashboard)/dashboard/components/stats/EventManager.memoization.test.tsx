@@ -5,7 +5,7 @@ describe('EventManager - memoization', () => {
     expect(EventManager.displayName).toBe('EventManager');
   });
 
-  it('should be wrapped with React.memo', () => {
+  it('should be wrapped with memo', () => {
     const memoizedComponent = EventManager;
     expect(memoizedComponent).toBeDefined();
     expect(typeof memoizedComponent).toBe('object');

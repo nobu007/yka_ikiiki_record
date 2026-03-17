@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import { EmotionChart } from './EmotionChart';
 
-export const EmotionDistributionChart = React.memo<{ data: number[] }>(({ data }) => {
+export const EmotionDistributionChart = memo<{ data: number[] }>(({ data }) => {
   const labels = ['1', '2', '3', '4', '5'];
   const chartData = useMemo(() => ({
     labels,

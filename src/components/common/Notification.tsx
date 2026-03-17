@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback, memo } from 'react';
 import { NotificationIcon } from './Icons';
 
 type NotificationType = 'success' | 'error' | 'warning' | 'info';
@@ -17,7 +17,7 @@ const NOTIFICATION_STYLES = {
   info: 'bg-blue-50 border-blue-200 text-blue-800'
 };
 
-export const Notification = React.memo<NotificationProps>(({ 
+export const Notification = memo<NotificationProps>(({ 
   show, 
   message, 
   type, 

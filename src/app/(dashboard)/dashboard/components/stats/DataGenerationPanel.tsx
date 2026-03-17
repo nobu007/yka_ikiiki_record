@@ -1,6 +1,6 @@
 'use client';
 
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useDataGeneration } from '@/application/hooks/useDataGeneration';
 import { DataGenerationConfig } from '@/domain/entities/DataGeneration';
 import GenerationControls from './GenerationControls';

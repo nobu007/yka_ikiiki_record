@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
+import { memo } from 'react';
 import { useDashboard } from '@/hooks/useApp';
 import { ErrorBoundary, LoadingOverlay } from '@/components/ui';
 import { Dashboard } from '@/components/Dashboard';
 
-const DashboardPage = React.memo(function DashboardPage() {
+const DashboardPage = memo(function DashboardPage() {
   const { isGenerating, notification, handleGenerate, isLoadingMessage } = useDashboard();
 
   return (

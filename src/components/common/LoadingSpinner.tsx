@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 
 // Define proper types without using 'as const'
 type LoadingSize = 'sm' | 'md' | 'lg';
@@ -23,7 +23,7 @@ const COLOR_CLASSES = {
   white: 'text-white'
 } satisfies Record<LoadingColor, string>;
 
-export const LoadingSpinner = React.memo<LoadingSpinnerProps>(({
+export const LoadingSpinner = memo<LoadingSpinnerProps>(({
   size = 'md',
   color = 'primary',
   className = '',
@@ -62,7 +62,7 @@ LoadingSpinner.displayName = 'LoadingSpinner';
 /**
  * ローディングオーバーレイコンポーネント
  */
-export const LoadingOverlay = React.memo<{ isLoading: boolean; message?: string }>(({
+export const LoadingOverlay = memo<{ isLoading: boolean; message?: string }>(({
   isLoading,
   message = '読み込み中...'
 }) => {
@@ -85,7 +85,7 @@ LoadingOverlay.displayName = 'LoadingOverlay';
 /**
  * ローディングカードコンポーネント
  */
-export const LoadingCard = React.memo<{ message?: string }>(({
+export const LoadingCard = memo<{ message?: string }>(({
   message = 'データを読み込み中...'
 }) => {
   return (

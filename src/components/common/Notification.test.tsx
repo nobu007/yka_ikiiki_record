@@ -1,4 +1,5 @@
 import React from 'react';
+import { memo } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Notification } from './Notification';
 import { expectClasses } from '@/test-utils/component-helpers';

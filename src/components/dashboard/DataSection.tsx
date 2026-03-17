@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { CheckIcon, PlusIcon } from '@/components/common/Icons';
 import { UI_TEXT, DATA_GENERATION_FEATURES } from '@/lib/constants/messages';
@@ -9,7 +9,7 @@ interface DataSectionProps {
   onGenerate: () => void;
 }
 
-export const DataSection = React.memo<DataSectionProps>(({ isGenerating, onGenerate }) => {
+export const DataSection = memo<DataSectionProps>(({ isGenerating, onGenerate }) => {
   const buttonClasses = getButtonClasses('primary', isGenerating);
   const helpText = isGenerating
     ? UI_TEXT.DASHBOARD.HELP_TEXT_GENERATING

@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 
 interface Step {
   title: string;
@@ -40,7 +40,7 @@ const INSTRUCTIONS_CONFIG: InstructionsConfig = {
   ]
 } as const;
 
-const StepNumber: React.FC<{ number: number }> = React.memo(({ number }) => (
+const StepNumber: React.FC<{ number: number }> = memo(({ number }) => (
   <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full">
     <span className="text-blue-600 font-semibold text-sm">
       {number}
@@ -50,7 +50,7 @@ const StepNumber: React.FC<{ number: number }> = React.memo(({ number }) => (
 
 StepNumber.displayName = 'StepNumber';
 
-const StepIcon: React.FC<{ icon: string }> = React.memo(({ icon }) => (
+const StepIcon: React.FC<{ icon: string }> = memo(({ icon }) => (
   <svg 
     className="h-6 w-6 text-blue-500" 
     fill="none" 
@@ -68,7 +68,7 @@ const StepIcon: React.FC<{ icon: string }> = React.memo(({ icon }) => (
 
 StepIcon.displayName = 'StepIcon';
 
-const InstructionStep: React.FC<{ step: Step; index: number }> = React.memo(({ step, index }) => (
+const InstructionStep: React.FC<{ step: Step; index: number }> = memo(({ step, index }) => (
   <div className="flex items-start space-x-4 bg-white rounded-lg p-4 shadow-sm">
     <StepNumber number={index + 1} />
     <div className="flex-1 min-w-0">
@@ -85,7 +85,7 @@ const InstructionStep: React.FC<{ step: Step; index: number }> = React.memo(({ s
 
 InstructionStep.displayName = 'InstructionStep';
 
-const StepsList: React.FC = React.memo(() => (
+const StepsList: React.FC = memo(() => (
   <div className="space-y-4 mb-6">
     {INSTRUCTIONS_CONFIG.steps.map((step, index) => (
       <InstructionStep key={index} step={step} index={index} />
@@ -95,7 +95,7 @@ const StepsList: React.FC = React.memo(() => (
 
 StepsList.displayName = 'StepsList';
 
-const TipItem: React.FC<{ tip: string }> = React.memo(({ tip }) => (
+const TipItem: React.FC<{ tip: string }> = memo(({ tip }) => (
   <li className="flex items-start">
     <span className="text-yellow-500 mr-2">•</span>
     {tip}
@@ -104,7 +104,7 @@ const TipItem: React.FC<{ tip: string }> = React.memo(({ tip }) => (
 
 TipItem.displayName = 'TipItem';
 
-const TipsSection: React.FC = React.memo(() => (
+const TipsSection: React.FC = memo(() => (
   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
     <div className="flex items-center mb-2">
       <svg 
@@ -132,7 +132,7 @@ const TipsSection: React.FC = React.memo(() => (
 
 TipsSection.displayName = 'TipsSection';
 
-export const InstructionsSection = React.memo(function InstructionsSection() {
+export const InstructionsSection = memo(function InstructionsSection() {
   return (
     <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-6">
       <header className="mb-6">

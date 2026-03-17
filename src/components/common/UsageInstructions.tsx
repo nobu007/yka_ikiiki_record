@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 
-export const UsageInstructions = React.memo(() => {
+export const UsageInstructions = memo(() => {
   const instructions = useMemo(() => [
     '「初期データを生成」ボタンをクリックしてテストデータを作成します',
     '生成が完了すると統計データが表示されます',

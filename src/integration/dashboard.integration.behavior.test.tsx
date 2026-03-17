@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { memo } from 'react';
 import { render, screen } from '@testing-library/react';
 import DashboardPage from '@/app/(dashboard)/dashboard/page';
 import * as hooks from '@/hooks/useApp';

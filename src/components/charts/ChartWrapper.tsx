@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, memo } from 'react';
+import { ReactNode, memo } from 'react';
 
 // Define chart constants to avoid magic numbers
 const DEFAULT_CHART_HEIGHT = 300;

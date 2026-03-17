@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import StatsDisplay from './StatsDisplay';

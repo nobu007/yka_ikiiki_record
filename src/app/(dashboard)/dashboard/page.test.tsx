@@ -9,6 +9,7 @@
  */
 
 import React from 'react';
+import { memo } from 'react';
 import { render, screen } from '@testing-library/react';
 import DashboardPage from './page';
 import { useDashboard } from '@/hooks/useApp';

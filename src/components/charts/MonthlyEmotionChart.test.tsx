@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { memo } from 'react';
 import { MonthlyEmotionChart } from './index';
 
 describe('MonthlyEmotionChart', () => {

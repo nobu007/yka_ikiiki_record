@@ -1,11 +1,11 @@
 import Link from "next/link";
-import React, { useMemo } from "react";
+import { useMemo, memo } from "react";
 
 interface BreadcrumbProps {
   pageTitle: string;
 }
 
-export const PageBreadcrumb = React.memo<BreadcrumbProps>(({ pageTitle }) => {
+export const PageBreadcrumb = memo<BreadcrumbProps>(({ pageTitle }) => {
   const breadcrumbItems = useMemo(() => [
     { href: '/', label: 'Home' },
     { href: null, label: pageTitle }

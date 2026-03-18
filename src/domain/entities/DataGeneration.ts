@@ -32,18 +32,7 @@ export interface DataGenerationConfig {
   classCharacteristics: ClassCharacteristics;
 }
 
-export const DEFAULT_CONFIG: DataGenerationConfig = {
-  studentCount: 25,
-  periodDays: 30,
-  distributionPattern: 'normal',
-  seasonalEffects: false,
-  eventEffects: [],
-  classCharacteristics: {
-    baselineEmotion: 3.0,
-    volatility: 0.5,
-    cohesion: 0.7
-  }
-};
+export { DEFAULT_CONFIG } from '@/schemas/api';
 
 export const EMOTION_CONSTANTS = {
   MIN_EMOTION: 1.0,

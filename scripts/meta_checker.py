@@ -143,15 +143,12 @@ class MetaChecker:
                     covered_branches = 0
                     total_functions = 0
                     covered_functions = 0
-                    total_lines = 0
-                    covered_lines = 0
 
                     for file_path, file_data in data.items():
                         if isinstance(file_data, dict):
                             s = file_data.get("s", {})
                             b = file_data.get("b", {})
                             f = file_data.get("f", {})
-                            l = file_data.get("l", {})
 
                             # Count statements
                             for v in s.values():
@@ -176,19 +173,15 @@ class MetaChecker:
                                     if v > 0:
                                         covered_functions += 1
 
-                            # Count lines
-                            for v in l.values():
-                                if isinstance(v, int):
-                                    total_lines += 1
-                                    if v > 0:
-                                        covered_lines += 1
-
                     # Calculate percentages
+                    # Note: Jest's coverage-final.json doesn't provide separate "lines" metric
+                    # Lines coverage is equivalent to statements coverage in Jest
+                    statements_pct = (covered_statements / total_statements * 100) if total_statements > 0 else 0
                     coverage = {
-                        "statements": (covered_statements / total_statements * 100) if total_statements > 0 else 0,
+                        "statements": statements_pct,
                         "branches": (covered_branches / total_branches * 100) if total_branches > 0 else 0,
                         "functions": (covered_functions / total_functions * 100) if total_functions > 0 else 0,
-                        "lines": (covered_lines / total_lines * 100) if total_lines > 0 else 0,
+                        "lines": statements_pct,
                     }
             except (json.JSONDecodeError, KeyError, TypeError, ZeroDivisionError):
                 pass

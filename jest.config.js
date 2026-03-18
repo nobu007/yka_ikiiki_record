@@ -17,7 +17,10 @@ module.exports = {
     {
       displayName: 'node',
       testEnvironment: 'node',
-      testMatch: ['<rootDir>/src/infrastructure/repositories/**/*.test.ts'],
+      testMatch: [
+        '<rootDir>/src/infrastructure/repositories/**/*.test.ts',
+        '<rootDir>/src/lib/resilience/**/*.test.ts',
+      ],
       moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/src/$1',
       },
@@ -32,7 +35,11 @@ module.exports = {
     {
       displayName: 'jsdom',
       testEnvironment: 'jsdom',
-      testMatch: ['<rootDir>/src/**/*.test.ts?(x)', '!<rootDir>/src/infrastructure/repositories/**/*.test.ts'],
+      testMatch: [
+        '<rootDir>/src/**/*.test.ts?(x)',
+        '!<rootDir>/src/infrastructure/repositories/**/*.test.ts',
+        '!<rootDir>/src/lib/resilience/**/*.test.ts',
+      ],
       setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
       moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/src/$1',

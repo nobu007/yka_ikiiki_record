@@ -72,7 +72,7 @@ describe('component-helpers', () => {
     it('should allow setting mock implementation', () => {
       const testFunction = (x: number): number => x * 2;
       const mockFn = createMockedFunction(jest.fn(testFunction));
-      mockFn.mockImplementation((x) => x * 3);
+      mockFn.mockImplementation(((x: number) => x * 3) as never);
 
       expect(mockFn(5)).toBe(15);
     });
@@ -94,7 +94,7 @@ describe('component-helpers', () => {
         return `result-${x}`;
       };
       const mockFn = createMockedFunction(jest.fn(asyncFunction));
-      mockFn.mockResolvedValue('mocked-result');
+      mockFn.mockResolvedValue('mocked-result' as never);
 
       await expect(mockFn(5)).resolves.toBe('mocked-result');
     });

@@ -14,6 +14,10 @@ describe('LoopDetector', () => {
     detector = createLoopDetector();
   });
 
+  afterEach(() => {
+    detector.destroy();
+  });
+
   describe('InfiniteLoopError', () => {
     it('should create error with correct properties', () => {
       const error = new InfiniteLoopError('test-operation');
@@ -44,6 +48,8 @@ describe('LoopDetector', () => {
       expect(() => strictDetector.checkIteration('operation-strict')).toThrow(
         InfiniteLoopError
       );
+
+      strictDetector.destroy();
     });
 
     it('should reset counter after time window', async () => {
@@ -58,6 +64,8 @@ describe('LoopDetector', () => {
       });
 
       expect(() => shortWindowDetector.checkIteration('operation-timed')).not.toThrow();
+
+      shortWindowDetector.destroy();
     });
 
     it('should track different operation IDs independently', () => {
@@ -70,6 +78,8 @@ describe('LoopDetector', () => {
       expect(() => strictDetector.checkIteration('operation-1')).toThrow(InfiniteLoopError);
 
       expect(() => strictDetector.checkIteration('operation-2')).not.toThrow();
+
+      strictDetector.destroy();
     });
   });
 
@@ -126,6 +136,34 @@ describe('LoopDetector', () => {
 
       expect(detector.getCount('op1')).toBe(0);
       expect(detector.getCount('op2')).toBe(0);
+    });
+  });
+
+  describe('destroy', () => {
+    it('should clear all pending timeouts and operation counts', () => {
+      detector.checkIteration('op1');
+      detector.checkIteration('op2');
+      detector.checkIteration('op3');
+
+      expect(detector.getCount('op1')).toBe(1);
+      expect(detector.getCount('op2')).toBe(1);
+      expect(detector.getCount('op3')).toBe(1);
+
+      detector.destroy();
+
+      expect(detector.getCount('op1')).toBe(0);
+      expect(detector.getCount('op2')).toBe(0);
+      expect(detector.getCount('op3')).toBe(0);
+    });
+
+    it('should allow multiple destroy calls without error', () => {
+      detector.checkIteration('op1');
+
+      expect(() => {
+        detector.destroy();
+        detector.destroy();
+        detector.destroy();
+      }).not.toThrow();
     });
   });
 

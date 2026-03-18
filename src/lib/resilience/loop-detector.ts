@@ -15,6 +15,7 @@ export class LoopDetector {
   private operationCounts = new Map<string, number>();
   private readonly maxIterations: number;
   private readonly timeWindow: number;
+  private pendingTimeouts = new Set<NodeJS.Timeout>();
 
   constructor(maxIterations = 1000, timeWindow = 30000) {
     this.maxIterations = maxIterations;
@@ -30,9 +31,12 @@ export class LoopDetector {
 
     this.operationCounts.set(operationId, currentCount + 1);
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       this.operationCounts.delete(operationId);
+      this.pendingTimeouts.delete(timeoutId);
     }, this.timeWindow);
+
+    this.pendingTimeouts.add(timeoutId);
   }
 
   getCount(operationId: string): number {
@@ -44,6 +48,14 @@ export class LoopDetector {
   }
 
   resetAll(): void {
+    this.operationCounts.clear();
+  }
+
+  destroy(): void {
+    for (const timeoutId of this.pendingTimeouts) {
+      clearTimeout(timeoutId);
+    }
+    this.pendingTimeouts.clear();
     this.operationCounts.clear();
   }
 }
@@ -62,10 +74,14 @@ export const safeLoop = <T>(
 ): void => {
   const detector = createLoopDetector();
 
-  iterable.forEach((item, index) => {
-    detector.checkIteration(operationId);
-    callback(item, index);
-  });
+  try {
+    iterable.forEach((item, index) => {
+      detector.checkIteration(operationId);
+      callback(item, index);
+    });
+  } finally {
+    detector.destroy();
+  }
 };
 
 export const safeAsyncLoop = async <T>(
@@ -75,8 +91,12 @@ export const safeAsyncLoop = async <T>(
 ): Promise<void> => {
   const detector = createLoopDetector();
 
-  for (const [index, item] of iterable.entries()) {
-    detector.checkIteration(operationId);
-    await callback(item, index);
+  try {
+    for (const [index, item] of iterable.entries()) {
+      detector.checkIteration(operationId);
+      await callback(item, index);
+    }
+  } finally {
+    detector.destroy();
   }
 };

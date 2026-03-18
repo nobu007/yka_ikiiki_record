@@ -10,13 +10,14 @@
 
 1. **公開URL**: Vercelでデプロイされ、誰でもアクセス可能
 2. **データ永続化**: PostgreSQLで生徒の記録が保存される
-3. **品質維持**: すべてのテストがパスし、カバレッジ95%以上を維持
+3. **自律的耐久性**: 故障から自動回復し、無限ループを防止する耐性を持つ
+4. **品質維持**: すべてのテストがパスし、カバレッジ95%以上を維持
 
 ## 直近の優先成果
 
-### P1: 本番デプロイ実行（次のステップ）
+### P1: 本番デプロイ実行（次のアクション）
 
-コードベースはデプロイ準備完了。以下のインフラ設定を実行します。
+コードベースはデプロイ準備完了。自律的耐久性インフラも実装済み。以下のデプロイ手順を実行します。
 
 **必要な作業**:
 1. **Vercelプロジェクト作成**:
@@ -54,11 +55,12 @@
 Clean Architecture違反を継続的に監視・修正し、本番デプロイ可能な品質基準を維持します。
 
 **現在の品質メトリクス**:
-- **テスト**: 1031/1031 passing (136 suites)
-- **カバレッジ**: 98.68% statements, 94.73% branches, 94.57% functions, 98.62% lines
+- **テスト**: 1191/1191 passing (146 suites)
+- **カバレッジ**: 98.65% statements, 95.15% branches, 95.80% functions, 98.72% lines
 - **TypeScript**: strict mode 完全準拠、any型0件
-- **ESLint**: zero warnings
+- **ESLint**: 1件の未使用importを修正予定
 - **Clean Architecture**: 違反0件
+- **自律的耐久性**: timeout, circuit-breaker, loop-detector, memory-monitor, structured-logger 実装済み (1569行)
 
 **品質基準**:
 - テスト成功率: 100%
@@ -131,6 +133,7 @@ export function createStatsService(): StatsService {
 
 **P1完了条件**:
 - [x] コードベースがデプロイ準備完了状態
+- [x] 自律的耐久性インフラ実装完了 (SYSTEM_CONSTITUTION.md §6準拠)
 - [ ] Vercelプロジェクトが作成され、本番URLが発行されている
 - [ ] PostgreSQLデータベースが構築されている
 - [ ] 環境変数（DATABASE_URL, DATABASE_PROVIDER）が設定されている

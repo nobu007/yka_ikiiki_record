@@ -1,7 +1,6 @@
 import {
   StructuredLogger,
   globalLogger,
-  type LogLevel,
   type LogVisibility,
 } from './structured-logger';
 

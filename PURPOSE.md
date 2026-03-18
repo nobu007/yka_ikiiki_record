@@ -4,13 +4,6 @@
 
 日本の教育現場における「生徒の心の成長」と「学級文化」を可視化する革新的な教育インフラを構築する。
 
-## この文書の役割
-
-この文書は、プロジェクトの**次に終わらせるべき目標**を明確にします。
-- **未来志向**: 次のアクション判断に必要な情報のみを記載
-- **実証主義**: 直近のコード変更と品質メトリクスに基づき現状を把握
-- **簡潔**: 過去の履歴ではなく、現在の完了条件と次の一手を明示
-
 ## 目指す完成状態
 
 本番環境でVercel + PostgreSQLが稼働し、教育現場で実際に使用できる状態：
@@ -21,7 +14,7 @@
 
 ## 直近の優先成果
 
-### P1: 開発品質維持（継続的監視対象）
+### P1: 開発品質維持（完了）
 
 本番デプロイ可能な品質基準を維持し、Clean Architecture違反を継続的に監視・修正します。
 
@@ -30,22 +23,22 @@
 - **カバレッジ**: 98.68% statements, 94.73% branches, 94.57% functions, 98.62% lines
 - **TypeScript**: strict mode 完全準拠、any型0件
 - **ESLint**: zero warnings
+- **Clean Architecture**: 違反0件
 
-**最近の修正（2026-03-17）**:
-- Clean Architecture違反を修正: Client ComponentsからのDomain直接importを、cross-cutting層（schemas/api.ts）経由に変更
-- 違反検出コマンド:
-  ```bash
-  grep -r "from '@/domain/" src/app --include="*.tsx" | grep -v "'use client'" | grep -v "test"
-  ```
+**完了条件**:
+- テスト成功率: 100% ✓
+- カバレッジ: statements ≥ 95%, branches ≥ 90%, functions ≥ 95%, lines ≥ 95% ✓
+- TypeScript strict mode: 完全準拠 ✓
+- ESLint: zero warnings ✓
 
 **継続的監視**:
 - Architecture違反は発見次第即座に修正
 - 新機能追加時はClean Architectureルールを厳格適用
 - テストカバレッジ95%以上を維持
 
-### P2: 本番デプロイ実行（人間作業待ち）
+### P2: 本番デプロイ実行（次のステップ）
 
-コードベースはデプロイ準備完了。以下のインフラ設定には人間による作業が必要です。
+コードベースはデプロイ準備完了。以下のインフラ設定を実行します。
 
 **必要な作業**:
 1. **Vercelプロジェクト作成**:
@@ -88,25 +81,6 @@ P2完了後、実際の使用に基づいて以下を検討：
 - 詳細な分析レポート
 - E2Eテストスイートの本番環境実行
 
-## 完了の定義
-
-### P1完了条件
-
-- テスト成功率: 100%
-- カバレッジ: statements ≥ 95%, branches ≥ 90%, functions ≥ 95%, lines ≥ 95%
-- TypeScript strict mode: 完全準拠
-- ESLint: zero warnings
-
-**現在の状態**: すべての条件を満たしています。
-
-### P2完了条件
-
-- Vercelプロジェクトが公開URLでアクセス可能
-- PostgreSQLデータベースが稼働
-- 本番URLで基本機能が正常動作
-
-**現在の状態**: デプロイ準備完了。人間によるインフラ設定が必要です。
-
 ## 技術方針
 
 ### Clean Architecture in Next.js App Router
@@ -121,6 +95,11 @@ P2完了後、実際の使用に基づいて以下を検討：
 - ❌ Client Componentsから直接Domain/Infrastructureをimportしない
 - ❌ Domain層からPrisma/Next.jsをimportしない
 - ✅ 共有型はcross-cutting層（schemas）で定義し、全レイヤーからimport可能
+
+**違反検出コマンド**:
+```bash
+grep -r "from '@/domain/" src/app --include="*.tsx" | grep -v "'use client'" | grep -v "test"
+```
 
 ### Repository Factoryパターン
 
@@ -145,13 +124,3 @@ export function createStatsService(): StatsService {
 1. **P2完了時**: 本番デプロイ完了後、P3（運用改善）へ移行
 2. **アーキテクチャ上の重大な変更時**: レイヤー構造や依存方向の根本的な変更実施時
 3. **プロジェクトの方向性転換時**: 目標や優先順位の大幅な変更がある場合
-
----
-
-**最終更新**: 2026-03-18 (直近10件のコミットを分析し、メタ言及を削除してプロジェクト目的に集中)
-
-**現在の状態**:
-- **品質メトリクス**: 全項目合格 (P1完了)
-- **デプロイ準備**: コードベースは準備完了 (P2実行待ち)
-- **直近のコード変更**: 2026-03-17 (Clean Architecture違反修正)
-- **直近のdocs変更**: 2026-03-18 (メタガードレール削除による無限ループ解消)

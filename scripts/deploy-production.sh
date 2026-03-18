@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Production Deployment Automation Script
-# This script executes P1: Production Deployment Execution
+# This script executes P2: 本番デプロイ実行 (Production Deployment Execution)
 # Target: Vercel + PostgreSQL deployment
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -115,13 +115,16 @@ fi
 
 log_info ""
 log_info "==========================================="
-log_info "✓ P1 DEPLOYMENT COMPLETE"
+log_info "✓ P2 DEPLOYMENT COMPLETE"
 log_info "==========================================="
 log_info ""
-log_info "Next Steps (P2):"
+log_info "Next Steps (P3 - 運用開始後の改善):"
 log_info "  1. Set up DATABASE_URL if not already done"
 log_info "  2. Run database migrations"
 log_info "  3. Test /api/seed endpoint"
 log_info "  4. Test /api/stats endpoint"
 log_info "  5. Verify dashboard displays data correctly"
+log_info "  6. Consider authentication/authorization systems"
+log_info "  7. Consider multi-class support"
+log_info "  8. Consider data export features"
 log_info ""

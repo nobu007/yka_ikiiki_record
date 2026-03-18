@@ -37,8 +37,8 @@
 
 **品質メトリクス** (2026-03-19時点):
 - JudgmentScore: 100/100 (SYSTEM HEALTHY)
-- テスト成功率: 100% (1189/1189 passing)
-- カバレッジ: 98.63% statements, 94.75% branches, **95.09% functions** ✅, 98.69% lines
+- テスト成功率: 100% (1202/1202 passing)
+- カバレッジ: 98.84% statements, 95.02% branches, **95.58% functions** ✅, 98.84% lines
 - TypeScript: strict mode 完全準拠、any型0件
 - ESLint: zero warnings
 - Clean Architecture: 違反0件
@@ -51,12 +51,14 @@
 - JudgmentScoreが100/100を維持し続けていることを確認
 
 **最近の改善 (2026-03-19)**:
-- ✅ **Function coverage目標達成**: 94.57% → 95.09%
-  - 古いcoverage-summary.jsonを削除し、正確なカバレッジデータを再生成
+- ✅ **Function coverage目標達成**: 95.09% → 95.58%
+  - test-utilsのfunction coverageを80%から100%に改善
+  - lib/resilienceのfunction coverageを98.21%から100%に改善
   - SYSTEM_CONSTITUTION.mdの95%目標を達成
 - ✅ **meta_checker.py改良**: Jestデフォルトのcoverage-final.json形式に対応
   - coverage-summary.json（カスタムレポーター）→ coverage-final.json（デフォルト）のフォールバック実装
   - per-fileデータから集計するロジックを実装
+  - lines coverage計算のバグ修正（0.00% → 98.84%）
 
 ## 直近の優先成果
 
@@ -65,8 +67,9 @@
 **達成事項**:
 
 1. ✅ **品質監視の継続**: `meta_checker.py` が定期的に実行され、JudgmentScoreが100/100を維持
-2. ✅ **Function coverage目標達成**: 94.57% → 95.09% (SYSTEM_CONSTITUTION.mdの95%目標を達成)
-   - 古いcoverage-summary.jsonを削除し、正確なcoverage-final.jsonを使用
+2. ✅ **Function coverage改善**: 95.09% → 95.58%
+   - test-utils: 80% → 100% function coverage (新規テスト追加)
+   - lib/resilience: 98.21% → 100% function coverage
    - meta_checker.pyをJestデフォルト形式に対応させる改良を実施
 
 **現在の品質監視方法**:

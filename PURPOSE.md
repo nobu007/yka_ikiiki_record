@@ -28,8 +28,10 @@
 - ✅ 自律的耐久性インフラ実装完了 (SYSTEM_CONSTITUTION.md §6)
   - src/lib/resilience/: 1569行、5コンポーネント完全実装
   - timeout enforcement, circuit-breaker, loop-detector, memory-monitor, structured-logger
-- ✅ 自律的品質監視システム実装完了
+- ✅ 自律的品質監視システム実装完了 (2026-03-18)
   - scripts/meta_checker.py: JudgmentScore監視、全項目チェック自動化
+  - data/meta_report.md: 人間可読監査レポート
+  - data/judgment_metrics.csv: 時系列メトリクス（Guardian監視用）
 - ✅ Vercel設定ファイル準備完了 (vercel.json, package.json scripts)
 
 **品質メトリクス** (2026-03-18時点):
@@ -182,4 +184,17 @@ const repository = new PrismaRecordRepository(prisma); // PostgreSQL
 - ❌ 技術方針の根本的変更なしでの長文化
 - ❌ コード実態との乖離があるドキュメントのみの反復更新
 
-**重要**: 23系ループによるPURPOSE.md更新は、直近10コミットで**コードに実質的な変更があった場合のみ**実行すること。docs-only コミットが連続する場合、23系ループは更新を.Skipすべきです。
+## 23系ループのスキップ基準
+
+23系ループ実行時に、以下の条件を**全て**満たす場合は更新をSkipすること：
+
+1. 直近10コミットのうち、コードに実質的な変更があったコミットが0〜2件のみ
+2. 現在のフェーズが「デプロイ待機中」または「本番運用中」
+3. JudgmentScoreが100/100を維持している
+4. PURPOSE.mdが既に現在のフェーズと優先順位を正しく記述している
+
+**Skipの判断基準**:
+- ✅ Skip OK: docs-only コミットが7件以上、技術的状態に変更なし、PURPOSE.mdが既に正確
+- ❌ Skip NG: 新機能実装、重大なバグ修正、アーキテクチャ変更、フェーズ遷移があった
+
+**重要**: 23系ループによるPURPOSE.md更新は、直近10コミットで**コードに実質的な変更があった場合のみ**実行すること。docs-only コミットが連続する場合、23系ループは更新をSkipすべきです。

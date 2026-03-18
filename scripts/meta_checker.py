@@ -110,15 +110,23 @@ class MetaChecker:
             "lines": 0.0,
         }
 
-        # Run coverage if not exists
+        # Try coverage-summary.json first (if using custom reporter)
         coverage_file = self.repo_path / "coverage" / "coverage-summary.json"
         if not coverage_file.exists():
-            self.run_command(["npm", "run", "test:coverage", "--", "--runInBand"])
+            # Fall back to coverage-final.json (default Jest output)
+            coverage_file = self.repo_path / "coverage" / "coverage-final.json"
+
+        if not coverage_file.exists():
+            # Run coverage if not exists
+            self.run_command(["npm", "test", "--", "--coverage", "--watchAll=false"])
 
         if coverage_file.exists():
             try:
                 with open(coverage_file) as f:
                     data = json.load(f)
+
+                # Check if this is coverage-summary.json format (has "total" key)
+                if "total" in data:
                     total = data.get("total", {})
                     coverage = {
                         "statements": total.get("statements", {}).get("pct", 0),
@@ -126,13 +134,69 @@ class MetaChecker:
                         "functions": total.get("functions", {}).get("pct", 0),
                         "lines": total.get("lines", {}).get("pct", 0),
                     }
-            except (json.JSONDecodeError, KeyError):
+                else:
+                    # Parse coverage-final.json format (per-file data)
+                    # Aggregate totals from all files
+                    total_statements = 0
+                    covered_statements = 0
+                    total_branches = 0
+                    covered_branches = 0
+                    total_functions = 0
+                    covered_functions = 0
+                    total_lines = 0
+                    covered_lines = 0
+
+                    for file_path, file_data in data.items():
+                        if isinstance(file_data, dict):
+                            s = file_data.get("s", {})
+                            b = file_data.get("b", {})
+                            f = file_data.get("f", {})
+                            l = file_data.get("l", {})
+
+                            # Count statements
+                            for v in s.values():
+                                if isinstance(v, int):
+                                    total_statements += 1
+                                    if v > 0:
+                                        covered_statements += 1
+
+                            # Count branches
+                            for branch_list in b.values():
+                                if isinstance(branch_list, list):
+                                    for v in branch_list:
+                                        if isinstance(v, int):
+                                            total_branches += 1
+                                            if v > 0:
+                                                covered_branches += 1
+
+                            # Count functions
+                            for v in f.values():
+                                if isinstance(v, int):
+                                    total_functions += 1
+                                    if v > 0:
+                                        covered_functions += 1
+
+                            # Count lines
+                            for v in l.values():
+                                if isinstance(v, int):
+                                    total_lines += 1
+                                    if v > 0:
+                                        covered_lines += 1
+
+                    # Calculate percentages
+                    coverage = {
+                        "statements": (covered_statements / total_statements * 100) if total_statements > 0 else 0,
+                        "branches": (covered_branches / total_branches * 100) if total_branches > 0 else 0,
+                        "functions": (covered_functions / total_functions * 100) if total_functions > 0 else 0,
+                        "lines": (covered_lines / total_lines * 100) if total_lines > 0 else 0,
+                    }
+            except (json.JSONDecodeError, KeyError, TypeError, ZeroDivisionError):
                 pass
 
-        self.metrics["test_coverage_statements"] = coverage["statements"]
-        self.metrics["test_coverage_branches"] = coverage["branches"]
-        self.metrics["test_coverage_functions"] = coverage["functions"]
-        self.metrics["test_coverage_lines"] = coverage["lines"]
+        self.metrics["test_coverage_statements"] = round(coverage["statements"], 2)
+        self.metrics["test_coverage_branches"] = round(coverage["branches"], 2)
+        self.metrics["test_coverage_functions"] = round(coverage["functions"], 2)
+        self.metrics["test_coverage_lines"] = round(coverage["lines"], 2)
 
         return coverage
 

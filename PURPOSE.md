@@ -18,22 +18,27 @@
 
 ## 直近の優先成果
 
-### P1: 開発品質維持（完了済み・維持中）
+### P1: 開発品質維持（継続的監視対象）
 
-コードベースは本番デプロイ可能な品質を維持しています。
+本番デプロイ可能な品質基準を維持し、Clean Architecture違反を継続的に監視・修正します。
 
 **品質メトリクス**:
 - **テスト**: 1031/1031 passing (136 suites)
 - **カバレッジ**: 98.68% statements, 94.73% branches, 94.57% functions, 98.62% lines
 - **TypeScript**: strict mode 完全準拠、any型0件
 - **ESLint**: zero warnings
-- **アーキテクチャ**: Clean Architecture完全準拠（依存方向違反は修正済み）
 
-**監視すべき違反パターン**:
-```bash
-# Client ComponentsからのDomain直接importを検出
-grep -r "from '@/domain/" src/app --include="*.tsx" | grep -v "'use client'" | grep -v "test"
-```
+**最近の修正（2026-03-17）**:
+- Clean Architecture違反を修正: Client ComponentsからのDomain直接importを、cross-cutting層（schemas/api.ts）経由に変更
+- 違反検出コマンド:
+  ```bash
+  grep -r "from '@/domain/" src/app --include="*.tsx" | grep -v "'use client'" | grep -v "test"
+  ```
+
+**継続的監視**:
+- Architecture違反は発見次第即座に修正
+- 新機能追加時はClean Architectureルールを厳格適用
+- テストカバレッジ95%以上を維持
 
 ### P2: 本番デプロイ実行（人間作業待ち）
 
@@ -135,8 +140,14 @@ export function createStatsService(): StatsService {
 この文書は以下の場合に更新します：
 
 1. **P2完了時**: 本番デプロイ完了後、P3（運用改善）へ移行
-2. **重要なコード変更時**: アーキテクチャ違反修正や重要なリファクタリング実施時
-3. **品質メトリクス変化時**: P1の状態が大きく変わった場合（カバレッジが閾値を下回る、テスト失敗が発生するなど）
+2. **アーキテクチャ上の重大な変更時**: レイヤー構造や依存方向の根本的な変更実施時
+3. **プロジェクトの方向性転換時**: 目標や優先順位の大幅な変更がある場合
+
+**23系実行頻度の抑制**:
+- **docs-onlyの見た目改善だけでの実行を禁止**: コード実態に変化がない場合は再構成しない
+- **品質メトリクスの微小変化では実行しない**: テスト数やカバレッジの小幅な変動は更新不要
+- **最低実行間隔**: 直近のコード変更（commit）がない場合は23系を実行しない
+- **例外**: P2完了後の次フェーズ移行時は、コード変更がなくても更新可
 
 ---
 
@@ -147,3 +158,4 @@ export function createStatsService(): StatsService {
 **AIエージェントへ**:
 - **P1品質維持タスクは随時実行可**: アーキテクチャ違反の是正、テスト追加、ESLint修正、TypeScriptエラー修正などは、必要に応じて実行して構いません
 - **新機能開発は不要**: P2完了（本番デプロイ）まで、新機能の追加は控えてください
+- **23系実行は控えめに**: 直近のコード変更がない場合、PURPOSE.mdの再構成は実行しないでください

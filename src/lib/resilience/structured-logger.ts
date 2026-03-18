@@ -18,8 +18,13 @@ const generateCorrelationId = (): string => {
 
 export class StructuredLogger {
   private logs: LogEntry[] = [];
-  private maxLogSize = 10000;
-  private compressionThreshold = 5000;
+  private maxLogSize: number;
+  private compressionThreshold: number;
+
+  constructor(maxLogSize = 10000, compressionThreshold = 5000) {
+    this.maxLogSize = maxLogSize;
+    this.compressionThreshold = compressionThreshold;
+  }
 
   log(entry: Omit<LogEntry, 'timestamp' | 'correlationId'>): void {
     const logEntry: LogEntry = {

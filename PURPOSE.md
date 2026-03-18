@@ -39,7 +39,7 @@
 - ✅ structured-logger (自動圧縮付き構造化ロギング)
 
 **重要な最近の改善** (直近の実際のコード変更):
-- 485206e: LoopDetectorのtimer cleanup完全実装 (destroy()メソッド、Jest hang問題解決)
+- 110e35c: TypeScript strict mode準拠のためcreateMockedFunctionヘルパーを修正 (2026-03-19)
 
 ### 23系ループの現状認識 (2026-03-19)
 
@@ -49,13 +49,13 @@
 2. **23系ループは定期的に実行されている**: しかし、反映すべき新しいコード変更が最小限
 3. **次の進捗はデプロイ実行に依存**: Human OperatorによるVercelセットアップが必要
 
-**重要な最近のコード変更**:
-- commit 485206e (2026-03-19): LoopDetectorのtimer cleanup完全実装
-  - `destroy()`メソッドによる完全なtimer cleanup
-  - `pendingTimeouts` SetでのsetTimeout追跡
-  - `safeLoop`/`safeAsyncLoop`のtry/finallyによる自動cleanup保証
-  - Jestの`forceExit`設定を有効化し、テストスイートの完全終了を確保
-  - テスト数: 1206/1206 passing (destroy()メソッドのテスト追加により1202から増加)
+**直近の実質的なコード変更**:
+- commit 110e35c (2026-03-19): TypeScript strict mode errors in createMockedFunction helper
+  - `createMockedFunction`の型制約を`(...args: unknown[]) => unknown`から`(...args: any[]) => any`に変更
+  - Jest mockとの型互換性を確保
+  - 不要なeslint-disableコメントを削除
+  - TS2345エラーを解決（Mock型が汎用関数シグネチャに割り当て可能）
+  - テスト: 1206/1206 passing、TypeScriptコンパイル成功、ESLint zero warnings
 
 ## 直近の優先成果
 

@@ -49,7 +49,7 @@ describe('component-helpers', () => {
 
   describe('createMockedFunction', () => {
     it('should cast a jest.fn() to properly typed mock function', () => {
-      const testFunction = (a: number, b: string): boolean => {
+      const testFunction = (a: number, _b: string): boolean => {
         return a > 0;
       };
 
@@ -78,7 +78,7 @@ describe('component-helpers', () => {
     });
 
     it('should track calls', () => {
-      const testFunction = (x: string): void => {};
+      const testFunction = (_x: string): void => {};
       const mockFn = createMockedFunction(jest.fn(testFunction));
 
       mockFn('test1');

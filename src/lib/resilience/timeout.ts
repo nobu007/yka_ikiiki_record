@@ -27,7 +27,7 @@ export const DEFAULT_TIMEOUTS: TimeoutConfig = {
   e2e: 60000,
 } as const;
 
-const withTimeout = async <T>(
+export const withTimeout = async <T>(
   operation: Promise<T>,
   timeoutMs: number,
   operationType: string

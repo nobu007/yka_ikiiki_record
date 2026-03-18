@@ -31,14 +31,6 @@
 - ESLint: zero warnings
 - Clean Architecture: 違反0件
 
-**最近の改善** (2026-03-19):
-- LoopDetectorに適切なタイマークリーンアップを実装し、Jestプロセスのハングを防止（destroy()メソッド追加、try/finallyパターン適用、forceExit設定追加）
-- test-utilsとstructured-loggerのテストカバレッジを100%に改善（component-helpers.test.ts新規追加111行、structured-loggerのtruncateOldestLogsテスト追加）
-- ESLint警告を解消（未使用変数のアンダースコアプレフィックス対応）
-- meta_checker.pyのlines coverage計算バグを修正（Jestのcoverage-final.json形式に対応）
-- 全カバレッジメトリクスが目標値を達成（statements 98.85%, branches 95.02%, functions 95.59%, lines 98.85%）
-- 全テスト1206件がpassing、JudgmentScore 100/100を維持
-
 **実装済みコンポーネント**:
 - Clean Architecture実装完了 (4層分離、依存方向ルール準拠)
 - 自律的耐久性インフラ実装完了 (SYSTEM_CONSTITUTION.md §6)
@@ -47,7 +39,7 @@
 
 ## 直近の優先成果
 
-### P1: 本番デプロイの実行
+### P1: 本番デプロイの実行（Human Operatorの作業待ち）
 
 **技術的にはデプロイ可能**ですが、実際のデプロイ実行にはHuman Operatorによる以下の手順が必要です：
 
@@ -74,9 +66,28 @@ vercel env add DATABASE_PROVIDER production
 - [ ] 本番URLで `GET /api/stats` がJSON応答
 - [ ] 本番URLでアプリケーションが正常に表示される
 
-### P2: 品質メトリクスの維持
+### P2: デプロイ後の機能改善ロードマップ
 
-**現在の品質監視方法**:
+デプロイ完了後、実際の使用状況に基づいて優先順位を再決定します：
+
+**優先度1: 基盤機能**
+- 認証・認可システム（教員アカウント管理）
+- 複数クラス対応（複数学級のデータ管理）
+- データエクスポート機能（CSV/Excel出力）
+
+**優先度2: 分析・可視化の強化**
+- 詳細な分析レポート（個人・クラス単位の長期トレンド）
+- パフォーマンス最適化（大量データ時の表示速度改善）
+- モバイル対応最適化（タブレットでの利用支援）
+
+**優先度3: 運用改善**
+- バックアップ・復元システム
+- 監査ログ機能
+- 通知システム（異常値検知時のアラート）
+
+### P3: 日常運用タスク
+
+**品質メトリクスの維持**（自動実行されています）:
 ```bash
 # 品質チェック実行
 python scripts/meta_checker.py
@@ -89,17 +100,6 @@ cat data/meta_report.md
 ```
 
 **目標**: JudgmentScore 100/100を維持し続ける
-
-### P3: 次フェーズの機能改善（デプロイ後）
-
-デプロイ完了後、実際の使用状況に基づいて優先順位を再決定します：
-
-- 認証・認可システム
-- 複数クラス対応
-- データエクスポート機能
-- 詳細な分析レポート
-- パフォーマンス最適化
-- モバイル対応最適化
 
 ## 技術方針
 

@@ -167,3 +167,33 @@ export const API_ERROR_MESSAGES = {
   INTERNAL_SERVER_ERROR: "サーバーエラーが発生しました",
   REQUEST_BODY_PARSE_FAILED: "リクエストボディの解析に失敗しました",
 } as const;
+
+export const INSTRUCTIONS_SECTION = {
+  TITLE: "使い方ガイド",
+  SUBTITLE: "イキイキレコードの活用方法",
+  STEPS: [
+    {
+      title: "データの生成",
+      description: "「テストデータを生成」ボタンをクリックして、サンプル学習データを作成します。",
+      icon: "M12 6v6m0 0v6m0-6h6m-6 0H6",
+    },
+    {
+      title: "データの確認",
+      description:
+        "生成されたデータは感情分析や学習パターンを含み、ダッシュボードで視覚的に確認できます。",
+      icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+    },
+    {
+      title: "分析と活用",
+      description:
+        "生成されたデータを基に、生徒の学習状況や感情変化を分析し、教育支援に活用します。",
+      icon: "M15 12a3 3 0 11-6 0 3 3 0 016 0z",
+    },
+  ] as const,
+  TIPS: [
+    "データ生成は数秒で完了します",
+    "生成されたデータはブラウザ内に保存されます",
+    "何度でもデータを再生成できます",
+  ] as const,
+  HINTS_TITLE: "ヒント",
+} as const;

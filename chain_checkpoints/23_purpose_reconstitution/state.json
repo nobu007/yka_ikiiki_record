@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 3,
+  "cycle": 4,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-19T12:03:28Z",
-  "updated_at": "2026-03-19T13:15:00Z",
+  "updated_at": "2026-03-19T13:20:00Z",
   "scan_progress": {
     "all_dirs": [
       "src/domain",
@@ -26,9 +26,8 @@
       "scripts",
       "prisma"
     ],
-    "completed_dirs": ["src/domain", "src/application", "src/infrastructure"],
+    "completed_dirs": ["src/domain", "src/application", "src/infrastructure", "src/presentation"],
     "pending_dirs": [
-      "src/presentation",
       "src/components",
       "src/lib",
       "src/app",
@@ -115,6 +114,22 @@
           "Database timeout resilience using withDatabaseTimeout wrapper",
           "Comprehensive test coverage: 13 test files covering repositories and services",
           "Clean Architecture compliance: implements domain interfaces"
+        ]
+      },
+      {
+        "dir": "src/presentation",
+        "file_count": 1,
+        "has_tests": false,
+        "key_exports": [
+          "useStats"
+        ],
+        "notes": [
+          "Presentation layer hook for UI-specific stats formatting",
+          "Wraps application layer useStats with presentation logic",
+          "Transforms error messages for display (Japanese localization)",
+          "Adds error logging for refetch failures",
+          "Clean Architecture compliance: depends only on application layer",
+          "No dedicated tests (likely tested through component integration tests)"
         ]
       }
     ]

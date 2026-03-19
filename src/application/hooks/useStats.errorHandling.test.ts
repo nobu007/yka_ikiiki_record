@@ -117,5 +117,73 @@ describe('useStats error handling', () => {
 
       await expect(fetcher('/api/stats')).rejects.toThrow('APIリクエストに失敗しました');
     });
+
+    it('should throw ValidationError when validation fails (line 19)', async () => {
+      const mockResponse = {
+        ok: true,
+        status: 200,
+        json: async () => ({ invalid: 'data' }),
+      } as Response;
+
+      jest.spyOn(await import('@/lib/resilience/timeout'), 'withApiTimeout').mockResolvedValue(mockResponse);
+
+      renderHook(() => useStats());
+
+      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
+
+      await expect(fetcher('/api/stats')).rejects.toThrow();
+    });
+
+    it('should throw AppError when validated.success is false (line 23)', async () => {
+      const validStatsData = {
+        success: false,
+        error: 'Custom error message',
+        data: {
+          overview: { count: 100, avgEmotion: 3.5 },
+          monthlyStats: [
+            { month: '1月', avgEmotion: 3.2, count: 10 },
+          ],
+          dayOfWeekStats: [
+            { day: '日', avgEmotion: 3.5, count: 15 },
+          ],
+          timeOfDayStats: { morning: 3.6, afternoon: 3.4, evening: 3.2 },
+          studentStats: [
+            {
+              student: 'Test Student',
+              avgEmotion: 3.5,
+              recordCount: 10,
+              trendline: [3.0, 3.2, 3.5],
+            },
+          ],
+          emotionDistribution: [10, 20, 30, 25, 15],
+        },
+      };
+
+      const mockResponse = {
+        ok: true,
+        status: 200,
+        json: async () => validStatsData,
+      } as Response;
+
+      jest.spyOn(await import('@/lib/resilience/timeout'), 'withApiTimeout').mockResolvedValue(mockResponse);
+
+      renderHook(() => useStats());
+
+      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
+
+      await expect(fetcher('/api/stats')).rejects.toThrow('Custom error message');
+    });
+
+    it('should throw AppError for unknown errors in catch block (line 31)', async () => {
+      jest.spyOn(await import('@/lib/resilience/timeout'), 'withApiTimeout').mockRejectedValue(
+        new Error('Unknown network error')
+      );
+
+      renderHook(() => useStats());
+
+      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
+
+      await expect(fetcher('/api/stats')).rejects.toThrow('不明なエラーが発生しました');
+    });
   });
 });

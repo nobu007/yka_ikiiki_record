@@ -1,6 +1,7 @@
 import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
+import { CHART_TITLES } from "@/lib/constants/messages";
 
 export const MonthlyEmotionChart = memo<{
   data: Array<{ month: string; avgEmotion: number }>;
@@ -10,7 +11,7 @@ export const MonthlyEmotionChart = memo<{
       labels: data.map((d) => d.month),
       series: [
         {
-          name: "平均感情スコア",
+          name: CHART_TITLES.AVERAGE_EMOTION_SCORE,
           data: data.map((d) => d.avgEmotion),
         },
       ],

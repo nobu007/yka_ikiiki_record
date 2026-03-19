@@ -1,5 +1,6 @@
 import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
+import { CHART_TITLES } from "@/lib/constants/messages";
 
 const DAY_OF_WEEK_CHART_HEIGHT = 300;
 
@@ -11,7 +12,7 @@ export const DayOfWeekChart = memo<{
       labels: data.map((d) => d.day),
       series: [
         {
-          name: "平均感情スコア",
+          name: CHART_TITLES.AVERAGE_EMOTION_SCORE,
           data: data.map((d) => d.avgEmotion),
         },
       ],

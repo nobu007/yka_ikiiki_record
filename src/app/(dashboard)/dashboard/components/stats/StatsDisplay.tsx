@@ -5,7 +5,7 @@ import DynamicBarChart, {
   ChartData,
 } from "@/components/charts/DynamicBarChart";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
-import { ERROR_MESSAGES, UI_TEXT } from "@/lib/constants/messages";
+import { ERROR_MESSAGES, UI_TEXT, CHART_TITLES } from "@/lib/constants/messages";
 
 interface ChartDataSet {
   monthly: ChartData[];
@@ -67,13 +67,13 @@ const StatsDisplay = memo(function StatsDisplay({
       {/* 概要統計 */}
       <div className="grid grid-cols-2 gap-4">
         <div className={`p-4 ${bgColor} rounded-lg shadow transition-colors`}>
-          <div className={`text-sm ${textColor}`}>総記録数</div>
+          <div className={`text-sm ${textColor}`}>{CHART_TITLES.TOTAL_RECORDS}</div>
           <div className={`text-2xl font-bold ${headingColor}`}>
             {data.overview.count}
           </div>
         </div>
         <div className={`p-4 ${bgColor} rounded-lg shadow transition-colors`}>
-          <div className={`text-sm ${textColor}`}>平均感情スコア</div>
+          <div className={`text-sm ${textColor}`}>{CHART_TITLES.AVERAGE_EMOTION_SCORE}</div>
           <div className={`text-2xl font-bold ${headingColor}`}>
             {data.overview.avgEmotion}
           </div>
@@ -83,7 +83,7 @@ const StatsDisplay = memo(function StatsDisplay({
       {/* 月別グラフ */}
       <div className={`${bgColor} p-4 rounded-lg shadow transition-colors`}>
         <DynamicBarChart
-          title="月別平均感情スコア"
+          title={CHART_TITLES.MONTHLY_AVERAGE_EMOTION}
           height={UI_CONSTANTS.CHART.HEIGHT.DEFAULT}
           data={data.monthly}
           isDark={isDark}
@@ -93,7 +93,7 @@ const StatsDisplay = memo(function StatsDisplay({
       {/* 曜日別グラフ */}
       <div className={`${bgColor} p-4 rounded-lg shadow transition-colors`}>
         <DynamicBarChart
-          title="曜日別平均感情スコア"
+          title={CHART_TITLES.DAY_OF_WEEK_AVERAGE_EMOTION}
           height={UI_CONSTANTS.CHART.HEIGHT.DEFAULT}
           data={data.dayOfWeek}
           isDark={isDark}
@@ -103,7 +103,7 @@ const StatsDisplay = memo(function StatsDisplay({
       {/* 時間帯別グラフ */}
       <div className={`${bgColor} p-4 rounded-lg shadow transition-colors`}>
         <DynamicBarChart
-          title="時間帯別平均感情スコア"
+          title={CHART_TITLES.TIME_OF_DAY_AVERAGE_EMOTION}
           height={UI_CONSTANTS.CHART.HEIGHT.DEFAULT}
           data={data.timeOfDay}
           isDark={isDark}

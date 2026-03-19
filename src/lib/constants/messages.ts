@@ -57,3 +57,11 @@ export const DATA_GENERATION_FEATURES = [
   UI_TEXT.FEATURES.SEASONAL_FACTORS,
   UI_TEXT.FEATURES.EVENT_SIMULATION,
 ] as const;
+
+export const CHART_TITLES = {
+  TOTAL_RECORDS: "総記録数",
+  AVERAGE_EMOTION_SCORE: "平均感情スコア",
+  MONTHLY_AVERAGE_EMOTION: "月別平均感情スコア",
+  DAY_OF_WEEK_AVERAGE_EMOTION: "曜日別平均感情スコア",
+  TIME_OF_DAY_AVERAGE_EMOTION: "時間帯別平均感情スコア",
+} as const;

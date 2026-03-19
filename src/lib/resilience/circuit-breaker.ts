@@ -46,7 +46,7 @@ export class CircuitBreaker {
 
     try {
       const result = await operation();
-      this.onSuccess();
+      this.onSuccess(config);
       return result;
     } catch (error) {
       this.onFailure(config);
@@ -54,14 +54,20 @@ export class CircuitBreaker {
     }
   }
 
-  private onSuccess(): void {
+  private onSuccess(_config: CircuitBreakerConfig): void {
     this.failures = 0;
     this.state = 'CLOSED';
   }
 
   private onFailure(config: CircuitBreakerConfig): void {
+    const now = Date.now();
+
+    if (this.lastFailureTime > 0 && now - this.lastFailureTime > config.monitoringPeriod) {
+      this.failures = 0;
+    }
+
     this.failures++;
-    this.lastFailureTime = Date.now();
+    this.lastFailureTime = now;
 
     if (this.failures >= config.failureThreshold) {
       this.state = 'OPEN';

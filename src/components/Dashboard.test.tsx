@@ -156,6 +156,39 @@ describe('Dashboard', () => {
       });
     });
 
+    it('should handle validation error with custom error message (line 52)', async () => {
+      const mockResponse = {
+        ok: true,
+        status: 200,
+        json: jest.fn().mockResolvedValue({
+          success: true,
+          data: {
+            overview: {
+              count: 'invalid', // This should be a number
+              avgEmotion: 3.5
+            },
+            monthlyStats: [],
+            dayOfWeekStats: [],
+            emotionDistribution: [],
+            timeOfDayStats: {
+              morning: 3.2,
+              afternoon: 3.8,
+              evening: 3.5
+            },
+            studentStats: []
+          }
+        })
+      };
+
+      (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
+
+      render(<Dashboard {...mockProps} />);
+
+      await waitFor(() => {
+        expect(global.fetch).toHaveBeenCalledWith('/api/seed');
+      });
+    });
+
     it('should display data visualization when stats are loaded', async () => {
       const mockResponse = {
         ok: true,

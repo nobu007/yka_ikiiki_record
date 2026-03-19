@@ -124,17 +124,28 @@ export class StructuredLogger {
     timeRange?: [number, number];
     visibility?: LogVisibility;
   }): LogEntry[] {
-    return this.logs.filter((log) => {
-      if (filter.level && log.level !== filter.level) return false;
-      if (filter.category && log.category !== filter.category) return false;
-      if (filter.operation && log.operation !== filter.operation) return false;
-      if (filter.timeRange) {
-        const [start, end] = filter.timeRange;
-        if (log.timestamp < start || log.timestamp > end) return false;
-      }
-      if (filter.visibility && log.visibility !== filter.visibility) return false;
-      return true;
-    });
+    return this.logs.filter((log) => this.matchesFilter(log, filter));
+  }
+
+  private matchesFilter(log: LogEntry, filter: {
+    level?: LogLevel;
+    category?: string;
+    operation?: string;
+    timeRange?: [number, number];
+    visibility?: LogVisibility;
+  }): boolean {
+    if (filter.level && log.level !== filter.level) return false;
+    if (filter.category && log.category !== filter.category) return false;
+    if (filter.operation && log.operation !== filter.operation) return false;
+    if (!this.matchesTimeRange(log.timestamp, filter.timeRange)) return false;
+    if (filter.visibility && log.visibility !== filter.visibility) return false;
+    return true;
+  }
+
+  private matchesTimeRange(timestamp: number, timeRange?: [number, number]): boolean {
+    if (!timeRange) return true;
+    const [start, end] = timeRange;
+    return timestamp >= start && timestamp <= end;
   }
 
   getRecentLogs(count: number = DEFAULT_RECENT_LOGS_COUNT): LogEntry[] {

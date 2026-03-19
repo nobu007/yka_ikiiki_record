@@ -20,7 +20,7 @@
 
 import React from 'react';
 
-const MockChart = React.forwardRef(({ _options, series, type, height }, ref) => {
+const MockChart = React.forwardRef(({ series, type, height }, ref) => {
   return React.createElement('div', {
     ref,
     'data-testid': 'apexchart',

@@ -9,7 +9,7 @@ import EventManager from "./EventManager";
 import ClassCharacteristicsEditor from "./ClassCharacteristicsEditor";
 
 interface Props {
-  onGenerate: (_config: DataGenerationConfig) => Promise<void>;
+  onGenerate: (config: DataGenerationConfig) => Promise<void>;
   className?: string;
 }
 

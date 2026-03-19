@@ -6,7 +6,7 @@ import { GENERATION_CONSTRAINTS } from "@/lib/constants";
 
 interface Props {
   characteristics: ClassCharacteristics;
-  onUpdate: (_updates: Partial<ClassCharacteristics>) => void;
+  onUpdate: (updates: Partial<ClassCharacteristics>) => void;
 }
 
 const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({

@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
 import { withResilientHandler } from '@/lib/api/error-handler';
-import { globalCircuitBreaker, globalMemoryMonitor } from '@/lib/resilience';
+import { globalCircuitBreaker, globalMemoryMonitor, DEFAULT_TIMEOUTS } from '@/lib/resilience';
 import { isPrismaProvider, createStatsService } from '@/infrastructure/factories/repositoryFactory';
 
 const HEALTH_CHECK_THRESHOLDS = {
   MEMORY_CRITICAL: 90,
-  MEMORY_HIGH: 75,
-  TIMEOUT_MS: 5000
+  MEMORY_HIGH: 75
 } as const;
 
 interface HealthCheckResponse {
@@ -96,6 +95,6 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json(response, { status: statusCode });
   }, {
     operationName: 'GET /api/health',
-    timeoutMs: HEALTH_CHECK_THRESHOLDS.TIMEOUT_MS
+    timeoutMs: DEFAULT_TIMEOUTS.database
   });
 }

@@ -8,6 +8,14 @@ import ChartWrapper from './ChartWrapper';
 const CHART_ANIMATION_SPEED_MS = 800;
 const CHART_DYNAMIC_ANIMATION_SPEED_MS = 350;
 
+const DATALABELS_ENABLE_THRESHOLD = 20;
+const LABEL_ROTATION_THRESHOLD = 10;
+const YAXIS_MAX_VALUE = 5;
+const YAXIS_TICK_AMOUNT = 5;
+const YAXIS_LABEL_PRECISION = 1;
+const TOOLTIP_VALUE_PRECISION = 2;
+const GRID_PADDING_LEFT = 10;
+
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
   loading: () => (
@@ -82,7 +90,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
     },
     colors: ['#4F46E5'],
     dataLabels: {
-      enabled: validData.length <= 20,
+      enabled: validData.length <= DATALABELS_ENABLE_THRESHOLD,
     },
     xaxis: {
       categories: validData.map(item => item.name),
@@ -96,15 +104,15 @@ const DynamicBarChart = memo(function DynamicBarChart({
         style: {
           colors: isDark ? '#9ca3af' : '#4b5563',
         },
-        rotateAlways: validData.length > 10,
+        rotateAlways: validData.length > LABEL_ROTATION_THRESHOLD,
       },
     },
     yaxis: {
       min: 0,
-      max: 5,
-      tickAmount: 5,
+      max: YAXIS_MAX_VALUE,
+      tickAmount: YAXIS_TICK_AMOUNT,
       labels: {
-        formatter: (val) => val.toFixed(1),
+        formatter: (val) => val.toFixed(YAXIS_LABEL_PRECISION),
         style: {
           colors: isDark ? '#9ca3af' : '#4b5563',
         },
@@ -116,13 +124,13 @@ const DynamicBarChart = memo(function DynamicBarChart({
         top: 0,
         right: 0,
         bottom: 0,
-        left: 10,
+        left: GRID_PADDING_LEFT,
       },
     },
     tooltip: {
       theme: isDark ? 'dark' : 'light',
       y: {
-        formatter: (val) => val.toFixed(2),
+        formatter: (val) => val.toFixed(TOOLTIP_VALUE_PRECISION),
       },
     },
   }), [height, validData, isDark, mounted]);

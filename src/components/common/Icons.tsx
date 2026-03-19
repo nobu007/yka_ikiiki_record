@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 type NotificationType = "success" | "error" | "warning" | "info";
 
@@ -10,7 +11,7 @@ interface IconProps {
 export const CheckIcon: React.FC<IconProps> = memo(
   ({ className = "", ariaHidden = true }) => (
     <svg
-      className={`h-4 w-4 text-green-500 mr-2 flex-shrink-0 ${className}`}
+      className={`h-4 w-4 ${UI_CONSTANTS.COLOR.SUCCESS} mr-2 flex-shrink-0 ${className}`}
       fill="currentColor"
       viewBox="0 0 20 20"
       aria-hidden={ariaHidden}
@@ -48,7 +49,7 @@ PlusIcon.displayName = "PlusIcon";
 export const ExclamationIcon: React.FC<IconProps> = memo(
   ({ className = "", ariaHidden = true }) => (
     <svg
-      className={`h-6 w-6 text-red-400 ${className}`}
+      className={`h-6 w-6 ${UI_CONSTANTS.COLOR.ERROR_LIGHT} ${className}`}
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -80,10 +81,10 @@ const NOTIFICATION_ICONS = {
 } satisfies Record<NotificationType, string>;
 
 const NOTIFICATION_COLORS = {
-  success: "text-green-500",
-  error: "text-red-500",
-  warning: "text-yellow-500",
-  info: "text-blue-500",
+  success: UI_CONSTANTS.COLOR.SUCCESS,
+  error: UI_CONSTANTS.COLOR.ERROR,
+  warning: UI_CONSTANTS.COLOR.WARNING,
+  info: UI_CONSTANTS.COLOR.INFO,
 } satisfies Record<NotificationType, string>;
 
 export const NotificationIcon: React.FC<NotificationIconProps> = memo(

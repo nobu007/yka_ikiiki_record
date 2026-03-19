@@ -12,13 +12,6 @@ interface NotificationProps {
   onClose?: () => void;
 }
 
-const NOTIFICATION_STYLES = {
-  success: "bg-green-50 border-green-200 text-green-800",
-  error: "bg-red-50 border-red-200 text-red-800",
-  warning: "bg-yellow-50 border-yellow-200 text-yellow-800",
-  info: "bg-blue-50 border-blue-200 text-blue-800",
-};
-
 export const Notification = memo<NotificationProps>(
   ({ show, message, type, onClose }) => {
     const handleClose = useCallback(() => {
@@ -29,7 +22,7 @@ export const Notification = memo<NotificationProps>(
 
     return (
       <div
-        className={`${UI_CONSTANTS.NOTIFICATION.BASE_CLASSES} ${NOTIFICATION_STYLES[type]}`}
+        className={`${UI_CONSTANTS.NOTIFICATION.BASE_CLASSES} ${UI_CONSTANTS.NOTIFICATION.STYLES[type]}`}
         role="alert"
         aria-live="polite"
       >

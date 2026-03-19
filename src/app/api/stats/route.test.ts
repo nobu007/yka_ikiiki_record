@@ -44,9 +44,10 @@ jest.mock("@/schemas/api", () => ({
 }));
 
 import { GET } from "./route";
+import { API_CONFIG } from "@/lib/constants";
 
 function createMockRequest(): Request {
-  return new Request("http://localhost:3000/api/stats", { method: "GET" });
+  return new Request(`${API_CONFIG.LOCAL_BASE_URL}/stats`, { method: "GET" });
 }
 
 describe("GET /api/stats", () => {

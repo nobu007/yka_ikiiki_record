@@ -1,10 +1,10 @@
-import { GENERATION_DEFAULTS } from "@/lib/constants";
+import { GENERATION_DEFAULTS, API_CONFIG } from "@/lib/constants";
 
 export const APP_CONFIG = {
   name: "イキイキレコード デモ",
   description: "生徒の学習データを生成・管理するダッシュボードです",
   api: {
-    baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api",
+    baseUrl: process.env.NEXT_PUBLIC_API_URL || API_CONFIG.LOCAL_BASE_URL,
     endpoints: {
       seed: "/seed",
     },

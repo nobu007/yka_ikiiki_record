@@ -115,3 +115,7 @@ export const HTTP_METHODS = {
 export const CACHE_CONSTANTS = {
   DATA_TTL_MS: 1800000,
 } as const;
+
+export const API_CONFIG = {
+  LOCAL_BASE_URL: "http://localhost:3000/api",
+} as const;

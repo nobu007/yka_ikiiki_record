@@ -6,7 +6,7 @@ import { UsageInstructions } from './common/UsageInstructions';
 import { DataVisualization } from './dashboard/DataVisualization';
 import { StatsResponseSchema, StatsData } from '@/schemas/api';
 import { validateDataSafe } from '@/lib/api/validation';
-import { normalizeError, logError } from '@/lib/error-handler';
+import { normalizeError, logError, AppError, ERROR_CODES } from '@/lib/error-handler';
 import { withApiTimeout } from '@/lib/resilience/timeout';
 
 interface DashboardProps {
@@ -42,14 +42,22 @@ const DashboardComponent: React.FC<DashboardProps> = ({
       const response = await withApiTimeout(fetch('/api/seed'));
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new AppError(
+          `HTTP ${response.status}: ${response.statusText}`,
+          ERROR_CODES.NETWORK,
+          response.status
+        );
       }
 
       const rawData = await response.json();
 
       const [validated, validationError] = validateDataSafe(rawData, StatsResponseSchema);
       if (validationError || !validated) {
-        throw new Error(validationError || 'API response validation failed');
+        throw new AppError(
+          validationError || 'API response validation failed',
+          ERROR_CODES.VALIDATION,
+          500
+        );
       }
 
       if (validated.success && validated.data) {

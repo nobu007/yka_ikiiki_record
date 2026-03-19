@@ -7,6 +7,7 @@ import {
   logError,
 } from "@/lib/error-handler";
 import { API_ENDPOINTS, ERROR_MESSAGES } from "@/lib/constants/messages";
+import { HTTP_METHODS } from "@/lib/constants";
 import { SeedResponseSchema } from "@/schemas/api";
 import { validateDataSafe } from "@/lib/api/validation";
 import { withApiTimeout } from "@/lib/resilience/timeout";
@@ -23,7 +24,7 @@ export function useSeedGeneration() {
       try {
         const response = await withApiTimeout(
           fetch(API_ENDPOINTS.SEED, {
-            method: "POST",
+            method: HTTP_METHODS.POST,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ config }),
           }),

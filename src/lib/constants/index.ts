@@ -99,3 +99,11 @@ export const FALLBACK_VALUES = {
   UNKNOWN_STUDENT: "Unknown",
   UNKNOWN_ERROR: "Unknown error",
 } as const;
+
+export const HTTP_METHODS = {
+  GET: "GET",
+  POST: "POST",
+  PUT: "PUT",
+  DELETE: "DELETE",
+  PATCH: "PATCH",
+} as const;

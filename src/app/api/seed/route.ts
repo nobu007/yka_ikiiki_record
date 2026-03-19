@@ -34,6 +34,11 @@ interface StoredData {
 let storedData: StoredData | null = null;
 const DATA_TTL = 1800000 as const;
 
+const SEED_API_TIMEOUTS = {
+  POST: 30000,
+  GET: 10000
+} as const;
+
 const cleanupOldData = () => {
   if (storedData && Date.now() - storedData.timestamp > DATA_TTL) {
     storedData = null;
@@ -110,7 +115,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }, {
     operationName: 'POST /api/seed',
-    timeoutMs: 30000
+    timeoutMs: SEED_API_TIMEOUTS.POST
   });
 }
 
@@ -149,6 +154,6 @@ export async function GET(): Promise<NextResponse> {
     });
   }, {
     operationName: 'GET /api/seed',
-    timeoutMs: 10000
+    timeoutMs: SEED_API_TIMEOUTS.GET
   });
 }

@@ -12,13 +12,16 @@ export class InfiniteLoopError extends AppError {
   }
 }
 
+const DEFAULT_MAX_ITERATIONS = 1000;
+const DEFAULT_TIME_WINDOW = 30000;
+
 export class LoopDetector {
   private operationCounts = new Map<string, number>();
   private readonly maxIterations: number;
   private readonly timeWindow: number;
   private pendingTimeouts = new Set<NodeJS.Timeout>();
 
-  constructor(maxIterations = 1000, timeWindow = 30000) {
+  constructor(maxIterations = DEFAULT_MAX_ITERATIONS, timeWindow = DEFAULT_TIME_WINDOW) {
     this.maxIterations = maxIterations;
     this.timeWindow = timeWindow;
   }

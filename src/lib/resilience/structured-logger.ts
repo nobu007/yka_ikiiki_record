@@ -12,6 +12,9 @@ export interface LogEntry {
   visibility: LogVisibility;
 }
 
+const DEFAULT_MAX_LOG_SIZE = 10000;
+const DEFAULT_COMPRESSION_THRESHOLD = 5000;
+
 const generateCorrelationId = (): string => {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 };
@@ -21,7 +24,7 @@ export class StructuredLogger {
   private maxLogSize: number;
   private compressionThreshold: number;
 
-  constructor(maxLogSize = 10000, compressionThreshold = 5000) {
+  constructor(maxLogSize = DEFAULT_MAX_LOG_SIZE, compressionThreshold = DEFAULT_COMPRESSION_THRESHOLD) {
     this.maxLogSize = maxLogSize;
     this.compressionThreshold = compressionThreshold;
   }

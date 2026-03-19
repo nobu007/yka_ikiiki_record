@@ -137,7 +137,8 @@ export const ACCESSIBILITY_MESSAGES = {
 export const CHART_AXIS_LABELS = {
   TIME_OF_DAY: ["朝", "昼", "夜"],
   LAST_7_DAYS: ["7日前", "6日前", "5日前", "4日前", "3日前", "2日前", "1日前"],
-};
+  DISTRIBUTION: "分布",
+} as const;
 
 export const DASHBOARD_CONTROLS = {
   STUDENT_COUNT_LABEL: "生徒数",

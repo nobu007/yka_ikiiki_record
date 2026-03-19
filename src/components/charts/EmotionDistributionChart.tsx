@@ -2,7 +2,7 @@ import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 import { EMOTION_RANGES } from "@/lib/constants";
-import { CHART_TITLES } from "@/lib/constants/messages";
+import { CHART_TITLES, CHART_AXIS_LABELS } from "@/lib/constants/messages";
 
 export const EmotionDistributionChart = memo<{ data: number[] }>(({ data }) => {
   const chartData = useMemo(
@@ -10,7 +10,7 @@ export const EmotionDistributionChart = memo<{ data: number[] }>(({ data }) => {
       labels: [...EMOTION_RANGES.LABELS],
       series: [
         {
-          name: "分布",
+          name: CHART_AXIS_LABELS.DISTRIBUTION,
           data,
         },
       ],

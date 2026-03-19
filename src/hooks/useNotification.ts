@@ -1,17 +1,11 @@
 import { useState, useCallback, useRef, useEffect } from "react";
+import { UI_CONSTANTS } from "@/lib/constants";
 
 interface NotificationState {
   show: boolean;
   message: string;
   type: "success" | "error" | "warning" | "info";
 }
-
-const NOTIFICATION_TIMEOUTS = {
-  success: 3000,
-  error: 5000,
-  warning: 4000,
-  info: 3000,
-} as const;
 
 export function useNotification() {
   const [notification, setNotification] = useState<NotificationState>({
@@ -39,9 +33,10 @@ export function useNotification() {
       setNotification({ show: true, message, type });
 
       if (autoClose) {
+        const timeoutKey = type.toUpperCase() as keyof typeof UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION;
         timeoutRef.current = setTimeout(() => {
           setNotification((prev) => ({ ...prev, show: false }));
-        }, NOTIFICATION_TIMEOUTS[type]);
+        }, UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION[timeoutKey]);
       }
     },
     [clearNotification],

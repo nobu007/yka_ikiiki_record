@@ -67,8 +67,17 @@ describe("UI_CONSTANTS", () => {
   });
 
   describe("NOTIFICATION", () => {
-    it("has positive auto-close duration", () => {
-      expect(UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION).toBeGreaterThan(0);
+    it("has positive auto-close durations for all types", () => {
+      expect(UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION.SUCCESS).toBeGreaterThan(0);
+      expect(UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION.ERROR).toBeGreaterThan(0);
+      expect(UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION.WARNING).toBeGreaterThan(0);
+      expect(UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION.INFO).toBeGreaterThan(0);
+    });
+
+    it("has error duration longer than success", () => {
+      expect(UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION.ERROR).toBeGreaterThan(
+        UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION.SUCCESS,
+      );
     });
 
     it("has base classes string", () => {

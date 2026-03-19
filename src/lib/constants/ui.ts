@@ -40,7 +40,12 @@ export const UI_CONSTANTS = {
   } as const,
 
   NOTIFICATION: {
-    AUTO_CLOSE_DURATION: 5000,
+    AUTO_CLOSE_DURATION: {
+      SUCCESS: 3000,
+      ERROR: 5000,
+      WARNING: 4000,
+      INFO: 3000,
+    },
     BASE_CLASSES:
       "mb-4 p-4 border rounded-lg shadow-sm transition-all duration-300",
   } as const,

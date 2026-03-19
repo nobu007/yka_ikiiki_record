@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 3,
+  "cycle": 4,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-20T01:36:00Z",
-  "updated_at": "2026-03-19T17:14:34.883388Z",
+  "updated_at": "2026-03-20T02:21:00Z",
   "scan_progress": {
     "all_dirs": [
       "src/app",
@@ -25,10 +25,10 @@
     "completed_dirs": [
       "src/app",
       "src/application",
-      "src/components"
+      "src/components",
+      "src/domain"
     ],
     "pending_dirs": [
-      "src/domain",
       "src/infrastructure",
       "src/lib",
       "src/presentation",
@@ -107,6 +107,40 @@
           "Comprehensive test coverage: accessibility, dataFetching, interactions, notifications, performance, rendering",
           "Charts have extensive test suites: configuration, dataFiltering, edgeCases, errorHandling, integration",
           "Follows Clean Architecture: imports from schemas, lib (cross-cutting), no domain/infrastructure imports"
+        ]
+      },
+      {
+        "dir": "src/domain",
+        "file_count": 34,
+        "test_count": 26,
+        "has_tests": true,
+        "key_exports": [
+          "Record",
+          "Stats",
+          "StatsOverview",
+          "MonthlyStats",
+          "StudentStats",
+          "DayOfWeekStats",
+          "TimeOfDayStats",
+          "StatsRepository",
+          "IRecordRepository",
+          "MockRecordRepository",
+          "DataGenerationConfig",
+          "EMOTION_CONSTANTS",
+          "DATA_GENERATION_BOUNDS",
+          "StatsService",
+          "EmotionGenerator"
+        ],
+        "notes": [
+          "Domain layer following Clean Architecture (no dependencies on other layers)",
+          "Entities: Record (core data model), Stats (statistics aggregate), StatsOverview, MonthlyStats, StudentStats, DayOfWeekStats, TimeOfDayStats",
+          "Repositories: StatsRepository (interface), IRecordRepository (interface), MockRecordRepository (implementation for testing)",
+          "Services: StatsService (statistics calculation and seed data generation), EmotionGenerator (emotion data generation with patterns)",
+          "Data generation: DataGenerationConfig with EMOTION_CONSTANTS and DATA_GENERATION_BOUNDS for realistic emotion simulation",
+          "Tests are co-located with source files (domain-specific testing pattern)",
+          "Comprehensive test coverage: contract tests, behavior tests, integration tests for repositories",
+          "Entity tests: Record validation, Stats aggregation, DataGeneration config/patterns/seasonal effects/events",
+          "Clean Architecture compliance: Domain layer has zero imports from infrastructure/presentation/application layers"
         ]
       }
     ]

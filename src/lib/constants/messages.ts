@@ -170,6 +170,7 @@ export const DASHBOARD_CONTROLS = {
 
 export const API_ERROR_MESSAGES = {
   VALIDATION_FAILED_PREFIX: "入力データの検証に失敗しました: ",
+  UNKNOWN_VALIDATION_ERROR: "不明なバリデーションエラーが発生しました",
   INVALID_JSON_BODY: "リクエストボディのJSON形式が正しくありません",
   BAD_REQUEST: "リクエストが正しくありません",
   UNAUTHORIZED: "認証が必要です",

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { API_ERROR_MESSAGES } from "@/lib/constants/messages";
 
 export function validateData<T>(data: unknown, schema: z.ZodSchema<T>): T {
   return schema.parse(data);
@@ -18,7 +19,7 @@ export function validateDataSafe<T>(
         .join(", ");
       return [null, errorMessage];
     }
-    return [null, "不明なバリデーションエラーが発生しました"];
+    return [null, API_ERROR_MESSAGES.UNKNOWN_VALIDATION_ERROR];
   }
 }
 
@@ -30,6 +31,6 @@ export async function validateRequestBody<T>(
     const body = await request.json();
     return validateDataSafe(body, schema);
   } catch {
-    return [null, "リクエストボディの解析に失敗しました"];
+    return [null, API_ERROR_MESSAGES.REQUEST_BODY_PARSE_FAILED];
   }
 }

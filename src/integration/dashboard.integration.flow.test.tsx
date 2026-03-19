@@ -6,6 +6,7 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import DashboardPage from "@/app/(dashboard)/dashboard/page";
 import * as hooks from "@/hooks/useApp";
+import { LOADING_MESSAGES } from "@/lib/constants/messages";
 
 // Mock hooks
 jest.mock("@/hooks/useApp");
@@ -95,7 +96,7 @@ describe("Dashboard Integration - Data Flow", () => {
         isGenerating: true,
         notification: { show: false, message: "", type: "success" },
         handleGenerate: mockHandleInitialGeneration,
-        isLoadingMessage: "データを生成中...",
+        isLoadingMessage: LOADING_MESSAGES.GENERATING_DATA,
       });
 
       render(
@@ -105,7 +106,7 @@ describe("Dashboard Integration - Data Flow", () => {
       );
 
       // Check loading overlay is present
-      expect(screen.getByText("データを生成中...")).toBeInTheDocument();
+      expect(screen.getByText(LOADING_MESSAGES.GENERATING_DATA)).toBeInTheDocument();
 
       // Button should be disabled and show loading text
       const generateButton = screen.getByText("生成中...");

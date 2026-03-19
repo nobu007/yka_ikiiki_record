@@ -11,6 +11,7 @@
 import { render, screen } from "@testing-library/react";
 import DashboardPage from "./page";
 import { useDashboard } from "@/hooks/useApp";
+import { LOADING_MESSAGES } from "@/lib/constants/messages";
 
 jest.mock("@/hooks/useApp");
 jest.mock("next/dynamic", () => ({
@@ -53,7 +54,7 @@ describe("DashboardPage", () => {
       isGenerating: true,
       notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
-      isLoadingMessage: "データを生成中...",
+      isLoadingMessage: LOADING_MESSAGES.GENERATING_DATA,
     });
 
     render(<DashboardPage />);
@@ -97,7 +98,7 @@ describe("DashboardPage", () => {
       isGenerating: true,
       notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
-      isLoadingMessage: "データを生成中...",
+      isLoadingMessage: LOADING_MESSAGES.GENERATING_DATA,
     });
 
     render(<DashboardPage />);
@@ -180,7 +181,7 @@ describe("DashboardPage", () => {
       isGenerating: true,
       notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
-      isLoadingMessage: "データを生成中...",
+      isLoadingMessage: LOADING_MESSAGES.GENERATING_DATA,
     });
 
     rerender(<DashboardPage />);

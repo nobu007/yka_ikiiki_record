@@ -6,6 +6,7 @@
 import { render, screen } from "@testing-library/react";
 import DashboardPage from "@/app/(dashboard)/dashboard/page";
 import * as hooks from "@/hooks/useApp";
+import { LOADING_MESSAGES } from "@/lib/constants/messages";
 
 // Mock hooks
 jest.mock("@/hooks/useApp");
@@ -110,7 +111,7 @@ describe("Dashboard Integration - Behavior", () => {
         isGenerating: true,
         notification: { show: false, message: "", type: "success" },
         handleGenerate: mockHandleInitialGeneration,
-        isLoadingMessage: "データを生成中...",
+        isLoadingMessage: LOADING_MESSAGES.GENERATING_DATA,
       });
 
       render(

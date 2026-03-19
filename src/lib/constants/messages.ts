@@ -83,3 +83,8 @@ export const HELP_TEXT = {
   READY: "ボタンをクリックしてテストデータを生成してください。",
   GENERATING: "データを生成しています。しばらくお待ちください...",
 } as const;
+
+export const CONTEXT_ERROR_MESSAGES = {
+  THEME_PROVIDER: "useTheme must be used within a ThemeProvider",
+  SIDEBAR_PROVIDER: "useSidebar must be used within a SidebarProvider",
+} as const;

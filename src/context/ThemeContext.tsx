@@ -8,6 +8,7 @@ import {
   useCallback,
   memo,
 } from "react";
+import { CONTEXT_ERROR_MESSAGES } from "@/lib/constants/messages";
 
 type Theme = "light" | "dark";
 
@@ -60,7 +61,7 @@ ThemeProvider.displayName = "ThemeProvider";
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
+    throw new Error(CONTEXT_ERROR_MESSAGES.THEME_PROVIDER);
   }
   return context;
 };

@@ -8,6 +8,7 @@ import {
   memo,
 } from "react";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
+import { CONTEXT_ERROR_MESSAGES } from "@/lib/constants/messages";
 
 type SidebarContextType = {
   isExpanded: boolean;
@@ -27,7 +28,7 @@ const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 export const useSidebar = () => {
   const context = useContext(SidebarContext);
   if (!context) {
-    throw new Error("useSidebar must be used within a SidebarProvider");
+    throw new Error(CONTEXT_ERROR_MESSAGES.SIDEBAR_PROVIDER);
   }
   return context;
 };

@@ -5,13 +5,17 @@ const mockStatsService = {
   getStats: mockGetStats,
 };
 
-jest.mock("@/infrastructure/factories/repositoryFactory", () => ({
+jest.mock("@/lib/config/env", () => ({
   isPrismaProvider: jest.fn(),
+  getEnv: jest.fn(),
+}));
+
+jest.mock("@/infrastructure/factories/repositoryFactory", () => ({
   createStatsService: jest.fn(() => mockStatsService),
 }));
 
 import { GET } from "./route";
-import { isPrismaProvider } from "@/infrastructure/factories/repositoryFactory";
+import { isPrismaProvider } from "@/lib/config/env";
 
 const mockIsPrismaProvider = isPrismaProvider as jest.Mock;
 

@@ -5,10 +5,8 @@ import {
   globalMemoryMonitor,
   DEFAULT_TIMEOUTS,
 } from "@/lib/resilience";
-import {
-  isPrismaProvider,
-  createStatsService,
-} from "@/infrastructure/factories/repositoryFactory";
+import { isPrismaProvider } from "@/lib/config/env";
+import { createStatsService } from "@/infrastructure/factories/repositoryFactory";
 
 const HEALTH_CHECK_THRESHOLDS = {
   MEMORY_CRITICAL: 90,

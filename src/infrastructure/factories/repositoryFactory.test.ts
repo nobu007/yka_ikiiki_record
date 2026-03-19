@@ -102,47 +102,4 @@ describe("repositoryFactory", () => {
       expect(service.constructor.name).toBe("StatsService");
     });
   });
-
-  describe("isPrismaProvider", () => {
-    it("should return false when provider is mirage", () => {
-      process.env.DATABASE_PROVIDER = "mirage";
-
-      const {
-        isPrismaProvider,
-      } = require("@/infrastructure/factories/repositoryFactory");
-
-      expect(isPrismaProvider()).toBe(false);
-    });
-
-    it("should return false when provider is not set", () => {
-      delete process.env.DATABASE_PROVIDER;
-
-      const {
-        isPrismaProvider,
-      } = require("@/infrastructure/factories/repositoryFactory");
-
-      expect(isPrismaProvider()).toBe(false);
-    });
-
-    it("should return true when provider is prisma", () => {
-      process.env.DATABASE_PROVIDER = "prisma";
-      process.env.DATABASE_URL = "postgresql://localhost:5432/test";
-
-      const {
-        isPrismaProvider,
-      } = require("@/infrastructure/factories/repositoryFactory");
-
-      expect(isPrismaProvider()).toBe(true);
-    });
-
-    it("should throw error for invalid provider", () => {
-      process.env.DATABASE_PROVIDER = "invalid" as never;
-
-      const {
-        isPrismaProvider,
-      } = require("@/infrastructure/factories/repositoryFactory");
-
-      expect(() => isPrismaProvider()).toThrow();
-    });
-  });
 });

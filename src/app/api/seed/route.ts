@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { withResilientHandler } from "@/lib/api/error-handler";
 import { createSuccessResponse } from "@/lib/api/response";
-import {
-  createStatsService,
-  isPrismaProvider,
-} from "@/infrastructure/factories/repositoryFactory";
+import { createStatsService } from "@/infrastructure/factories/repositoryFactory";
+import { isPrismaProvider } from "@/lib/config/env";
 import {
   dataService,
   DataGenerationConfig,

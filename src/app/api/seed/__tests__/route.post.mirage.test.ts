@@ -32,11 +32,12 @@ jest.mock("@/infrastructure/services/dataService", () => ({
   StatsData: {},
 }));
 
-const mockIsPrismaProvider = false;
+jest.mock("@/lib/config/env", () => ({
+  isPrismaProvider: jest.fn(() => false),
+}));
 
 jest.mock("@/infrastructure/factories/repositoryFactory", () => ({
   createStatsService: jest.fn(),
-  isPrismaProvider: jest.fn(() => mockIsPrismaProvider),
 }));
 
 function createMockRequest(body: object): NextRequest {

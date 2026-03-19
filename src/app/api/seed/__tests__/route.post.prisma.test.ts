@@ -26,11 +26,12 @@ const mockStatsService = {
   getStats: mockGetStats,
 };
 
-let mockIsPrismaProvider = false;
+jest.mock("@/lib/config/env", () => ({
+  isPrismaProvider: jest.fn(() => true),
+}));
 
 jest.mock("@/infrastructure/factories/repositoryFactory", () => ({
   createStatsService: jest.fn(() => mockStatsService),
-  isPrismaProvider: jest.fn(() => mockIsPrismaProvider),
 }));
 
 jest.mock("@/infrastructure/services/dataService", () => ({
@@ -48,13 +49,6 @@ function createMockRequest(body: object): NextRequest {
 }
 
 describe("API seed route POST (Prisma provider)", () => {
-  beforeAll(() => {
-    mockIsPrismaProvider = true;
-  });
-
-  afterAll(() => {
-    mockIsPrismaProvider = false;
-  });
 
   beforeEach(() => {
     jest.clearAllMocks();

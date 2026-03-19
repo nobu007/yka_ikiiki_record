@@ -9,7 +9,7 @@ import {
   memo,
 } from "react";
 import { CONTEXT_ERROR_MESSAGES } from "@/lib/constants/messages";
-import { STORAGE_KEYS } from "@/lib/constants/storage";
+import { STORAGE_KEYS, THEME_CLASSES } from "@/lib/constants/storage";
 
 type Theme = "light" | "dark";
 
@@ -38,9 +38,9 @@ export const ThemeProvider = memo<{ children: React.ReactNode }>(
       if (isInitialized) {
         localStorage.setItem(STORAGE_KEYS.THEME, theme);
         if (theme === "dark") {
-          document.documentElement.classList.add("dark");
+          document.documentElement.classList.add(THEME_CLASSES.DARK);
         } else {
-          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.remove(THEME_CLASSES.DARK);
         }
       }
     }, [theme, isInitialized]);

@@ -82,4 +82,5 @@ export const EMOTION_CALCULATION_PARAMS = {
     EARLIER_WINDOW_END: 3,
     TRENDLINE_WINDOW: 7,
   },
+  DECIMAL_PRECISION: 1,
 } as const;

@@ -6,8 +6,8 @@ type EmotionData = { date: Date; emotion: number; hour?: number; student?: numbe
 export const clamp = (value: number, min: number, max: number): number => 
   Math.max(min, Math.min(max, value));
 
-export const average = (values: number[]): number => 
-  values.length === 0 ? 0 : Number((values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(1));
+export const average = (values: number[]): number =>
+  values.length === 0 ? 0 : Number((values.reduce((sum, val) => sum + val, 0) / values.length).toFixed(EMOTION_CALCULATION_PARAMS.DECIMAL_PRECISION));
 
 export const calculateAverage = average;
 
@@ -143,7 +143,7 @@ export const calculateStudentStats = (emotions: EmotionData[]) =>
     .sort((a, b) => a.student.localeCompare(b.student));
 
 export const calculateTrendline = (emotions: number[]): number[] =>
-  emotions.slice(-EMOTION_CALCULATION_PARAMS.TREND.TRENDLINE_WINDOW).map(score => Number((score || 0).toFixed(1)));
+  emotions.slice(-EMOTION_CALCULATION_PARAMS.TREND.TRENDLINE_WINDOW).map(score => Number((score || 0).toFixed(EMOTION_CALCULATION_PARAMS.DECIMAL_PRECISION)));
 
 export const calculateEmotionTrend = (emotions: number[]): 'up' | 'down' | 'stable' => {
   if (emotions.length < 2) return 'stable';

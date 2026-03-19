@@ -1,0 +1,74 @@
+{
+  "version": "2.0",
+  "phase": "scan",
+  "cycle": 2,
+  "target_repo": "/home/jinno/yka_ikiiki_record",
+  "started_at": "2026-03-19T09:30:00Z",
+  "updated_at": "2026-03-19T09:31:00Z",
+  "scan_progress": {
+    "all_dirs": [
+      "src/app",
+      "src/application",
+      "src/components",
+      "src/context",
+      "src/domain",
+      "src/hooks",
+      "src/infrastructure",
+      "src/integration",
+      "src/lib",
+      "src/mirage",
+      "src/presentation",
+      "src/schemas",
+      "src/test-utils",
+      "src/types",
+      "src/utils",
+      "test",
+      "prisma",
+      "scripts",
+      "public",
+      "docs"
+    ],
+    "completed_dirs": ["src/app"],
+    "pending_dirs": [
+      "src/application",
+      "src/components",
+      "src/context",
+      "src/domain",
+      "src/hooks",
+      "src/infrastructure",
+      "src/integration",
+      "src/lib",
+      "src/mirage",
+      "src/presentation",
+      "src/schemas",
+      "src/test-utils",
+      "src/types",
+      "src/utils",
+      "test",
+      "prisma",
+      "scripts",
+      "public",
+      "docs"
+    ],
+    "findings": [
+      {
+        "dir": "src/app",
+        "file_count": 38,
+        "test_count": 46,
+        "has_tests": true,
+        "key_exports": ["Next.js API routes", "Dashboard pages", "Bar chart page", "Landing page"],
+        "notes": [
+          "Next.js App Router structure with route groups (chart), (dashboard)",
+          "API routes: /api/stats (GET), /api/seed",
+          "High test coverage with comprehensive test files for dashboard components",
+          "Uses factory pattern (createStatsService)",
+          "Error handling with withErrorHandler wrapper",
+          "Schema validation with StatsResponseSchema",
+          "Redirects root to /landing"
+        ]
+      }
+    ]
+  },
+  "purpose_analysis": null,
+  "gap_analysis": null
+}

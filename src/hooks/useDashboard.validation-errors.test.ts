@@ -33,7 +33,7 @@ describe('useDashboard - Validation Error Branches (lines 39, 72)', () => {
     expect(result.current.isGenerating).toBe(false);
     expect(result.current.notification.show).toBe(true);
     expect(result.current.notification.type).toBe('error');
-    expect(result.current.notification.message).toContain('予期せぬエラーが発生しました');
+    expect(result.current.notification.message).toContain('API response validation failed');
   });
 
   it('should handle validation error with custom validationError message (line 72)', async () => {
@@ -53,7 +53,7 @@ describe('useDashboard - Validation Error Branches (lines 39, 72)', () => {
     expect(result.current.isGenerating).toBe(false);
     expect(result.current.notification.show).toBe(true);
     expect(result.current.notification.type).toBe('error');
-    expect(result.current.notification.message).toContain('予期せぬエラーが発生しました');
+    expect(result.current.notification.message).toContain('Custom validation failure');
   });
 
   it('should handle API response with success=false and custom error (line 72)', async () => {
@@ -76,7 +76,7 @@ describe('useDashboard - Validation Error Branches (lines 39, 72)', () => {
     expect(result.current.isGenerating).toBe(false);
     expect(result.current.notification.show).toBe(true);
     expect(result.current.notification.type).toBe('error');
-    expect(result.current.notification.message).toContain('予期せぬエラーが発生しました');
+    expect(result.current.notification.message).toContain('データ生成に失敗しました');
   });
 
   it('should handle API response with success=false and no error field (line 72 default)', async () => {
@@ -99,7 +99,7 @@ describe('useDashboard - Validation Error Branches (lines 39, 72)', () => {
     expect(result.current.isGenerating).toBe(false);
     expect(result.current.notification.show).toBe(true);
     expect(result.current.notification.type).toBe('error');
-    expect(result.current.notification.message).toContain('予期せぬエラーが発生しました');
+    expect(result.current.notification.message).toContain('データ生成に失敗しました');
   });
 
   it('should call showNotification with default type (line 39)', async () => {

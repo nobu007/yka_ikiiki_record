@@ -93,11 +93,11 @@ describe('error-handler: normalizeError & getUserFriendlyMessage', () => {
   });
 
   describe('getUserFriendlyMessage', () => {
-    test('returns predefined message for known error codes', () => {
+    test('returns original message for validation errors', () => {
       const validationError = new ValidationError('Invalid data');
       const message = getUserFriendlyMessage(validationError);
 
-      expect(message).toBe('入力内容を確認してください');
+      expect(message).toBe('Invalid data');
     });
 
     test('returns error message for unknown error codes', () => {

@@ -61,7 +61,11 @@ export function normalizeError(error: unknown): AppError {
 
 export function getUserFriendlyMessage(error: unknown): string {
   const normalized = normalizeError(error);
-  
+
+  if (normalized.code === ERROR_CODES.VALIDATION) {
+    return normalized.message;
+  }
+
   const messageMap: Record<ErrorCodeType, string> = {
     [ERROR_CODES.UNKNOWN]: MESSAGES.error.unexpected,
     [ERROR_CODES.VALIDATION]: MESSAGES.error.validation,
@@ -71,7 +75,7 @@ export function getUserFriendlyMessage(error: unknown): string {
     [ERROR_CODES.NOT_FOUND]: MESSAGES.error.notFound,
     [ERROR_CODES.PERMISSION]: MESSAGES.error.permission
   };
-  
+
   return messageMap[normalized.code] || normalized.message;
 }
 

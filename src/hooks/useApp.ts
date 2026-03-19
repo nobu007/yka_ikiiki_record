@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { APP_CONFIG, MESSAGES } from '@/lib/config';
-import { normalizeError, getUserFriendlyMessage, logError } from '@/lib/error-handler';
+import { normalizeError, getUserFriendlyMessage, logError, NetworkError, ValidationError, AppError, ERROR_CODES } from '@/lib/error-handler';
 import { SeedResponseSchema } from '@/schemas/api';
 import { validateDataSafe } from '@/lib/api/validation';
 import { withApiTimeout } from '@/lib/resilience/timeout';
@@ -65,18 +65,18 @@ export function useDashboard() {
       }));
 
       if (!response.ok) {
-        throw new Error(MESSAGES.error.api(response.status, response.statusText));
+        throw new NetworkError(MESSAGES.error.api(response.status, response.statusText), response.status);
       }
 
       const rawData = await response.json();
 
       const [validated, validationError] = validateDataSafe(rawData, SeedResponseSchema);
       if (validationError || !validated) {
-        throw new Error(validationError || 'API response validation failed');
+        throw new ValidationError(validationError || 'API response validation failed');
       }
 
       if (!validated.success) {
-        throw new Error(validated.error || MESSAGES.error.generation);
+        throw new AppError(validated.error || MESSAGES.error.generation, ERROR_CODES.GENERATION);
       }
 
       showNotification(MESSAGES.success.dataGeneration, 'success');

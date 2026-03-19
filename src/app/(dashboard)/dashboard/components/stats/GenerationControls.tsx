@@ -8,7 +8,7 @@ const DISTRIBUTION_PATTERNS: { label: string; value: EmotionDistributionPattern 
   { label: '二峰分布', value: 'bimodal' },
   { label: 'ストレス型', value: 'stress' },
   { label: 'ハッピー型', value: 'happy' }
-];
+] as const;
 
 interface Props {
   config: DataGenerationConfig;

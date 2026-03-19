@@ -18,7 +18,7 @@ jest.mock('@/lib/api/response', () => ({
   createSuccessResponse: (...args: unknown[]) => mockCreateSuccessResponse(...args)
 }));
 
-// Mock withErrorHandler to execute the handler, and createError
+// Mock withResilientHandler to execute the handler, and createError
 const mockNotFound = jest.fn().mockImplementation((msg: string) => {
   const err = new Error(msg);
   (err as Error & { statusCode: number }).statusCode = 404;
@@ -26,9 +26,9 @@ const mockNotFound = jest.fn().mockImplementation((msg: string) => {
 });
 
 jest.mock('@/lib/api/error-handler', () => {
-  const withErrorHandler = jest.fn().mockImplementation((handler: () => Promise<NextResponse>) => handler());
+  const withResilientHandler = jest.fn().mockImplementation((handler: () => Promise<NextResponse>) => handler());
   return {
-    withErrorHandler,
+    withResilientHandler,
     createError: {
       notFound: (...args: unknown[]) => mockNotFound(...args)
     }
@@ -116,14 +116,17 @@ describe('GET /api/stats', () => {
     await expect(GET(req as never)).rejects.toThrow('DB connection failed');
   });
 
-  it('wraps handler with withErrorHandler', async () => {
-    const { withErrorHandler: mockWithErrorErrorHandler } = jest.requireMock('@/lib/api/error-handler');
+  it('wraps handler with withResilientHandler', async () => {
+    const { withResilientHandler: mockWithResilientHandler } = jest.requireMock('@/lib/api/error-handler');
     mockGetStats.mockResolvedValue({ overview: { count: 0, avgEmotion: 0 } });
 
     const req = createMockRequest();
     await GET(req as never);
 
-    expect(mockWithErrorErrorHandler).toHaveBeenCalledTimes(1);
-    expect(mockWithErrorErrorHandler).toHaveBeenCalledWith(expect.any(Function));
+    expect(mockWithResilientHandler).toHaveBeenCalledTimes(1);
+    expect(mockWithResilientHandler).toHaveBeenCalledWith(expect.any(Function), expect.objectContaining({
+      operationName: 'GET /api/stats',
+      timeoutMs: 10000
+    }));
   });
 });

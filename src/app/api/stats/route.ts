@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { StatsResponseSchema } from '@/schemas/api';
 import { createSuccessResponse } from '@/lib/api/response';
-import { withErrorHandler } from '@/lib/api/error-handler';
+import { withResilientHandler } from '@/lib/api/error-handler';
 import { createStatsService } from '@/infrastructure/factories/repositoryFactory';
 import { createError } from '@/lib/api/error-handler';
 
 export async function GET(_req: NextRequest): Promise<NextResponse> {
-  return withErrorHandler(async () => {
+  return withResilientHandler(async () => {
     const statsService = createStatsService();
     const stats = await statsService.getStats();
 
@@ -19,5 +19,8 @@ export async function GET(_req: NextRequest): Promise<NextResponse> {
       data: stats
     };
     return createSuccessResponse(response, StatsResponseSchema);
+  }, {
+    operationName: 'GET /api/stats',
+    timeoutMs: 10000
   });
 }

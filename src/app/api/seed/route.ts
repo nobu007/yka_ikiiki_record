@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { withErrorHandler } from '@/lib/api/error-handler';
+import { withResilientHandler } from '@/lib/api/error-handler';
 import { createSuccessResponse } from '@/lib/api/response';
 import { createStatsService, isPrismaProvider } from '@/infrastructure/factories/repositoryFactory';
 import { dataService, DataGenerationConfig } from '@/infrastructure/services/dataService';
@@ -71,7 +71,7 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  return withErrorHandler(async () => {
+  return withResilientHandler(async () => {
     if (isPrismaProvider()) {
       const statsService = createStatsService();
       await statsService.generateSeedData();
@@ -108,11 +108,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       success: true,
       message: 'テストデータの生成が完了しました'
     });
+  }, {
+    operationName: 'POST /api/seed',
+    timeoutMs: 30000
   });
 }
 
 export async function GET(): Promise<NextResponse> {
-  return withErrorHandler(async () => {
+  return withResilientHandler(async () => {
     if (isPrismaProvider()) {
       const statsService = createStatsService();
       const stats = await statsService.getStats();
@@ -144,5 +147,8 @@ export async function GET(): Promise<NextResponse> {
         config: storedData.config
       }
     });
+  }, {
+    operationName: 'GET /api/seed',
+    timeoutMs: 10000
   });
 }

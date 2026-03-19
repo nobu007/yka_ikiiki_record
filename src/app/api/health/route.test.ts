@@ -14,7 +14,6 @@ import { GET } from './route';
 import { isPrismaProvider } from '@/infrastructure/factories/repositoryFactory';
 
 const mockIsPrismaProvider = isPrismaProvider as jest.Mock;
-const mockCreateStatsService = require('@/infrastructure/factories/repositoryFactory').createStatsService as jest.Mock;
 
 describe('GET /api/health', () => {
   beforeEach(() => {

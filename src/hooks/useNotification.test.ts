@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import { useNotification } from "./useApp";
+import { useNotification } from "./useNotification";
 
 describe("useNotification", () => {
   it("should initialize with default notification state", () => {
@@ -8,7 +8,7 @@ describe("useNotification", () => {
     expect(result.current.notification).toEqual({
       show: false,
       message: "",
-      type: "info",
+      type: "success",
     });
   });
 
@@ -16,7 +16,7 @@ describe("useNotification", () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showNotification("Success message", "success");
+      result.current.showSuccess("Success message");
     });
 
     expect(result.current.notification).toEqual({
@@ -30,7 +30,7 @@ describe("useNotification", () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showNotification("Error message", "error");
+      result.current.showError("Error message");
     });
 
     expect(result.current.notification).toEqual({
@@ -44,7 +44,7 @@ describe("useNotification", () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showNotification("Warning message", "warning");
+      result.current.showWarning("Warning message");
     });
 
     expect(result.current.notification).toEqual({
@@ -54,11 +54,11 @@ describe("useNotification", () => {
     });
   });
 
-  it("should show info notification with default type", () => {
+  it("should show info notification", () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showNotification("Info message");
+      result.current.showInfo("Info message");
     });
 
     expect(result.current.notification).toEqual({
@@ -72,7 +72,7 @@ describe("useNotification", () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showNotification("Test message", "info");
+      result.current.showSuccess("Test message");
     });
 
     expect(result.current.notification.show).toBe(true);
@@ -83,18 +83,18 @@ describe("useNotification", () => {
 
     expect(result.current.notification.show).toBe(false);
     expect(result.current.notification.message).toBe("Test message");
-    expect(result.current.notification.type).toBe("info");
+    expect(result.current.notification.type).toBe("success");
   });
 
   it("should override existing notification", () => {
     const { result } = renderHook(() => useNotification());
 
     act(() => {
-      result.current.showNotification("First message", "info");
+      result.current.showInfo("First message");
     });
 
     act(() => {
-      result.current.showNotification("Second message", "error");
+      result.current.showError("Second message");
     });
 
     expect(result.current.notification).toEqual({

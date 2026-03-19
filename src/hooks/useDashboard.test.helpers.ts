@@ -79,7 +79,7 @@ export const expectDefaultState = (
   expect(result.current.notification).toEqual({
     show: false,
     message: "",
-    type: "info",
+    type: "success",
   });
   expect(result.current.isLoadingMessage).toBeNull();
 };

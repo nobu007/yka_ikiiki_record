@@ -15,52 +15,11 @@ import {
 import { SeedResponseSchema } from "@/schemas/api";
 import { validateDataSafe } from "@/lib/api/validation";
 import { withApiTimeout } from "@/lib/resilience/timeout";
-
-interface NotificationState {
-  show: boolean;
-  message: string;
-  type: "success" | "error" | "warning" | "info";
-}
-
-export function useNotification() {
-  const [notification, setNotification] = useState<NotificationState>({
-    show: false,
-    message: "",
-    type: "info",
-  });
-
-  const showNotification = useCallback(
-    (message: string, type: NotificationState["type"] = "info") => {
-      setNotification({ show: true, message, type });
-    },
-    [],
-  );
-
-  const clearNotification = useCallback(() => {
-    setNotification((prev) => ({ ...prev, show: false }));
-  }, []);
-
-  return { notification, showNotification, clearNotification };
-}
+import { useNotification } from "@/hooks/useNotification";
 
 export function useDashboard() {
   const [isGenerating, setIsGenerating] = useState(false);
-  const [notification, setNotification] = useState<NotificationState>({
-    show: false,
-    message: "",
-    type: "info",
-  });
-
-  const showNotification = useCallback(
-    (message: string, type: NotificationState["type"] = "info") => {
-      setNotification({ show: true, message, type });
-    },
-    [],
-  );
-
-  const clearNotification = useCallback(() => {
-    setNotification((prev) => ({ ...prev, show: false }));
-  }, []);
+  const { notification, showSuccess, showError, clearNotification } = useNotification();
 
   const handleGenerate = useCallback(async () => {
     try {
@@ -107,15 +66,15 @@ export function useDashboard() {
         );
       }
 
-      showNotification(MESSAGES.success.dataGeneration, "success");
+      showSuccess(MESSAGES.success.dataGeneration);
     } catch (error) {
       const appError = normalizeError(error);
       logError(appError, "useDashboard.handleGenerate");
-      showNotification(getUserFriendlyMessage(appError), "error");
+      showError(getUserFriendlyMessage(appError));
     } finally {
       setIsGenerating(false);
     }
-  }, [clearNotification, showNotification]);
+  }, [clearNotification, showSuccess, showError]);
 
   return {
     isGenerating,

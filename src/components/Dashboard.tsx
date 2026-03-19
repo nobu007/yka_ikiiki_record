@@ -33,7 +33,7 @@ interface DashboardProps {
   onNotificationClose?: () => void;
 }
 
-const DashboardComponent: React.FC<DashboardProps> = ({
+const DashboardComponent = memo<DashboardProps>(({
   isGenerating,
   onGenerate,
   notification,
@@ -200,9 +200,11 @@ const DashboardComponent: React.FC<DashboardProps> = ({
       </div>
     </div>
   );
-};
+});
 
-const Dashboard = memo(DashboardComponent);
+DashboardComponent.displayName = "DashboardComponent";
+
+export const Dashboard = DashboardComponent;
 Dashboard.displayName = "Dashboard";
 
-export { Dashboard };
+export default DashboardComponent;

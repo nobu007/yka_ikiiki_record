@@ -8,7 +8,7 @@ interface IconProps {
   ariaHidden?: boolean;
 }
 
-export const CheckIcon: React.FC<IconProps> = memo(
+export const CheckIcon = memo<IconProps>(
   ({ className = "", ariaHidden = true }) => (
     <svg
       className={`h-4 w-4 ${UI_CONSTANTS.COLOR.SUCCESS} mr-2 flex-shrink-0 ${className}`}
@@ -26,7 +26,7 @@ export const CheckIcon: React.FC<IconProps> = memo(
 );
 CheckIcon.displayName = "CheckIcon";
 
-export const PlusIcon: React.FC<IconProps> = memo(
+export const PlusIcon = memo<IconProps>(
   ({ className = "", ariaHidden = true }) => (
     <svg
       className={`h-5 w-5 mr-2 ${className}`}
@@ -46,7 +46,7 @@ export const PlusIcon: React.FC<IconProps> = memo(
 );
 PlusIcon.displayName = "PlusIcon";
 
-export const ExclamationIcon: React.FC<IconProps> = memo(
+export const ExclamationIcon = memo<IconProps>(
   ({ className = "", ariaHidden = true }) => (
     <svg
       className={`h-6 w-6 ${UI_CONSTANTS.COLOR.ERROR_LIGHT} ${className}`}
@@ -87,7 +87,7 @@ const NOTIFICATION_COLORS = {
   info: UI_CONSTANTS.COLOR.INFO,
 } satisfies Record<NotificationType, string>;
 
-export const NotificationIcon: React.FC<NotificationIconProps> = memo(
+export const NotificationIcon = memo<NotificationIconProps>(
   ({ type, className = "", ariaHidden = true }) => (
     <svg
       className={`h-5 w-5 mr-3 flex-shrink-0 ${NOTIFICATION_COLORS[type]} ${className}`}

@@ -21,7 +21,7 @@ const INSTRUCTIONS_CONFIG: InstructionsConfig = {
   tips: INSTRUCTIONS_SECTION.TIPS,
 } as const;
 
-const StepNumber: React.FC<{ number: number }> = memo(({ number }) => (
+const StepNumber = memo<{ number: number }>(({ number }) => (
   <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full">
     <span className="text-blue-600 font-semibold text-sm">{number}</span>
   </div>
@@ -29,7 +29,7 @@ const StepNumber: React.FC<{ number: number }> = memo(({ number }) => (
 
 StepNumber.displayName = "StepNumber";
 
-const StepIcon: React.FC<{ icon: string }> = memo(({ icon }) => (
+const StepIcon = memo<{ icon: string }>(({ icon }) => (
   <svg
     className="h-6 w-6 text-blue-500"
     fill="none"
@@ -47,7 +47,7 @@ const StepIcon: React.FC<{ icon: string }> = memo(({ icon }) => (
 
 StepIcon.displayName = "StepIcon";
 
-const InstructionStep: React.FC<{ step: Step; index: number }> = memo(
+const InstructionStep = memo<{ step: Step; index: number }>(
   ({ step, index }) => (
     <div className="flex items-start space-x-4 bg-white rounded-lg p-4 shadow-sm">
       <StepNumber number={index + 1} />
@@ -64,7 +64,7 @@ const InstructionStep: React.FC<{ step: Step; index: number }> = memo(
 
 InstructionStep.displayName = "InstructionStep";
 
-const StepsList: React.FC = memo(() => (
+const StepsList = memo(() => (
   <div className="space-y-4 mb-6">
     {INSTRUCTIONS_CONFIG.steps.map((step, index) => (
       <InstructionStep key={index} step={step} index={index} />
@@ -74,7 +74,7 @@ const StepsList: React.FC = memo(() => (
 
 StepsList.displayName = "StepsList";
 
-const TipItem: React.FC<{ tip: string }> = memo(({ tip }) => (
+const TipItem = memo<{ tip: string }>(({ tip }) => (
   <li className="flex items-start">
     <span className="text-yellow-500 mr-2">•</span>
     {tip}
@@ -83,7 +83,7 @@ const TipItem: React.FC<{ tip: string }> = memo(({ tip }) => (
 
 TipItem.displayName = "TipItem";
 
-const TipsSection: React.FC = memo(() => (
+const TipsSection = memo(() => (
   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
     <div className="flex items-center mb-2">
       <svg

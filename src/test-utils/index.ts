@@ -6,3 +6,4 @@
 
 export * from './fixtures';
 export * from './component-helpers';
+export * from './mock-helpers';

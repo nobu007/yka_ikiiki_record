@@ -2,6 +2,9 @@ import { z } from 'zod';
 import { NextResponse } from 'next/server';
 import { createErrorResponse } from './response';
 import { AppError, normalizeError, logError, ERROR_CODES } from '@/lib/error-handler';
+import { withCustomTimeout } from '@/lib/resilience';
+import { globalCircuitBreaker, globalLogger } from '@/lib/resilience';
+import type { CircuitBreakerConfig } from '@/lib/resilience';
 
 const formatZodError = (error: z.ZodError): string => {
   return error.errors
@@ -63,11 +66,66 @@ export const createError = {
 /**
  * APIハンドラーをエラーハンドリングで包む
  * 型安全なエラーハンドリングラッパー
+ *
+ * @deprecated Use withResilientHandler instead for production API routes
  */
 export function withErrorHandler<T extends NextResponse>(
   handler: () => Promise<T>
 ): Promise<T | NextResponse> {
   return handler().catch(handleApiError);
+}
+
+/**
+ * Enhanced API handler wrapper with resilience patterns
+ * Combines timeout enforcement, circuit-breaker, and structured logging
+ *
+ * Per SYSTEM_CONSTITUTION.md §6: All async operations must have timeouts
+ */
+export function withResilientHandler<T extends NextResponse>(
+  handler: () => Promise<T>,
+  options?: {
+    timeoutMs?: number;
+    circuitBreakerConfig?: CircuitBreakerConfig;
+    operationName?: string;
+  }
+): Promise<T | NextResponse> {
+  const {
+    timeoutMs = 10000,
+    circuitBreakerConfig,
+    operationName = 'API_HANDLER'
+  } = options || {};
+
+  const startTime = Date.now();
+
+  return globalCircuitBreaker.execute(async () => {
+    try {
+      const result = await withCustomTimeout(
+        handler(),
+        timeoutMs,
+        operationName
+      );
+
+      const duration = Date.now() - startTime;
+      globalLogger.info('API', 'SUCCESS', {
+        operation: operationName,
+        duration,
+        timeoutMs
+      });
+
+      return result;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+
+      globalLogger.error('API', 'HANDLER_ERROR', {
+        operation: operationName,
+        duration,
+        timeoutMs,
+        error: error instanceof Error ? error.message : String(error)
+      });
+
+      throw error;
+    }
+  }, circuitBreakerConfig).catch(handleApiError);
 }
 
 /**

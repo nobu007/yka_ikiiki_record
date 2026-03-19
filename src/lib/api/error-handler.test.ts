@@ -1,13 +1,29 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { handleApiError, withErrorHandler, parseRequestBody, createError, JsonReadable } from './error-handler';
-import { AppError, NetworkError, logError, ERROR_CODES } from '@/lib/error-handler';
 
-// Mock the logError function
+// Mock modules BEFORE imports
 jest.mock('@/lib/error-handler', () => ({
   ...jest.requireActual('@/lib/error-handler'),
   logError: jest.fn()
 }));
+
+jest.mock('@/lib/resilience', () => {
+  const actual = jest.requireActual('@/lib/resilience');
+  return {
+    ...actual,
+    globalCircuitBreaker: {
+      execute: jest.fn(<T>(operation: () => Promise<T>, _config?: unknown) => operation())
+    },
+    globalLogger: {
+      info: jest.fn(),
+      error: jest.fn()
+    }
+  };
+});
+
+import { handleApiError, withErrorHandler, withResilientHandler, parseRequestBody, createError, JsonReadable } from './error-handler';
+import { AppError, NetworkError, logError, ERROR_CODES } from '@/lib/error-handler';
+import { globalCircuitBreaker, globalLogger } from '@/lib/resilience';
 
 describe('API Error Handler', () => {
   beforeEach(() => {
@@ -144,9 +160,9 @@ describe('API Error Handler', () => {
   describe('withErrorHandler', () => {
     test('wraps successful handler', async () => {
       const mockHandler = jest.fn().mockResolvedValue(NextResponse.json({ success: true }));
-      
+
       const result = await withErrorHandler(mockHandler);
-      
+
       expect(mockHandler).toHaveBeenCalled();
       const data = await result.json();
       expect(data).toEqual({ success: true });
@@ -154,12 +170,108 @@ describe('API Error Handler', () => {
 
     test('catches and handles errors from handler', async () => {
       const mockHandler = jest.fn().mockRejectedValue(new Error('Handler error'));
-      
+
       const result = await withErrorHandler(mockHandler);
-      
+
       expect(mockHandler).toHaveBeenCalled();
       expect(result).toBeDefined();
       expect(logError).toHaveBeenCalledWith(new Error('Handler error'), 'API');
+    });
+  });
+
+  describe('withResilientHandler', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('executes handler successfully with resilience patterns', async () => {
+      const mockHandler = jest.fn().mockResolvedValue(NextResponse.json({ success: true }));
+
+      const result = await withResilientHandler(mockHandler, {
+        operationName: 'TEST_SUCCESS'
+      });
+
+      expect(mockHandler).toHaveBeenCalled();
+      expect(globalCircuitBreaker.execute).toHaveBeenCalled();
+      expect(globalLogger.info).toHaveBeenCalledWith(
+        'API',
+        'SUCCESS',
+        expect.objectContaining({
+          operation: 'TEST_SUCCESS'
+        })
+      );
+
+      const data = await result.json();
+      expect(data).toEqual({ success: true });
+    });
+
+    test('applies timeout enforcement', async () => {
+      const mockHandler = jest.fn().mockImplementation(
+        () => new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout')), 200)
+        )
+      );
+
+      const result = await withResilientHandler(mockHandler, {
+        timeoutMs: 100,
+        operationName: 'TEST_TIMEOUT'
+      });
+
+      expect(globalLogger.error).toHaveBeenCalled();
+      expect(result).toBeDefined();
+      expect(result.json).toBeDefined();
+    });
+
+    test('logs errors and converts to API response', async () => {
+      const mockHandler = jest.fn().mockRejectedValue(new Error('Handler error'));
+
+      const result = await withResilientHandler(mockHandler, {
+        operationName: 'TEST_ERROR'
+      });
+
+      expect(globalLogger.error).toHaveBeenCalledWith(
+        'API',
+        'HANDLER_ERROR',
+        expect.objectContaining({
+          operation: 'TEST_ERROR',
+          error: 'Handler error'
+        })
+      );
+
+      expect(result).toBeDefined();
+    });
+
+    test('uses custom circuit breaker config', async () => {
+      const mockHandler = jest.fn().mockResolvedValue(NextResponse.json({ success: true }));
+      const customConfig = {
+        failureThreshold: 3,
+        resetTimeout: 10000,
+        monitoringPeriod: 30000
+      };
+
+      await withResilientHandler(mockHandler, {
+        circuitBreakerConfig: customConfig
+      });
+
+      expect(globalCircuitBreaker.execute).toHaveBeenCalledWith(
+        expect.any(Function),
+        customConfig
+      );
+    });
+
+    test('uses default timeout when not specified', async () => {
+      const mockHandler = jest.fn().mockResolvedValue(NextResponse.json({ success: true }));
+
+      await withResilientHandler(mockHandler);
+
+      expect(globalCircuitBreaker.execute).toHaveBeenCalled();
+      expect(globalLogger.info).toHaveBeenCalledWith(
+        'API',
+        'SUCCESS',
+        expect.objectContaining({
+          timeoutMs: 10000
+        })
+      );
     });
   });
 

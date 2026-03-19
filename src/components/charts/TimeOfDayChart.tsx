@@ -8,7 +8,7 @@ export const TimeOfDayChart = memo<{
 }>(({ data }) => {
   const chartData = useMemo(
     () => ({
-      labels: CHART_AXIS_LABELS.TIME_OF_DAY,
+      labels: [...CHART_AXIS_LABELS.TIME_OF_DAY],
       series: [
         {
           name: CHART_TITLES.AVERAGE_EMOTION_SCORE,

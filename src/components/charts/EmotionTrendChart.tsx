@@ -8,7 +8,7 @@ export const EmotionTrendChart = memo<{
 }>(({ data }) => {
   const chartData = useMemo(
     () => ({
-      labels: CHART_AXIS_LABELS.LAST_7_DAYS,
+      labels: [...CHART_AXIS_LABELS.LAST_7_DAYS],
       series: data.slice(0, 5).map((student) => ({
         name: student.student,
         data: student.trendline,

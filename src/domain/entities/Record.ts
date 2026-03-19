@@ -1,9 +1,3 @@
-export interface Record {
-  id?: number;
-  emotion: number;
-  date: Date;
-  student: string;
-  comment?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+import type { Record as RecordType } from "@/schemas/api";
+
+export type Record = RecordType;

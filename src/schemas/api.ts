@@ -1,10 +1,29 @@
 import { z } from "zod";
-import { GENERATION_CONSTRAINTS, GENERATION_DEFAULTS } from "@/lib/constants";
+import {
+  GENERATION_CONSTRAINTS,
+  GENERATION_DEFAULTS,
+  EMOTION_RANGES,
+} from "@/lib/constants";
 
 const BaseResponseSchema = z.object({
   success: z.boolean(),
   error: z.string().optional(),
 });
+
+export const RecordSchema = z.object({
+  id: z.number().int().positive().optional(),
+  emotion: z
+    .number()
+    .min(EMOTION_RANGES.MIN)
+    .max(EMOTION_RANGES.MAX),
+  date: z.date(),
+  student: z.string().min(1).max(100),
+  comment: z.string().max(500).optional(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+});
+
+export type Record = z.infer<typeof RecordSchema>;
 
 export const EmotionDistributionPatternSchema = z.enum([
   "normal",

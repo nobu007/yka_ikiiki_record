@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { APP_CONFIG, MESSAGES } from "@/lib/config";
+import { APP_CONFIG } from "@/lib/config";
 import { HTTP_METHODS } from "@/lib/constants";
 import {
   normalizeError,
@@ -16,6 +16,7 @@ import { SeedResponseSchema } from "@/schemas/api";
 import { validateDataSafe } from "@/lib/api/validation";
 import { withApiTimeout } from "@/lib/resilience/timeout";
 import { useNotification } from "@/hooks/useNotification";
+import { SUCCESS_MESSAGES, ERROR_MESSAGES, LOADING_MESSAGES } from "@/lib/constants/messages";
 
 export function useDashboard() {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -42,7 +43,7 @@ export function useDashboard() {
 
       if (!response.ok) {
         throw new NetworkError(
-          MESSAGES.error.api(response.status, response.statusText),
+          ERROR_MESSAGES.API_ERROR(response.status, response.statusText),
           response.status,
         );
       }
@@ -61,12 +62,12 @@ export function useDashboard() {
 
       if (!validated.success) {
         throw new AppError(
-          validated.error || MESSAGES.error.generation,
+          validated.error || ERROR_MESSAGES.DEFAULT_GENERATION,
           ERROR_CODES.GENERATION,
         );
       }
 
-      showSuccess(MESSAGES.success.dataGeneration);
+      showSuccess(SUCCESS_MESSAGES.DATA_GENERATION_COMPLETE);
     } catch (error) {
       const appError = normalizeError(error);
       logError(appError, "useDashboard.handleGenerate");
@@ -80,6 +81,6 @@ export function useDashboard() {
     isGenerating,
     notification,
     handleGenerate,
-    isLoadingMessage: isGenerating ? MESSAGES.loading.generating : null,
+    isLoadingMessage: isGenerating ? LOADING_MESSAGES.GENERATING_DATA : null,
   };
 }

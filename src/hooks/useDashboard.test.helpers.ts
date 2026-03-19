@@ -1,6 +1,6 @@
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { useDashboard } from "./useApp";
-import { MESSAGES } from "@/lib/config";
+import { SUCCESS_MESSAGES, LOADING_MESSAGES } from "@/lib/constants/messages";
 
 export const mockSuccessResponse = {
   success: true,
@@ -90,7 +90,7 @@ export const expectSuccessState = (
   expect(result.current.isGenerating).toBe(false);
   expect(result.current.notification).toEqual({
     show: true,
-    message: MESSAGES.success.dataGeneration,
+    message: SUCCESS_MESSAGES.DATA_GENERATION_COMPLETE,
     type: "success",
   });
   expect(result.current.isLoadingMessage).toBeNull();
@@ -109,11 +109,11 @@ export const expectLoadingState = (
   result: ReturnType<typeof renderDashboardHook>["result"],
 ) => {
   expect(result.current.isGenerating).toBe(true);
-  expect(result.current.isLoadingMessage).toBe(MESSAGES.loading.generating);
+  expect(result.current.isLoadingMessage).toBe(LOADING_MESSAGES.GENERATING_DATA);
 };
 
 export const clearAllMocks = () => {
   jest.clearAllMocks();
 };
 
-export { renderHook, act, waitFor, useDashboard, MESSAGES };
+export { renderHook, act, waitFor, useDashboard };

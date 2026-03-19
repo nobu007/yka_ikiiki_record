@@ -14,7 +14,7 @@ export const ERROR_MESSAGES = {
   VALIDATION: "入力内容を確認してください",
   NETWORK: "ネットワーク接続を確認してください",
   TIMEOUT: "タイムアウトしました。再度お試しください",
-  GENERATION: "データの生成に失敗しました",
+  GENERATION: "データ生成に失敗しました",
   NOT_FOUND: "要求されたデータが見つかりません",
   NOT_FOUND_SHORT: "データが見つかりません",
   PERMISSION: "この操作を実行する権限がありません",
@@ -28,12 +28,12 @@ export const UI_TEXT = {
   DASHBOARD: {
     TITLE: "イキイキレコード - 教師ダッシュボード",
     DESCRIPTION: "生徒の学習データを生成・管理するダッシュボードです",
-    DATA_GENERATION: "テストデータ生成",
+    DATA_GENERATION: "データ生成",
     DATA_GENERATION_DESCRIPTION:
       "ダッシュボードの機能を確認するために、サンプルデータを生成します。",
-    GENERATE_BUTTON: "テストデータを生成",
+    GENERATE_BUTTON: "初期データを生成",
     GENERATING_BUTTON: "生成中...",
-    HELP_TEXT_GENERATING: "データ生成には数秒かかる場合があります。",
+    HELP_TEXT_GENERATING: "データを生成しています。しばらくお待ちください...",
     HELP_TEXT_READY: "ボタンをクリックしてテストデータを生成してください。",
     CLOSE_NOTIFICATION: "通知を閉じる",
     RETRY_BUTTON: "再試行",
@@ -64,4 +64,17 @@ export const CHART_TITLES = {
   MONTHLY_AVERAGE_EMOTION: "月別平均感情スコア",
   DAY_OF_WEEK_AVERAGE_EMOTION: "曜日別平均感情スコア",
   TIME_OF_DAY_AVERAGE_EMOTION: "時間帯別平均感情スコア",
+} as const;
+
+export const DASHBOARD_FEATURES = [
+  "月別感情スコアの統計",
+  "曜日別の学習傾向分析",
+  "時間帯別の活動パターン",
+  "生徒ごとの詳細データ",
+  "感情分布の可視化",
+] as const;
+
+export const HELP_TEXT = {
+  READY: "ボタンをクリックしてテストデータを生成してください。",
+  GENERATING: "データを生成しています。しばらくお待ちください...",
 } as const;

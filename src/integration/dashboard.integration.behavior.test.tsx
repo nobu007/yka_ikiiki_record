@@ -100,7 +100,7 @@ describe("Dashboard Integration - Behavior", () => {
       );
 
       expect(
-        screen.getByText("ボタンをクリックしてテストデータを生成してください"),
+        screen.getByText("ボタンをクリックしてテストデータを生成してください。"),
       ).toBeInTheDocument();
 
       unmount();

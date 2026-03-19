@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { memo } from "react";
-import { MESSAGES } from "@/lib/config";
+import { UI_TEXT } from "@/lib/constants/messages";
 
 const Landing = memo(function Landing() {
   return (
@@ -8,7 +8,7 @@ const Landing = memo(function Landing() {
       <div className="max-w-2xl mx-auto text-center space-y-8">
         <header className="space-y-4">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">
-            {MESSAGES.ui.landing.title}
+            {UI_TEXT.LANDING.TITLE}
           </h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-lg mx-auto">
             生徒の学習データを生成・管理する次世代ダッシュボード
@@ -41,7 +41,7 @@ const Landing = memo(function Landing() {
             href="/dashboard"
             className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
           >
-            {MESSAGES.ui.landing.dashboardButton}
+            {UI_TEXT.LANDING.DASHBOARD_BUTTON}
           </Link>
         </div>
       </div>

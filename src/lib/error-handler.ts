@@ -1,4 +1,4 @@
-import { MESSAGES } from "@/lib/config";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 import { globalLogger } from "@/lib/resilience/structured-logger";
 
 export const HTTP_STATUS = {
@@ -47,7 +47,7 @@ export class ValidationError extends AppError {
 
 export class NetworkError extends AppError {
   constructor(
-    message: string = MESSAGES.error.network,
+    message: string = ERROR_MESSAGES.NETWORK,
     statusCode: number = 0,
   ) {
     super(message, ERROR_CODES.NETWORK, statusCode);
@@ -74,7 +74,7 @@ export function normalizeError(error: unknown): AppError {
 
   if (typeof error === "string") return new AppError(error);
 
-  return new AppError(MESSAGES.error.unexpected);
+  return new AppError(ERROR_MESSAGES.UNEXPECTED);
 }
 
 export function getUserFriendlyMessage(error: unknown): string {
@@ -85,13 +85,13 @@ export function getUserFriendlyMessage(error: unknown): string {
   }
 
   const messageMap: Record<ErrorCodeType, string> = {
-    [ERROR_CODES.UNKNOWN]: MESSAGES.error.unexpected,
-    [ERROR_CODES.VALIDATION]: MESSAGES.error.validation,
-    [ERROR_CODES.NETWORK]: MESSAGES.error.network,
-    [ERROR_CODES.TIMEOUT]: MESSAGES.error.timeout,
-    [ERROR_CODES.GENERATION]: MESSAGES.error.generation,
-    [ERROR_CODES.NOT_FOUND]: MESSAGES.error.notFound,
-    [ERROR_CODES.PERMISSION]: MESSAGES.error.permission,
+    [ERROR_CODES.UNKNOWN]: ERROR_MESSAGES.UNEXPECTED,
+    [ERROR_CODES.VALIDATION]: ERROR_MESSAGES.VALIDATION,
+    [ERROR_CODES.NETWORK]: ERROR_MESSAGES.NETWORK,
+    [ERROR_CODES.TIMEOUT]: ERROR_MESSAGES.TIMEOUT,
+    [ERROR_CODES.GENERATION]: ERROR_MESSAGES.GENERATION,
+    [ERROR_CODES.NOT_FOUND]: ERROR_MESSAGES.NOT_FOUND,
+    [ERROR_CODES.PERMISSION]: ERROR_MESSAGES.PERMISSION,
   };
 
   return messageMap[normalized.code] || normalized.message;

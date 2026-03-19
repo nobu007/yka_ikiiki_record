@@ -4,7 +4,7 @@ import {
   NetworkError,
   ERROR_CODES,
 } from "./error-handler";
-import { MESSAGES } from "@/lib/config";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 describe("error-handler: Error Classes", () => {
   test("AppError creates proper error instance", () => {
@@ -50,7 +50,7 @@ describe("error-handler: Error Classes", () => {
 
   test("NetworkError uses default message when not provided", () => {
     const error = new NetworkError();
-    expect(error.message).toBe(MESSAGES.error.network);
+    expect(error.message).toBe(ERROR_MESSAGES.NETWORK);
   });
 
   test("NetworkError uses default statusCode when not provided", () => {

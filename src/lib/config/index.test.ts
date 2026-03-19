@@ -1,4 +1,4 @@
-import { APP_CONFIG, EMOTION_CONFIG, UI_CONFIG, MESSAGES } from "./index";
+import { APP_CONFIG, EMOTION_CONFIG, UI_CONFIG } from "./index";
 
 describe("APP_CONFIG", () => {
   it("has correct app name and description", () => {
@@ -84,63 +84,5 @@ describe("UI_CONFIG", () => {
   it("has primary and secondary button styles", () => {
     expect(UI_CONFIG.buttonStyles.primary).toContain("bg-blue-600");
     expect(UI_CONFIG.buttonStyles.secondary).toContain("bg-gray-200");
-  });
-});
-
-describe("MESSAGES", () => {
-  describe("success", () => {
-    it("has dataGeneration message", () => {
-      expect(MESSAGES.success.dataGeneration).toBeTruthy();
-    });
-  });
-
-  describe("error", () => {
-    it("has all standard error messages as strings", () => {
-      expect(typeof MESSAGES.error.network).toBe("string");
-      expect(typeof MESSAGES.error.validation).toBe("string");
-      expect(typeof MESSAGES.error.generation).toBe("string");
-      expect(typeof MESSAGES.error.unexpected).toBe("string");
-      expect(typeof MESSAGES.error.timeout).toBe("string");
-      expect(typeof MESSAGES.error.notFound).toBe("string");
-      expect(typeof MESSAGES.error.permission).toBe("string");
-    });
-
-    it("api() returns formatted error string with status code and text", () => {
-      const result = MESSAGES.error.api(404, "Not Found");
-      expect(result).toBe("APIエラー: 404 Not Found");
-    });
-
-    it("api() handles various status codes", () => {
-      expect(MESSAGES.error.api(500, "Internal Server Error")).toContain("500");
-      expect(MESSAGES.error.api(403, "Forbidden")).toContain("403");
-      expect(MESSAGES.error.api(200, "OK")).toBe("APIエラー: 200 OK");
-    });
-  });
-
-  describe("loading", () => {
-    it("has generating message", () => {
-      expect(MESSAGES.loading.generating).toBeTruthy();
-    });
-  });
-
-  describe("ui", () => {
-    it("has dashboard section with all required keys", () => {
-      expect(MESSAGES.ui.dashboard.title).toBeTruthy();
-      expect(MESSAGES.ui.dashboard.dataGeneration).toBeTruthy();
-      expect(MESSAGES.ui.dashboard.generateButton).toBeTruthy();
-      expect(MESSAGES.ui.dashboard.generatingButton).toBeTruthy();
-      expect(MESSAGES.ui.dashboard.helpTextReady).toBeTruthy();
-      expect(MESSAGES.ui.dashboard.helpTextGenerating).toBeTruthy();
-    });
-
-    it("has features with generatedData array", () => {
-      expect(Array.isArray(MESSAGES.ui.features.generatedData)).toBe(true);
-      expect(MESSAGES.ui.features.generatedData.length).toBeGreaterThan(0);
-    });
-
-    it("has landing section", () => {
-      expect(MESSAGES.ui.landing.title).toBeTruthy();
-      expect(MESSAGES.ui.landing.dashboardButton).toBeTruthy();
-    });
   });
 });

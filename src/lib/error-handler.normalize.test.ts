@@ -6,7 +6,7 @@ import {
   getUserFriendlyMessage,
   ERROR_CODES,
 } from "./error-handler";
-import { MESSAGES } from "@/lib/config";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 describe("error-handler: normalizeError & getUserFriendlyMessage", () => {
   describe("normalizeError", () => {
@@ -104,7 +104,7 @@ describe("error-handler: normalizeError & getUserFriendlyMessage", () => {
       const customError = new AppError("Custom message", ERROR_CODES.UNKNOWN);
       const message = getUserFriendlyMessage(customError);
 
-      expect(message).toBe(MESSAGES.error.unexpected);
+      expect(message).toBe(ERROR_MESSAGES.UNEXPECTED);
     });
 
     test("handles generic errors", () => {

@@ -14,7 +14,7 @@ describe("DataSection", () => {
   it("renders the section title and description", () => {
     render(<DataSection {...defaultProps} />);
 
-    expect(screen.getByText("テストデータ生成")).toBeInTheDocument();
+    expect(screen.getByText("データ生成")).toBeInTheDocument();
     expect(
       screen.getByText(/ダッシュボードの機能を確認するために/),
     ).toBeInTheDocument();
@@ -34,7 +34,7 @@ describe("DataSection", () => {
   it("shows generate button when not generating", () => {
     render(<DataSection {...defaultProps} />);
 
-    const button = screen.getByRole("button", { name: "テストデータを生成" });
+    const button = screen.getByRole("button", { name: "初期データを生成" });
     expect(button).toBeInTheDocument();
     expect(button).not.toBeDisabled();
   });
@@ -50,7 +50,7 @@ describe("DataSection", () => {
   it("calls onGenerate when button is clicked", () => {
     render(<DataSection {...defaultProps} />);
 
-    const button = screen.getByRole("button", { name: "テストデータを生成" });
+    const button = screen.getByRole("button", { name: "初期データを生成" });
     fireEvent.click(button);
 
     expect(defaultProps.onGenerate).toHaveBeenCalledTimes(1);
@@ -65,14 +65,14 @@ describe("DataSection", () => {
 
     rerender(<DataSection {...defaultProps} isGenerating={true} />);
     expect(
-      screen.getByText("データ生成には数秒かかる場合があります。"),
+      screen.getByText("データを生成しています。しばらくお待ちください..."),
     ).toBeInTheDocument();
   });
 
   it("has proper accessibility attributes", () => {
     render(<DataSection {...defaultProps} />);
 
-    const button = screen.getByRole("button", { name: "テストデータを生成" });
+    const button = screen.getByRole("button", { name: "初期データを生成" });
     expect(button).toHaveAttribute("aria-describedby", "generate-help");
 
     const helpText = screen.getByText(

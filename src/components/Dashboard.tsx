@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
-import { APP_CONFIG, MESSAGES } from "@/lib/config";
+import { APP_CONFIG } from "@/lib/config";
 import { Button } from "./ui";
 import { LoadingSpinner, CheckIcon, PlusIcon, Notification } from "./common";
 import { UsageInstructions } from "./common/UsageInstructions";
@@ -14,6 +14,7 @@ import {
 } from "@/lib/error-handler";
 import { withApiTimeout } from "@/lib/resilience/timeout";
 import { API_ENDPOINTS } from "@/lib/constants/api";
+import { UI_TEXT, DASHBOARD_FEATURES, HELP_TEXT } from "@/lib/constants/messages";
 
 interface DashboardProps {
   isGenerating: boolean;
@@ -37,9 +38,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
 
   const helpText = useMemo(
     () =>
-      isGenerating
-        ? MESSAGES.ui.dashboard.helpTextGenerating
-        : MESSAGES.ui.dashboard.helpTextReady,
+      isGenerating ? HELP_TEXT.GENERATING : HELP_TEXT.READY,
     [isGenerating],
   );
 
@@ -93,7 +92,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
 
   const featuresList = useMemo(
     () =>
-      MESSAGES.ui.features.generatedData.map((feature, index) => (
+      DASHBOARD_FEATURES.map((feature, index) => (
         <li key={index} className="flex items-center text-sm text-gray-600">
           <CheckIcon />
           {feature}
@@ -108,7 +107,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
         <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8 mb-8">
           <header className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {MESSAGES.ui.dashboard.title}
+              {UI_TEXT.DASHBOARD.TITLE}
             </h1>
             <p className="text-gray-600">{APP_CONFIG.description}</p>
           </header>
@@ -126,10 +125,10 @@ const DashboardComponent: React.FC<DashboardProps> = ({
             <section className="bg-gray-50 rounded-lg p-6">
               <header className="mb-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                  {MESSAGES.ui.dashboard.dataGeneration}
+                  {UI_TEXT.DASHBOARD.DATA_GENERATION}
                 </h2>
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  {MESSAGES.ui.dashboard.dataGenerationDescription}
+                  {UI_TEXT.DASHBOARD.DATA_GENERATION_DESCRIPTION}
                 </p>
 
                 <div className="bg-white rounded-md p-4 mb-6">
@@ -149,12 +148,12 @@ const DashboardComponent: React.FC<DashboardProps> = ({
                   {isGenerating ? (
                     <>
                       <LoadingSpinner size="sm" color="white" />
-                      {MESSAGES.ui.dashboard.generatingButton}
+                      {UI_TEXT.DASHBOARD.GENERATING_BUTTON}
                     </>
                   ) : (
                     <>
                       <PlusIcon />
-                      {MESSAGES.ui.dashboard.generateButton}
+                      {UI_TEXT.DASHBOARD.GENERATE_BUTTON}
                     </>
                   )}
                 </Button>

@@ -91,7 +91,7 @@ export const DEFAULT_CONFIG: DataGenerationConfig = {
     volatility: 0.5,
     cohesion: 0.7
   }
-};
+} as const;
 
 export type EmotionDistributionPattern = z.infer<typeof EmotionDistributionPatternSchema>;
 export type EventEffect = z.infer<typeof EventEffectSchema>;

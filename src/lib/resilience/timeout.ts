@@ -1,4 +1,4 @@
-import { AppError, ERROR_CODES } from '@/lib/error-handler';
+import { AppError, ERROR_CODES, HTTP_STATUS } from '@/lib/error-handler';
 import { globalLogger } from './structured-logger';
 
 export class TimeoutError extends AppError {
@@ -6,7 +6,7 @@ export class TimeoutError extends AppError {
     super(
       `Operation ${operation} timed out after ${timeoutMs}ms`,
       ERROR_CODES.TIMEOUT,
-      408
+      HTTP_STATUS.REQUEST_TIMEOUT
     );
     this.name = 'TimeoutError';
   }

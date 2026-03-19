@@ -16,6 +16,7 @@ export const ERROR_MESSAGES = {
   TIMEOUT: "タイムアウトしました。再度お試しください",
   GENERATION: "データの生成に失敗しました",
   NOT_FOUND: "要求されたデータが見つかりません",
+  NOT_FOUND_SHORT: "データが見つかりません",
   PERMISSION: "この操作を実行する権限がありません",
   NETWORK_ERROR: "ネットワークエラーが発生しました",
   DEFAULT_GENERATION: "データ生成に失敗しました",
@@ -35,6 +36,7 @@ export const UI_TEXT = {
     HELP_TEXT_GENERATING: "データ生成には数秒かかる場合があります。",
     HELP_TEXT_READY: "ボタンをクリックしてテストデータを生成してください。",
     CLOSE_NOTIFICATION: "通知を閉じる",
+    RETRY_BUTTON: "再試行",
   },
   LANDING: {
     TITLE: "イキイキレコード デモ",

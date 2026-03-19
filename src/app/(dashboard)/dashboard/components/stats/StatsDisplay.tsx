@@ -5,7 +5,7 @@ import DynamicBarChart, {
   ChartData,
 } from "@/components/charts/DynamicBarChart";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
-import { ERROR_MESSAGES } from "@/lib/constants/messages";
+import { ERROR_MESSAGES, UI_TEXT } from "@/lib/constants/messages";
 
 interface ChartDataSet {
   monthly: ChartData[];
@@ -54,13 +54,13 @@ const StatsDisplay = memo(function StatsDisplay({
           onClick={onRetry}
           className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/80 transition-colors"
         >
-          再試行
+          {UI_TEXT.DASHBOARD.RETRY_BUTTON}
         </button>
       </div>
     );
   }
 
-  if (!data) return <p className="text-center">データが見つかりません</p>;
+  if (!data) return <p className="text-center">{ERROR_MESSAGES.NOT_FOUND_SHORT}</p>;
 
   return (
     <div className="space-y-6">

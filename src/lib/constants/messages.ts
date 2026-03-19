@@ -197,3 +197,19 @@ export const INSTRUCTIONS_SECTION = {
   ] as const,
   HINTS_TITLE: "ヒント",
 } as const;
+
+export const LANDING_FEATURES = {
+  SUBTITLE: "生徒の学習データを生成・管理する次世代ダッシュボード",
+  FEATURE_1: {
+    TITLE: "感情分析",
+    DESCRIPTION: "生徒の感情変化を可視化し、学習効果を分析",
+  },
+  FEATURE_2: {
+    TITLE: "データ生成",
+    DESCRIPTION: "リアルなテストデータを動的に生成",
+  },
+  FEATURE_3: {
+    TITLE: "傾向分析",
+    DESCRIPTION: "曜日・時間帯別の学習パターンを把握",
+  },
+} as const;

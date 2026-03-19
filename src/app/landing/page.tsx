@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { memo } from "react";
-import { UI_TEXT } from "@/lib/constants/messages";
+import { UI_TEXT, LANDING_FEATURES } from "@/lib/constants/messages";
 
 const Landing = memo(function Landing() {
   return (
@@ -11,28 +11,34 @@ const Landing = memo(function Landing() {
             {UI_TEXT.LANDING.TITLE}
           </h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-lg mx-auto">
-            生徒の学習データを生成・管理する次世代ダッシュボード
+            {LANDING_FEATURES.SUBTITLE}
           </p>
         </header>
 
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-semibold text-gray-900 mb-2">感情分析</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                {LANDING_FEATURES.FEATURE_1.TITLE}
+              </h3>
               <p className="text-sm text-gray-600">
-                生徒の感情変化を可視化し、学習効果を分析
+                {LANDING_FEATURES.FEATURE_1.DESCRIPTION}
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-semibold text-gray-900 mb-2">データ生成</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                {LANDING_FEATURES.FEATURE_2.TITLE}
+              </h3>
               <p className="text-sm text-gray-600">
-                リアルなテストデータを動的に生成
+                {LANDING_FEATURES.FEATURE_2.DESCRIPTION}
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-semibold text-gray-900 mb-2">傾向分析</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                {LANDING_FEATURES.FEATURE_3.TITLE}
+              </h3>
               <p className="text-sm text-gray-600">
-                曜日・時間帯別の学習パターンを把握
+                {LANDING_FEATURES.FEATURE_3.DESCRIPTION}
               </p>
             </div>
           </div>

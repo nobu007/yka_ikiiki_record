@@ -2,6 +2,7 @@
 
 import { memo, useState } from 'react';
 import type { ClassEvent } from '@/schemas/api';
+import { GENERATION_CONSTRAINTS } from '@/lib/constants';
 
 interface NewEventForm {
   name: string;
@@ -74,9 +75,9 @@ const EventManager = memo(function EventManager({ events, onAddEvent, onRemoveEv
         <input
           type="number"
           placeholder="影響度 (-1.0 〜 1.0)"
-          min="-1"
-          max="1"
-          step="0.1"
+          min={String(GENERATION_CONSTRAINTS.EVENT_IMPACT.MIN)}
+          max={String(GENERATION_CONSTRAINTS.EVENT_IMPACT.MAX)}
+          step={String(GENERATION_CONSTRAINTS.EVENT_IMPACT.STEP)}
           value={newEvent.impact}
           onChange={(e) => setNewEvent(prev => ({
             ...prev,

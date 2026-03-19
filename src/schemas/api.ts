@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { GENERATION_CONSTRAINTS } from '@/lib/constants';
 
 const BaseResponseSchema = z.object({
   success: z.boolean(),
@@ -11,18 +12,18 @@ export const EventEffectSchema = z.object({
   name: z.string().min(1).max(100),
   startDate: z.date(),
   endDate: z.date(),
-  impact: z.number().min(-1).max(1)
+  impact: z.number().min(GENERATION_CONSTRAINTS.EVENT_IMPACT.MIN).max(GENERATION_CONSTRAINTS.EVENT_IMPACT.MAX)
 });
 
 export const ClassCharacteristicsSchema = z.object({
-  baselineEmotion: z.number().min(2.5).max(3.5),
-  volatility: z.number().min(0.1).max(1.0),
-  cohesion: z.number().min(0.1).max(1.0)
+  baselineEmotion: z.number().min(GENERATION_CONSTRAINTS.BASELINE_EMOTION.MIN).max(GENERATION_CONSTRAINTS.BASELINE_EMOTION.MAX),
+  volatility: z.number().min(GENERATION_CONSTRAINTS.VOLATILITY.MIN).max(GENERATION_CONSTRAINTS.VOLATILITY.MAX),
+  cohesion: z.number().min(GENERATION_CONSTRAINTS.COHESION.MIN).max(GENERATION_CONSTRAINTS.COHESION.MAX)
 });
 
 export const DataGenerationConfigSchema = z.object({
-  studentCount: z.number().int().min(10).max(500),
-  periodDays: z.number().int().min(7).max(365),
+  studentCount: z.number().int().min(GENERATION_CONSTRAINTS.STUDENT_COUNT.MIN).max(GENERATION_CONSTRAINTS.STUDENT_COUNT.MAX),
+  periodDays: z.number().int().min(GENERATION_CONSTRAINTS.PERIOD_DAYS.MIN).max(GENERATION_CONSTRAINTS.PERIOD_DAYS.MAX),
   distributionPattern: EmotionDistributionPatternSchema,
   seasonalEffects: z.boolean(),
   eventEffects: z.array(EventEffectSchema),

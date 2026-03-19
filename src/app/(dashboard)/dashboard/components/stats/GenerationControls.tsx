@@ -2,6 +2,7 @@
 
 import { memo } from 'react';
 import type { DataGenerationConfig, EmotionDistributionPattern } from '@/schemas/api';
+import { GENERATION_CONSTRAINTS } from '@/lib/constants';
 
 const DISTRIBUTION_PATTERNS: { label: string; value: EmotionDistributionPattern }[] = [
   { label: '正規分布', value: 'normal' },
@@ -34,8 +35,8 @@ const GenerationControls = memo(function GenerationControls({
         <input
           id="studentCount"
           type="range"
-          min="10"
-          max="500"
+          min={String(GENERATION_CONSTRAINTS.STUDENT_COUNT.MIN)}
+          max={String(GENERATION_CONSTRAINTS.STUDENT_COUNT.MAX)}
           value={config.studentCount}
           onChange={(e) => onUpdateStudentCount(Number(e.target.value))}
           className="w-full"
@@ -50,8 +51,8 @@ const GenerationControls = memo(function GenerationControls({
         <input
           id="periodDays"
           type="range"
-          min="7"
-          max="365"
+          min={String(GENERATION_CONSTRAINTS.PERIOD_DAYS.MIN)}
+          max={String(GENERATION_CONSTRAINTS.PERIOD_DAYS.MAX)}
           value={config.periodDays}
           onChange={(e) => onUpdatePeriodDays(Number(e.target.value))}
           className="w-full"

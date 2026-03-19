@@ -22,3 +22,31 @@ export const EMOTION_RANGES = {
   SEASONAL_IMPACT: 0.2,
   MAX_EVENT_IMPACT: 0.5,
 } as const;
+
+export const GENERATION_CONSTRAINTS = {
+  STUDENT_COUNT: {
+    MIN: 10,
+    MAX: 500,
+  },
+  PERIOD_DAYS: {
+    MIN: 7,
+    MAX: 365,
+  },
+  EVENT_IMPACT: {
+    MIN: -1.0,
+    MAX: 1.0,
+    STEP: 0.1,
+  },
+  BASELINE_EMOTION: {
+    MIN: 2.5,
+    MAX: 3.5,
+  },
+  VOLATILITY: {
+    MIN: 0.1,
+    MAX: 1.0,
+  },
+  COHESION: {
+    MIN: 0.1,
+    MAX: 1.0,
+  },
+} as const;

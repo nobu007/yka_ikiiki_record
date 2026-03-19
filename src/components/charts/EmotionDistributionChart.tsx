@@ -1,5 +1,6 @@
 import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 export const EmotionDistributionChart = memo<{ data: number[] }>(({ data }) => {
   const labels = ["1", "2", "3", "4", "5"];
@@ -21,7 +22,7 @@ export const EmotionDistributionChart = memo<{ data: number[] }>(({ data }) => {
       data={chartData}
       title="感情スコア分布"
       type="bar"
-      height={250}
+      height={UI_CONSTANTS.CHART.HEIGHT.SMALL}
     />
   );
 });

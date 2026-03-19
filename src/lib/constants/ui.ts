@@ -49,6 +49,16 @@ export const UI_CONSTANTS = {
     MAX_WIDTH: "max-w-md",
     PADDING: "p-6",
   } as const,
+
+  CHART: {
+    HEIGHT: {
+      SMALL: 250,
+      MEDIUM: 300,
+      LARGE: 350,
+      XLARGE: 400,
+      DEFAULT: 300,
+    } as const,
+  } as const,
 } as const;
 
 export const getButtonClasses = (

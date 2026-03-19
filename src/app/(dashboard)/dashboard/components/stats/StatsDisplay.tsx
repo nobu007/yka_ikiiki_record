@@ -4,6 +4,7 @@ import { memo } from "react";
 import DynamicBarChart, {
   ChartData,
 } from "@/components/charts/DynamicBarChart";
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 interface ChartDataSet {
   monthly: ChartData[];
@@ -82,7 +83,7 @@ const StatsDisplay = memo(function StatsDisplay({
       <div className={`${bgColor} p-4 rounded-lg shadow transition-colors`}>
         <DynamicBarChart
           title="月別平均感情スコア"
-          height={300}
+          height={UI_CONSTANTS.CHART.HEIGHT.DEFAULT}
           data={data.monthly}
           isDark={isDark}
         />
@@ -92,7 +93,7 @@ const StatsDisplay = memo(function StatsDisplay({
       <div className={`${bgColor} p-4 rounded-lg shadow transition-colors`}>
         <DynamicBarChart
           title="曜日別平均感情スコア"
-          height={300}
+          height={UI_CONSTANTS.CHART.HEIGHT.DEFAULT}
           data={data.dayOfWeek}
           isDark={isDark}
         />
@@ -102,7 +103,7 @@ const StatsDisplay = memo(function StatsDisplay({
       <div className={`${bgColor} p-4 rounded-lg shadow transition-colors`}>
         <DynamicBarChart
           title="時間帯別平均感情スコア"
-          height={300}
+          height={UI_CONSTANTS.CHART.HEIGHT.DEFAULT}
           data={data.timeOfDay}
           isDark={isDark}
         />

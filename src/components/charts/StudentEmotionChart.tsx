@@ -1,5 +1,6 @@
 import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 export const StudentEmotionChart = memo<{
   data: Array<{ student: string; avgEmotion: number }>;
@@ -22,7 +23,7 @@ export const StudentEmotionChart = memo<{
       data={chartData}
       title="生徒別感情スコア"
       type="bar"
-      height={400}
+      height={UI_CONSTANTS.CHART.HEIGHT.XLARGE}
     />
   );
 });

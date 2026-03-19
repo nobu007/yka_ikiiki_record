@@ -3,7 +3,7 @@
 import DynamicBarChart from "@/components/charts/DynamicBarChart";
 import { ComponentCard } from "@/components/common/ComponentCard";
 import { useState, useCallback } from "react";
-import { getButtonClasses } from "@/lib/constants/ui";
+import { getButtonClasses, UI_CONSTANTS } from "@/lib/constants/ui";
 
 const demoData = [
   { name: "Jan", value: 168 },
@@ -58,7 +58,7 @@ export default function BarChartContent() {
             <p className="text-sm">{error.message}</p>
           </div>
         ) : (
-          <DynamicBarChart data={demoData} title="月別データ" height={300} />
+          <DynamicBarChart data={demoData} title="月別データ" height={UI_CONSTANTS.CHART.HEIGHT.DEFAULT} />
         )}
       </ComponentCard>
     </div>

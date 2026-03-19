@@ -1,5 +1,6 @@
 import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 export const MonthlyEmotionChart = memo<{
   data: Array<{ month: string; avgEmotion: number }>;
@@ -22,7 +23,7 @@ export const MonthlyEmotionChart = memo<{
       data={chartData}
       title="月別感情スコア推移"
       type="line"
-      height={350}
+      height={UI_CONSTANTS.CHART.HEIGHT.LARGE}
     />
   );
 });

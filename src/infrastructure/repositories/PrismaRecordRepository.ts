@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { IRecordRepository } from '@/domain/repositories/IRecordRepository';
 import { Record } from '@/domain/entities/Record';
+import { withDatabaseTimeout } from '@/lib/resilience/timeout';
 
 export class PrismaRecordRepository implements IRecordRepository {
   private prisma: PrismaClient;
@@ -10,9 +11,11 @@ export class PrismaRecordRepository implements IRecordRepository {
   }
 
   async findById(id: number): Promise<Record | null> {
-    const record = await this.prisma.record.findUnique({
-      where: { id },
-    });
+    const record = await withDatabaseTimeout(
+      this.prisma.record.findUnique({
+        where: { id },
+      })
+    );
 
     if (!record) {
       return null;
@@ -22,32 +25,38 @@ export class PrismaRecordRepository implements IRecordRepository {
   }
 
   async findAll(): Promise<Record[]> {
-    const records = await this.prisma.record.findMany({
-      orderBy: { date: 'desc' },
-    });
+    const records = await withDatabaseTimeout(
+      this.prisma.record.findMany({
+        orderBy: { date: 'desc' },
+      })
+    );
 
     return records.map((record) => this.toDomain(record));
   }
 
   async findByDateRange(startDate: Date, endDate: Date): Promise<Record[]> {
-    const records = await this.prisma.record.findMany({
-      where: {
-        date: {
-          gte: startDate,
-          lte: endDate,
+    const records = await withDatabaseTimeout(
+      this.prisma.record.findMany({
+        where: {
+          date: {
+            gte: startDate,
+            lte: endDate,
+          },
         },
-      },
-      orderBy: { date: 'desc' },
-    });
+        orderBy: { date: 'desc' },
+      })
+    );
 
     return records.map((record) => this.toDomain(record));
   }
 
   async findByStudent(student: string): Promise<Record[]> {
-    const records = await this.prisma.record.findMany({
-      where: { student },
-      orderBy: { date: 'desc' },
-    });
+    const records = await withDatabaseTimeout(
+      this.prisma.record.findMany({
+        where: { student },
+        orderBy: { date: 'desc' },
+      })
+    );
 
     return records.map((record) => this.toDomain(record));
   }
@@ -55,51 +64,63 @@ export class PrismaRecordRepository implements IRecordRepository {
   async save(record: Record): Promise<Record> {
     const data = this.toPrisma(record);
 
-    const saved = await this.prisma.record.upsert({
-      where: { id: record.id || 0 },
-      update: {
-        emotion: data.emotion,
-        date: data.date,
-        student: data.student,
-        comment: data.comment || null,
-      },
-      create: {
-        emotion: data.emotion,
-        date: data.date,
-        student: data.student,
-        comment: data.comment || null,
-      },
-    });
+    const saved = await withDatabaseTimeout(
+      this.prisma.record.upsert({
+        where: { id: record.id || 0 },
+        update: {
+          emotion: data.emotion,
+          date: data.date,
+          student: data.student,
+          comment: data.comment || null,
+        },
+        create: {
+          emotion: data.emotion,
+          date: data.date,
+          student: data.student,
+          comment: data.comment || null,
+        },
+      })
+    );
 
     return this.toDomain(saved);
   }
 
   async saveMany(records: Record[]): Promise<Record[]> {
-    await this.prisma.record.createMany({
-      data: records.map((record) => this.toPrisma(record)),
-    });
+    await withDatabaseTimeout(
+      this.prisma.record.createMany({
+        data: records.map((record) => this.toPrisma(record)),
+      })
+    );
 
-    const createdRecords = await this.prisma.record.findMany({
-      where: {
-        id: { in: records.map((r) => r.id).filter((id): id is number => id !== undefined) },
-      },
-    });
+    const createdRecords = await withDatabaseTimeout(
+      this.prisma.record.findMany({
+        where: {
+          id: { in: records.map((r) => r.id).filter((id): id is number => id !== undefined) },
+        },
+      })
+    );
 
     return createdRecords.map((record) => this.toDomain(record));
   }
 
   async delete(id: number): Promise<void> {
-    await this.prisma.record.delete({
-      where: { id },
-    });
+    await withDatabaseTimeout(
+      this.prisma.record.delete({
+        where: { id },
+      })
+    );
   }
 
   async deleteAll(): Promise<void> {
-    await this.prisma.record.deleteMany({});
+    await withDatabaseTimeout(
+      this.prisma.record.deleteMany({})
+    );
   }
 
   async count(): Promise<number> {
-    return this.prisma.record.count();
+    return withDatabaseTimeout(
+      this.prisma.record.count()
+    );
   }
 
   private toDomain(prismaRecord: {

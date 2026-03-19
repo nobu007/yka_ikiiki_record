@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { withDatabaseTimeout } from '@/lib/resilience/timeout';
 
 const COMMENTS = [
   '今日は充実した一日でした',
@@ -9,7 +10,7 @@ const COMMENTS = [
 ];
 
 export async function generateSeedData() {
-  await prisma.record.deleteMany({});
+  await withDatabaseTimeout(prisma.record.deleteMany({}));
 
   const records = Array.from({ length: 750 }, () => {
     const emotion = Math.random();
@@ -38,9 +39,9 @@ export async function generateSeedData() {
     };
   });
 
-  await prisma.record.createMany({
+  await withDatabaseTimeout(prisma.record.createMany({
     data: records,
-  });
+  }));
 
   return records.length;
 }

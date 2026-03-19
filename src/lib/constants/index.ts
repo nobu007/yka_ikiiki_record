@@ -108,3 +108,7 @@ export const HTTP_METHODS = {
   DELETE: "DELETE",
   PATCH: "PATCH",
 } as const;
+
+export const CACHE_CONSTANTS = {
+  DATA_TTL_MS: 1800000,
+} as const;

@@ -12,7 +12,7 @@ import { StatsData } from "@/schemas/api";
 import { APP_CONFIG } from "@/lib/config";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { SUCCESS_MESSAGES } from "@/lib/constants/messages";
-import { GENERATION_DEFAULTS } from "@/lib/constants";
+import { GENERATION_DEFAULTS, CACHE_CONSTANTS } from "@/lib/constants";
 
 const SeedRequestSchema = z.object({
   config: z.object({
@@ -55,7 +55,7 @@ interface StoredData {
 }
 
 let storedData: StoredData | null = null;
-const DATA_TTL = 1800000 as const;
+const DATA_TTL = CACHE_CONSTANTS.DATA_TTL_MS;
 
 const cleanupOldData = () => {
   if (storedData && Date.now() - storedData.timestamp > DATA_TTL) {

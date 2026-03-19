@@ -95,6 +95,33 @@ export class PrismaRecordRepository implements IRecordRepository {
   }
 
   async saveMany(records: Record[]): Promise<Record[]> {
+    const validationErrors: Array<{ record: Record; errors: string[] }> = [];
+
+    for (const record of records) {
+      const validationResult = RecordSchema.safeParse(record);
+      if (!validationResult.success) {
+        validationErrors.push({
+          record,
+          errors: validationResult.error.errors.map((e) => e.message),
+        });
+      }
+    }
+
+    if (validationErrors.length > 0) {
+      globalLogger.error("PRISMA_REPOSITORY", "VALIDATION_ERROR", {
+        error: "Attempted to save invalid records in batch",
+        failedRecords: validationErrors.length,
+        totalRecords: records.length,
+        validationErrors,
+      });
+      const errorMessages = validationErrors
+        .flatMap((e) => e.errors)
+        .join("; ");
+      throw new Error(
+        `Cannot save invalid records: ${validationErrors.length} of ${records.length} records failed validation. Errors: ${errorMessages}`,
+      );
+    }
+
     await withDatabaseTimeout(
       this.prisma.record.createMany({
         data: records.map((record) => this.toPrisma(record)),

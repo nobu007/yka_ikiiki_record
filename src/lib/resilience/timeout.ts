@@ -1,4 +1,5 @@
 import { AppError, ERROR_CODES } from '@/lib/error-handler';
+import { globalLogger } from './structured-logger';
 
 export class TimeoutError extends AppError {
   constructor(operation: string, timeoutMs: number) {
@@ -34,6 +35,11 @@ export const withTimeout = async <T>(
 ): Promise<T> => {
   const timeoutPromise = new Promise<never>((_, reject) => {
     setTimeout(() => {
+      globalLogger.error('TIMEOUT', 'OPERATION_TIMEOUT', {
+        operation: operationType,
+        timeoutMs,
+        timestamp: Date.now()
+      });
       reject(new TimeoutError(operationType, timeoutMs));
     }, timeoutMs);
   });

@@ -95,7 +95,7 @@ export const DATABASE_CONSTRAINTS = {
   ID_FALLBACK: 0,
 } as const;
 
-export const ERROR_MESSAGES = {
-  UNKNOWN: "Unknown",
+export const FALLBACK_VALUES = {
+  UNKNOWN_STUDENT: "Unknown",
   UNKNOWN_ERROR: "Unknown error",
 } as const;

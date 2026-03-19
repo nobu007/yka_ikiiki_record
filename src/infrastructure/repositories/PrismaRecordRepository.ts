@@ -63,22 +63,18 @@ export class PrismaRecordRepository implements IRecordRepository {
 
   async save(record: Record): Promise<Record> {
     const data = this.toPrisma(record);
+    const recordData = {
+      emotion: data.emotion,
+      date: data.date,
+      student: data.student,
+      comment: data.comment || null,
+    };
 
     const saved = await withDatabaseTimeout(
       this.prisma.record.upsert({
         where: { id: record.id || 0 },
-        update: {
-          emotion: data.emotion,
-          date: data.date,
-          student: data.student,
-          comment: data.comment || null,
-        },
-        create: {
-          emotion: data.emotion,
-          date: data.date,
-          student: data.student,
-          comment: data.comment || null,
-        },
+        update: recordData,
+        create: recordData,
       }),
     );
 

@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 1,
+  "cycle": 2,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-20T01:36:00Z",
-  "updated_at": "2026-03-20T01:37:00Z",
+  "updated_at": "2026-03-20T01:52:16.424Z",
   "scan_progress": {
     "all_dirs": [
       "src/app",
@@ -22,9 +22,11 @@
       "scripts",
       "test"
     ],
-    "completed_dirs": ["src/app"],
+    "completed_dirs": [
+      "src/app",
+      "src/application"
+    ],
     "pending_dirs": [
-      "src/application",
       "src/components",
       "src/domain",
       "src/infrastructure",
@@ -44,7 +46,9 @@
         "file_count": 40,
         "test_count": 4,
         "has_tests": true,
-        "key_exports": ["Next.js App Router structure"],
+        "key_exports": [
+          "Next.js App Router structure"
+        ],
         "notes": [
           "Next.js 15 App Router structure with route groups",
           "API routes: /api/health, /api/seed, /api/stats",
@@ -53,6 +57,28 @@
           "Seed endpoint with Prisma/Mirage dual support",
           "Stats endpoint for data retrieval",
           "Comprehensive test coverage for dashboard components"
+        ]
+      },
+      {
+        "dir": "src/application",
+        "file_count": 15,
+        "test_count": 10,
+        "has_tests": true,
+        "key_exports": [
+          "useDataGeneration",
+          "useSeedGeneration",
+          "useStats",
+          "useAsync"
+        ],
+        "notes": [
+          "Application layer hooks following Clean Architecture",
+          "useDataGeneration: Manages data generation config and state",
+          "useStats: SWR-based data fetching with validation",
+          "useSeedGeneration: Handles seed data generation",
+          "Comprehensive test coverage: config, events, generation, bounds, error handling",
+          "Integration tests for data generation flow",
+          "Error handling with custom error types",
+          "Type-safe API validation with Zod schemas"
         ]
       }
     ]

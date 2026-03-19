@@ -14,6 +14,7 @@ import {
   calculateAverage,
   getRandomHour,
 } from "@/utils/statsCalculator";
+import { DATA_GENERATION_PARAMS } from "@/lib/constants";
 
 type EmotionData = {
   date: Date;
@@ -66,7 +67,12 @@ export class StatsService {
       for (let day = 0; day < config.periodDays; day++) {
         const date = new Date(startDate);
         date.setDate(date.getDate() + day);
-        const recordCount = Math.floor(Math.random() * 3) + 1;
+        const recordCount = Math.floor(
+          Math.random() *
+            (DATA_GENERATION_PARAMS.RECORDS_PER_DAY.MAX -
+              DATA_GENERATION_PARAMS.RECORDS_PER_DAY.MIN +
+              1),
+        ) + DATA_GENERATION_PARAMS.RECORDS_PER_DAY.MIN;
 
         for (let i = 0; i < recordCount; i++) {
           allEmotions.push({

@@ -1,5 +1,5 @@
 import { EMOTION_CONFIG, UI_CONFIG } from '@/lib/config';
-import { EMOTION_CALCULATION_PARAMS } from '@/lib/constants';
+import { EMOTION_CALCULATION_PARAMS, EMOTION_RANGES } from '@/lib/constants';
 
 type EmotionData = { date: Date; emotion: number; hour?: number; student?: number };
 
@@ -124,9 +124,9 @@ export const calculateTimeOfDayStats = (emotions: EmotionData[]) => {
 };
 
 export const calculateEmotionDistribution = (emotions: EmotionData[]) => {
-  const distribution = new Array(5).fill(0);
+  const distribution = new Array(EMOTION_RANGES.DISTRIBUTION_BINS).fill(0);
   emotions.forEach(({ emotion }) => {
-    const index = Math.min(Math.max(Math.floor(emotion) - 1, 0), 4);
+    const index = Math.min(Math.max(Math.floor(emotion) - 1, 0), EMOTION_RANGES.DISTRIBUTION_BINS - 1);
     distribution[index]++;
   });
   return distribution;

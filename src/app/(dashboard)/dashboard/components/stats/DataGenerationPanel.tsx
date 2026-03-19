@@ -3,6 +3,7 @@
 import { memo } from "react";
 import { useDataGeneration } from "@/application/hooks/useDataGeneration";
 import type { DataGenerationConfig } from "@/schemas/api";
+import { getButtonClasses } from "@/lib/constants/ui";
 import GenerationControls from "./GenerationControls";
 import EventManager from "./EventManager";
 import ClassCharacteristicsEditor from "./ClassCharacteristicsEditor";
@@ -66,7 +67,7 @@ const DataGenerationPanel = memo(function DataGenerationPanel({
         <button
           onClick={generateData}
           disabled={isGenerating}
-          className="flex-1 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+          className={`flex-1 ${getButtonClasses("primary", isGenerating)}`}
         >
           {isGenerating ? "生成中..." : "データを生成"}
         </button>
@@ -74,7 +75,7 @@ const DataGenerationPanel = memo(function DataGenerationPanel({
         <button
           onClick={resetConfig}
           disabled={isGenerating}
-          className="p-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled:opacity-50"
+          className={getButtonClasses("secondary", isGenerating)}
         >
           リセット
         </button>

@@ -9,6 +9,7 @@ import {
 } from "react";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 import { CONTEXT_ERROR_MESSAGES } from "@/lib/constants/messages";
+import { WINDOW_EVENTS } from "@/lib/constants/browser";
 
 type SidebarContextType = {
   isExpanded: boolean;
@@ -52,10 +53,10 @@ export const SidebarProvider = memo<{ children: React.ReactNode }>(
       };
 
       handleResize();
-      window.addEventListener("resize", handleResize);
+      window.addEventListener(WINDOW_EVENTS.RESIZE, handleResize);
 
       return () => {
-        window.removeEventListener("resize", handleResize);
+        window.removeEventListener(WINDOW_EVENTS.RESIZE, handleResize);
       };
     }, []);
 

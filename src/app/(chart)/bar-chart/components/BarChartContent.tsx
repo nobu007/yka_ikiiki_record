@@ -20,8 +20,6 @@ const demoData = [
   { name: "Dec", value: 112 },
 ];
 
-const UI_FEEDBACK_DELAY_MS = 1000;
-
 export default function BarChartContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -30,7 +28,7 @@ export default function BarChartContent() {
     setIsLoading(true);
     setError(null);
     try {
-      await new Promise((resolve) => setTimeout(resolve, UI_FEEDBACK_DELAY_MS));
+      await new Promise((resolve) => setTimeout(resolve, UI_CONSTANTS.FEEDBACK.DELAY_MS));
     } catch (err) {
       setError(err instanceof Error ? err : new Error(String(err)));
     } finally {

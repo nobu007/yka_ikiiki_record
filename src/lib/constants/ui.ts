@@ -59,6 +59,10 @@ export const UI_CONSTANTS = {
       DEFAULT: 300,
     } as const,
   } as const,
+
+  FEEDBACK: {
+    DELAY_MS: 1000,
+  } as const,
 } as const;
 
 export const getButtonClasses = (

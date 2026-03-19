@@ -7,6 +7,7 @@ import {
 } from "@/lib/resilience";
 import { isPrismaProvider } from "@/lib/config/env";
 import { createStatsService } from "@/infrastructure/factories/repositoryFactory";
+import { API_OPERATIONS } from "@/lib/constants/api";
 
 const HEALTH_CHECK_THRESHOLDS = {
   MEMORY_CRITICAL: 90,
@@ -118,7 +119,7 @@ export async function GET(): Promise<NextResponse> {
       return NextResponse.json(response, { status: statusCode });
     },
     {
-      operationName: "GET /api/health",
+      operationName: API_OPERATIONS.GET_HEALTH,
       timeoutMs: DEFAULT_TIMEOUTS.database,
     },
   );

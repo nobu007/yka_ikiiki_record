@@ -52,3 +52,13 @@ export const API_ENDPOINTS = {
   SEED: "/api/seed",
   STATS: "/api/stats",
 } as const;
+
+/**
+ * API操作名（ログ・モニタリング用）
+ */
+export const API_OPERATIONS = {
+  GET_STATS: "GET /api/stats",
+  GET_HEALTH: "GET /api/health",
+  GET_SEED: "GET /api/seed",
+  POST_SEED: "POST /api/seed",
+} as const;

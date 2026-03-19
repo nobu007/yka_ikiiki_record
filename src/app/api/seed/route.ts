@@ -13,6 +13,7 @@ import { APP_CONFIG } from "@/lib/config";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { SUCCESS_MESSAGES } from "@/lib/constants/messages";
 import { GENERATION_DEFAULTS, CACHE_CONSTANTS } from "@/lib/constants";
+import { API_OPERATIONS } from "@/lib/constants/api";
 
 const SeedRequestSchema = z.object({
   config: z.object({
@@ -135,7 +136,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       });
     },
     {
-      operationName: "POST /api/seed",
+      operationName: API_OPERATIONS.POST_SEED,
       timeoutMs: DEFAULT_TIMEOUTS.command,
     },
   );
@@ -177,7 +178,7 @@ export async function GET(): Promise<NextResponse> {
       });
     },
     {
-      operationName: "GET /api/seed",
+      operationName: API_OPERATIONS.GET_SEED,
       timeoutMs: DEFAULT_TIMEOUTS.api,
     },
   );

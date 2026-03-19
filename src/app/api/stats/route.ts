@@ -5,6 +5,7 @@ import { withResilientHandler } from "@/lib/api/error-handler";
 import { createStatsService } from "@/infrastructure/factories/repositoryFactory";
 import { createError } from "@/lib/api/error-handler";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
+import { API_OPERATIONS } from "@/lib/constants/api";
 
 export async function GET(_req: NextRequest): Promise<NextResponse> {
   return withResilientHandler(
@@ -23,7 +24,7 @@ export async function GET(_req: NextRequest): Promise<NextResponse> {
       return createSuccessResponse(response, StatsResponseSchema);
     },
     {
-      operationName: "GET /api/stats",
+      operationName: API_OPERATIONS.GET_STATS,
       timeoutMs: DEFAULT_TIMEOUTS.api,
     },
   );

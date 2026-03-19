@@ -3,6 +3,7 @@ import {
   HTTP_STATUS,
   DEFAULT_API_RESPONSE,
   API_ENDPOINTS,
+  API_OPERATIONS,
 } from "./api";
 
 describe("API_ERROR_MESSAGES", () => {
@@ -74,5 +75,31 @@ describe("API_ENDPOINTS", () => {
     Object.values(API_ENDPOINTS).forEach((ep) => {
       expect(ep).toMatch(/^\/api\//);
     });
+  });
+});
+
+describe("API_OPERATIONS", () => {
+  it("has correct operation names for all endpoints", () => {
+    expect(API_OPERATIONS.GET_STATS).toBe("GET /api/stats");
+    expect(API_OPERATIONS.GET_HEALTH).toBe("GET /api/health");
+    expect(API_OPERATIONS.GET_SEED).toBe("GET /api/seed");
+    expect(API_OPERATIONS.POST_SEED).toBe("POST /api/seed");
+  });
+
+  it("all operations follow HTTP_METHOD /path format", () => {
+    Object.values(API_OPERATIONS).forEach((op) => {
+      expect(op).toMatch(/^(GET|POST|PUT|DELETE|PATCH) \/api\//);
+    });
+  });
+
+  it("is readonly (as const)", () => {
+    expect(API_OPERATIONS).toEqual(
+      expect.objectContaining({
+        GET_STATS: expect.any(String),
+        GET_HEALTH: expect.any(String),
+        GET_SEED: expect.any(String),
+        POST_SEED: expect.any(String),
+      })
+    );
   });
 });

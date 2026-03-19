@@ -25,7 +25,7 @@ export const ChartWrapper = memo<ChartWrapperProps>(
     const headingColor = isDark
       ? UI_CONSTANTS.CHART.HEADING_COLOR.DARK
       : UI_CONSTANTS.CHART.HEADING_COLOR.LIGHT;
-    const chartId = `chart-${title?.replace(/\s+/g, "-") ?? "default"}`;
+    const chartId = `chart-${title?.replace(/\s+/g, "-") ?? ACCESSIBILITY_MESSAGES.CHART_DEFAULT_ID}`;
 
     if (isLoading) {
       return (

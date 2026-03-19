@@ -126,6 +126,7 @@ export const ACCESSIBILITY_MESSAGES = {
   CHART_LOADING: "グラフローディング中",
   CHART_ERROR: "グラフエラー",
   CHART_DEFAULT: "統計グラフ",
+  CHART_DEFAULT_ID: "default",
   NO_DATA: "データなし",
   CLOSE_NOTIFICATION: "通知を閉じる",
   CHART_ERROR_MESSAGE: "グラフの表示中にエラーが発生しました",

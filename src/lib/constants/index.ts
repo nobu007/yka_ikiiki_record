@@ -90,3 +90,7 @@ export const EMOTION_CALCULATION_PARAMS = {
   },
   DECIMAL_PRECISION: 1,
 } as const;
+
+export const DATABASE_CONSTRAINTS = {
+  ID_FALLBACK: 0,
+} as const;

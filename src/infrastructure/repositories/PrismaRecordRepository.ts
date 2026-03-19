@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { IRecordRepository } from "@/domain/repositories/IRecordRepository";
 import { Record } from "@/domain/entities/Record";
 import { withDatabaseTimeout } from "@/lib/resilience/timeout";
+import { DATABASE_CONSTRAINTS } from "@/lib/constants";
 
 export class PrismaRecordRepository implements IRecordRepository {
   private prisma: PrismaClient;
@@ -70,7 +71,7 @@ export class PrismaRecordRepository implements IRecordRepository {
 
     const saved = await withDatabaseTimeout(
       this.prisma.record.upsert({
-        where: { id: record.id || 0 },
+        where: { id: record.id || DATABASE_CONSTRAINTS.ID_FALLBACK },
         update: recordData,
         create: recordData,
       }),

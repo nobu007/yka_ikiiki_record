@@ -63,6 +63,7 @@ export const DATA_GENERATION_FEATURES = [
 ] as const;
 
 export const CHART_TITLES = {
+  DATA_OVERVIEW: "データ概要",
   TOTAL_RECORDS: "総記録数",
   AVERAGE_EMOTION_SCORE: "平均感情スコア",
   MONTHLY_AVERAGE_EMOTION: "月別平均感情スコア",

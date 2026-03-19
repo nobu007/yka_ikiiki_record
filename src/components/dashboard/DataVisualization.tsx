@@ -8,6 +8,7 @@ import {
   EmotionTrendChart,
 } from "@/components/charts";
 import { StatsData } from "@/schemas/api";
+import { CHART_TITLES } from "@/lib/constants/messages";
 
 const MAX_STUDENTS_IN_TABLE = 10;
 const ALTERNATING_ROW_MODULO = 2;
@@ -36,17 +37,21 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
     <div className="space-y-8">
       {/* Overview Statistics */}
       <section className="bg-white rounded-lg p-6 shadow-sm">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">データ概要</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          {CHART_TITLES.DATA_OVERVIEW}
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-blue-50 p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-blue-900 mb-1">総記録数</h3>
+            <h3 className="text-sm font-medium text-blue-900 mb-1">
+              {CHART_TITLES.TOTAL_RECORDS}
+            </h3>
             <p className="text-2xl font-bold text-blue-600">
               {data.overview.count.toLocaleString()}
             </p>
           </div>
           <div className="bg-green-50 p-4 rounded-lg">
             <h3 className="text-sm font-medium text-green-900 mb-1">
-              平均感情スコア
+              {CHART_TITLES.AVERAGE_EMOTION_SCORE}
             </h3>
             <p className="text-2xl font-bold text-green-600">
               {data.overview.avgEmotion}

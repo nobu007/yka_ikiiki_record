@@ -170,10 +170,6 @@ describe('GET /api/health', () => {
       const response = await GET();
       const data = await response.json();
 
-      if (data.status !== 'healthy') {
-        console.log('Response data:', JSON.stringify(data, null, 2));
-      }
-
       expect(response.status).toBe(200);
       expect(data.status).toBe('healthy');
       expect(data.checks.database.provider).toBe('prisma');

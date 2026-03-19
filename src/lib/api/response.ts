@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
-/**
- * APIレスポンスの共通型
- */
 export type ApiResponse<T> = {
   success: boolean;
   data?: T;
@@ -11,18 +8,13 @@ export type ApiResponse<T> = {
   error?: string;
 };
 
-/**
- * 成功レスポンスを作成する
- */
 export function createSuccessResponse<T>(
   data: T & { success?: boolean },
   schema?: z.ZodSchema<T>
 ) {
   try {
-    // スキーマによる検証
     const validatedData = schema ? schema.parse(data) : data;
 
-    // success フラグの追加（データ内にない場合）
     const responseData = {
       ...validatedData,
       success: data.success !== undefined ? data.success : true,

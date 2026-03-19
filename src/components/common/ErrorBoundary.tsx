@@ -3,7 +3,6 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { ExclamationIcon } from './Icons';
 
-// Define proper types without using 'as const'
 type ErrorMessageKey = 'title' | 'description' | 'action' | 'buttonText' | 'devDetails';
 
 const ERROR_MESSAGES = {

@@ -1,6 +1,5 @@
 import { memo } from 'react';
 
-// Define proper types without using 'as const'
 type LoadingSize = 'sm' | 'md' | 'lg';
 type LoadingColor = 'primary' | 'secondary' | 'white';
 

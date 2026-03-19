@@ -1,11 +1,9 @@
 import '@testing-library/jest-dom';
 
-// Enhanced fetch mock types
 declare global {
   const fetch: jest.MockedFunction<typeof fetch>;
 }
 
-// Mock types for testing
 interface MockFetchResponse {
   ok: boolean;
   status: number;

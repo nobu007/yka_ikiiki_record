@@ -1,14 +1,11 @@
-// Success messages
 export const SUCCESS_MESSAGES = {
   DATA_GENERATION_COMPLETE: 'テストデータの生成が完了しました',
 } as const;
 
-// Loading messages
 export const LOADING_MESSAGES = {
   GENERATING_DATA: 'テストデータを生成中...',
 } as const;
 
-// Error messages
 export const ERROR_MESSAGES = {
   UNEXPECTED: '予期せぬエラーが発生しました',
   VALIDATION: '入力内容を確認してください',
@@ -22,7 +19,6 @@ export const ERROR_MESSAGES = {
   API_ERROR: (status: number, statusText: string) => `APIエラー: ${status} ${statusText}`,
 } as const;
 
-// UI text
 export const UI_TEXT = {
   DASHBOARD: {
     TITLE: 'イキイキレコード - 教師ダッシュボード',
@@ -48,12 +44,10 @@ export const UI_TEXT = {
   },
 } as const;
 
-// API endpoints
 export const API_ENDPOINTS = {
   SEED: '/api/seed',
 } as const;
 
-// Feature list
 export const DATA_GENERATION_FEATURES = [
   UI_TEXT.FEATURES.LEARNING_DATA,
   UI_TEXT.FEATURES.EMOTION_ANALYSIS,

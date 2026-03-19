@@ -1,8 +1,6 @@
-// Re-export all constants for centralized access
 export * from './messages';
 export * from './ui';
 
-// Consolidated application constants
 export const APP_CONFIG = {
   NAME: 'イキイキレコード',
   VERSION: '0.1.0',

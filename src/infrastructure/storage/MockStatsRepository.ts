@@ -51,7 +51,5 @@ export class MockStatsRepository implements StatsRepository {
   }
 
   async generateSeedData(): Promise<void> {
-    // 実際のデータ生成はStatsServiceで行われるため、
-    // このメソッドは空の実装のままとします
   }
 }

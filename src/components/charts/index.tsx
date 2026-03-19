@@ -1,4 +1,3 @@
-// Chart components - barrel export
 export { EmotionChart } from './EmotionChart';
 export type { ChartData, EmotionChartProps } from './EmotionChart';
 

@@ -1,7 +1,6 @@
 import { useMemo, memo } from 'react';
 import { EmotionChart } from './EmotionChart';
 
-// Define chart constants to avoid magic numbers
 const TIME_OF_DAY_CHART_HEIGHT = 250;
 
 export const TimeOfDayChart = memo<{ data: { morning: number; afternoon: number; evening: number } }>(({ data }) => {

@@ -56,7 +56,6 @@ const DashboardComponent: React.FC<DashboardProps> = ({
     } catch (error) {
       const appError = normalizeError(error);
       logError(appError, 'Dashboard.fetchStats');
-      // stats will remain null, UI shows appropriate empty state
     } finally {
       setIsLoading(false);
     }

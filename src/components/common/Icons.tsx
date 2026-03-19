@@ -1,6 +1,5 @@
 import { memo } from 'react';
 
-// Define proper types without using 'as const'
 type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
 interface IconProps {

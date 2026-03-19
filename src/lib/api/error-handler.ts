@@ -3,9 +3,6 @@ import { NextResponse } from 'next/server';
 import { createErrorResponse } from './response';
 import { AppError, normalizeError, logError, ERROR_CODES } from '@/lib/error-handler';
 
-/**
- * Zodエラーからユーザーフレンドリーなメッセージを生成
- */
 const formatZodError = (error: z.ZodError): string => {
   return error.errors
     .map((err) => {
@@ -16,12 +13,6 @@ const formatZodError = (error: z.ZodError): string => {
     .join(', ');
 };
 
-/**
- * Type guard for SyntaxError with body property
- * This is set by fetch API when JSON parsing fails
- * Uses 'value is Type' predicate pattern per SYSTEM_CONSTITUTION.md
- * No type assertions used - runtime type checking only
- */
 function isSyntaxErrorWithBody(error: unknown): error is SyntaxError & { body: boolean } {
   if (!(error instanceof SyntaxError)) {
     return false;
@@ -30,22 +21,16 @@ function isSyntaxErrorWithBody(error: unknown): error is SyntaxError & { body: b
   return 'body' in syntaxError && syntaxError.body === true;
 }
 
-/**
- * Enhanced API error handler with better type safety
- */
 export function handleApiError(error: unknown): NextResponse {
-  // Zod validation errors
   if (error instanceof z.ZodError) {
     const message = formatZodError(error);
     return createErrorResponse(`入力データの検証に失敗しました: ${message}`, 400);
   }
 
-  // JSON parse errors with type guard for full type safety
   if (isSyntaxErrorWithBody(error)) {
     return createErrorResponse('リクエストボディのJSON形式が正しくありません', 400);
   }
 
-  // Application errors
   const normalizedError = normalizeError(error);
   logError(error, 'API');
 

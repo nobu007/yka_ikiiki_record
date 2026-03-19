@@ -23,7 +23,6 @@ export const useStats = () => {
     try {
       await refetch();
     } catch {
-      // Error is silently handled - error state is managed by useApplicationStats
     }
   }, [refetch]);
 

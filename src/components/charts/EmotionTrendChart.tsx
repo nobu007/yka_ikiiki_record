@@ -1,7 +1,6 @@
 import { useMemo, memo } from 'react';
 import { EmotionChart } from './EmotionChart';
 
-// Define chart constants to avoid magic numbers
 const EMOTION_TREND_CHART_HEIGHT = 350;
 
 export const EmotionTrendChart = memo<{ data: Array<{ student: string; trendline: number[] }> }>(({ data }) => {

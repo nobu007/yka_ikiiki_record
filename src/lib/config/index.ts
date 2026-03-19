@@ -1,5 +1,3 @@
-// Consolidated configuration for the IkiIki Record application
-
 export const APP_CONFIG = {
   name: 'イキイキレコード デモ',
   description: '生徒の学習データを生成・管理するダッシュボードです',
@@ -86,6 +84,3 @@ export const MESSAGES = {
     }
   }
 } as const;
-
-// Error codes are defined in src/lib/error-handler.ts to avoid circular dependency
-// Import them directly from there when needed

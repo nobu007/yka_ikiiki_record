@@ -1,4 +1,5 @@
 import { AppError, ERROR_CODES } from '@/lib/error-handler';
+import { globalLogger } from './structured-logger';
 
 export class CircuitBreakerOpenError extends AppError {
   constructor(message: string = 'Circuit breaker is OPEN') {
@@ -34,6 +35,12 @@ export class CircuitBreaker {
       this.state === 'OPEN' &&
       Date.now() - this.lastFailureTime < config.resetTimeout
     ) {
+      globalLogger.warn('CIRCUIT_BREAKER', 'REJECTED', {
+        state: this.state,
+        failureCount: this.failures,
+        timeSinceLastFailure: Date.now() - this.lastFailureTime,
+        resetTimeout: config.resetTimeout
+      });
       throw new CircuitBreakerOpenError();
     }
 
@@ -41,6 +48,11 @@ export class CircuitBreaker {
       this.state === 'OPEN' &&
       Date.now() - this.lastFailureTime >= config.resetTimeout
     ) {
+      globalLogger.info('CIRCUIT_BREAKER', 'STATE_TRANSITION', {
+        from: this.state,
+        to: 'HALF_OPEN',
+        reason: 'reset_timeout_elapsed'
+      });
       this.state = 'HALF_OPEN';
     }
 
@@ -55,12 +67,22 @@ export class CircuitBreaker {
   }
 
   private onSuccess(_config: CircuitBreakerConfig): void {
+    const previousState = this.state;
     this.failures = 0;
     this.state = 'CLOSED';
+
+    if (previousState !== 'CLOSED') {
+      globalLogger.info('CIRCUIT_BREAKER', 'STATE_TRANSITION', {
+        from: previousState,
+        to: this.state,
+        reason: 'operation_success'
+      });
+    }
   }
 
   private onFailure(config: CircuitBreakerConfig): void {
     const now = Date.now();
+    const previousState = this.state;
 
     if (this.lastFailureTime > 0 && now - this.lastFailureTime > config.monitoringPeriod) {
       this.failures = 0;
@@ -69,8 +91,15 @@ export class CircuitBreaker {
     this.failures++;
     this.lastFailureTime = now;
 
-    if (this.failures >= config.failureThreshold) {
+    if (this.failures >= config.failureThreshold && this.state !== 'OPEN') {
       this.state = 'OPEN';
+      globalLogger.error('CIRCUIT_BREAKER', 'STATE_TRANSITION', {
+        from: previousState,
+        to: this.state,
+        reason: 'failure_threshold_exceeded',
+        failureCount: this.failures,
+        threshold: config.failureThreshold
+      });
     }
   }
 

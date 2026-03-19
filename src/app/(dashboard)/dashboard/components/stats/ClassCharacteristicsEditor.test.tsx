@@ -58,12 +58,12 @@ describe("ClassCharacteristicsEditor", () => {
       expect(inputs[0]).toHaveValue("3");
 
       expect(inputs[1]).toHaveAttribute("min", "0.1");
-      expect(inputs[1]).toHaveAttribute("max", "1.0");
+      expect(inputs[1]).toHaveAttribute("max", "1");
       expect(inputs[1]).toHaveAttribute("step", "0.1");
       expect(inputs[1]).toHaveValue("0.5");
 
       expect(inputs[2]).toHaveAttribute("min", "0.1");
-      expect(inputs[2]).toHaveAttribute("max", "1.0");
+      expect(inputs[2]).toHaveAttribute("max", "1");
       expect(inputs[2]).toHaveAttribute("step", "0.1");
       expect(inputs[2]).toHaveValue("0.7");
     });

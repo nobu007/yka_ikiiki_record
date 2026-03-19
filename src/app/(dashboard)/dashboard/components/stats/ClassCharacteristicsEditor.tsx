@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import type { ClassCharacteristics } from "@/schemas/api";
+import { GENERATION_CONSTRAINTS } from "@/lib/constants";
 
 interface Props {
   characteristics: ClassCharacteristics;
@@ -22,8 +23,8 @@ const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({
         </label>
         <input
           type="range"
-          min="2.5"
-          max="3.5"
+          min={String(GENERATION_CONSTRAINTS.BASELINE_EMOTION.MIN)}
+          max={String(GENERATION_CONSTRAINTS.BASELINE_EMOTION.MAX)}
           step="0.1"
           value={characteristics.baselineEmotion}
           onChange={(e) =>
@@ -39,8 +40,8 @@ const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({
         </label>
         <input
           type="range"
-          min="0.1"
-          max="1.0"
+          min={String(GENERATION_CONSTRAINTS.VOLATILITY.MIN)}
+          max={String(GENERATION_CONSTRAINTS.VOLATILITY.MAX)}
           step="0.1"
           value={characteristics.volatility}
           onChange={(e) => onUpdate({ volatility: Number(e.target.value) })}
@@ -54,8 +55,8 @@ const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({
         </label>
         <input
           type="range"
-          min="0.1"
-          max="1.0"
+          min={String(GENERATION_CONSTRAINTS.COHESION.MIN)}
+          max={String(GENERATION_CONSTRAINTS.COHESION.MAX)}
           step="0.1"
           value={characteristics.cohesion}
           onChange={(e) => onUpdate({ cohesion: Number(e.target.value) })}

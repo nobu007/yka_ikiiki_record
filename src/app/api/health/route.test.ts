@@ -29,6 +29,8 @@ describe('GET /api/health', () => {
       timeOfDayStats: [],
       emotionDistribution: [0.2, 0.2, 0.2, 0.2, 0.2]
     });
+
+    jest.spyOn(globalMemoryMonitor, 'getUsagePercentage').mockReturnValue(0);
   });
 
   test('returns healthy status when all systems operational (mirage)', async () => {

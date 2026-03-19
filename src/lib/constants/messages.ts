@@ -113,3 +113,7 @@ export const USAGE_INSTRUCTIONS = {
 export const BREADCRUMB_MESSAGES = {
   HOME: "Home",
 } as const;
+
+export const ACCESSIBILITY_MESSAGES = {
+  GRID_SHAPE_ALT: "grid",
+} as const;

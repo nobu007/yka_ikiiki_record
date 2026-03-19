@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { memo } from "react";
+import { ACCESSIBILITY_MESSAGES } from "@/lib/constants/messages";
 
 export const GridShape = memo(() => {
   return (
@@ -9,7 +10,7 @@ export const GridShape = memo(() => {
           width={540}
           height={254}
           src="/images/shape/grid-01.svg"
-          alt="grid"
+          alt={ACCESSIBILITY_MESSAGES.GRID_SHAPE_ALT}
         />
       </div>
       <div className="absolute bottom-0 left-0 -z-1 w-full max-w-[250px] rotate-180 xl:max-w-[450px]">
@@ -17,7 +18,7 @@ export const GridShape = memo(() => {
           width={540}
           height={254}
           src="/images/shape/grid-01.svg"
-          alt="grid"
+          alt={ACCESSIBILITY_MESSAGES.GRID_SHAPE_ALT}
         />
       </div>
     </>

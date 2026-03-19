@@ -1,4 +1,5 @@
 import { AppError, ERROR_CODES } from "@/lib/error-handler";
+import { LOOP_DETECTOR_CONSTANTS } from "@/lib/constants/resilience";
 import { globalLogger } from "./structured-logger";
 
 export class InfiniteLoopError extends AppError {
@@ -12,8 +13,8 @@ export class InfiniteLoopError extends AppError {
   }
 }
 
-const DEFAULT_MAX_ITERATIONS = 1000;
-const DEFAULT_TIME_WINDOW = 30000;
+const DEFAULT_MAX_ITERATIONS: number = LOOP_DETECTOR_CONSTANTS.MAX_ITERATIONS;
+const DEFAULT_TIME_WINDOW: number = LOOP_DETECTOR_CONSTANTS.TIME_WINDOW_MS;
 
 export class LoopDetector {
   private operationCounts = new Map<string, number>();
@@ -22,8 +23,8 @@ export class LoopDetector {
   private pendingTimeouts = new Set<NodeJS.Timeout>();
 
   constructor(
-    maxIterations = DEFAULT_MAX_ITERATIONS,
-    timeWindow = DEFAULT_TIME_WINDOW,
+    maxIterations: number = DEFAULT_MAX_ITERATIONS,
+    timeWindow: number = DEFAULT_TIME_WINDOW,
   ) {
     this.maxIterations = maxIterations;
     this.timeWindow = timeWindow;
@@ -74,8 +75,8 @@ export class LoopDetector {
 }
 
 export const createLoopDetector = (
-  maxIterations?: number,
-  timeWindow?: number,
+  maxIterations: number = DEFAULT_MAX_ITERATIONS,
+  timeWindow: number = DEFAULT_TIME_WINDOW,
 ): LoopDetector => new LoopDetector(maxIterations, timeWindow);
 
 export const globalLoopDetector = createLoopDetector();

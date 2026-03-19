@@ -1,4 +1,5 @@
 import { AppError, ERROR_CODES } from "@/lib/error-handler";
+import { CIRCUIT_BREAKER_CONSTANTS } from "@/lib/constants/resilience";
 import { globalLogger } from "./structured-logger";
 
 export class CircuitBreakerOpenError extends AppError {
@@ -15,9 +16,9 @@ export interface CircuitBreakerConfig {
 }
 
 const DEFAULT_CIRCUIT_BREAKER_CONFIG: CircuitBreakerConfig = {
-  failureThreshold: 5,
-  resetTimeout: 60000,
-  monitoringPeriod: 30000,
+  failureThreshold: CIRCUIT_BREAKER_CONSTANTS.FAILURE_THRESHOLD,
+  resetTimeout: CIRCUIT_BREAKER_CONSTANTS.RESET_TIMEOUT_MS,
+  monitoringPeriod: CIRCUIT_BREAKER_CONSTANTS.MONITORING_PERIOD_MS,
 } as const;
 
 type CircuitState = "CLOSED" | "OPEN" | "HALF_OPEN";

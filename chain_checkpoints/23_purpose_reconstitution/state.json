@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 10,
+  "cycle": 11,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-20T01:36:00Z",
-  "updated_at": "2026-03-20T07:10:00.000000Z",
+  "updated_at": "2026-03-20T07:52:00.000000Z",
   "scan_progress": {
     "all_dirs": [
       "src/app",
@@ -32,10 +32,10 @@
       "src/presentation",
       "src/schemas",
       "src/utils",
-      "src/mirage"
+      "src/mirage",
+      "src/context"
     ],
     "pending_dirs": [
-      "src/context",
       "prisma",
       "scripts",
       "test"
@@ -312,6 +312,32 @@
           "Environment-based activation (NEXT_PUBLIC_MOCK=true)",
           "No dedicated tests (integration with API routes tested indirectly)",
           "Clean Architecture compliance: Infrastructure/mock layer, imports from utils and lib (cross-cutting)"
+        ]
+      },
+      {
+        "dir": "src/context",
+        "file_count": 2,
+        "test_count": 0,
+        "has_tests": false,
+        "key_exports": [
+          "useSidebar",
+          "SidebarProvider",
+          "useTheme",
+          "ThemeProvider"
+        ],
+        "notes": [
+          "React Context providers for global state management",
+          "SidebarContext: Sidebar state (expanded, mobile open, hovered, active item, submenu)",
+          "ThemeContext: Theme switching (light/dark) with localStorage persistence",
+          "useSidebar: Hook for accessing sidebar context with error handling",
+          "useTheme: Hook for accessing theme context with error handling",
+          "SidebarProvider: Manages sidebar state with mobile responsiveness (MD breakpoint)",
+          "ThemeProvider: Manages theme state with localStorage and DOM class manipulation",
+          "Both providers use memo() for performance optimization",
+          "Centralized error messages from lib/constants/messages",
+          "Constants from lib/constants (UI_CONSTANTS, STORAGE_KEYS, THEME_CLASSES, WINDOW_EVENTS)",
+          "No dedicated tests (functionality covered by component integration tests)",
+          "Clean Architecture compliance: Presentation/cross-cutting layer, imports only from lib (constants)"
         ]
       }
     ]

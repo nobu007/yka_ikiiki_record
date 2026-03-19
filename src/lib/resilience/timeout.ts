@@ -1,4 +1,5 @@
 import { AppError, ERROR_CODES, HTTP_STATUS } from "@/lib/error-handler";
+import { TIMEOUT_CONSTANTS } from "@/lib/constants/resilience";
 import { globalLogger } from "./structured-logger";
 
 export class TimeoutError extends AppError {
@@ -21,11 +22,11 @@ export interface TimeoutConfig {
 }
 
 export const DEFAULT_TIMEOUTS: TimeoutConfig = {
-  command: 30000,
-  api: 10000,
-  database: 5000,
-  file: 15000,
-  e2e: 60000,
+  command: TIMEOUT_CONSTANTS.COMMAND,
+  api: TIMEOUT_CONSTANTS.API,
+  database: TIMEOUT_CONSTANTS.DATABASE,
+  file: TIMEOUT_CONSTANTS.FILE,
+  e2e: TIMEOUT_CONSTANTS.E2E,
 } as const;
 
 export const withTimeout = async <T>(

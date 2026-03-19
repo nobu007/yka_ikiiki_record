@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { NextResponse } from 'next/server';
 import { createErrorResponse } from './response';
 import { AppError, normalizeError, logError, ERROR_CODES, HTTP_STATUS } from '@/lib/error-handler';
-import { withCustomTimeout } from '@/lib/resilience';
+import { withCustomTimeout, DEFAULT_TIMEOUTS } from '@/lib/resilience';
 import { globalCircuitBreaker, globalLogger } from '@/lib/resilience';
 import type { CircuitBreakerConfig } from '@/lib/resilience';
 
@@ -90,7 +90,7 @@ export function withResilientHandler<T extends NextResponse>(
   }
 ): Promise<T | NextResponse> {
   const {
-    timeoutMs = 10000,
+    timeoutMs = DEFAULT_TIMEOUTS.api,
     circuitBreakerConfig,
     operationName = 'API_HANDLER'
   } = options || {};

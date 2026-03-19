@@ -2,8 +2,7 @@
 
 import { ReactNode, memo } from "react";
 import { ACCESSIBILITY_MESSAGES } from "@/lib/constants/messages";
-
-const DEFAULT_CHART_HEIGHT = 300;
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 interface ChartWrapperProps {
   title?: string;
@@ -17,13 +16,15 @@ interface ChartWrapperProps {
 export const ChartWrapper = memo<ChartWrapperProps>(
   ({
     title,
-    height = DEFAULT_CHART_HEIGHT,
+    height = UI_CONSTANTS.CHART.HEIGHT.DEFAULT,
     isLoading,
     error,
     children,
     isDark = false,
   }) => {
-    const headingColor = isDark ? "text-gray-100" : "text-gray-900";
+    const headingColor = isDark
+      ? UI_CONSTANTS.CHART.HEADING_COLOR.DARK
+      : UI_CONSTANTS.CHART.HEADING_COLOR.LIGHT;
     const chartId = `chart-${title?.replace(/\s+/g, "-") ?? "default"}`;
 
     if (isLoading) {
@@ -34,7 +35,7 @@ export const ChartWrapper = memo<ChartWrapperProps>(
           role="status"
           aria-label={ACCESSIBILITY_MESSAGES.CHART_LOADING}
         >
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <div className={`animate-spin rounded-full ${UI_CONSTANTS.CHART.SPINNER_SIZE} border-b-2 border-primary`}></div>
         </div>
       );
     }
@@ -43,7 +44,7 @@ export const ChartWrapper = memo<ChartWrapperProps>(
       return (
         <div
           style={{ height }}
-          className="w-full flex items-center justify-center text-red-500"
+          className={`w-full flex items-center justify-center ${UI_CONSTANTS.COLOR.ERROR}`}
           role="alert"
           aria-label={ACCESSIBILITY_MESSAGES.CHART_ERROR}
         >

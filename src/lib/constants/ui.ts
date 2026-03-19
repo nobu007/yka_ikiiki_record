@@ -72,6 +72,11 @@ export const UI_CONSTANTS = {
       XLARGE: 400,
       DEFAULT: 300,
     } as const,
+    SPINNER_SIZE: "h-8 w-8",
+    HEADING_COLOR: {
+      DARK: "text-gray-100",
+      LIGHT: "text-gray-900",
+    } as const,
   } as const,
 
   FEEDBACK: {

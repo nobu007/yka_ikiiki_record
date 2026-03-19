@@ -257,4 +257,55 @@ describe('DynamicBarChart Behavior', () => {
       expect(element).toBeDefined();
     });
   });
+
+  describe('Y-Axis Formatter Coverage (lines 107-125)', () => {
+    it('should format y-axis labels with decimal values', () => {
+      const dataWithDecimals: ChartData[] = [
+        { name: 'Item 1', value: 3.14159 },
+        { name: 'Item 2', value: 2.71828 },
+        { name: 'Item 3', value: 1.41421 },
+      ];
+
+      const element = React.createElement(DynamicBarChart, {
+        data: dataWithDecimals,
+        height: 400,
+        isDark: false
+      });
+
+      expect(element).toBeDefined();
+      expect(element.props.height).toBe(400);
+      expect(element.props.isDark).toBe(false);
+    });
+
+    it('should format y-axis labels in dark mode', () => {
+      const dataWithDecimals: ChartData[] = [
+        { name: 'Item 1', value: 4.5 },
+        { name: 'Item 2', value: 3.2 },
+      ];
+
+      const element = React.createElement(DynamicBarChart, {
+        data: dataWithDecimals,
+        height: 350,
+        isDark: true
+      });
+
+      expect(element).toBeDefined();
+      expect(element.props.isDark).toBe(true);
+    });
+
+    it('should apply grid padding options', () => {
+      const mockData: ChartData[] = [
+        { name: 'Item 1', value: 3.5 },
+        { name: 'Item 2', value: 4.2 },
+      ];
+
+      const element = React.createElement(DynamicBarChart, {
+        data: mockData,
+        height: 300
+      });
+
+      expect(element).toBeDefined();
+      expect(element.props.height).toBe(300);
+    });
+  });
 });

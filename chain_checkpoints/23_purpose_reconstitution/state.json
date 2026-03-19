@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 8,
+  "cycle": 9,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-20T01:36:00Z",
-  "updated_at": "2026-03-20T05:02:00.000000Z",
+  "updated_at": "2026-03-20T06:53:00.000000Z",
   "scan_progress": {
     "all_dirs": [
       "src/app",
@@ -30,10 +30,10 @@
       "src/infrastructure",
       "src/lib",
       "src/presentation",
-      "src/schemas"
+      "src/schemas",
+      "src/utils"
     ],
     "pending_dirs": [
-      "src/utils",
       "src/mirage",
       "src/context",
       "prisma",
@@ -254,6 +254,40 @@
           "Tests co-located with schemas: response validation, config validation, pattern validation",
           "Clean Architecture compliance: Cross-cutting layer, imports only from lib (constants)",
           "3 test files covering schema validation, edge cases, and type inference"
+        ]
+      },
+      {
+        "dir": "src/utils",
+        "file_count": 1,
+        "test_count": 7,
+        "has_tests": true,
+        "key_exports": [
+          "calculateAverage",
+          "calculateMonthlyStats",
+          "calculateDayOfWeekStats",
+          "calculateTimeOfDayStats",
+          "calculateEmotionDistribution",
+          "calculateStudentStats",
+          "calculateTrendline",
+          "generateNormalRandom",
+          "generateBaseEmotion",
+          "calculateSeasonalEffect",
+          "calculateEventEffect",
+          "clampEmotion",
+          "clamp"
+        ],
+        "notes": [
+          "Utility functions and helpers for emotion data calculations",
+          "statsCalculator.ts: Single file (1010 lines) with comprehensive statistical calculation functions",
+          "Core calculations: average, monthly stats, day-of-week stats, time-of-day stats, emotion distribution, student stats, trendline",
+          "Emotion generation: generateNormalRandom (Box-Muller transform), generateBaseEmotion with distribution patterns",
+          "Seasonal and event effects: calculateSeasonalEffect, calculateEventEffect for realistic emotion simulation",
+          "Utility functions: clamp, clampEmotion for value validation",
+          "Comprehensive test coverage: 7 test files covering aggregation, basic operations, effects, emotion calculations, stats, time-based calculations, and utilities",
+          "Pure functions with no side effects (easy to test and reuse)",
+          "Used by domain services for statistics calculation and data generation",
+          "Clean Architecture compliance: Imports only from lib (config, constants), cross-cutting utilities",
+          "Well-documented with README.md explaining function purposes and usage"
         ]
       }
     ]

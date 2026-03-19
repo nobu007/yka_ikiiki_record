@@ -7,7 +7,7 @@ const COMMENTS = [
   'とても楽しかったです',
   '難しい課題に取り組みました',
   'チームでの作業が上手くいきました',
-];
+] as const;
 
 export async function generateSeedData() {
   await withDatabaseTimeout(prisma.record.deleteMany({}));

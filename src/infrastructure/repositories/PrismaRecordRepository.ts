@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { IRecordRepository } from "@/domain/repositories/IRecordRepository";
 import { Record } from "@/domain/entities/Record";
+import { RecordSchema } from "@/schemas/api";
 import { withDatabaseTimeout } from "@/lib/resilience/timeout";
 import { DATABASE_CONSTRAINTS } from "@/lib/constants";
+import { globalLogger } from "@/lib/resilience";
 
 export class PrismaRecordRepository implements IRecordRepository {
   private prisma: PrismaClient;
@@ -63,7 +65,19 @@ export class PrismaRecordRepository implements IRecordRepository {
   }
 
   async save(record: Record): Promise<Record> {
-    const data = this.toPrisma(record);
+    const validationResult = RecordSchema.safeParse(record);
+    if (!validationResult.success) {
+      globalLogger.error("PRISMA_REPOSITORY", "VALIDATION_ERROR", {
+        error: "Attempted to save invalid record",
+        validationErrors: validationResult.error.errors,
+        data: record,
+      });
+      throw new Error(
+        `Cannot save invalid record: ${validationResult.error.errors.map((e) => e.message).join(", ")}`,
+      );
+    }
+
+    const data = this.toPrisma(validationResult.data);
     const recordData = {
       ...data,
       comment: data.comment || null,

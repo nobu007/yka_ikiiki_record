@@ -18,7 +18,7 @@ describe("PrismaRecordRepository - save", () => {
   describe("save", () => {
     it("should create a new record without id", async () => {
       const record: Record = {
-        emotion: 85.5,
+        emotion: 4.5,
         date: new Date("2024-01-15T10:30:00"),
         student: "学生1",
         createdAt: new Date(),
@@ -60,7 +60,7 @@ describe("PrismaRecordRepository - save", () => {
 
     it("should create a new record with comment", async () => {
       const record: Record = {
-        emotion: 75.0,
+        emotion: 4.0,
         date: new Date("2024-01-15T10:30:00"),
         student: "学生2",
         comment: "今日は充実した一日でした",
@@ -88,7 +88,7 @@ describe("PrismaRecordRepository - save", () => {
     it("should update an existing record with id", async () => {
       const existingRecord = {
         id: 1,
-        emotion: 50.0,
+        emotion: 3.0,
         date: new Date("2024-01-15T10:30:00"),
         student: "学生3",
         comment: null,
@@ -98,7 +98,7 @@ describe("PrismaRecordRepository - save", () => {
 
       const updatedRecord: Record = {
         id: 1,
-        emotion: 90.0,
+        emotion: 4.5,
         date: new Date("2024-01-16T11:00:00"),
         student: "学生3",
         comment: "更新されたコメント",
@@ -116,15 +116,15 @@ describe("PrismaRecordRepository - save", () => {
       const saved = await repository.save(updatedRecord);
 
       expect(saved.id).toBe(1);
-      expect(saved.emotion).toBe(90.0);
+      expect(saved.emotion).toBe(4.5);
       expect(saved.comment).toBe("更新されたコメント");
       expect(prisma.record.upsert).toHaveBeenCalledWith({
         where: { id: 1 },
         create: expect.objectContaining({
-          emotion: 90.0,
+          emotion: 4.5,
         }),
         update: expect.objectContaining({
-          emotion: 90.0,
+          emotion: 4.5,
           comment: "更新されたコメント",
         }),
       });
@@ -132,7 +132,7 @@ describe("PrismaRecordRepository - save", () => {
 
     it("should handle undefined comment when saving", async () => {
       const record: Record = {
-        emotion: 60.0,
+        emotion: 3.5,
         date: new Date("2024-01-15T10:30:00"),
         student: "学生4",
         // Omit comment property entirely instead of setting to undefined
@@ -163,14 +163,14 @@ describe("PrismaRecordRepository - save", () => {
     it("should save multiple records", async () => {
       const records: Record[] = [
         {
-          emotion: 80.0,
+          emotion: 4.0,
           date: new Date("2024-01-15T10:00:00"),
           student: "学生1",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          emotion: 85.0,
+          emotion: 4.5,
           date: new Date("2024-01-15T11:00:00"),
           student: "学生2",
           createdAt: new Date(),
@@ -216,7 +216,7 @@ describe("PrismaRecordRepository - save", () => {
     it("should save records with and without comments", async () => {
       const records: Record[] = [
         {
-          emotion: 70.0,
+          emotion: 3.5,
           date: new Date("2024-01-15T10:00:00"),
           student: "学生1",
           comment: "コメントあり",
@@ -224,7 +224,7 @@ describe("PrismaRecordRepository - save", () => {
           updatedAt: new Date(),
         },
         {
-          emotion: 75.0,
+          emotion: 4.0,
           date: new Date("2024-01-15T11:00:00"),
           student: "学生2",
           createdAt: new Date(),

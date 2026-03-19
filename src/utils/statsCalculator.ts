@@ -1,4 +1,5 @@
 import { EMOTION_CONFIG, UI_CONFIG } from '@/lib/config';
+import { EMOTION_CALCULATION_PARAMS } from '@/lib/constants';
 
 type EmotionData = { date: Date; emotion: number; hour?: number; student?: number };
 
@@ -21,14 +22,16 @@ export const clampEmotion = (emotion: number): number =>
 
 export const generateBaseEmotion = (pattern: keyof typeof EMOTION_CONFIG.baseEmotions): number => {
   const baseValue = EMOTION_CONFIG.baseEmotions[pattern] ?? EMOTION_CONFIG.baseEmotions.normal;
-  const adjustedBase = pattern === 'bimodal' && Math.random() < 0.5 ? 4.0 : baseValue;
+  const adjustedBase = pattern === 'bimodal' && Math.random() < EMOTION_CALCULATION_PARAMS.BIMODAL.THRESHOLD
+    ? EMOTION_CALCULATION_PARAMS.BIMODAL.HIGH_VALUE
+    : baseValue;
   return clampEmotion(adjustedBase + EMOTION_CONFIG.defaultStddev * generateNormalRandom());
 };
 
 export const calculateSeasonalEffect = (date: Date): number => {
   const monthIndex = date.getMonth();
-  const factor = EMOTION_CONFIG.seasonalFactors[monthIndex] ?? 0.3;
-  return (factor - 0.3) * EMOTION_CONFIG.seasonalImpact;
+  const factor = EMOTION_CONFIG.seasonalFactors[monthIndex] ?? EMOTION_CALCULATION_PARAMS.SEASONAL.FACTOR_FALLBACK;
+  return (factor - EMOTION_CALCULATION_PARAMS.SEASONAL.BASELINE) * EMOTION_CONFIG.seasonalImpact;
 };
 
 export const calculateEventEffect = (
@@ -139,20 +142,20 @@ export const calculateStudentStats = (emotions: EmotionData[]) =>
     }))
     .sort((a, b) => a.student.localeCompare(b.student));
 
-export const calculateTrendline = (emotions: number[]): number[] => 
-  emotions.slice(-7).map(score => Number((score || 0).toFixed(1)));
+export const calculateTrendline = (emotions: number[]): number[] =>
+  emotions.slice(-EMOTION_CALCULATION_PARAMS.TREND.TRENDLINE_WINDOW).map(score => Number((score || 0).toFixed(1)));
 
 export const calculateEmotionTrend = (emotions: number[]): 'up' | 'down' | 'stable' => {
   if (emotions.length < 2) return 'stable';
-  const recent = emotions.slice(-3);
-  const earlier = emotions.slice(-6, -3);
-  
+  const recent = emotions.slice(-EMOTION_CALCULATION_PARAMS.TREND.RECENT_WINDOW);
+  const earlier = emotions.slice(-EMOTION_CALCULATION_PARAMS.TREND.EARLIER_WINDOW_START, -EMOTION_CALCULATION_PARAMS.TREND.EARLIER_WINDOW_END);
+
   if (earlier.length === 0) return 'stable';
-  
+
   const recentAvg = average(recent);
   const earlierAvg = average(earlier);
   const diff = recentAvg - earlierAvg;
-  if (diff > 0.2) return 'up';
-  if (diff < -0.2) return 'down';
+  if (diff > EMOTION_CALCULATION_PARAMS.TREND.THRESHOLD) return 'up';
+  if (diff < -EMOTION_CALCULATION_PARAMS.TREND.THRESHOLD) return 'down';
   return 'stable';
 };

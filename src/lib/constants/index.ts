@@ -65,3 +65,21 @@ export const DATA_GENERATION_PARAMS = {
     MULTIPLIER: 0.5,
   },
 } as const;
+
+export const EMOTION_CALCULATION_PARAMS = {
+  BIMODAL: {
+    THRESHOLD: 0.5,
+    HIGH_VALUE: 4.0,
+  },
+  SEASONAL: {
+    FACTOR_FALLBACK: 0.3,
+    BASELINE: 0.3,
+  },
+  TREND: {
+    THRESHOLD: 0.2,
+    RECENT_WINDOW: 3,
+    EARLIER_WINDOW_START: 6,
+    EARLIER_WINDOW_END: 3,
+    TRENDLINE_WINDOW: 7,
+  },
+} as const;

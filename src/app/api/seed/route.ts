@@ -69,6 +69,7 @@ if (process.env.NODE_ENV === 'test') {
 
   module.exports.getStoredData = () => storedData;
   module.exports.cleanupOldData = cleanupOldData;
+  module.exports.DATA_TTL = DATA_TTL;
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {

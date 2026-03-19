@@ -104,7 +104,7 @@ describe('API seed route GET (Mirage provider)', () => {
 });
 
 describe('API seed route GET - cleanup logic verification', () => {
-  const { resetStoredData, setStoredDataWithTimestamp, getStoredData, cleanupOldData } = require('../route');
+  const { resetStoredData, setStoredDataWithTimestamp, getStoredData, cleanupOldData, DATA_TTL } = require('../route');
 
   beforeEach(() => {
     resetStoredData();
@@ -112,9 +112,9 @@ describe('API seed route GET - cleanup logic verification', () => {
 
   it('cleanupOldData removes expired data', () => {
     const now = Date.now();
-    const thirtyOneMinutesAgo = now - (31 * 60 * 1000);
+    const expiredTimestamp = now - DATA_TTL - 1000;
 
-    setStoredDataWithTimestamp(thirtyOneMinutesAgo);
+    setStoredDataWithTimestamp(expiredTimestamp);
     expect(getStoredData()).not.toBeNull();
 
     cleanupOldData();
@@ -124,9 +124,9 @@ describe('API seed route GET - cleanup logic verification', () => {
 
   it('cleanupOldData preserves fresh data', () => {
     const now = Date.now();
-    const oneMinuteAgo = now - (60 * 1000);
+    const freshTimestamp = now - 60000;
 
-    setStoredDataWithTimestamp(oneMinuteAgo);
+    setStoredDataWithTimestamp(freshTimestamp);
     expect(getStoredData()).not.toBeNull();
 
     cleanupOldData();

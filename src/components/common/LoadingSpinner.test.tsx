@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { LoadingSpinner, LoadingOverlay } from './LoadingSpinner';
+import { LoadingSpinner, LoadingOverlay, LoadingCard } from './LoadingSpinner';
 
 describe('LoadingSpinner', () => {
   test('renders with default props', () => {
@@ -163,5 +163,57 @@ describe('LoadingOverlay', () => {
     expect(modal).toHaveClass('max-w-sm');
     expect(modal).toHaveClass('w-full');
     expect(modal).toHaveClass('mx-4');
+  });
+});
+
+describe('LoadingCard', () => {
+  test('renders with default message', () => {
+    render(<LoadingCard />);
+
+    expect(screen.getByText('データを読み込み中...')).toBeInTheDocument();
+  });
+
+  test('renders with custom message', () => {
+    render(<LoadingCard message="Custom loading message" />);
+
+    expect(screen.getByText('Custom loading message')).toBeInTheDocument();
+  });
+
+  test('renders spinner within card', () => {
+    render(<LoadingCard />);
+
+    const svg = document.querySelector('svg');
+    expect(svg).toBeInTheDocument();
+    expect(svg).toHaveClass('h-8');
+    expect(svg).toHaveClass('w-8');
+  });
+
+  test('applies correct card container styling', () => {
+    render(<LoadingCard />);
+
+    const card = document.querySelector('.bg-white.p-6.rounded-lg');
+    expect(card).toHaveClass('bg-white');
+    expect(card).toHaveClass('p-6');
+    expect(card).toHaveClass('rounded-lg');
+    expect(card).toHaveClass('shadow-md');
+  });
+
+  test('renders message with correct styling', () => {
+    render(<LoadingCard message="Test message" />);
+
+    const message = screen.getByText('Test message');
+    expect(message).toHaveClass('mt-4');
+    expect(message).toHaveClass('text-gray-600');
+    expect(message).toHaveClass('text-sm');
+  });
+
+  test('renders flex container for vertical layout', () => {
+    render(<LoadingCard />);
+
+    const container = screen.getByText('データを読み込み中...').parentElement;
+    expect(container).toHaveClass('flex');
+    expect(container).toHaveClass('flex-col');
+    expect(container).toHaveClass('items-center');
+    expect(container).toHaveClass('justify-center');
   });
 });

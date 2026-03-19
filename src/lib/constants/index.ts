@@ -94,3 +94,8 @@ export const EMOTION_CALCULATION_PARAMS = {
 export const DATABASE_CONSTRAINTS = {
   ID_FALLBACK: 0,
 } as const;
+
+export const ERROR_MESSAGES = {
+  UNKNOWN: "Unknown",
+  UNKNOWN_ERROR: "Unknown error",
+} as const;

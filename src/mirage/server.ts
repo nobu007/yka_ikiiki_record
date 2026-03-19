@@ -1,6 +1,7 @@
 import { createServer, Factory, Model, Response } from "miragejs";
 import { calculateMonthlyStats } from "@/utils/statsCalculator";
 import { globalLogger } from "@/lib/resilience";
+import { ERROR_MESSAGES } from "@/lib/constants";
 
 type Record = {
   emotion: number;
@@ -67,7 +68,7 @@ export function makeServer({ environment = "development" } = {}) {
           return new Response(200, {}, { message: "Data seeded successfully" });
         } catch (error) {
           const errorMessage =
-            error instanceof Error ? error.message : "Unknown error";
+            error instanceof Error ? error.message : ERROR_MESSAGES.UNKNOWN_ERROR;
           globalLogger.error("MIRAGE", "SEED_FAILED", { error: errorMessage });
           return new Response(
             500,
@@ -92,7 +93,7 @@ export function makeServer({ environment = "development" } = {}) {
           return calculateMonthlyStats(transformedRecords);
         } catch (error) {
           const errorMessage =
-            error instanceof Error ? error.message : "Unknown error";
+            error instanceof Error ? error.message : ERROR_MESSAGES.UNKNOWN_ERROR;
           globalLogger.error("MIRAGE", "STATS_CALCULATION_FAILED", {
             error: errorMessage,
           });

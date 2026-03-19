@@ -9,6 +9,7 @@ import {
   calculateStudentStats,
   calculateAverage,
 } from "@/utils/statsCalculator";
+import { ERROR_MESSAGES } from "@/lib/constants";
 
 type EmotionData = {
   date: Date;
@@ -71,7 +72,7 @@ export class PrismaStatsRepository implements StatsRepository {
         const studentIndex = Math.floor(
           Math.random() * stats.studentStats.length,
         );
-        const student = stats.studentStats[studentIndex]?.student || "Unknown";
+        const student = stats.studentStats[studentIndex]?.student || ERROR_MESSAGES.UNKNOWN;
         records.push({
           date: new Date(monthly.month + "-01"),
           student,

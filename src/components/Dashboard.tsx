@@ -13,6 +13,7 @@ import {
   ERROR_CODES,
 } from "@/lib/error-handler";
 import { withApiTimeout } from "@/lib/resilience/timeout";
+import { API_ENDPOINTS } from "@/lib/constants/api";
 
 interface DashboardProps {
   isGenerating: boolean;
@@ -45,7 +46,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
   const fetchStats = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await withApiTimeout(fetch("/api/seed"));
+      const response = await withApiTimeout(fetch(API_ENDPOINTS.SEED));
 
       if (!response.ok) {
         throw new AppError(

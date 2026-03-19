@@ -10,6 +10,7 @@ import {
   ERROR_CODES,
 } from "@/lib/error-handler";
 import { ERROR_MESSAGES } from "@/lib/constants/messages";
+import { API_ENDPOINTS } from "@/lib/constants/api";
 
 const fetcher = async (url: string): Promise<StatsResponse> => {
   try {
@@ -49,7 +50,7 @@ export function useStats() {
     error: swrError,
     isLoading,
     mutate,
-  } = useSWR<StatsResponse>("/api/stats", fetcher, {
+  } = useSWR<StatsResponse>(API_ENDPOINTS.STATS, fetcher, {
     onError: (err) => {
       setError(
         err instanceof Error ? err : new Error(ERROR_MESSAGES.UNKNOWN),

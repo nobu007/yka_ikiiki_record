@@ -3,6 +3,12 @@ import { withResilientHandler } from '@/lib/api/error-handler';
 import { globalCircuitBreaker, globalMemoryMonitor } from '@/lib/resilience';
 import { isPrismaProvider, createStatsService } from '@/infrastructure/factories/repositoryFactory';
 
+const HEALTH_CHECK_THRESHOLDS = {
+  MEMORY_CRITICAL: 90,
+  MEMORY_HIGH: 75,
+  TIMEOUT_MS: 5000
+} as const;
+
 interface HealthCheckResponse {
   status: 'healthy' | 'degraded' | 'unhealthy';
   timestamp: number;
@@ -49,11 +55,11 @@ export async function GET(): Promise<NextResponse> {
       failures.push('circuit_breaker_open');
     }
 
-    if (checks.memory.usagePercentage > 90) {
+    if (checks.memory.usagePercentage > HEALTH_CHECK_THRESHOLDS.MEMORY_CRITICAL) {
       checks.memory.status = 'fail';
       overallStatus = 'unhealthy';
       failures.push('memory_critical');
-    } else if (checks.memory.usagePercentage > 75) {
+    } else if (checks.memory.usagePercentage > HEALTH_CHECK_THRESHOLDS.MEMORY_HIGH) {
       checks.memory.status = 'warn';
       if (overallStatus === 'healthy') {
         overallStatus = 'degraded';
@@ -90,6 +96,6 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json(response, { status: statusCode });
   }, {
     operationName: 'GET /api/health',
-    timeoutMs: 5000
+    timeoutMs: HEALTH_CHECK_THRESHOLDS.TIMEOUT_MS
   });
 }

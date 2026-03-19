@@ -32,7 +32,7 @@ interface StoredData {
 }
 
 let storedData: StoredData | null = null;
-const DATA_TTL = 30 * 60 * 1000;
+const DATA_TTL = 1800000 as const;
 
 const cleanupOldData = () => {
   if (storedData && Date.now() - storedData.timestamp > DATA_TTL) {

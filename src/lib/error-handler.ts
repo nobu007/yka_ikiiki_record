@@ -13,7 +13,7 @@ export const ERROR_CODES = {
 
 export type ErrorCodeType = typeof ERROR_CODES[keyof typeof ERROR_CODES];
 
-const NETWORK_ERROR_PATTERNS = ['fetch', 'network', 'connection'];
+const NETWORK_ERROR_PATTERNS = ['fetch', 'network', 'connection'] as const;
 
 export class AppError extends Error {
   constructor(

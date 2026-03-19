@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { LOADING_MESSAGES } from "@/lib/constants/messages";
 
 type LoadingSize = "sm" | "md" | "lg";
 type LoadingColor = "primary" | "secondary" | "white";
@@ -27,7 +28,7 @@ export const LoadingSpinner = memo<LoadingSpinnerProps>(
     size = "md",
     color = "primary",
     className = "",
-    label = "読み込み中",
+    label = LOADING_MESSAGES.DEFAULT,
   }) => {
     return (
       <div
@@ -68,7 +69,7 @@ LoadingSpinner.displayName = "LoadingSpinner";
  * ローディングオーバーレイコンポーネント
  */
 export const LoadingOverlay = memo<{ isLoading: boolean; message?: string }>(
-  ({ isLoading, message = "読み込み中..." }) => {
+  ({ isLoading, message = LOADING_MESSAGES.OVERLAY }) => {
     if (!isLoading) return null;
 
     return (
@@ -90,7 +91,7 @@ LoadingOverlay.displayName = "LoadingOverlay";
  * ローディングカードコンポーネント
  */
 export const LoadingCard = memo<{ message?: string }>(
-  ({ message = "データを読み込み中..." }) => {
+  ({ message = LOADING_MESSAGES.CARD }) => {
     return (
       <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="flex flex-col items-center justify-center py-8">

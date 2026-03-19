@@ -5,6 +5,9 @@ export const SUCCESS_MESSAGES = {
 
 export const LOADING_MESSAGES = {
   GENERATING_DATA: "テストデータを生成中...",
+  DEFAULT: "読み込み中",
+  OVERLAY: "読み込み中...",
+  CARD: "データを読み込み中...",
 } as const;
 
 export const ERROR_MESSAGES = {

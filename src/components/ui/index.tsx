@@ -1,11 +1,12 @@
-import React, { memo } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { memo } from "react";
 import { UI_CONFIG } from "@/lib/config";
 
 /**
  * Button component - UI primitive for buttons
  */
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
   variant?: "primary" | "secondary";
 }
 

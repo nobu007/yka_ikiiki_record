@@ -9,6 +9,7 @@ import {
   AppError,
   ERROR_CODES,
 } from "@/lib/error-handler";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 const fetcher = async (url: string): Promise<StatsResponse> => {
   try {
@@ -26,7 +27,7 @@ const fetcher = async (url: string): Promise<StatsResponse> => {
 
     if (!validated.success) {
       throw new AppError(
-        validated.error || "不明なエラーが発生しました",
+        validated.error || ERROR_MESSAGES.UNKNOWN,
         ERROR_CODES.UNKNOWN,
       );
     }
@@ -36,7 +37,7 @@ const fetcher = async (url: string): Promise<StatsResponse> => {
     if (e instanceof AppError) {
       throw e;
     }
-    throw new AppError("不明なエラーが発生しました", ERROR_CODES.UNKNOWN);
+    throw new AppError(ERROR_MESSAGES.UNKNOWN, ERROR_CODES.UNKNOWN);
   }
 };
 
@@ -51,7 +52,7 @@ export function useStats() {
   } = useSWR<StatsResponse>("/api/stats", fetcher, {
     onError: (err) => {
       setError(
-        err instanceof Error ? err : new Error("不明なエラーが発生しました"),
+        err instanceof Error ? err : new Error(ERROR_MESSAGES.UNKNOWN),
       );
     },
   });

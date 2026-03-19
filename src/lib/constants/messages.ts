@@ -8,6 +8,7 @@ export const LOADING_MESSAGES = {
 
 export const ERROR_MESSAGES = {
   UNEXPECTED: "予期せぬエラーが発生しました",
+  UNKNOWN: "不明なエラーが発生しました",
   VALIDATION: "入力内容を確認してください",
   NETWORK: "ネットワーク接続を確認してください",
   TIMEOUT: "タイムアウトしました。再度お試しください",

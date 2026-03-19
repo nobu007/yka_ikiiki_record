@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 interface AsyncState<T> {
   data: T | null;
@@ -29,7 +30,7 @@ export function useAsync<T = unknown>(options: UseAsyncOptions<T> = {}) {
         return data;
       } catch (e) {
         const error =
-          e instanceof Error ? e : new Error("不明なエラーが発生しました");
+          e instanceof Error ? e : new Error(ERROR_MESSAGES.UNKNOWN);
         setState({ data: null, isLoading: false, error });
         options.onError?.(error);
         throw error;

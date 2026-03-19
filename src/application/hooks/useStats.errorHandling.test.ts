@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { useStats } from "./useStats";
 import { StatsResponse } from "@/schemas/api";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 jest.mock("swr", () => {
   const mockMutate = jest.fn();
@@ -212,7 +213,7 @@ describe("useStats error handling", () => {
       ) => Promise<unknown>;
 
       await expect(fetcher("/api/stats")).rejects.toThrow(
-        "不明なエラーが発生しました",
+        ERROR_MESSAGES.UNKNOWN,
       );
     });
   });

@@ -1,5 +1,6 @@
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { useAsync } from "./useAsync";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 describe("useAsync", () => {
   beforeEach(() => {
@@ -148,6 +149,6 @@ describe("useAsync", () => {
     });
 
     expect(result.current.error).toBeInstanceOf(Error);
-    expect(result.current.error?.message).toBe("不明なエラーが発生しました");
+    expect(result.current.error?.message).toBe(ERROR_MESSAGES.UNKNOWN);
   });
 });

@@ -82,6 +82,11 @@ export const DASHBOARD_FEATURES = [
   "感情分布の可視化",
 ] as const;
 
+export const DASHBOARD_EMPTY_STATE = {
+  TITLE: "データがありません",
+  DESCRIPTION: "上のボタンをクリックしてテストデータを生成してください",
+} as const;
+
 export const HELP_TEXT = {
   READY: "ボタンをクリックしてテストデータを生成してください。",
   GENERATING: "データを生成しています。しばらくお待ちください...",

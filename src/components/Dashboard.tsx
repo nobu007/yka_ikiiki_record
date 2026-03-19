@@ -14,7 +14,13 @@ import {
 } from "@/lib/error-handler";
 import { withApiTimeout } from "@/lib/resilience/timeout";
 import { API_ENDPOINTS } from "@/lib/constants/api";
-import { UI_TEXT, DASHBOARD_FEATURES, HELP_TEXT } from "@/lib/constants/messages";
+import {
+  UI_TEXT,
+  DASHBOARD_FEATURES,
+  HELP_TEXT,
+  DASHBOARD_EMPTY_STATE,
+  LOADING_MESSAGES,
+} from "@/lib/constants/messages";
 
 interface DashboardProps {
   isGenerating: boolean;
@@ -133,7 +139,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
 
                 <div className="bg-white rounded-md p-4 mb-6">
                   <h3 className="text-sm font-medium text-gray-700 mb-3">
-                    生成されるデータ
+                    {UI_TEXT.FEATURES.GENERATED_DATA}
                   </h3>
                   <ul className="space-y-2">{featuresList}</ul>
                 </div>
@@ -177,17 +183,17 @@ const DashboardComponent: React.FC<DashboardProps> = ({
         {isLoading && (
           <div className="bg-white shadow-lg rounded-xl p-8 text-center">
             <LoadingSpinner size="md" />
-            <p className="mt-4 text-gray-600">データを読み込み中...</p>
+            <p className="mt-4 text-gray-600">{LOADING_MESSAGES.CARD}</p>
           </div>
         )}
 
         {!stats && !isLoading && (
           <div className="bg-white shadow-lg rounded-xl p-8 text-center">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              データがありません
+              {DASHBOARD_EMPTY_STATE.TITLE}
             </h3>
             <p className="text-gray-600 mb-4">
-              上のボタンをクリックしてテストデータを生成してください
+              {DASHBOARD_EMPTY_STATE.DESCRIPTION}
             </p>
           </div>
         )}

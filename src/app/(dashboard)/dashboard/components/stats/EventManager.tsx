@@ -3,6 +3,7 @@
 import { memo, useState } from "react";
 import type { ClassEvent } from "@/schemas/api";
 import { GENERATION_CONSTRAINTS } from "@/lib/constants";
+import { getButtonClasses } from "@/lib/constants/ui";
 
 interface NewEventForm {
   name: string;
@@ -100,7 +101,7 @@ const EventManager = memo(function EventManager({
 
         <button
           onClick={handleAddEvent}
-          className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className={`w-full ${getButtonClasses("primary")}`}
         >
           イベントを追加
         </button>

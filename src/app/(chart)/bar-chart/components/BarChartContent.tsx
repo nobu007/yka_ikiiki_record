@@ -3,6 +3,7 @@
 import DynamicBarChart from "@/components/charts/DynamicBarChart";
 import { ComponentCard } from "@/components/common/ComponentCard";
 import { useState, useCallback } from "react";
+import { getButtonClasses } from "@/lib/constants/ui";
 
 const demoData = [
   { name: "Jan", value: 168 },
@@ -44,7 +45,7 @@ export default function BarChartContent() {
         <button
           onClick={handleRefresh}
           disabled={isLoading}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className={getButtonClasses("primary", isLoading)}
         >
           {isLoading ? "更新中..." : "データを更新"}
         </button>

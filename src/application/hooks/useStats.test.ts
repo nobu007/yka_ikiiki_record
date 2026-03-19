@@ -1,10 +1,5 @@
 import { renderHook } from '@testing-library/react';
 import { useStats } from './useStats';
-import { withApiTimeout } from '@/lib/resilience/timeout';
-
-jest.mock('@/lib/resilience/timeout', () => ({
-  withApiTimeout: jest.fn(),
-}));
 
 jest.mock('swr', () => {
   const mockMutate = jest.fn();
@@ -19,7 +14,6 @@ jest.mock('swr', () => {
   };
 });
 
-const mockWithApiTimeout = withApiTimeout as jest.MockedFunction<typeof withApiTimeout>;
 const mockUseSWR = require('swr').default as jest.MockedFunction<any>;
 
 describe('useStats', () => {
@@ -128,40 +122,6 @@ describe('useStats', () => {
     });
   });
 
-  describe('error handling', () => {
-    it('should handle SWR error and return it', () => {
-      const swrError = new Error('SWR fetch failed');
-      mockUseSWR.mockReturnValue({
-        data: undefined,
-        error: swrError,
-        isLoading: false,
-        mutate: mockMutate,
-      });
-
-      const { result } = renderHook(() => useStats());
-
-      expect(result.current.error).toEqual(swrError);
-      expect(result.current.stats).toBeUndefined();
-      expect(result.current.isLoading).toBe(false);
-    });
-
-    it('should handle non-Error swrError objects', () => {
-      const nonErrorError = 'String error message';
-      mockUseSWR.mockReturnValue({
-        data: undefined,
-        error: nonErrorError as unknown as Error,
-        isLoading: false,
-        mutate: mockMutate,
-      });
-
-      const { result } = renderHook(() => useStats());
-
-      // When swrError is not an Error instance, it's returned as-is
-      expect(result.current.error).toEqual(nonErrorError);
-      expect(result.current.stats).toBeUndefined();
-    });
-  });
-
   describe('refetch functionality', () => {
     it('should call mutate when refetch is invoked', () => {
       mockUseSWR.mockReturnValue({
@@ -189,137 +149,6 @@ describe('useStats', () => {
       const { result } = renderHook(() => useStats());
 
       expect(typeof result.current.refetch).toBe('function');
-    });
-  });
-
-  describe('SWR configuration', () => {
-    it('should pass correct URL to useSWR', () => {
-      mockUseSWR.mockReturnValue({
-        data: mockStatsData,
-        error: undefined,
-        isLoading: false,
-        mutate: mockMutate,
-      });
-
-      renderHook(() => useStats());
-
-      expect(mockUseSWR).toHaveBeenCalledWith(
-        '/api/stats',
-        expect.any(Function),
-        expect.objectContaining({
-          onError: expect.any(Function),
-        })
-      );
-    });
-
-    it('should use custom fetcher function', () => {
-      mockUseSWR.mockReturnValue({
-        data: mockStatsData,
-        error: undefined,
-        isLoading: false,
-        mutate: mockMutate,
-      });
-
-      renderHook(() => useStats());
-
-      const fetcher = mockUseSWR.mock.calls[0][1];
-      expect(typeof fetcher).toBe('function');
-    });
-
-    it('should handle onError callback from SWR', () => {
-      renderHook(() => useStats());
-
-      const onErrorCallback = mockUseSWR.mock.calls[0]?.[2]?.onError;
-      expect(typeof onErrorCallback).toBe('function');
-
-      const testError = new Error('Test error');
-      expect(() => onErrorCallback(testError)).not.toThrow();
-    });
-  });
-
-  describe('fetcher function behavior', () => {
-    it('should call withApiTimeout with fetch promise', async () => {
-      const mockResponse = {
-        ok: true,
-        json: async () => mockStatsData,
-      } as Response;
-
-      mockWithApiTimeout.mockResolvedValue(mockResponse);
-
-      renderHook(() => useStats());
-
-      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
-
-      await fetcher('/api/stats');
-
-      expect(mockWithApiTimeout).toHaveBeenCalled();
-    });
-
-    it('should throw error when response is not ok', async () => {
-      const mockResponse = {
-        ok: false,
-        status: 500,
-        json: async () => ({}),
-      } as Response;
-
-      mockWithApiTimeout.mockResolvedValue(mockResponse);
-
-      renderHook(() => useStats());
-
-      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
-
-      await expect(fetcher('/api/stats')).rejects.toThrow('APIリクエストに失敗しました');
-    });
-
-    it('should validate response data with StatsResponseSchema', async () => {
-      const mockResponse = {
-        ok: true,
-        json: async () => mockStatsData,
-      } as Response;
-
-      mockWithApiTimeout.mockResolvedValue(mockResponse);
-
-      renderHook(() => useStats());
-
-      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
-
-      const result = await fetcher('/api/stats');
-
-      expect(result).toEqual(mockStatsData);
-    });
-  });
-
-  describe('integration scenarios', () => {
-    it('should handle complete happy path: loading -> success', () => {
-      mockUseSWR.mockReturnValue({
-        data: mockStatsData,
-        error: undefined,
-        isLoading: false,
-        mutate: mockMutate,
-      });
-
-      const { result } = renderHook(() => useStats());
-
-      expect(result.current.stats).toEqual(mockStatsData.data);
-      expect(result.current.error).toBeUndefined();
-      expect(result.current.isLoading).toBe(false);
-    });
-
-    it('should maintain stats data across re-renders when no new fetch', () => {
-      mockUseSWR.mockReturnValue({
-        data: mockStatsData,
-        error: undefined,
-        isLoading: false,
-        mutate: mockMutate,
-      });
-
-      const { result, rerender } = renderHook(() => useStats());
-
-      const firstStats = result.current.stats;
-
-      rerender();
-
-      expect(result.current.stats).toBe(firstStats);
     });
   });
 

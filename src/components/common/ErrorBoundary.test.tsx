@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ErrorBoundary } from "./ErrorBoundary";
+import { mockWindowLocation, mockProcessEnv } from "@/test-utils/component-helpers";
 
 const originalConsoleError = console.error;
 beforeAll(() => {
@@ -60,15 +61,7 @@ describe("ErrorBoundary", () => {
   });
 
   test("reloads page when reload button is clicked", () => {
-    const originalLocation = window.location;
-    const mockLocation = {
-      ...originalLocation,
-      reload: jest.fn(),
-    };
-    Object.defineProperty(window, "location", {
-      writable: true,
-      value: mockLocation,
-    });
+    const { restore: restoreLocation } = mockWindowLocation();
 
     render(
       <ErrorBoundary>
@@ -81,11 +74,7 @@ describe("ErrorBoundary", () => {
 
     expect(window.location.reload).toHaveBeenCalledTimes(1);
 
-    // Restore original location using Object.defineProperty
-    Object.defineProperty(window, "location", {
-      writable: true,
-      value: originalLocation,
-    });
+    restoreLocation();
   });
 
   test("logs error to console when error occurs", () => {
@@ -104,23 +93,15 @@ describe("ErrorBoundary", () => {
   });
 
   describe("development mode", () => {
-    const originalNodeEnv = process.env.NODE_ENV;
+    let restoreEnv: () => void;
 
     beforeAll(() => {
-      // Use Object.defineProperty to set read-only property
-      Object.defineProperty(process, "env", {
-        value: { ...process.env, NODE_ENV: "development" },
-        writable: true,
-        configurable: true,
-      });
+      const envRestore = mockProcessEnv("development");
+      restoreEnv = envRestore.restore;
     });
 
     afterAll(() => {
-      Object.defineProperty(process, "env", {
-        value: { ...process.env, NODE_ENV: originalNodeEnv },
-        writable: true,
-        configurable: true,
-      });
+      restoreEnv();
     });
 
     test("shows error details in development mode", () => {
@@ -142,22 +123,15 @@ describe("ErrorBoundary", () => {
   });
 
   describe("production mode", () => {
-    const originalNodeEnv = process.env.NODE_ENV;
+    let restoreEnv: () => void;
 
     beforeAll(() => {
-      Object.defineProperty(process, "env", {
-        value: { ...process.env, NODE_ENV: "production" },
-        writable: true,
-        configurable: true,
-      });
+      const envRestore = mockProcessEnv("production");
+      restoreEnv = envRestore.restore;
     });
 
     afterAll(() => {
-      Object.defineProperty(process, "env", {
-        value: { ...process.env, NODE_ENV: originalNodeEnv },
-        writable: true,
-        configurable: true,
-      });
+      restoreEnv();
     });
 
     test("hides error details in production mode", () => {

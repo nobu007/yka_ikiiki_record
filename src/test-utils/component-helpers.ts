@@ -50,3 +50,87 @@ export function createMockedFunction<T extends (...args: never[]) => unknown>(
 ): jest.MockedFunction<T> {
   return fn as unknown as jest.MockedFunction<T>;
 }
+
+/**
+ * Mocks window.location with a reload spy.
+ *
+ * Automatically handles cleanup by restoring the original location after the test.
+ * Should be called in beforeEach or at the start of a test.
+ *
+ * @example
+ * ```ts
+ * beforeEach(() => {
+ *   mockWindowLocation();
+ * });
+ *
+ * test("reloads page", () => {
+ *   // ... test code that triggers reload
+ *   expect(window.location.reload).toHaveBeenCalled();
+ * });
+ * ```
+ *
+ * @returns An object with restore function for manual cleanup if needed
+ */
+export function mockWindowLocation(): { restore: () => void } {
+  const originalLocation = window.location;
+  const mockLocation = {
+    ...originalLocation,
+    reload: jest.fn(),
+  };
+
+  Object.defineProperty(window, "location", {
+    writable: true,
+    value: mockLocation,
+  });
+
+  return {
+    restore: () => {
+      Object.defineProperty(window, "location", {
+        writable: true,
+        value: originalLocation,
+      });
+    },
+  };
+}
+
+/**
+ * Mocks process.env.NODE_ENV for testing environment-specific behavior.
+ *
+ * Automatically handles cleanup by restoring the original env after the test.
+ * Should be called in beforeEach or at the start of a test.
+ *
+ * @example
+ * ```ts
+ * beforeEach(() => {
+ *   mockProcessEnv("development");
+ * });
+ *
+ * test("shows debug info in development", () => {
+ *   // ... test code
+ * });
+ * ```
+ *
+ * @param envValue - The value to set for NODE_ENV ("development" | "production")
+ * @returns An object with restore function for manual cleanup if needed
+ */
+export function mockProcessEnv(envValue: "development" | "production"): {
+  restore: () => void;
+} {
+  const originalNodeEnv = process.env.NODE_ENV;
+
+  Object.defineProperty(process, "env", {
+    value: { ...process.env, NODE_ENV: envValue },
+    writable: true,
+    configurable: true,
+  });
+
+  return {
+    restore: () => {
+      Object.defineProperty(process, "env", {
+        value: { ...process.env, NODE_ENV: originalNodeEnv },
+        writable: true,
+        configurable: true,
+      });
+    },
+  };
+}

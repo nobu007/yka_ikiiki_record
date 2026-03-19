@@ -11,7 +11,7 @@ export const APP_CONFIG = {
   },
   generation: {
     defaultPeriodDays: GENERATION_DEFAULTS.PERIOD_DAYS,
-    defaultStudentCount: 20,
+    defaultStudentCount: GENERATION_DEFAULTS.STUDENT_COUNT,
     defaultPattern: "normal" as const,
   },
 } as const;

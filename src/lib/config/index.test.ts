@@ -13,7 +13,7 @@ describe("APP_CONFIG", () => {
 
   it("has generation defaults", () => {
     expect(APP_CONFIG.generation.defaultPeriodDays).toBe(30);
-    expect(APP_CONFIG.generation.defaultStudentCount).toBe(20);
+    expect(APP_CONFIG.generation.defaultStudentCount).toBe(25);
     expect(APP_CONFIG.generation.defaultPattern).toBe("normal");
   });
 });

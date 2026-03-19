@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 6,
+  "cycle": 7,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-20T01:36:00Z",
-  "updated_at": "2026-03-20T04:35:23.265602Z",
+  "updated_at": "2026-03-20T05:01:00.000000Z",
   "scan_progress": {
     "all_dirs": [
       "src/app",
@@ -28,10 +28,10 @@
       "src/components",
       "src/domain",
       "src/infrastructure",
-      "src/lib"
+      "src/lib",
+      "src/presentation"
     ],
     "pending_dirs": [
-      "src/presentation",
       "src/schemas",
       "src/utils",
       "src/mirage",
@@ -208,6 +208,24 @@
           "Comprehensive test coverage: 28 test files covering all resilience patterns, error handling, and configuration",
           "Clean Architecture compliance: Cross-cutting layer, imports allowed from all layers",
           "Recent improvements: Centralized error messages, UI strings, and configuration constants"
+        ]
+      },
+      {
+        "dir": "src/presentation",
+        "file_count": 1,
+        "test_count": 0,
+        "has_tests": false,
+        "key_exports": [
+          "useStats"
+        ],
+        "notes": [
+          "Presentation layer hook for UI-specific data transformation",
+          "useStats: Wrapper around application layer useStats, transforms data for display",
+          "Error display formatting using ERROR_MESSAGES constants",
+          "Refetch handler with structured logging integration",
+          "No dedicated tests (functionality covered by application layer tests)",
+          "Follows Clean Architecture: imports from application and lib (cross-cutting)",
+          "Minimal presentation logic (delegates to application layer)"
         ]
       }
     ]

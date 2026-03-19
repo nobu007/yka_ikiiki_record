@@ -7,6 +7,7 @@ import {
   ClassCharacteristics,
   DATA_GENERATION_BOUNDS,
 } from "@/domain/entities/DataGeneration";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 interface UseDataGenerationProps {
   onGenerate: (_config: DataGenerationConfig) => Promise<void>;
@@ -92,7 +93,7 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     try {
       await onGenerate(config);
     } catch (e) {
-      setError(e instanceof Error ? e : new Error("データ生成に失敗しました"));
+      setError(e instanceof Error ? e : new Error(ERROR_MESSAGES.GENERATION));
     } finally {
       setIsGenerating(false);
     }

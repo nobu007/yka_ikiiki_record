@@ -5,6 +5,7 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import ChartWrapper from "./ChartWrapper";
 import { CHART_COLORS } from "@/lib/config";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 const CHART_ANIMATION_SPEED_MS = 800;
 const CHART_DYNAMIC_ANIMATION_SPEED_MS = 350;
@@ -69,7 +70,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
       setError(
         error instanceof Error
           ? error
-          : new Error("Data transformation failed"),
+          : new Error(ERROR_MESSAGES.DATA_TRANSFORMATION),
       );
       return [];
     }

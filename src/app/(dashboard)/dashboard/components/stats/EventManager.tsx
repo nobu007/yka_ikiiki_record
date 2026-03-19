@@ -19,8 +19,8 @@ const DEFAULT_NEW_EVENT: NewEventForm = {
 
 interface Props {
   events: ClassEvent[];
-  onAddEvent: (event: ClassEvent) => void;
-  onRemoveEvent: (index: number) => void;
+  onAddEvent: (_event: ClassEvent) => void;
+  onRemoveEvent: (_index: number) => void;
 }
 
 const EventManager = memo(function EventManager({ events, onAddEvent, onRemoveEvent }: Props) {

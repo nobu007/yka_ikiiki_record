@@ -12,9 +12,9 @@ const DISTRIBUTION_PATTERNS: { label: string; value: EmotionDistributionPattern 
 
 interface Props {
   config: DataGenerationConfig;
-  onUpdateStudentCount: (count: number) => void;
-  onUpdatePeriodDays: (days: number) => void;
-  onUpdateDistributionPattern: (pattern: EmotionDistributionPattern) => void;
+  onUpdateStudentCount: (_count: number) => void;
+  onUpdatePeriodDays: (_days: number) => void;
+  onUpdateDistributionPattern: (_pattern: EmotionDistributionPattern) => void;
   onToggleSeasonalEffects: () => void;
 }
 

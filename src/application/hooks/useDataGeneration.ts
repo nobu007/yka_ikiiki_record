@@ -8,7 +8,7 @@ import {
 } from '@/domain/entities/DataGeneration';
 
 interface UseDataGenerationProps {
-  onGenerate: (config: DataGenerationConfig) => Promise<void>;
+  onGenerate: (_config: DataGenerationConfig) => Promise<void>;
 }
 
 export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {

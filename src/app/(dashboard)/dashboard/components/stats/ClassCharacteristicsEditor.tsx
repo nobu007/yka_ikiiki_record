@@ -5,7 +5,7 @@ import type { ClassCharacteristics } from '@/schemas/api';
 
 interface Props {
   characteristics: ClassCharacteristics;
-  onUpdate: (updates: Partial<ClassCharacteristics>) => void;
+  onUpdate: (_updates: Partial<ClassCharacteristics>) => void;
 }
 
 const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({

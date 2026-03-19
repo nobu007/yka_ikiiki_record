@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useMemo, memo } from "react";
+import { BREADCRUMB_MESSAGES } from "@/lib/constants/messages";
 
 interface BreadcrumbProps {
   pageTitle: string;
@@ -8,7 +9,7 @@ interface BreadcrumbProps {
 export const PageBreadcrumb = memo<BreadcrumbProps>(({ pageTitle }) => {
   const breadcrumbItems = useMemo(
     () => [
-      { href: "/", label: "Home" },
+      { href: "/", label: BREADCRUMB_MESSAGES.HOME },
       { href: null, label: pageTitle },
     ],
     [pageTitle],

@@ -109,3 +109,7 @@ export const USAGE_INSTRUCTIONS = {
     "何度でもデータを再生成して異なるパターンを試せます",
   ] as const,
 } as const;
+
+export const BREADCRUMB_MESSAGES = {
+  HOME: "Home",
+} as const;

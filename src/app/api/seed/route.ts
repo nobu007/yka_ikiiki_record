@@ -12,6 +12,7 @@ import { StatsData } from "@/schemas/api";
 import { APP_CONFIG } from "@/lib/config";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { SUCCESS_MESSAGES } from "@/lib/constants/messages";
+import { GENERATION_DEFAULTS } from "@/lib/constants";
 
 const SeedRequestSchema = z.object({
   config: z.object({
@@ -30,8 +31,8 @@ const SeedRequestSchema = z.object({
       .default(APP_CONFIG.generation.defaultPattern),
     classCharacteristics: z
       .object({
-        volatility: z.number().min(0).max(1).default(0.5),
-        baselineEmotion: z.number().min(1).max(5).default(3.0),
+        volatility: z.number().min(0).max(1).default(GENERATION_DEFAULTS.VOLATILITY),
+        baselineEmotion: z.number().min(1).max(5).default(GENERATION_DEFAULTS.BASELINE_EMOTION),
       })
       .optional(),
     seasonalEffects: z.boolean().default(true),
@@ -116,8 +117,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         seasonalEffects: config.seasonalEffects,
         eventEffects: config.eventEffects,
         classCharacteristics: config.classCharacteristics || {
-          volatility: 0.5,
-          baselineEmotion: 3.0,
+          volatility: GENERATION_DEFAULTS.VOLATILITY,
+          baselineEmotion: GENERATION_DEFAULTS.BASELINE_EMOTION,
         },
       };
 

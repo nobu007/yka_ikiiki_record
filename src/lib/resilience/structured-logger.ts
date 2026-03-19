@@ -14,6 +14,8 @@ export interface LogEntry {
 
 const DEFAULT_MAX_LOG_SIZE = 10000;
 const DEFAULT_COMPRESSION_THRESHOLD = 5000;
+const DEFAULT_RECENT_LOGS_COUNT = 100;
+const COMPRESS_RECENT_LOGS_COUNT = 1000;
 
 const generateCorrelationId = (): string => {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -135,7 +137,7 @@ export class StructuredLogger {
     });
   }
 
-  getRecentLogs(count: number = 100): LogEntry[] {
+  getRecentLogs(count: number = DEFAULT_RECENT_LOGS_COUNT): LogEntry[] {
     return this.logs.slice(-count);
   }
 
@@ -153,9 +155,9 @@ export class StructuredLogger {
   }
 
   private compressLogs(): void {
-    const recentLogs = this.logs.slice(-1000);
+    const recentLogs = this.logs.slice(-COMPRESS_RECENT_LOGS_COUNT);
     const compressedOldLogs = this.logs
-      .slice(0, -1000)
+      .slice(0, -COMPRESS_RECENT_LOGS_COUNT)
       .filter((log) => log.visibility !== 'DEBUG' && log.visibility !== 'TRACE');
 
     this.logs = [...compressedOldLogs, ...recentLogs];

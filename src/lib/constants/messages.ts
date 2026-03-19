@@ -65,6 +65,10 @@ export const CHART_TITLES = {
   MONTHLY_AVERAGE_EMOTION: "月別平均感情スコア",
   DAY_OF_WEEK_AVERAGE_EMOTION: "曜日別平均感情スコア",
   TIME_OF_DAY_AVERAGE_EMOTION: "時間帯別平均感情スコア",
+  MONTHLY_EMOTION_TREND: "月別感情スコア推移",
+  EMOTION_DISTRIBUTION: "感情スコア分布",
+  EMOTION_TREND_TOP_STUDENTS: "感情スコア推移（上位5名）",
+  STUDENT_EMOTION_SCORES: "生徒別感情スコア",
 } as const;
 
 export const DASHBOARD_FEATURES = [

@@ -22,7 +22,7 @@ export const MonthlyEmotionChart = memo<{
   return (
     <EmotionChart
       data={chartData}
-      title="月別感情スコア推移"
+      title={CHART_TITLES.MONTHLY_EMOTION_TREND}
       type="line"
       height={UI_CONSTANTS.CHART.HEIGHT.LARGE}
     />

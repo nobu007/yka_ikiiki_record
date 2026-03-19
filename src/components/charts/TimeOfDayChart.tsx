@@ -1,8 +1,7 @@
 import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
 import { CHART_TITLES } from "@/lib/constants/messages";
-
-const TIME_OF_DAY_CHART_HEIGHT = 250;
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 export const TimeOfDayChart = memo<{
   data: { morning: number; afternoon: number; evening: number };
@@ -23,9 +22,9 @@ export const TimeOfDayChart = memo<{
   return (
     <EmotionChart
       data={chartData}
-      title="時間帯別感情スコア"
+      title={CHART_TITLES.TIME_OF_DAY_AVERAGE_EMOTION}
       type="bar"
-      height={TIME_OF_DAY_CHART_HEIGHT}
+      height={UI_CONSTANTS.CHART.HEIGHT.SMALL}
     />
   );
 });

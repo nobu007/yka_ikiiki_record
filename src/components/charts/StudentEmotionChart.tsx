@@ -22,7 +22,7 @@ export const StudentEmotionChart = memo<{
   return (
     <EmotionChart
       data={chartData}
-      title="生徒別感情スコア"
+      title={CHART_TITLES.STUDENT_EMOTION_SCORES}
       type="bar"
       height={UI_CONSTANTS.CHART.HEIGHT.XLARGE}
     />

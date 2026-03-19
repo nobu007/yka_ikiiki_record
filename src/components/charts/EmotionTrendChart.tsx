@@ -1,7 +1,7 @@
 import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
-
-const EMOTION_TREND_CHART_HEIGHT = 350;
+import { CHART_TITLES } from "@/lib/constants/messages";
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 export const EmotionTrendChart = memo<{
   data: Array<{ student: string; trendline: number[] }>;
@@ -20,9 +20,9 @@ export const EmotionTrendChart = memo<{
   return (
     <EmotionChart
       data={chartData}
-      title="感情スコア推移（上位5名）"
+      title={CHART_TITLES.EMOTION_TREND_TOP_STUDENTS}
       type="line"
-      height={EMOTION_TREND_CHART_HEIGHT}
+      height={UI_CONSTANTS.CHART.HEIGHT.LARGE}
     />
   );
 });

@@ -1,8 +1,7 @@
 import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
 import { CHART_TITLES } from "@/lib/constants/messages";
-
-const DAY_OF_WEEK_CHART_HEIGHT = 300;
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 export const DayOfWeekChart = memo<{
   data: Array<{ day: string; avgEmotion: number }>;
@@ -23,9 +22,9 @@ export const DayOfWeekChart = memo<{
   return (
     <EmotionChart
       data={chartData}
-      title="曜日別感情スコア"
+      title={CHART_TITLES.DAY_OF_WEEK_AVERAGE_EMOTION}
       type="bar"
-      height={DAY_OF_WEEK_CHART_HEIGHT}
+      height={UI_CONSTANTS.CHART.HEIGHT.MEDIUM}
     />
   );
 });

@@ -1,3 +1,5 @@
+import { GENERATION_DEFAULTS } from '@/lib/constants';
+
 export const APP_CONFIG = {
   name: 'イキイキレコード デモ',
   description: '生徒の学習データを生成・管理するダッシュボードです',
@@ -8,7 +10,7 @@ export const APP_CONFIG = {
     }
   },
   generation: {
-    defaultPeriodDays: 30,
+    defaultPeriodDays: GENERATION_DEFAULTS.PERIOD_DAYS,
     defaultStudentCount: 20,
     defaultPattern: 'normal' as const
   }

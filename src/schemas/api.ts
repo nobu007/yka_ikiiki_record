@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { GENERATION_CONSTRAINTS } from '@/lib/constants';
+import { GENERATION_CONSTRAINTS, GENERATION_DEFAULTS } from '@/lib/constants';
 
 const BaseResponseSchema = z.object({
   success: z.boolean(),
@@ -82,15 +82,15 @@ export const StatsResponseSchema = BaseResponseSchema.extend({
 });
 
 export const DEFAULT_CONFIG: DataGenerationConfig = {
-  studentCount: 25,
-  periodDays: 30,
+  studentCount: GENERATION_DEFAULTS.STUDENT_COUNT,
+  periodDays: GENERATION_DEFAULTS.PERIOD_DAYS,
   distributionPattern: 'normal',
   seasonalEffects: false,
   eventEffects: [],
   classCharacteristics: {
-    baselineEmotion: 3.0,
-    volatility: 0.5,
-    cohesion: 0.7
+    baselineEmotion: GENERATION_DEFAULTS.BASELINE_EMOTION,
+    volatility: GENERATION_DEFAULTS.VOLATILITY,
+    cohesion: GENERATION_DEFAULTS.COHESION
   }
 } as const;
 

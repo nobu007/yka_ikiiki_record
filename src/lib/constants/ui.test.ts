@@ -1,23 +1,6 @@
-import { UI_CONSTANTS, getButtonClasses, getAnimationClasses } from "./ui";
+import { UI_CONSTANTS, getButtonClasses } from "./ui";
 
 describe("UI_CONSTANTS", () => {
-  describe("ANIMATION_DURATION", () => {
-    it("has fast < normal < slow ordering", () => {
-      expect(UI_CONSTANTS.ANIMATION_DURATION.FAST).toBeLessThan(
-        UI_CONSTANTS.ANIMATION_DURATION.NORMAL,
-      );
-      expect(UI_CONSTANTS.ANIMATION_DURATION.NORMAL).toBeLessThan(
-        UI_CONSTANTS.ANIMATION_DURATION.SLOW,
-      );
-    });
-
-    it("has positive millisecond values", () => {
-      expect(UI_CONSTANTS.ANIMATION_DURATION.FAST).toBeGreaterThan(0);
-      expect(UI_CONSTANTS.ANIMATION_DURATION.NORMAL).toBeGreaterThan(0);
-      expect(UI_CONSTANTS.ANIMATION_DURATION.SLOW).toBeGreaterThan(0);
-    });
-  });
-
   describe("BUTTON", () => {
     it("has BASE class with essential Tailwind utilities", () => {
       expect(UI_CONSTANTS.BUTTON.BASE).toContain("inline-flex");
@@ -132,35 +115,5 @@ describe("getButtonClasses", () => {
     expect(getButtonClasses("secondary", false)).toContain(
       UI_CONSTANTS.BUTTON.BASE,
     );
-  });
-});
-
-describe("getAnimationClasses", () => {
-  it("returns normal duration by default", () => {
-    const classes = getAnimationClasses();
-    expect(classes).toContain("transition-all");
-    expect(classes).toContain(
-      `duration-${UI_CONSTANTS.ANIMATION_DURATION.NORMAL}`,
-    );
-  });
-
-  it("returns fast duration class", () => {
-    const classes = getAnimationClasses("fast");
-    expect(classes).toContain(
-      `duration-${UI_CONSTANTS.ANIMATION_DURATION.FAST}`,
-    );
-  });
-
-  it("returns slow duration class", () => {
-    const classes = getAnimationClasses("slow");
-    expect(classes).toContain(
-      `duration-${UI_CONSTANTS.ANIMATION_DURATION.SLOW}`,
-    );
-  });
-
-  it("contains transition-all prefix for all variants", () => {
-    expect(getAnimationClasses("fast")).toContain("transition-all");
-    expect(getAnimationClasses("normal")).toContain("transition-all");
-    expect(getAnimationClasses("slow")).toContain("transition-all");
   });
 });

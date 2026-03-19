@@ -1,10 +1,4 @@
 export const UI_CONSTANTS = {
-  ANIMATION_DURATION: {
-    FAST: 200,
-    NORMAL: 300,
-    SLOW: 500,
-  } as const,
-
   BREAKPOINT: {
     SM: 640,
     MD: 768,
@@ -84,17 +78,6 @@ export const getButtonClasses = (
     : "";
 
   return `${baseClasses} ${variantClasses} ${disabledClasses}`;
-};
-
-export const getAnimationClasses = (
-  duration: "fast" | "normal" | "slow" = "normal",
-) => {
-  const durationMap: Record<"fast" | "normal" | "slow", number> = {
-    fast: UI_CONSTANTS.ANIMATION_DURATION.FAST,
-    normal: UI_CONSTANTS.ANIMATION_DURATION.NORMAL,
-    slow: UI_CONSTANTS.ANIMATION_DURATION.SLOW,
-  };
-  return `transition-all duration-${durationMap[duration]}`;
 };
 
 export const getNotificationTimeout = (

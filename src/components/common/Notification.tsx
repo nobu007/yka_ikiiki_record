@@ -1,6 +1,7 @@
 import { useCallback, memo } from "react";
 import { NotificationIcon } from "./Icons";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
+import { ACCESSIBILITY_MESSAGES } from "@/lib/constants/messages";
 
 type NotificationType = "success" | "error" | "warning" | "info";
 
@@ -42,10 +43,10 @@ export const Notification = memo<NotificationProps>(
             <button
               onClick={handleClose}
               className="ml-4 text-sm underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1"
-              aria-label="通知を閉じる"
+              aria-label={ACCESSIBILITY_MESSAGES.CLOSE_NOTIFICATION}
               type="button"
             >
-              閉じる
+              {ACCESSIBILITY_MESSAGES.CLOSE_BUTTON}
             </button>
           )}
         </div>

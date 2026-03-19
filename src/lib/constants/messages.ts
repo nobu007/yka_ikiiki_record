@@ -116,4 +116,12 @@ export const BREADCRUMB_MESSAGES = {
 
 export const ACCESSIBILITY_MESSAGES = {
   GRID_SHAPE_ALT: "grid",
+  CHART_LOADING: "グラフローディング中",
+  CHART_ERROR: "グラフエラー",
+  CHART_DEFAULT: "統計グラフ",
+  NO_DATA: "データなし",
+  CLOSE_NOTIFICATION: "通知を閉じる",
+  CHART_ERROR_MESSAGE: "グラフの表示中にエラーが発生しました",
+  NO_DATA_MESSAGE: "表示するデータがありません",
+  CLOSE_BUTTON: "閉じる",
 } as const;

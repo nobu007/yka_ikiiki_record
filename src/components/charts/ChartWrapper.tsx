@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, memo } from "react";
+import { ACCESSIBILITY_MESSAGES } from "@/lib/constants/messages";
 
 const DEFAULT_CHART_HEIGHT = 300;
 
@@ -31,7 +32,7 @@ export const ChartWrapper = memo<ChartWrapperProps>(
           style={{ height }}
           className="w-full flex items-center justify-center"
           role="status"
-          aria-label="グラフローディング中"
+          aria-label={ACCESSIBILITY_MESSAGES.CHART_LOADING}
         >
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
@@ -44,9 +45,11 @@ export const ChartWrapper = memo<ChartWrapperProps>(
           style={{ height }}
           className="w-full flex items-center justify-center text-red-500"
           role="alert"
-          aria-label="グラフエラー"
+          aria-label={ACCESSIBILITY_MESSAGES.CHART_ERROR}
         >
-          <p>グラフの表示中にエラーが発生しました: {error.message}</p>
+          <p>
+            {ACCESSIBILITY_MESSAGES.CHART_ERROR_MESSAGE}: {error.message}
+          </p>
         </div>
       );
     }
@@ -56,7 +59,7 @@ export const ChartWrapper = memo<ChartWrapperProps>(
         className="w-full"
         style={{ height }}
         role="region"
-        aria-label={title || "統計グラフ"}
+        aria-label={title || ACCESSIBILITY_MESSAGES.CHART_DEFAULT}
       >
         {title && (
           <h3

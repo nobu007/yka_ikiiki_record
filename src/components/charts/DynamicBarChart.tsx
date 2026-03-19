@@ -5,7 +5,7 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import ChartWrapper from "./ChartWrapper";
 import { CHART_COLORS } from "@/lib/config";
-import { ERROR_MESSAGES } from "@/lib/constants/messages";
+import { ERROR_MESSAGES, ACCESSIBILITY_MESSAGES } from "@/lib/constants/messages";
 
 const CHART_ANIMATION_SPEED_MS = 800;
 const CHART_DYNAMIC_ANIMATION_SPEED_MS = 350;
@@ -25,7 +25,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   loading: () => (
     <div
       role="status"
-      aria-label="グラフローディング中"
+      aria-label={ACCESSIBILITY_MESSAGES.CHART_LOADING}
       className="animate-pulse"
     >
       <div className="h-64 bg-gray-200 rounded dark:bg-gray-700"></div>
@@ -187,10 +187,10 @@ const DynamicBarChart = memo(function DynamicBarChart({
         <div
           className="w-full flex items-center justify-center"
           role="status"
-          aria-label="データなし"
+          aria-label={ACCESSIBILITY_MESSAGES.NO_DATA}
         >
           <p className="text-gray-500 dark:text-gray-400">
-            表示するデータがありません
+            {ACCESSIBILITY_MESSAGES.NO_DATA_MESSAGE}
           </p>
         </div>
       ) : (

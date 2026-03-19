@@ -44,6 +44,25 @@ export const UI_CONFIG = {
   }
 } as const;
 
+export const CHART_COLORS = {
+  PRIMARY: '#4F46E5',
+  BLUE: '#3B82F6',
+  GREEN: '#10B981',
+  YELLOW: '#F59E0B',
+  RED: '#EF4444',
+  PURPLE: '#8B5CF6',
+  PINK: '#EC4899',
+  GRAY_DARK: '#4b5563',
+  GRAY_MEDIUM: '#6B7280',
+  GRAY_LIGHT: '#9ca3af',
+  GRAY_BORDER: '#E5E7EB',
+  BORDER_LIGHT: '#f1f1f1',
+  BORDER_DARK: '#374151',
+  BG_DARK: '#1f2937',
+  BG_LIGHT: '#ffffff',
+  PALETTE: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'] as const
+} as const;
+
 export const MESSAGES = {
   success: {
     dataGeneration: 'テストデータの生成が完了しました'

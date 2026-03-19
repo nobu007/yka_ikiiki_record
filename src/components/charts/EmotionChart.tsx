@@ -2,6 +2,7 @@
 
 import { useCallback, memo } from 'react';
 import dynamic from 'next/dynamic';
+import { CHART_COLORS } from '@/lib/config';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -23,14 +24,7 @@ export interface EmotionChartProps {
   colors?: string[];
 }
 
-const defaultColors = [
-  '#3B82F6',
-  '#10B981',
-  '#F59E0B',
-  '#EF4444',
-  '#8B5CF6',
-  '#EC4899',
-] as const;
+const defaultColors = CHART_COLORS.PALETTE;
 
 export const EmotionChart = memo<EmotionChartProps>(({
   data,
@@ -72,7 +66,7 @@ export const EmotionChart = memo<EmotionChartProps>(({
         style: {
           fontSize: '16px',
           fontWeight: 'bold',
-          color: '#374151'
+          color: CHART_COLORS.GRAY_DARK
         }
       };
     }
@@ -93,19 +87,19 @@ export const EmotionChart = memo<EmotionChartProps>(({
         categories: data.labels,
         labels: {
           style: {
-            colors: '#6B7280'
+            colors: CHART_COLORS.GRAY_MEDIUM
           }
         }
       },
       yaxis: {
         labels: {
           style: {
-            colors: '#6B7280'
+            colors: CHART_COLORS.GRAY_MEDIUM
           }
         }
       },
       grid: {
-        borderColor: '#E5E7EB'
+        borderColor: CHART_COLORS.GRAY_BORDER
       },
       legend: {
         position: 'top'

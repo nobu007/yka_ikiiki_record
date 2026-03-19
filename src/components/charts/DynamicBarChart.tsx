@@ -4,6 +4,7 @@ import { memo, useEffect, useMemo, useState } from 'react';
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic';
 import ChartWrapper from './ChartWrapper';
+import { CHART_COLORS } from '@/lib/config';
 
 const CHART_ANIMATION_SPEED_MS = 800;
 const CHART_DYNAMIC_ANIMATION_SPEED_MS = 350;
@@ -78,7 +79,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
           speed: CHART_DYNAMIC_ANIMATION_SPEED_MS
         }
       },
-      background: isDark ? '#1f2937' : '#ffffff',
+      background: isDark ? CHART_COLORS.BG_DARK : CHART_COLORS.BG_LIGHT,
     },
     plotOptions: {
       bar: {
@@ -88,7 +89,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
         distributed: false,
       },
     },
-    colors: ['#4F46E5'],
+    colors: [CHART_COLORS.PRIMARY],
     dataLabels: {
       enabled: validData.length <= DATALABELS_ENABLE_THRESHOLD,
     },
@@ -102,7 +103,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
       },
       labels: {
         style: {
-          colors: isDark ? '#9ca3af' : '#4b5563',
+          colors: isDark ? CHART_COLORS.GRAY_LIGHT : CHART_COLORS.GRAY_DARK,
         },
         rotateAlways: validData.length > LABEL_ROTATION_THRESHOLD,
       },
@@ -114,12 +115,12 @@ const DynamicBarChart = memo(function DynamicBarChart({
       labels: {
         formatter: (val) => val.toFixed(YAXIS_LABEL_PRECISION),
         style: {
-          colors: isDark ? '#9ca3af' : '#4b5563',
+          colors: isDark ? CHART_COLORS.GRAY_LIGHT : CHART_COLORS.GRAY_DARK,
         },
       },
     },
     grid: {
-      borderColor: isDark ? '#374151' : '#f1f1f1',
+      borderColor: isDark ? CHART_COLORS.BORDER_DARK : CHART_COLORS.BORDER_LIGHT,
       padding: {
         top: 0,
         right: 0,

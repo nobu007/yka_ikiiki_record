@@ -1,5 +1,12 @@
-export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL";
-export type LogVisibility = "PUBLIC" | "INTERNAL" | "DEBUG" | "TRACE";
+import {
+  LOGGER_CONSTANTS,
+  LOG_LEVELS,
+  LOG_VISIBILITY,
+} from "@/lib/constants";
+
+export type LogLevel = (typeof LOG_LEVELS)[keyof typeof LOG_LEVELS];
+export type LogVisibility =
+  (typeof LOG_VISIBILITY)[keyof typeof LOG_VISIBILITY];
 
 export interface LogEntry {
   timestamp: number;
@@ -12,11 +19,6 @@ export interface LogEntry {
   visibility: LogVisibility;
 }
 
-const DEFAULT_MAX_LOG_SIZE = 10000;
-const DEFAULT_COMPRESSION_THRESHOLD = 5000;
-const DEFAULT_RECENT_LOGS_COUNT = 100;
-const COMPRESS_RECENT_LOGS_COUNT = 1000;
-
 const generateCorrelationId = (): string => {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 };
@@ -27,8 +29,8 @@ export class StructuredLogger {
   private compressionThreshold: number;
 
   constructor(
-    maxLogSize = DEFAULT_MAX_LOG_SIZE,
-    compressionThreshold = DEFAULT_COMPRESSION_THRESHOLD,
+    maxLogSize: number = LOGGER_CONSTANTS.MAX_LOG_SIZE,
+    compressionThreshold: number = LOGGER_CONSTANTS.COMPRESSION_THRESHOLD,
   ) {
     this.maxLogSize = maxLogSize;
     this.compressionThreshold = compressionThreshold;
@@ -49,10 +51,10 @@ export class StructuredLogger {
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
-    visibility: LogVisibility = "DEBUG",
+    visibility: LogVisibility = LOG_VISIBILITY.DEBUG,
   ): void {
     this.log({
-      level: "DEBUG",
+      level: LOG_LEVELS.DEBUG,
       category,
       operation,
       metadata,
@@ -64,10 +66,10 @@ export class StructuredLogger {
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
-    visibility: LogVisibility = "INTERNAL",
+    visibility: LogVisibility = LOG_VISIBILITY.INTERNAL,
   ): void {
     this.log({
-      level: "INFO",
+      level: LOG_LEVELS.INFO,
       category,
       operation,
       metadata,
@@ -79,10 +81,10 @@ export class StructuredLogger {
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
-    visibility: LogVisibility = "INTERNAL",
+    visibility: LogVisibility = LOG_VISIBILITY.INTERNAL,
   ): void {
     this.log({
-      level: "WARN",
+      level: LOG_LEVELS.WARN,
       category,
       operation,
       metadata,
@@ -94,10 +96,10 @@ export class StructuredLogger {
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
-    visibility: LogVisibility = "INTERNAL",
+    visibility: LogVisibility = LOG_VISIBILITY.INTERNAL,
   ): void {
     this.log({
-      level: "ERROR",
+      level: LOG_LEVELS.ERROR,
       category,
       operation,
       metadata,
@@ -109,10 +111,10 @@ export class StructuredLogger {
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
-    visibility: LogVisibility = "INTERNAL",
+    visibility: LogVisibility = LOG_VISIBILITY.INTERNAL,
   ): void {
     this.log({
-      level: "FATAL",
+      level: LOG_LEVELS.FATAL,
       category,
       operation,
       metadata,
@@ -157,7 +159,7 @@ export class StructuredLogger {
     return timestamp >= start && timestamp <= end;
   }
 
-  getRecentLogs(count: number = DEFAULT_RECENT_LOGS_COUNT): LogEntry[] {
+  getRecentLogs(count: number = LOGGER_CONSTANTS.RECENT_LOGS_COUNT): LogEntry[] {
     return this.logs.slice(-count);
   }
 
@@ -175,11 +177,11 @@ export class StructuredLogger {
   }
 
   private compressLogs(): void {
-    const recentLogs = this.logs.slice(-COMPRESS_RECENT_LOGS_COUNT);
+    const recentLogs = this.logs.slice(-LOGGER_CONSTANTS.COMPRESS_RECENT_LOGS_COUNT);
     const compressedOldLogs = this.logs
-      .slice(0, -COMPRESS_RECENT_LOGS_COUNT)
+      .slice(0, -LOGGER_CONSTANTS.COMPRESS_RECENT_LOGS_COUNT)
       .filter(
-        (log) => log.visibility !== "DEBUG" && log.visibility !== "TRACE",
+        (log) => log.visibility !== LOG_VISIBILITY.DEBUG && log.visibility !== LOG_VISIBILITY.TRACE,
       );
 
     this.logs = [...compressedOldLogs, ...recentLogs];

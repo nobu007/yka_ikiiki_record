@@ -1,10 +1,5 @@
 import { globalLogger } from "./structured-logger";
-
-const DEFAULT_MEMORY_LIMIT_MB = 512;
-const BYTES_PER_MB = 1024 * 1024;
-const DEFAULT_CHECK_INTERVAL_MS = 10000;
-const DEFAULT_THRESHOLD_RATIO = 0.9;
-const PERCENTAGE_MULTIPLIER = 100;
+import { MEMORY_MONITOR_CONSTANTS } from "@/lib/constants";
 
 export class MemoryMonitor {
   private readonly memoryLimit: number;
@@ -12,8 +7,8 @@ export class MemoryMonitor {
   private intervalId: NodeJS.Timeout | null = null;
 
   constructor(
-    memoryLimit = DEFAULT_MEMORY_LIMIT_MB * BYTES_PER_MB,
-    checkInterval = DEFAULT_CHECK_INTERVAL_MS,
+    memoryLimit: number = MEMORY_MONITOR_CONSTANTS.MEMORY_LIMIT_MB * MEMORY_MONITOR_CONSTANTS.BYTES_PER_MB,
+    checkInterval: number = MEMORY_MONITOR_CONSTANTS.CHECK_INTERVAL_MS,
   ) {
     this.memoryLimit = memoryLimit;
     this.checkInterval = checkInterval;
@@ -71,11 +66,11 @@ export class MemoryMonitor {
 
   getUsagePercentage(): number {
     const usage = process.memoryUsage();
-    return (usage.heapUsed / this.memoryLimit) * PERCENTAGE_MULTIPLIER;
+    return (usage.heapUsed / this.memoryLimit) * MEMORY_MONITOR_CONSTANTS.PERCENTAGE_MULTIPLIER;
   }
 
-  isNearLimit(threshold = DEFAULT_THRESHOLD_RATIO): boolean {
-    return this.getUsagePercentage() > threshold * PERCENTAGE_MULTIPLIER;
+  isNearLimit(threshold: number = MEMORY_MONITOR_CONSTANTS.THRESHOLD_RATIO): boolean {
+    return this.getUsagePercentage() > threshold * MEMORY_MONITOR_CONSTANTS.PERCENTAGE_MULTIPLIER;
   }
 }
 

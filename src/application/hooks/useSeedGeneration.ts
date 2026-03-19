@@ -6,7 +6,8 @@ import {
   normalizeError,
   logError,
 } from "@/lib/error-handler";
-import { API_ENDPOINTS, ERROR_MESSAGES } from "@/lib/constants/messages";
+import { API_ENDPOINTS } from "@/lib/constants/api";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 import { HTTP_METHODS } from "@/lib/constants";
 import { SeedResponseSchema } from "@/schemas/api";
 import { validateDataSafe } from "@/lib/api/validation";

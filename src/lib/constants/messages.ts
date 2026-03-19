@@ -46,10 +46,6 @@ export const UI_TEXT = {
   },
 } as const;
 
-export const API_ENDPOINTS = {
-  SEED: "/api/seed",
-} as const;
-
 export const DATA_GENERATION_FEATURES = [
   UI_TEXT.FEATURES.LEARNING_DATA,
   UI_TEXT.FEATURES.EMOTION_ANALYSIS,

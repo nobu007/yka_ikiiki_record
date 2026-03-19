@@ -3,7 +3,6 @@ import {
   LOADING_MESSAGES,
   ERROR_MESSAGES,
   UI_TEXT,
-  API_ENDPOINTS,
   DATA_GENERATION_FEATURES,
 } from "./messages";
 
@@ -71,12 +70,6 @@ describe("UI_TEXT", () => {
     expect(UI_TEXT.FEATURES.SEASONAL_FACTORS).toBeTruthy();
     expect(UI_TEXT.FEATURES.EVENT_SIMULATION).toBeTruthy();
     expect(UI_TEXT.FEATURES.GENERATED_DATA).toBeTruthy();
-  });
-});
-
-describe("API_ENDPOINTS", () => {
-  it("has SEED endpoint", () => {
-    expect(API_ENDPOINTS.SEED).toBe("/api/seed");
   });
 });
 

@@ -12,6 +12,7 @@ import {
   calculateTimeOfDayStats
 } from '@/utils/statsCalculator';
 import { APP_CONFIG } from '@/lib/config';
+import { DATA_GENERATION_PARAMS } from '@/lib/constants';
 import { StatsData } from '@/schemas/api';
 
 export interface DataGenerationConfig {
@@ -40,23 +41,23 @@ interface EmotionRecord {
 class DataService {
   private generateEmotion(config: DataGenerationConfig, date: Date, _studentIndex: number): number {
     let emotion = generateBaseEmotion(config.distributionPattern);
-    
+
     if (config.classCharacteristics) {
-      emotion = emotion * (1 + (config.classCharacteristics.volatility - 0.5) * 0.4);
-      emotion += (config.classCharacteristics.baselineEmotion - 3.0) * 0.5;
+      emotion = emotion * (1 + (config.classCharacteristics.volatility - DATA_GENERATION_PARAMS.VOLATILITY.BASELINE) * DATA_GENERATION_PARAMS.VOLATILITY.MULTIPLIER);
+      emotion += (config.classCharacteristics.baselineEmotion - DATA_GENERATION_PARAMS.BASELINE_EMOTION.CENTER) * DATA_GENERATION_PARAMS.BASELINE_EMOTION.MULTIPLIER;
     }
-    
+
     if (config.seasonalEffects) {
       emotion += calculateSeasonalEffect(date);
     }
-    
+
     const events = config.eventEffects.map(event => ({
       ...event,
       startDate: new Date(event.startDate),
       endDate: new Date(event.endDate)
     }));
     emotion += calculateEventEffect(date, events);
-    
+
     return clampEmotion(emotion);
   }
 
@@ -69,7 +70,7 @@ class DataService {
       for (let day = 0; day < config.periodDays; day++) {
         const date = new Date(startDate);
         date.setDate(date.getDate() + day);
-        const recordCount = Math.floor(Math.random() * 3) + 1;
+        const recordCount = Math.floor(Math.random() * DATA_GENERATION_PARAMS.RECORDS_PER_DAY.MAX) + DATA_GENERATION_PARAMS.RECORDS_PER_DAY.MIN;
 
         for (let i = 0; i < recordCount; i++) {
           records.push({

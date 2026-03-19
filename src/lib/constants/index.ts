@@ -50,3 +50,18 @@ export const GENERATION_CONSTRAINTS = {
     MAX: 1.0,
   },
 } as const;
+
+export const DATA_GENERATION_PARAMS = {
+  RECORDS_PER_DAY: {
+    MIN: 1,
+    MAX: 3,
+  },
+  VOLATILITY: {
+    BASELINE: 0.5,
+    MULTIPLIER: 0.4,
+  },
+  BASELINE_EMOTION: {
+    CENTER: 3.0,
+    MULTIPLIER: 0.5,
+  },
+} as const;

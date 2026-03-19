@@ -9,6 +9,7 @@ import {
   memo,
 } from "react";
 import { CONTEXT_ERROR_MESSAGES } from "@/lib/constants/messages";
+import { STORAGE_KEYS } from "@/lib/constants/storage";
 
 type Theme = "light" | "dark";
 
@@ -25,7 +26,7 @@ export const ThemeProvider = memo<{ children: React.ReactNode }>(
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-      const savedTheme = localStorage.getItem("theme");
+      const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME);
       const initialTheme =
         savedTheme === "light" || savedTheme === "dark" ? savedTheme : "light";
 
@@ -35,7 +36,7 @@ export const ThemeProvider = memo<{ children: React.ReactNode }>(
 
     useEffect(() => {
       if (isInitialized) {
-        localStorage.setItem("theme", theme);
+        localStorage.setItem(STORAGE_KEYS.THEME, theme);
         if (theme === "dark") {
           document.documentElement.classList.add("dark");
         } else {

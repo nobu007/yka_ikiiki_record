@@ -1,5 +1,6 @@
 export * from "./messages";
 export * from "./resilience";
+export * from "./storage";
 export * from "./ui";
 
 export const APP_CONFIG = {

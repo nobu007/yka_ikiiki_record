@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useStats as useApplicationStats } from '@/application/hooks/useStats';
+import { globalLogger } from '@/lib/resilience';
 
 export const useStats = () => {
   const { stats, error, isLoading, refetch } = useApplicationStats();
@@ -22,7 +23,11 @@ export const useStats = () => {
   const handleRefetch = useCallback(async () => {
     try {
       await refetch();
-    } catch {
+    } catch (err) {
+      globalLogger.error('PRESENTATION', 'REFETCH_ERROR', {
+        component: 'useStats',
+        error: err instanceof Error ? err.message : String(err)
+      });
     }
   }, [refetch]);
 

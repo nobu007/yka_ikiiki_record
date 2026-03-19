@@ -159,6 +159,12 @@ export const DASHBOARD_CONTROLS = {
     VOLATILITY_LABEL: "変動の大きさ",
     COHESION_LABEL: "クラスの結束度",
   },
+  DATA_GENERATION_PANEL: {
+    TITLE: "データ生成設定",
+    GENERATE_BUTTON: "データを生成",
+    GENERATING_BUTTON: "生成中...",
+    RESET_BUTTON: "リセット",
+  },
 } as const;
 
 export const API_ERROR_MESSAGES = {

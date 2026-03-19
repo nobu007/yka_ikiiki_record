@@ -4,6 +4,7 @@ import { memo } from "react";
 import { useDataGeneration } from "@/application/hooks/useDataGeneration";
 import type { DataGenerationConfig } from "@/schemas/api";
 import { getButtonClasses } from "@/lib/constants/ui";
+import { DASHBOARD_CONTROLS } from "@/lib/constants/messages";
 import GenerationControls from "./GenerationControls";
 import EventManager from "./EventManager";
 import ClassCharacteristicsEditor from "./ClassCharacteristicsEditor";
@@ -36,7 +37,9 @@ const DataGenerationPanel = memo(function DataGenerationPanel({
     <div
       className={`space-y-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow ${className}`}
     >
-      <h2 className="text-xl font-semibold mb-4">データ生成設定</h2>
+      <h2 className="text-xl font-semibold mb-4">
+        {DASHBOARD_CONTROLS.DATA_GENERATION_PANEL.TITLE}
+      </h2>
 
       <GenerationControls
         config={config}
@@ -69,7 +72,9 @@ const DataGenerationPanel = memo(function DataGenerationPanel({
           disabled={isGenerating}
           className={`flex-1 ${getButtonClasses("primary", isGenerating)}`}
         >
-          {isGenerating ? "生成中..." : "データを生成"}
+          {isGenerating
+            ? DASHBOARD_CONTROLS.DATA_GENERATION_PANEL.GENERATING_BUTTON
+            : DASHBOARD_CONTROLS.DATA_GENERATION_PANEL.GENERATE_BUTTON}
         </button>
 
         <button
@@ -77,7 +82,7 @@ const DataGenerationPanel = memo(function DataGenerationPanel({
           disabled={isGenerating}
           className={getButtonClasses("secondary", isGenerating)}
         >
-          リセット
+          {DASHBOARD_CONTROLS.DATA_GENERATION_PANEL.RESET_BUTTON}
         </button>
       </div>
     </div>

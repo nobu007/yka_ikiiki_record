@@ -6,6 +6,7 @@ import { createStatsService, isPrismaProvider } from '@/infrastructure/factories
 import { dataService, DataGenerationConfig } from '@/infrastructure/services/dataService';
 import { StatsData } from '@/schemas/api';
 import { APP_CONFIG } from '@/lib/config';
+import { DEFAULT_TIMEOUTS } from '@/lib/resilience';
 
 const SeedRequestSchema = z.object({
   config: z.object({
@@ -33,11 +34,6 @@ interface StoredData {
 
 let storedData: StoredData | null = null;
 const DATA_TTL = 1800000 as const;
-
-const SEED_API_TIMEOUTS = {
-  POST: 30000,
-  GET: 10000
-} as const;
 
 const cleanupOldData = () => {
   if (storedData && Date.now() - storedData.timestamp > DATA_TTL) {
@@ -115,7 +111,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }, {
     operationName: 'POST /api/seed',
-    timeoutMs: SEED_API_TIMEOUTS.POST
+    timeoutMs: DEFAULT_TIMEOUTS.command
   });
 }
 
@@ -154,6 +150,6 @@ export async function GET(): Promise<NextResponse> {
     });
   }, {
     operationName: 'GET /api/seed',
-    timeoutMs: SEED_API_TIMEOUTS.GET
+    timeoutMs: DEFAULT_TIMEOUTS.api
   });
 }

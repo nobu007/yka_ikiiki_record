@@ -25,7 +25,7 @@
 
 **品質メトリクス** (2026-03-19):
 - JudgmentScore: 90/100 (SYSTEM HEALTHY)
-- テスト: 1193/1193 passing (100%)
+- テスト: 1248/1248 passing (100%)
 - カバレッジ: 98.85% statements, 95.02% branches
 - TypeScript: strict mode 完全準拠、any型2件（test-utils内、許容範囲）
 - ESLint: zero warnings
@@ -141,7 +141,7 @@ cat data/meta_report.md
 
 **現在の品質目標達成状況**:
 - ✅ JudgmentScore: 90/100 (SYSTEM HEALTHY - any型2件はtest-utils内で許容範囲)
-- ✅ テスト成功率: 100% (1206/1206 passing)
+- ✅ テスト成功率: 100% (1248/1248 passing)
 - ✅ カバレッジ: 98.85% statements (目標95%以上を達成)
 - ✅ TypeScript strict mode: 完全準拠（test-utils内のany型はSYSTEM_CONSTITUTION.md §6で許容）
 - ✅ ESLint: zero warnings

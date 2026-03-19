@@ -86,18 +86,6 @@ export const createError = {
 } as const;
 
 /**
- * APIハンドラーをエラーハンドリングで包む
- * 型安全なエラーハンドリングラッパー
- *
- * @deprecated Use withResilientHandler instead for production API routes
- */
-export function withErrorHandler<T extends NextResponse>(
-  handler: () => Promise<T>,
-): Promise<T | NextResponse> {
-  return handler().catch(handleApiError);
-}
-
-/**
  * Enhanced API handler wrapper with resilience patterns
  * Combines timeout enforcement, circuit-breaker, and structured logging
  *

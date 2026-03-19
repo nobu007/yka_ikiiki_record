@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { z } from "zod";
 
 jest.mock("@/lib/error-handler", () => ({
@@ -6,7 +5,7 @@ jest.mock("@/lib/error-handler", () => ({
   logError: jest.fn(),
 }));
 
-import { handleApiError, withErrorHandler, createError } from "./error-handler";
+import { handleApiError, createError } from "./error-handler";
 import {
   AppError,
   NetworkError,
@@ -158,32 +157,6 @@ describe("API Error Handler", () => {
       const error = createError.internal();
       expect(error.message).toBe("サーバーエラーが発生しました");
       expect(error.statusCode).toBe(500);
-    });
-  });
-
-  describe("withErrorHandler", () => {
-    test("wraps successful handler", async () => {
-      const mockHandler = jest
-        .fn()
-        .mockResolvedValue(NextResponse.json({ success: true }));
-
-      const result = await withErrorHandler(mockHandler);
-
-      expect(mockHandler).toHaveBeenCalled();
-      const data = await result.json();
-      expect(data).toEqual({ success: true });
-    });
-
-    test("catches and handles errors from handler", async () => {
-      const mockHandler = jest
-        .fn()
-        .mockRejectedValue(new Error("Handler error"));
-
-      const result = await withErrorHandler(mockHandler);
-
-      expect(mockHandler).toHaveBeenCalled();
-      expect(result).toBeDefined();
-      expect(logError).toHaveBeenCalledWith(new Error("Handler error"), "API");
     });
   });
 });

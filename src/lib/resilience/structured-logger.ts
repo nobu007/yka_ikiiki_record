@@ -167,10 +167,12 @@ export class StructuredLogger {
     byLevel: Record<LogLevel, number>;
     byCategory: Record<string, number>;
   } {
+    const byLevel: Record<LogLevel, number> = Object.create(null);
+    const byCategory: Record<string, number> = Object.create(null);
     const stats = {
       total: this.logs.length,
-      byLevel: {} as Record<LogLevel, number>,
-      byCategory: {} as Record<string, number>,
+      byLevel,
+      byCategory,
     };
 
     for (const log of this.logs) {

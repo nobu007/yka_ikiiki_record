@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { POST, GET } from "../route";
 import { dataService } from "@/infrastructure/services/dataService";
+import { SUCCESS_MESSAGES } from "@/lib/constants/messages";
 
 const originalEnv = process.env.DATABASE_PROVIDER;
 
@@ -161,9 +162,6 @@ describe("API seed route GET - cleanup logic verification", () => {
 
     expect(storedBefore).toBeNull();
     expect(responseBody.success).toBe(false);
-    expect(responseBody.error).toContain("データがありません");
-    expect(responseBody.error).toContain(
-      "まずPOSTリクエストでデータを生成してください",
-    );
+    expect(responseBody.error).toBe(SUCCESS_MESSAGES.NO_DATA);
   });
 });

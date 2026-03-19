@@ -1,5 +1,6 @@
 export const SUCCESS_MESSAGES = {
   DATA_GENERATION_COMPLETE: "テストデータの生成が完了しました",
+  NO_DATA: "データがありません。まずPOSTリクエストでデータを生成してください。",
 } as const;
 
 export const LOADING_MESSAGES = {

@@ -131,7 +131,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
       return createSuccessResponse({
         success: true,
-        message: "テストデータの生成が完了しました",
+        message: SUCCESS_MESSAGES.DATA_GENERATION_COMPLETE,
       });
     },
     {
@@ -160,8 +160,7 @@ export async function GET(): Promise<NextResponse> {
         return NextResponse.json(
           {
             success: false,
-            error:
-              "データがありません。まずPOSTリクエストでデータを生成してください。",
+            error: SUCCESS_MESSAGES.NO_DATA,
           },
           { status: 404 },
         );

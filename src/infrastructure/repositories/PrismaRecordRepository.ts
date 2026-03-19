@@ -64,9 +64,7 @@ export class PrismaRecordRepository implements IRecordRepository {
   async save(record: Record): Promise<Record> {
     const data = this.toPrisma(record);
     const recordData = {
-      emotion: data.emotion,
-      date: data.date,
-      student: data.student,
+      ...data,
       comment: data.comment || null,
     };
 

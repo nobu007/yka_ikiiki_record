@@ -1,11 +1,20 @@
 import { globalLogger } from './structured-logger';
 
+const DEFAULT_MEMORY_LIMIT_MB = 512;
+const BYTES_PER_MB = 1024 * 1024;
+const DEFAULT_CHECK_INTERVAL_MS = 10000;
+const DEFAULT_THRESHOLD_RATIO = 0.9;
+const PERCENTAGE_MULTIPLIER = 100;
+
 export class MemoryMonitor {
   private readonly memoryLimit: number;
   private checkInterval: number;
   private intervalId: NodeJS.Timeout | null = null;
 
-  constructor(memoryLimit = 512 * 1024 * 1024, checkInterval = 10000) {
+  constructor(
+    memoryLimit = DEFAULT_MEMORY_LIMIT_MB * BYTES_PER_MB,
+    checkInterval = DEFAULT_CHECK_INTERVAL_MS
+  ) {
     this.memoryLimit = memoryLimit;
     this.checkInterval = checkInterval;
   }
@@ -62,11 +71,11 @@ export class MemoryMonitor {
 
   getUsagePercentage(): number {
     const usage = process.memoryUsage();
-    return (usage.heapUsed / this.memoryLimit) * 100;
+    return (usage.heapUsed / this.memoryLimit) * PERCENTAGE_MULTIPLIER;
   }
 
-  isNearLimit(threshold = 0.9): boolean {
-    return this.getUsagePercentage() > threshold * 100;
+  isNearLimit(threshold = DEFAULT_THRESHOLD_RATIO): boolean {
+    return this.getUsagePercentage() > threshold * PERCENTAGE_MULTIPLIER;
   }
 }
 

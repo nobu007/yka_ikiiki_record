@@ -1,13 +1,38 @@
-import { GET } from './route';
 import { globalCircuitBreaker, globalMemoryMonitor } from '@/lib/resilience';
+
+const mockGetStats = jest.fn();
+const mockStatsService = {
+  getStats: mockGetStats
+};
+
+jest.mock('@/infrastructure/factories/repositoryFactory', () => ({
+  isPrismaProvider: jest.fn(),
+  createStatsService: jest.fn(() => mockStatsService)
+}));
+
+import { GET } from './route';
+import { isPrismaProvider } from '@/infrastructure/factories/repositoryFactory';
+
+const mockIsPrismaProvider = isPrismaProvider as jest.Mock;
+const mockCreateStatsService = require('@/infrastructure/factories/repositoryFactory').createStatsService as jest.Mock;
 
 describe('GET /api/health', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     globalCircuitBreaker.reset();
+
+    mockIsPrismaProvider.mockReturnValue(false);
+    mockGetStats.mockResolvedValue({
+      overview: { count: 10, avgEmotion: 50 },
+      monthlyStats: [],
+      studentStats: [],
+      dayOfWeekStats: [],
+      timeOfDayStats: [],
+      emotionDistribution: [0.2, 0.2, 0.2, 0.2, 0.2]
+    });
   });
 
-  test('returns healthy status when all systems operational', async () => {
+  test('returns healthy status when all systems operational (mirage)', async () => {
     const response = await GET();
     const data = await response.json();
 
@@ -17,6 +42,7 @@ describe('GET /api/health', () => {
     expect(data.checks.circuitBreaker.status).toBe('pass');
     expect(data.checks.memory.status).toBe('pass');
     expect(data.checks.database.status).toBe('pass');
+    expect(data.checks.database.provider).toBe('mirage');
     expect(data.timestamp).toBeDefined();
     expect(data.uptime).toBeGreaterThan(0);
   });
@@ -120,5 +146,51 @@ describe('GET /api/health', () => {
     expect(data.timestamp).toBeGreaterThanOrEqual(beforeTime);
     expect(data.timestamp).toBeLessThanOrEqual(afterTime);
     expect(data.uptime).toBeGreaterThan(0);
+  });
+
+  describe('with Prisma provider', () => {
+    beforeEach(() => {
+      mockGetStats.mockReset();
+      mockGetStats.mockResolvedValue({
+        overview: { count: 10, avgEmotion: 50 },
+        monthlyStats: [],
+        studentStats: [],
+        dayOfWeekStats: [],
+        timeOfDayStats: [],
+        emotionDistribution: [0.2, 0.2, 0.2, 0.2, 0.2]
+      });
+      jest.spyOn(globalMemoryMonitor, 'getUsagePercentage').mockReturnValue(0);
+      jest.spyOn(globalCircuitBreaker, 'getState').mockReturnValue('CLOSED');
+    });
+
+    test('returns healthy status when database is reachable', async () => {
+      mockIsPrismaProvider.mockReturnValue(true);
+
+      const response = await GET();
+      const data = await response.json();
+
+      if (data.status !== 'healthy') {
+        console.log('Response data:', JSON.stringify(data, null, 2));
+      }
+
+      expect(response.status).toBe(200);
+      expect(data.status).toBe('healthy');
+      expect(data.checks.database.provider).toBe('prisma');
+      expect(data.checks.database.connected).toBe(true);
+      expect(data.checks.database.status).toBe('pass');
+    });
+
+    test('returns unhealthy status when database is unreachable', async () => {
+      mockIsPrismaProvider.mockReturnValue(true);
+      mockGetStats.mockRejectedValue(new Error('Database connection failed'));
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(data.checks.database.provider).toBe('prisma');
+      expect(data.checks.database.connected).toBe(false);
+      expect(data.checks.database.status).toBe('fail');
+      expect(data.status).toBe('unhealthy');
+    });
   });
 });

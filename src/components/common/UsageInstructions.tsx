@@ -1,21 +1,14 @@
-import { useMemo, memo } from "react";
+import { memo } from "react";
+import { USAGE_INSTRUCTIONS } from "@/lib/constants/messages";
 
 export const UsageInstructions = memo(() => {
-  const instructions = useMemo(
-    () => [
-      "「初期データを生成」ボタンをクリックしてテストデータを作成します",
-      "生成が完了すると統計データが表示されます",
-      "グラフやチャートで生徒の感情データを確認できます",
-      "何度でもデータを再生成して異なるパターンを試せます",
-    ],
-    [],
-  );
-
   return (
     <section className="bg-blue-50 rounded-lg p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">使い方</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        {USAGE_INSTRUCTIONS.TITLE}
+      </h3>
       <ol className="space-y-3 text-sm text-gray-700">
-        {instructions.map((instruction, index) => (
+        {USAGE_INSTRUCTIONS.STEPS.map((instruction, index) => (
           <li key={index} className="flex">
             <span className="font-medium mr-2">{index + 1}.</span>
             <span>{instruction}</span>

@@ -99,3 +99,13 @@ export const ERROR_BOUNDARY_MESSAGES = {
   BUTTON_TEXT: "ページを更新",
   DEV_DETAILS: "エラー詳細（開発モード）",
 } as const;
+
+export const USAGE_INSTRUCTIONS = {
+  TITLE: "使い方",
+  STEPS: [
+    "「初期データを生成」ボタンをクリックしてテストデータを作成します",
+    "生成が完了すると統計データが表示されます",
+    "グラフやチャートで生徒の感情データを確認できます",
+    "何度でもデータを再生成して異なるパターンを試せます",
+  ] as const,
+} as const;

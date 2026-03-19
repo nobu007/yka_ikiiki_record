@@ -39,4 +39,4 @@ export const EMOTION_CONSTANTS = {
   DEFAULT_STDDEV: 0.5,
   SEASONAL_IMPACT: 0.2,
   MAX_EVENT_IMPACT: 0.5
-};
+} as const;

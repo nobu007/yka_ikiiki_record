@@ -43,8 +43,25 @@ describe('API Error Handler', () => {
       ]);
 
       const response = handleApiError(zodError);
-      
+
       // Check that response is created (ZodError doesn't log to API)
+      expect(response).toBeDefined();
+      expect(logError).not.toHaveBeenCalled();
+    });
+
+    test('handles ZodError with empty path correctly', () => {
+      const zodError = new z.ZodError([
+        {
+          code: z.ZodIssueCode.invalid_type,
+          expected: z.ZodParsedType.string,
+          received: z.ZodParsedType.number,
+          path: [],
+          message: 'Expected string, received number'
+        }
+      ]);
+
+      const response = handleApiError(zodError);
+
       expect(response).toBeDefined();
       expect(logError).not.toHaveBeenCalled();
     });
@@ -235,6 +252,25 @@ describe('API Error Handler', () => {
         expect.objectContaining({
           operation: 'TEST_ERROR',
           error: 'Handler error'
+        })
+      );
+
+      expect(result).toBeDefined();
+    });
+
+    test('logs non-Error errors and converts to API response', async () => {
+      const mockHandler = jest.fn().mockRejectedValue('String error');
+
+      const result = await withResilientHandler(mockHandler, {
+        operationName: 'TEST_STRING_ERROR'
+      });
+
+      expect(globalLogger.error).toHaveBeenCalledWith(
+        'API',
+        'HANDLER_ERROR',
+        expect.objectContaining({
+          operation: 'TEST_STRING_ERROR',
+          error: 'String error'
         })
       );
 

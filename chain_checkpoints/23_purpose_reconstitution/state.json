@@ -1,0 +1,74 @@
+{
+  "version": "2.0",
+  "phase": "scan",
+  "cycle": 1,
+  "target_repo": "/home/jinno/yka_ikiiki_record",
+  "started_at": "2026-03-19T12:03:28Z",
+  "updated_at": "2026-03-19T12:03:28Z",
+  "scan_progress": {
+    "all_dirs": [
+      "src/domain",
+      "src/application",
+      "src/infrastructure",
+      "src/presentation",
+      "src/components",
+      "src/lib",
+      "src/app",
+      "src/hooks",
+      "src/schemas",
+      "src/utils",
+      "src/types",
+      "src/context",
+      "src/integration",
+      "src/mirage",
+      "src/test-utils",
+      "test",
+      "scripts",
+      "prisma"
+    ],
+    "completed_dirs": ["src/domain"],
+    "pending_dirs": [
+      "src/application",
+      "src/infrastructure",
+      "src/presentation",
+      "src/components",
+      "src/lib",
+      "src/app",
+      "src/hooks",
+      "src/schemas",
+      "src/utils",
+      "src/types",
+      "src/context",
+      "src/integration",
+      "src/mirage",
+      "src/test-utils",
+      "test",
+      "scripts",
+      "prisma"
+    ],
+    "findings": [
+      {
+        "dir": "src/domain",
+        "file_count": 34,
+        "has_tests": false,
+        "test_location": "test/ directory (26 test files)",
+        "key_exports": [
+          "IRecordRepository",
+          "StatsRepository",
+          "MockRecordRepository",
+          "DataGenerationConfig",
+          "StatsOverview",
+          "MonthlyStats",
+          "EmotionDistributionPattern"
+        ],
+        "notes": [
+          "Core domain entities and repositories",
+          "Tests are in test/ directory following project convention",
+          "Clean Architecture compliance: no dependencies on other layers"
+        ]
+      }
+    ]
+  },
+  "purpose_analysis": null,
+  "gap_analysis": null
+}

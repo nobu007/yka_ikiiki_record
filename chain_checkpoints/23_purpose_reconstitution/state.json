@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 9,
+  "cycle": 10,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-20T01:36:00Z",
-  "updated_at": "2026-03-20T06:53:00.000000Z",
+  "updated_at": "2026-03-20T07:10:00.000000Z",
   "scan_progress": {
     "all_dirs": [
       "src/app",
@@ -31,10 +31,10 @@
       "src/lib",
       "src/presentation",
       "src/schemas",
-      "src/utils"
+      "src/utils",
+      "src/mirage"
     ],
     "pending_dirs": [
-      "src/mirage",
       "src/context",
       "prisma",
       "scripts",
@@ -288,6 +288,30 @@
           "Used by domain services for statistics calculation and data generation",
           "Clean Architecture compliance: Imports only from lib (config, constants), cross-cutting utilities",
           "Well-documented with README.md explaining function purposes and usage"
+        ]
+      },
+      {
+        "dir": "src/mirage",
+        "file_count": 2,
+        "test_count": 0,
+        "has_tests": false,
+        "key_exports": [
+          "ensureServer",
+          "makeServer"
+        ],
+        "notes": [
+          "MirageJS mock server for development/testing without database",
+          "index.ts: ensureServer() function for server initialization and global access",
+          "server.ts: makeServer() creates MirageJS server with models, factories, and routes",
+          "Models: Record with emotion, date, student, comment fields",
+          "Factories: Record factory with realistic emotion distribution (weighted toward mid-range), date generation (last 30 days), student assignment (1-25), Japanese comments",
+          "Routes: POST /api/seed (generates 750 records), GET /api/stats (returns calculated monthly stats)",
+          "Error handling with structured logging integration (globalLogger)",
+          "Uses FALLBACK_VALUES constants from lib/constants",
+          "Reuses calculateMonthlyStats from utils/statsCalculator",
+          "Environment-based activation (NEXT_PUBLIC_MOCK=true)",
+          "No dedicated tests (integration with API routes tested indirectly)",
+          "Clean Architecture compliance: Infrastructure/mock layer, imports from utils and lib (cross-cutting)"
         ]
       }
     ]

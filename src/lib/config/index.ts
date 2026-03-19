@@ -71,3 +71,10 @@ export const CHART_COLORS = {
     "#EC4899",
   ] as const,
 } as const;
+
+export const CHART_CONFIG = {
+  DEFAULT_HEIGHT: 300,
+  RESPONSIVE_BREAKPOINT: 640,
+  RESPONSIVE_HEIGHT_RATIO: 0.7,
+  TITLE_FONT_SIZE: "16px",
+} as const;

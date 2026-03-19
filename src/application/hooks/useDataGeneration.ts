@@ -5,8 +5,8 @@ import {
   EmotionDistributionPattern,
   EventEffect,
   ClassCharacteristics,
-  DATA_GENERATION_BOUNDS,
 } from "@/domain/entities/DataGeneration";
+import { GENERATION_CONSTRAINTS } from "@/lib/constants";
 import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 interface UseDataGenerationProps {
@@ -22,8 +22,8 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     setConfig((prev) => ({
       ...prev,
       studentCount: Math.max(
-        DATA_GENERATION_BOUNDS.MIN_STUDENTS,
-        Math.min(DATA_GENERATION_BOUNDS.MAX_STUDENTS, count),
+        GENERATION_CONSTRAINTS.STUDENT_COUNT.MIN,
+        Math.min(GENERATION_CONSTRAINTS.STUDENT_COUNT.MAX, count),
       ),
     }));
   }, []);
@@ -32,8 +32,8 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     setConfig((prev) => ({
       ...prev,
       periodDays: Math.max(
-        DATA_GENERATION_BOUNDS.MIN_PERIOD_DAYS,
-        Math.min(DATA_GENERATION_BOUNDS.MAX_PERIOD_DAYS, days),
+        GENERATION_CONSTRAINTS.PERIOD_DAYS.MIN,
+        Math.min(GENERATION_CONSTRAINTS.PERIOD_DAYS.MAX, days),
       ),
     }));
   }, []);

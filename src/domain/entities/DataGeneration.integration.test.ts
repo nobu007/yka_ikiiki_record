@@ -3,6 +3,7 @@ import {
   EventEffect,
   EMOTION_CONSTANTS,
 } from "./DataGeneration";
+import { EMOTION_RANGES } from "@/lib/constants";
 
 describe("DataGeneration Integration Tests", () => {
   it("should create complete configuration with multiple events", () => {
@@ -79,5 +80,7 @@ describe("DataGeneration Integration Tests", () => {
     expect(config.eventEffects[0]?.impact).toBeGreaterThanOrEqual(
       EMOTION_CONSTANTS.MAX_EVENT_IMPACT * -1,
     );
+    // Verify alignment with centralized constants
+    expect(EMOTION_CONSTANTS.MAX_EVENT_IMPACT).toBe(EMOTION_RANGES.MAX_EVENT_IMPACT);
   });
 });

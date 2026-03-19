@@ -1,6 +1,6 @@
 import { generateEmotion } from "./EmotionGenerator";
 import { DEFAULT_CONFIG } from "../entities/DataGeneration";
-import { EMOTION_CONSTANTS } from "../entities/DataGeneration";
+import { EMOTION_RANGES } from "@/lib/constants";
 
 describe("EmotionGenerator", () => {
   describe("generateEmotion", () => {
@@ -8,8 +8,8 @@ describe("EmotionGenerator", () => {
       const date = new Date("2025-05-15");
       const emotion = generateEmotion(DEFAULT_CONFIG, date, 0);
 
-      expect(emotion).toBeGreaterThanOrEqual(EMOTION_CONSTANTS.MIN_EMOTION);
-      expect(emotion).toBeLessThanOrEqual(EMOTION_CONSTANTS.MAX_EMOTION);
+      expect(emotion).toBeGreaterThanOrEqual(EMOTION_RANGES.MIN);
+      expect(emotion).toBeLessThanOrEqual(EMOTION_RANGES.MAX);
     });
 
     test("handles different distribution patterns", () => {
@@ -20,8 +20,8 @@ describe("EmotionGenerator", () => {
         const config = { ...DEFAULT_CONFIG, distributionPattern: pattern };
         const emotion = generateEmotion(config, date, 0);
 
-        expect(emotion).toBeGreaterThanOrEqual(EMOTION_CONSTANTS.MIN_EMOTION);
-        expect(emotion).toBeLessThanOrEqual(EMOTION_CONSTANTS.MAX_EMOTION);
+        expect(emotion).toBeGreaterThanOrEqual(EMOTION_RANGES.MIN);
+        expect(emotion).toBeLessThanOrEqual(EMOTION_RANGES.MAX);
       });
     });
 

@@ -1,4 +1,5 @@
 import { DEFAULT_CONFIG, EMOTION_CONSTANTS } from "./DataGeneration";
+import { EMOTION_RANGES, GENERATION_DEFAULTS } from "@/lib/constants";
 
 describe("DEFAULT_CONFIG", () => {
   it("should have valid default values", () => {
@@ -85,5 +86,27 @@ describe("EMOTION_CONSTANTS", () => {
     expect(
       DEFAULT_CONFIG.classCharacteristics.baselineEmotion,
     ).toBeLessThanOrEqual(EMOTION_CONSTANTS.MAX_EMOTION);
+  });
+
+  it("should align with centralized constants", () => {
+    // Verify local constants match centralized ones
+    expect(EMOTION_CONSTANTS.MIN_EMOTION).toBe(EMOTION_RANGES.MIN);
+    expect(EMOTION_CONSTANTS.MAX_EMOTION).toBe(EMOTION_RANGES.MAX);
+    expect(EMOTION_CONSTANTS.DEFAULT_STDDEV).toBe(EMOTION_RANGES.DEFAULT_STDDEV);
+    expect(EMOTION_CONSTANTS.SEASONAL_IMPACT).toBe(EMOTION_RANGES.SEASONAL_IMPACT);
+    expect(EMOTION_CONSTANTS.MAX_EVENT_IMPACT).toBe(EMOTION_RANGES.MAX_EVENT_IMPACT);
+
+    // Verify DEFAULT_CONFIG aligns with GENERATION_DEFAULTS
+    expect(DEFAULT_CONFIG.studentCount).toBe(GENERATION_DEFAULTS.STUDENT_COUNT);
+    expect(DEFAULT_CONFIG.periodDays).toBe(GENERATION_DEFAULTS.PERIOD_DAYS);
+    expect(DEFAULT_CONFIG.classCharacteristics.baselineEmotion).toBe(
+      GENERATION_DEFAULTS.BASELINE_EMOTION,
+    );
+    expect(DEFAULT_CONFIG.classCharacteristics.volatility).toBe(
+      GENERATION_DEFAULTS.VOLATILITY,
+    );
+    expect(DEFAULT_CONFIG.classCharacteristics.cohesion).toBe(
+      GENERATION_DEFAULTS.COHESION,
+    );
   });
 });

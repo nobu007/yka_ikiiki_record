@@ -1,4 +1,5 @@
 import { DEFAULT_CONFIG, EMOTION_CONSTANTS } from "./DataGeneration";
+import { EMOTION_RANGES } from "@/lib/constants";
 
 describe("DEFAULT_CONFIG", () => {
   it("has studentCount as positive integer", () => {
@@ -33,6 +34,9 @@ describe("DEFAULT_CONFIG", () => {
     expect(cc.baselineEmotion).toBeLessThanOrEqual(
       EMOTION_CONSTANTS.MAX_EMOTION,
     );
+    // Also verify alignment with centralized constants
+    expect(cc.baselineEmotion).toBeGreaterThanOrEqual(EMOTION_RANGES.MIN);
+    expect(cc.baselineEmotion).toBeLessThanOrEqual(EMOTION_RANGES.MAX);
     expect(cc.volatility).toBeGreaterThan(0);
     expect(cc.cohesion).toBeGreaterThanOrEqual(0);
     expect(cc.cohesion).toBeLessThanOrEqual(1);

@@ -51,3 +51,6 @@ export const DATA_GENERATION_BOUNDS = {
   MIN_PERIOD_DAYS: 7,
   MAX_PERIOD_DAYS: 365,
 } as const;
+
+export type EmotionRanges = typeof EMOTION_CONSTANTS;
+export type GenerationBounds = typeof DATA_GENERATION_BOUNDS;

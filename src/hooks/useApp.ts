@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { APP_CONFIG } from "@/lib/config";
-import { HTTP_METHODS } from "@/lib/constants";
+import { HTTP_METHODS, HTTP_HEADERS } from "@/lib/constants";
 import {
   normalizeError,
   getUserFriendlyMessage,
@@ -36,7 +36,7 @@ export function useDashboard() {
       const response = await withApiTimeout(
         fetch(`${APP_CONFIG.api.baseUrl}${APP_CONFIG.api.endpoints.seed}`, {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": "application/json" },
+          headers: { [HTTP_HEADERS.CONTENT_TYPE]: HTTP_HEADERS.APPLICATION_JSON },
           body: JSON.stringify({ config }),
         }),
       );

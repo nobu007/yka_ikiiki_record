@@ -112,6 +112,11 @@ export const HTTP_METHODS = {
   PATCH: "PATCH",
 } as const;
 
+export const HTTP_HEADERS = {
+  CONTENT_TYPE: "Content-Type",
+  APPLICATION_JSON: "application/json",
+} as const;
+
 export const CACHE_CONSTANTS = {
   DATA_TTL_MS: 1800000,
 } as const;

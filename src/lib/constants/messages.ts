@@ -148,3 +148,16 @@ export const DASHBOARD_CONTROLS = {
     HAPPY: "ハッピー型",
   },
 } as const;
+
+export const API_ERROR_MESSAGES = {
+  VALIDATION_FAILED_PREFIX: "入力データの検証に失敗しました: ",
+  INVALID_JSON_BODY: "リクエストボディのJSON形式が正しくありません",
+  BAD_REQUEST: "リクエストが正しくありません",
+  UNAUTHORIZED: "認証が必要です",
+  FORBIDDEN: "アクセスが拒否されました",
+  NOT_FOUND: "リソースが見つかりません",
+  TIMEOUT: "リクエストがタイムアウトしました",
+  GENERATION_FAILED: "データ生成に失敗しました",
+  INTERNAL_SERVER_ERROR: "サーバーエラーが発生しました",
+  REQUEST_BODY_PARSE_FAILED: "リクエストボディの解析に失敗しました",
+} as const;

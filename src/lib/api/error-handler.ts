@@ -11,6 +11,7 @@ import {
 import { withCustomTimeout, DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { globalCircuitBreaker, globalLogger } from "@/lib/resilience";
 import type { CircuitBreakerConfig } from "@/lib/resilience";
+import { API_ERROR_MESSAGES } from "@/lib/constants/messages";
 
 const formatZodError = (error: z.ZodError): string => {
   return error.errors
@@ -36,14 +37,14 @@ export function handleApiError(error: unknown): NextResponse {
   if (error instanceof z.ZodError) {
     const message = formatZodError(error);
     return createErrorResponse(
-      `入力データの検証に失敗しました: ${message}`,
+      `${API_ERROR_MESSAGES.VALIDATION_FAILED_PREFIX}${message}`,
       HTTP_STATUS.BAD_REQUEST,
     );
   }
 
   if (isSyntaxErrorWithBody(error)) {
     return createErrorResponse(
-      "リクエストボディのJSON形式が正しくありません",
+      API_ERROR_MESSAGES.INVALID_JSON_BODY,
       HTTP_STATUS.BAD_REQUEST,
     );
   }
@@ -58,23 +59,23 @@ export function handleApiError(error: unknown): NextResponse {
 }
 
 export const createError = {
-  badRequest: (message: string = "リクエストが正しくありません") =>
+  badRequest: (message: string = API_ERROR_MESSAGES.BAD_REQUEST) =>
     new AppError(message, ERROR_CODES.VALIDATION, HTTP_STATUS.BAD_REQUEST),
-  unauthorized: (message: string = "認証が必要です") =>
+  unauthorized: (message: string = API_ERROR_MESSAGES.UNAUTHORIZED) =>
     new AppError(message, ERROR_CODES.PERMISSION, HTTP_STATUS.UNAUTHORIZED),
-  forbidden: (message: string = "アクセスが拒否されました") =>
+  forbidden: (message: string = API_ERROR_MESSAGES.FORBIDDEN) =>
     new AppError(message, ERROR_CODES.PERMISSION, HTTP_STATUS.FORBIDDEN),
-  notFound: (message: string = "リソースが見つかりません") =>
+  notFound: (message: string = API_ERROR_MESSAGES.NOT_FOUND) =>
     new AppError(message, ERROR_CODES.NOT_FOUND, HTTP_STATUS.NOT_FOUND),
-  timeout: (message: string = "リクエストがタイムアウトしました") =>
+  timeout: (message: string = API_ERROR_MESSAGES.TIMEOUT) =>
     new AppError(message, ERROR_CODES.TIMEOUT, 408),
-  generation: (message: string = "データ生成に失敗しました") =>
+  generation: (message: string = API_ERROR_MESSAGES.GENERATION_FAILED) =>
     new AppError(
       message,
       ERROR_CODES.GENERATION,
       HTTP_STATUS.INTERNAL_SERVER_ERROR,
     ),
-  internal: (message: string = "サーバーエラーが発生しました") =>
+  internal: (message: string = API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR) =>
     new AppError(
       message,
       ERROR_CODES.UNKNOWN,
@@ -149,6 +150,6 @@ export async function parseRequestBody(source: JsonReadable): Promise<unknown> {
   try {
     return await source.json();
   } catch {
-    throw createError.badRequest("リクエストボディの解析に失敗しました");
+    throw createError.badRequest(API_ERROR_MESSAGES.REQUEST_BODY_PARSE_FAILED);
   }
 }

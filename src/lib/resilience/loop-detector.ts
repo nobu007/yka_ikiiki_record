@@ -1,4 +1,5 @@
 import { AppError, ERROR_CODES } from '@/lib/error-handler';
+import { globalLogger } from './structured-logger';
 
 export class InfiniteLoopError extends AppError {
   constructor(operationId: string) {
@@ -26,6 +27,12 @@ export class LoopDetector {
     const currentCount = this.operationCounts.get(operationId) || 0;
 
     if (currentCount > this.maxIterations) {
+      globalLogger.error('LOOP_DETECTOR', 'INFINITE_LOOP_DETECTED', {
+        operation: operationId,
+        iterationCount: currentCount,
+        maxIterations: this.maxIterations,
+        timestamp: Date.now()
+      });
       throw new InfiniteLoopError(operationId);
     }
 

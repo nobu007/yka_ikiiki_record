@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { useStats } from './useStats';
 import { withApiTimeout } from '@/lib/resilience/timeout';
+import { StatsResponse } from '@/schemas/api';
 
 jest.mock('@/lib/resilience/timeout', () => ({
   withApiTimeout: jest.fn(),
@@ -20,7 +21,16 @@ jest.mock('swr', () => {
 });
 
 const mockWithApiTimeout = withApiTimeout as jest.MockedFunction<typeof withApiTimeout>;
-const mockUseSWR = require('swr').default as jest.MockedFunction<any>;
+type UseSWRResponse<T> = {
+  data: T | undefined;
+  error: Error | undefined;
+  isLoading: boolean;
+  mutate: () => Promise<void>;
+};
+
+const mockUseSWR = require('swr').default as jest.MockedFunction<
+  (key: string, fetcher: () => Promise<StatsResponse>, config?: unknown) => UseSWRResponse<StatsResponse>
+>;
 
 describe('useStats SWR configuration', () => {
   const mockStatsData = {
@@ -97,18 +107,19 @@ describe('useStats SWR configuration', () => {
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0][1];
+      const fetcher = mockUseSWR.mock.calls[0]?.[1];
       expect(typeof fetcher).toBe('function');
     });
 
     it('should handle onError callback from SWR', () => {
       renderHook(() => useStats());
 
-      const onErrorCallback = mockUseSWR.mock.calls[0]?.[2]?.onError;
+      const config = mockUseSWR.mock.calls[0]?.[2] as { onError?: (error: Error) => void } | undefined;
+      const onErrorCallback = config?.onError;
       expect(typeof onErrorCallback).toBe('function');
 
       const testError = new Error('Test error');
-      expect(() => onErrorCallback(testError)).not.toThrow();
+      expect(() => onErrorCallback?.(testError)).not.toThrow();
     });
   });
 
@@ -123,7 +134,7 @@ describe('useStats SWR configuration', () => {
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
+      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (url: string) => Promise<unknown>;
 
       await fetcher('/api/stats');
 
@@ -140,7 +151,7 @@ describe('useStats SWR configuration', () => {
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
+      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (url: string) => Promise<unknown>;
 
       const result = await fetcher('/api/stats');
 

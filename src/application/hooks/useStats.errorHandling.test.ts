@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { useStats } from './useStats';
+import { StatsResponse } from '@/schemas/api';
 
 jest.mock('swr', () => {
   const mockMutate = jest.fn();
@@ -14,7 +15,16 @@ jest.mock('swr', () => {
   };
 });
 
-const mockUseSWR = require('swr').default as jest.MockedFunction<any>;
+type UseSWRResponse<T> = {
+  data: T | undefined;
+  error: Error | undefined;
+  isLoading: boolean;
+  mutate: () => Promise<void>;
+};
+
+const mockUseSWR = require('swr').default as jest.MockedFunction<
+  (key: string, fetcher: () => Promise<StatsResponse>, config?: unknown) => UseSWRResponse<StatsResponse>
+>;
 
 describe('useStats error handling', () => {
   const mockStatsData = {
@@ -113,7 +123,7 @@ describe('useStats error handling', () => {
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
+      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (url: string) => Promise<unknown>;
 
       await expect(fetcher('/api/stats')).rejects.toThrow('APIリクエストに失敗しました');
     });
@@ -129,7 +139,7 @@ describe('useStats error handling', () => {
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
+      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (url: string) => Promise<unknown>;
 
       await expect(fetcher('/api/stats')).rejects.toThrow();
     });
@@ -169,7 +179,7 @@ describe('useStats error handling', () => {
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
+      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (url: string) => Promise<unknown>;
 
       await expect(fetcher('/api/stats')).rejects.toThrow('Custom error message');
     });
@@ -181,7 +191,7 @@ describe('useStats error handling', () => {
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0][1] as (url: string) => Promise<unknown>;
+      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (url: string) => Promise<unknown>;
 
       await expect(fetcher('/api/stats')).rejects.toThrow('不明なエラーが発生しました');
     });

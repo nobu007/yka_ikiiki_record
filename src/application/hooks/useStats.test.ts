@@ -14,7 +14,18 @@ jest.mock('swr', () => {
   };
 });
 
-const mockUseSWR = require('swr').default as jest.MockedFunction<any>;
+import { StatsResponse } from '@/schemas/api';
+
+type UseSWRResponse<T> = {
+  data: T | undefined;
+  error: Error | undefined;
+  isLoading: boolean;
+  mutate: () => Promise<void>;
+};
+
+const mockUseSWR = require('swr').default as jest.MockedFunction<
+  (key: string, fetcher: () => Promise<StatsResponse>, config?: unknown) => UseSWRResponse<StatsResponse>
+>;
 
 describe('useStats', () => {
   const mockStatsData = {

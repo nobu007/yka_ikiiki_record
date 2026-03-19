@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 6,
+  "cycle": 7,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-19T12:03:28Z",
-  "updated_at": "2026-03-19T14:59:00Z",
+  "updated_at": "2026-03-19T15:35:00Z",
   "scan_progress": {
     "all_dirs": [
       "src/domain",
@@ -26,9 +26,8 @@
       "scripts",
       "prisma"
     ],
-    "completed_dirs": ["src/domain", "src/application", "src/infrastructure", "src/presentation", "src/components", "src/lib"],
+    "completed_dirs": ["src/domain", "src/application", "src/infrastructure", "src/presentation", "src/components", "src/lib", "src/app"],
     "pending_dirs": [
-      "src/app",
       "src/hooks",
       "src/schemas",
       "src/utils",
@@ -234,6 +233,35 @@
           "prisma.ts: Prisma client singleton with HMR support",
           "Comprehensive test coverage: 24 test files covering all modules",
           "Clean Architecture compliance: Shared library layer, no dependencies on src/ layers"
+        ]
+      },
+      {
+        "dir": "src/app",
+        "file_count": 40,
+        "has_tests": true,
+        "test_file_count": 21,
+        "key_exports": [
+          "Next.js App Router structure",
+          "API routes: /api/stats, /api/seed, /api/health",
+          "Page routes: /dashboard, /bar-chart, landing page",
+          "Mirage mock server integration in development"
+        ],
+        "notes": [
+          "Next.js App Router structure with route groups: (chart), (dashboard)",
+          "API routes (3 endpoints):",
+          "  - /api/stats: GET endpoint for statistics with test coverage",
+          "  - /api/seed: GET/POST endpoints for seed data management with comprehensive tests for both Prisma and Mirage",
+          "  - /api/health: Health check endpoint with test coverage",
+          "Dashboard components co-located in src/app/(dashboard)/dashboard/components/:",
+          "  - StatsDisplay.tsx (5 test files: data, behavior, styling, states, setup)",
+          "  - EventManager.tsx (5 test files: adding, interaction, memoization, rendering, removing)",
+          "  - GenerationControls.tsx (4 test files: edge-cases, interactions, rendering, setup)",
+          "  - DataGenerationPanel.tsx with test coverage",
+          "  - ClassCharacteristicsEditor.tsx with test coverage",
+          "Page-level tests: dashboard/page.test.tsx",
+          "Root layout.tsx: Initializes Mirage mock server in development when NEXT_PUBLIC_MOCK=true",
+          "Clean Architecture compliance: Presentation layer (src/app) can import from all layers",
+          "Test organization: 21 test files co-located with components following Next.js App Router convention"
         ]
       }
     ]

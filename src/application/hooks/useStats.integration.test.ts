@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { useStats } from './useStats';
+import { StatsResponse } from '@/schemas/api';
 
 jest.mock('swr', () => {
   const mockMutate = jest.fn();
@@ -14,7 +15,16 @@ jest.mock('swr', () => {
   };
 });
 
-const mockUseSWR = require('swr').default as jest.MockedFunction<any>;
+type UseSWRResponse<T> = {
+  data: T | undefined;
+  error: Error | undefined;
+  isLoading: boolean;
+  mutate: () => Promise<void>;
+};
+
+const mockUseSWR = require('swr').default as jest.MockedFunction<
+  (key: string, fetcher: () => Promise<StatsResponse>, config?: unknown) => UseSWRResponse<StatsResponse>
+>;
 
 describe('useStats integration scenarios', () => {
   const mockStatsData = {

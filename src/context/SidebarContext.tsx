@@ -7,6 +7,7 @@ import {
   useCallback,
   memo,
 } from "react";
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 type SidebarContextType = {
   isExpanded: boolean;
@@ -42,7 +43,7 @@ export const SidebarProvider = memo<{ children: React.ReactNode }>(
 
     useEffect(() => {
       const handleResize = () => {
-        const mobile = window.innerWidth < 768;
+        const mobile = window.innerWidth < UI_CONSTANTS.BREAKPOINT.MD;
         setIsMobile(mobile);
         if (!mobile) {
           setIsMobileOpen(false);

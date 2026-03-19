@@ -5,6 +5,13 @@ export const UI_CONSTANTS = {
     SLOW: 500,
   } as const,
 
+  BREAKPOINT: {
+    SM: 640,
+    MD: 768,
+    LG: 1024,
+    XL: 1280,
+  } as const,
+
   BUTTON: {
     BASE: "inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed",
     PRIMARY: "bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400",

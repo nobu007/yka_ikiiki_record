@@ -2,6 +2,7 @@
 
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { ExclamationIcon } from './Icons';
+import { globalLogger } from '@/lib/resilience/structured-logger';
 
 type ErrorMessageKey = 'title' | 'description' | 'action' | 'buttonText' | 'devDetails';
 
@@ -33,7 +34,16 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  override componentDidCatch(_error: Error, _errorInfo: ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    globalLogger.error('ErrorBoundary', 'componentDidCatch', {
+      error: {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      },
+      componentStack: errorInfo.componentStack,
+      digest: errorInfo.digest,
+    }, 'INTERNAL');
   }
 
   private handleReload = (): void => {

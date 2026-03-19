@@ -1,5 +1,6 @@
 import React, { useCallback, memo } from 'react';
 import { MESSAGES, UI_CONFIG } from '@/lib/config';
+import { globalLogger } from '@/lib/resilience/structured-logger';
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md';
@@ -142,7 +143,16 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
     return { hasError: true };
   }
 
-  override componentDidCatch(_error: Error, _errorInfo: React.ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    globalLogger.error('ErrorBoundary', 'componentDidCatch', {
+      error: {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      },
+      componentStack: errorInfo.componentStack,
+      digest: errorInfo.digest,
+    }, 'INTERNAL');
   }
 
   override render() {

@@ -1,6 +1,6 @@
 import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
-import { CHART_TITLES } from "@/lib/constants/messages";
+import { CHART_TITLES, CHART_AXIS_LABELS } from "@/lib/constants/messages";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 export const TimeOfDayChart = memo<{
@@ -8,7 +8,7 @@ export const TimeOfDayChart = memo<{
 }>(({ data }) => {
   const chartData = useMemo(
     () => ({
-      labels: ["朝", "昼", "夜"],
+      labels: CHART_AXIS_LABELS.TIME_OF_DAY,
       series: [
         {
           name: CHART_TITLES.AVERAGE_EMOTION_SCORE,

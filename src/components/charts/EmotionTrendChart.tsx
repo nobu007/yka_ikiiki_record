@@ -1,6 +1,6 @@
 import { useMemo, memo } from "react";
 import { EmotionChart } from "./EmotionChart";
-import { CHART_TITLES } from "@/lib/constants/messages";
+import { CHART_TITLES, CHART_AXIS_LABELS } from "@/lib/constants/messages";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 export const EmotionTrendChart = memo<{
@@ -8,7 +8,7 @@ export const EmotionTrendChart = memo<{
 }>(({ data }) => {
   const chartData = useMemo(
     () => ({
-      labels: ["7日前", "6日前", "5日前", "4日前", "3日前", "2日前", "1日前"],
+      labels: CHART_AXIS_LABELS.LAST_7_DAYS,
       series: data.slice(0, 5).map((student) => ({
         name: student.student,
         data: student.trendline,

@@ -125,3 +125,8 @@ export const ACCESSIBILITY_MESSAGES = {
   NO_DATA_MESSAGE: "表示するデータがありません",
   CLOSE_BUTTON: "閉じる",
 } as const;
+
+export const CHART_AXIS_LABELS = {
+  TIME_OF_DAY: ["朝", "昼", "夜"] as const,
+  LAST_7_DAYS: ["7日前", "6日前", "5日前", "4日前", "3日前", "2日前", "1日前"] as const,
+} as const;

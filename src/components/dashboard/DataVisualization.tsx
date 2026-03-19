@@ -9,6 +9,10 @@ import {
 } from '@/components/charts';
 import { StatsData } from '@/schemas/api';
 
+const MAX_STUDENTS_IN_TABLE = 10;
+const ALTERNATING_ROW_MODULO = 2;
+const RECENT_TREND_POINTS = 3;
+
 interface DataVisualizationProps {
   data: StatsData;
 }
@@ -24,7 +28,7 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
     return last > prev ? '↗️' : last < prev ? '↘️' : '→';
   }, []);
 
-  const studentStatsSlice = useMemo(() => data.studentStats.slice(0, 10), [data.studentStats]);
+  const studentStatsSlice = useMemo(() => data.studentStats.slice(0, MAX_STUDENTS_IN_TABLE), [data.studentStats]);
   return (
     <div className="space-y-8">
       {/* Overview Statistics */}
@@ -98,7 +102,7 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {studentStatsSlice.map((student, index) => (
-                <tr key={student.student} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                <tr key={student.student} className={index % ALTERNATING_ROW_MODULO === 0 ? 'bg-white' : 'bg-gray-50'}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {student.student}
                   </td>
@@ -114,7 +118,7 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
                         {formatTrendArrow(student.trendline)}
                       </span>
                       <span className="text-xs">
-                        {student.trendline.slice(-3).join(' → ')}
+                        {student.trendline.slice(-RECENT_TREND_POINTS).join(' → ')}
                       </span>
                     </div>
                   </td>

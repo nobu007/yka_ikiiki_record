@@ -5,71 +5,55 @@ import {
   logError,
   ERROR_CODES
 } from './error-handler';
-
-let originalConsoleError: typeof console.error;
-let mockConsoleError: jest.Mock;
-let mockConsoleGroup: jest.SpyInstance;
-let mockConsoleGroupEnd: jest.SpyInstance;
+import { globalLogger } from '@/lib/resilience/structured-logger';
 
 describe('error-handler: logError', () => {
-  beforeAll(() => {
-    originalConsoleError = console.error;
-    mockConsoleError = jest.fn();
-    console.error = mockConsoleError;
-    mockConsoleGroup = jest.spyOn(console, 'group').mockImplementation();
-    mockConsoleGroupEnd = jest.spyOn(console, 'groupEnd').mockImplementation();
-  });
-
-  afterAll(() => {
-    console.error = originalConsoleError;
-    mockConsoleGroup.mockRestore();
-    mockConsoleGroupEnd.mockRestore();
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test('logs error with context', () => {
     const error = new ValidationError('Test validation error');
+    const spy = jest.spyOn(globalLogger, 'error');
 
     logError(error, 'TestContext');
 
-    expect(mockConsoleError).toHaveBeenCalledWith('[TestContext] VALIDATION_ERROR: Test validation error');
+    expect(spy).toHaveBeenCalledWith('TestContext', 'logError', {
+      code: 'VALIDATION_ERROR',
+      message: 'Test validation error',
+      status: 400,
+      details: undefined,
+      stack: error.stack,
+    });
   });
 
   test('logs error without context', () => {
     const error = new NetworkError('Network error');
+    const spy = jest.spyOn(globalLogger, 'error');
 
     logError(error);
 
-    expect(mockConsoleError).toHaveBeenCalledWith('[APP] NETWORK_ERROR: Network error');
+    expect(spy).toHaveBeenCalledWith('APP', 'logError', {
+      code: 'NETWORK_ERROR',
+      message: 'Network error',
+      status: 0,
+      details: undefined,
+      stack: error.stack,
+    });
   });
 
   test('logs error with details', () => {
     const error = new AppError('Error with details', ERROR_CODES.VALIDATION, 400, { field: 'email' });
+    const spy = jest.spyOn(globalLogger, 'error');
 
     logError(error);
 
-    expect(mockConsoleError).toHaveBeenCalledWith('[APP] VALIDATION_ERROR: Error with details');
-  });
-
-  test('logs error with detailed format in non-test environment', () => {
-    const error = new AppError('Error with details', ERROR_CODES.VALIDATION, 400, { field: 'email' });
-
-    const originalEnv = process.env.NODE_ENV;
-    process.env = { ...process.env, NODE_ENV: 'production' };
-
-    logError(error, 'TestContext');
-
-    expect(mockConsoleError).toHaveBeenCalledWith('[TestContext] Error:', {
+    expect(spy).toHaveBeenCalledWith('APP', 'logError', {
       code: 'VALIDATION_ERROR',
       message: 'Error with details',
       status: 400,
       details: { field: 'email' },
-      stack: error.stack
+      stack: error.stack,
     });
-
-    process.env = { ...process.env, NODE_ENV: originalEnv };
   });
 });

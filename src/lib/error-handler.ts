@@ -1,4 +1,5 @@
 import { MESSAGES } from '@/lib/config';
+import { globalLogger } from '@/lib/resilience/structured-logger';
 
 export const ERROR_CODES = {
   UNKNOWN: 'UNKNOWN_ERROR',
@@ -76,20 +77,14 @@ export function getUserFriendlyMessage(error: unknown): string {
 
 export function logError(error: unknown, context?: string): void {
   const normalized = normalizeError(error);
-  const contextStr = context ? `[${context}]` : '[APP]';
-  
-  // Reduce console noise in test environment
-  if (process.env.NODE_ENV === 'test') {
-    console.error(`${contextStr} ${normalized.code}: ${normalized.message}`);
-    return;
-  }
-  
-  console.error(`${contextStr} Error:`, {
+  const category = context || 'APP';
+
+  globalLogger.error(category, 'logError', {
     code: normalized.code,
     message: normalized.message,
     status: normalized.statusCode,
     details: normalized.details,
-    stack: normalized.stack
+    stack: normalized.stack,
   });
 }
 

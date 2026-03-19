@@ -1,12 +1,10 @@
 import { renderHook } from '@testing-library/react';
 import { useDataGeneration } from './useDataGeneration';
+import { DATA_GENERATION_BOUNDS } from '@/domain/entities/DataGeneration';
 import type { EventEffect } from '@/domain/entities/DataGeneration';
 
-// Test constants
-export const MIN_STUDENTS = 10;
-export const MAX_STUDENTS = 500;
-export const MIN_PERIOD_DAYS = 7;
-export const MAX_PERIOD_DAYS = 365;
+// Re-export domain constants for test convenience
+export const { MIN_STUDENTS, MAX_STUDENTS, MIN_PERIOD_DAYS, MAX_PERIOD_DAYS } = DATA_GENERATION_BOUNDS;
 
 export const VALID_STUDENT_COUNT = 50;
 export const BELOW_MIN_STUDENT_COUNT = 5;

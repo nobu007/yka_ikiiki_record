@@ -4,7 +4,8 @@ import {
   DEFAULT_CONFIG,
   EmotionDistributionPattern,
   EventEffect,
-  ClassCharacteristics
+  ClassCharacteristics,
+  DATA_GENERATION_BOUNDS
 } from '@/domain/entities/DataGeneration';
 
 interface UseDataGenerationProps {
@@ -19,14 +20,14 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
   const updateStudentCount = useCallback((count: number) => {
     setConfig(prev => ({
       ...prev,
-      studentCount: Math.max(10, Math.min(500, count))
+      studentCount: Math.max(DATA_GENERATION_BOUNDS.MIN_STUDENTS, Math.min(DATA_GENERATION_BOUNDS.MAX_STUDENTS, count))
     }));
   }, []);
 
   const updatePeriodDays = useCallback((days: number) => {
     setConfig(prev => ({
       ...prev,
-      periodDays: Math.max(7, Math.min(365, days))
+      periodDays: Math.max(DATA_GENERATION_BOUNDS.MIN_PERIOD_DAYS, Math.min(DATA_GENERATION_BOUNDS.MAX_PERIOD_DAYS, days))
     }));
   }, []);
 

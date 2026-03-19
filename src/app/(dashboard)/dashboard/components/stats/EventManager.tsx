@@ -4,6 +4,7 @@ import { memo, useState } from "react";
 import type { ClassEvent } from "@/schemas/api";
 import { GENERATION_CONSTRAINTS } from "@/lib/constants";
 import { getButtonClasses } from "@/lib/constants/ui";
+import { DASHBOARD_CONTROLS } from "@/lib/constants/messages";
 
 interface NewEventForm {
   name: string;
@@ -51,12 +52,14 @@ const EventManager = memo(function EventManager({
 
   return (
     <div className="space-y-4">
-      <label className="block text-sm font-medium">イベントの追加</label>
+      <label className="block text-sm font-medium">
+        {DASHBOARD_CONTROLS.ADD_EVENT_SECTION}
+      </label>
 
       <div className="space-y-2">
         <input
           type="text"
-          placeholder="イベント名"
+          placeholder={DASHBOARD_CONTROLS.EVENT_NAME_PLACEHOLDER}
           value={newEvent.name}
           onChange={(e) =>
             setNewEvent((prev) => ({ ...prev, name: e.target.value }))
@@ -85,7 +88,7 @@ const EventManager = memo(function EventManager({
 
         <input
           type="number"
-          placeholder="影響度 (-1.0 〜 1.0)"
+          placeholder={DASHBOARD_CONTROLS.EVENT_IMPACT_PLACEHOLDER}
           min={String(GENERATION_CONSTRAINTS.EVENT_IMPACT.MIN)}
           max={String(GENERATION_CONSTRAINTS.EVENT_IMPACT.MAX)}
           step={String(GENERATION_CONSTRAINTS.EVENT_IMPACT.STEP)}
@@ -103,7 +106,7 @@ const EventManager = memo(function EventManager({
           onClick={handleAddEvent}
           className={`w-full ${getButtonClasses("primary")}`}
         >
-          イベントを追加
+          {DASHBOARD_CONTROLS.ADD_EVENT_BUTTON}
         </button>
       </div>
 
@@ -121,7 +124,7 @@ const EventManager = memo(function EventManager({
               onClick={() => onRemoveEvent(index)}
               className="text-red-500 hover:text-red-600"
             >
-              削除
+              {DASHBOARD_CONTROLS.REMOVE_EVENT_BUTTON}
             </button>
           </div>
         ))}

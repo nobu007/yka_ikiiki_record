@@ -6,15 +6,16 @@ import type {
   EmotionDistributionPattern,
 } from "@/schemas/api";
 import { GENERATION_CONSTRAINTS } from "@/lib/constants";
+import { DASHBOARD_CONTROLS } from "@/lib/constants/messages";
 
 const DISTRIBUTION_PATTERNS: {
   label: string;
   value: EmotionDistributionPattern;
 }[] = [
-  { label: "正規分布", value: "normal" },
-  { label: "二峰分布", value: "bimodal" },
-  { label: "ストレス型", value: "stress" },
-  { label: "ハッピー型", value: "happy" },
+  { label: DASHBOARD_CONTROLS.DISTRIBUTION_PATTERNS.NORMAL, value: "normal" },
+  { label: DASHBOARD_CONTROLS.DISTRIBUTION_PATTERNS.BIMODAL, value: "bimodal" },
+  { label: DASHBOARD_CONTROLS.DISTRIBUTION_PATTERNS.STRESS, value: "stress" },
+  { label: DASHBOARD_CONTROLS.DISTRIBUTION_PATTERNS.HAPPY, value: "happy" },
 ] as const;
 
 interface Props {
@@ -36,7 +37,7 @@ const GenerationControls = memo(function GenerationControls({
     <>
       <div className="space-y-2">
         <label htmlFor="studentCount" className="block text-sm font-medium">
-          生徒数: {config.studentCount}名
+          {DASHBOARD_CONTROLS.STUDENT_COUNT_LABEL}: {config.studentCount}名
         </label>
         <input
           id="studentCount"
@@ -46,13 +47,13 @@ const GenerationControls = memo(function GenerationControls({
           value={config.studentCount}
           onChange={(e) => onUpdateStudentCount(Number(e.target.value))}
           className="w-full"
-          aria-label="生徒数"
+          aria-label={DASHBOARD_CONTROLS.STUDENT_COUNT_LABEL}
         />
       </div>
 
       <div className="space-y-2">
         <label htmlFor="periodDays" className="block text-sm font-medium">
-          記録期間: {config.periodDays}日
+          {DASHBOARD_CONTROLS.PERIOD_DAYS_LABEL}: {config.periodDays}日
         </label>
         <input
           id="periodDays"
@@ -62,12 +63,14 @@ const GenerationControls = memo(function GenerationControls({
           value={config.periodDays}
           onChange={(e) => onUpdatePeriodDays(Number(e.target.value))}
           className="w-full"
-          aria-label="記録期間"
+          aria-label={DASHBOARD_CONTROLS.PERIOD_DAYS_LABEL}
         />
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium">感情分布パターン</label>
+        <label className="block text-sm font-medium">
+          {DASHBOARD_CONTROLS.EMOTION_DISTRIBUTION_PATTERN}
+        </label>
         <div className="grid grid-cols-2 gap-2">
           {DISTRIBUTION_PATTERNS.map(({ label, value }) => (
             <button
@@ -92,7 +95,9 @@ const GenerationControls = memo(function GenerationControls({
           onChange={onToggleSeasonalEffects}
           className="rounded"
         />
-        <label className="text-sm font-medium">季節変動を有効にする</label>
+        <label className="text-sm font-medium">
+          {DASHBOARD_CONTROLS.SEASONAL_EFFECTS_CHECKBOX}
+        </label>
       </div>
     </>
   );

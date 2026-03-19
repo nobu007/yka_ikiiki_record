@@ -130,3 +130,21 @@ export const CHART_AXIS_LABELS = {
   TIME_OF_DAY: ["朝", "昼", "夜"],
   LAST_7_DAYS: ["7日前", "6日前", "5日前", "4日前", "3日前", "2日前", "1日前"],
 };
+
+export const DASHBOARD_CONTROLS = {
+  STUDENT_COUNT_LABEL: "生徒数",
+  PERIOD_DAYS_LABEL: "記録期間",
+  EMOTION_DISTRIBUTION_PATTERN: "感情分布パターン",
+  SEASONAL_EFFECTS_CHECKBOX: "季節変動を有効にする",
+  ADD_EVENT_SECTION: "イベントの追加",
+  EVENT_NAME_PLACEHOLDER: "イベント名",
+  EVENT_IMPACT_PLACEHOLDER: "影響度 (-1.0 〜 1.0)",
+  ADD_EVENT_BUTTON: "イベントを追加",
+  REMOVE_EVENT_BUTTON: "削除",
+  DISTRIBUTION_PATTERNS: {
+    NORMAL: "正規分布",
+    BIMODAL: "二峰分布",
+    STRESS: "ストレス型",
+    HAPPY: "ハッピー型",
+  },
+} as const;

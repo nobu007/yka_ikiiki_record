@@ -11,6 +11,7 @@ import {
 import { StatsData } from "@/schemas/api";
 import { APP_CONFIG } from "@/lib/config";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
+import { SUCCESS_MESSAGES } from "@/lib/constants/messages";
 
 const SeedRequestSchema = z.object({
   config: z.object({
@@ -101,7 +102,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         return createSuccessResponse({
           success: true,
-          message: "テストデータの生成が完了しました",
+          message: SUCCESS_MESSAGES.DATA_GENERATION_COMPLETE,
         });
       }
 

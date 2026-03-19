@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 7,
+  "cycle": 8,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-20T01:36:00Z",
-  "updated_at": "2026-03-20T05:01:00.000000Z",
+  "updated_at": "2026-03-20T05:02:00.000000Z",
   "scan_progress": {
     "all_dirs": [
       "src/app",
@@ -29,10 +29,10 @@
       "src/domain",
       "src/infrastructure",
       "src/lib",
-      "src/presentation"
+      "src/presentation",
+      "src/schemas"
     ],
     "pending_dirs": [
-      "src/schemas",
       "src/utils",
       "src/mirage",
       "src/context",
@@ -226,6 +226,34 @@
           "No dedicated tests (functionality covered by application layer tests)",
           "Follows Clean Architecture: imports from application and lib (cross-cutting)",
           "Minimal presentation logic (delegates to application layer)"
+        ]
+      },
+      {
+        "dir": "src/schemas",
+        "file_count": 4,
+        "test_count": 3,
+        "has_tests": true,
+        "key_exports": [
+          "DataGenerationConfigSchema",
+          "SeedRequestSchema",
+          "SeedResponseSchema",
+          "StatsResponseSchema",
+          "EmotionDistributionPatternSchema",
+          "EventEffectSchema",
+          "ClassCharacteristicsSchema",
+          "DEFAULT_CONFIG"
+        ],
+        "notes": [
+          "Zod-based schema definitions for type-safe API validation",
+          "Data generation schemas: DataGenerationConfig with distribution patterns, event effects, class characteristics",
+          "API request/response schemas: SeedRequest, SeedResponse, StatsResponse with BaseResponse pattern",
+          "Statistics schemas: StatsOverview, MonthlyStats, StudentStats, DayOfWeekStats, TimeOfDayStats",
+          "Exported TypeScript types inferred from Zod schemas for full type safety",
+          "DEFAULT_CONFIG: Predefined configuration using GENERATION_DEFAULTS from constants",
+          "Validation constraints using GENERATION_CONSTRAINTS from lib/constants",
+          "Tests co-located with schemas: response validation, config validation, pattern validation",
+          "Clean Architecture compliance: Cross-cutting layer, imports only from lib (constants)",
+          "3 test files covering schema validation, edge cases, and type inference"
         ]
       }
     ]

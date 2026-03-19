@@ -88,3 +88,11 @@ export const CONTEXT_ERROR_MESSAGES = {
   THEME_PROVIDER: "useTheme must be used within a ThemeProvider",
   SIDEBAR_PROVIDER: "useSidebar must be used within a SidebarProvider",
 } as const;
+
+export const ERROR_BOUNDARY_MESSAGES = {
+  TITLE: "エラーが発生しました",
+  DESCRIPTION: "アプリケーションで予期せぬエラーが発生しました。",
+  ACTION: "ページを更新するか、後でもう一度お試しください。",
+  BUTTON_TEXT: "ページを更新",
+  DEV_DETAILS: "エラー詳細（開発モード）",
+} as const;

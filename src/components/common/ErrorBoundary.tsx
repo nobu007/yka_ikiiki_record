@@ -3,21 +3,7 @@
 import { Component, ErrorInfo, ReactNode } from "react";
 import { ExclamationIcon } from "./Icons";
 import { globalLogger } from "@/lib/resilience/structured-logger";
-
-type ErrorMessageKey =
-  | "title"
-  | "description"
-  | "action"
-  | "buttonText"
-  | "devDetails";
-
-const ERROR_MESSAGES = {
-  title: "エラーが発生しました",
-  description: "アプリケーションで予期せぬエラーが発生しました。",
-  action: "ページを更新するか、後でもう一度お試しください。",
-  buttonText: "ページを更新",
-  devDetails: "エラー詳細（開発モード）",
-} satisfies Record<ErrorMessageKey, string>;
+import { ERROR_BOUNDARY_MESSAGES } from "@/lib/constants/messages";
 
 interface Props {
   children: ReactNode;
@@ -67,7 +53,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     return (
       <details className="mt-4 p-2 bg-gray-100 rounded text-xs">
-        <summary>{ERROR_MESSAGES.devDetails}</summary>
+        <summary>{ERROR_BOUNDARY_MESSAGES.DEV_DETAILS}</summary>
         <pre className="mt-2 whitespace-pre-wrap">{this.state.error.stack}</pre>
       </details>
     );
@@ -79,13 +65,13 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="flex items-center mb-4">
           <ExclamationIcon />
           <h3 className="ml-3 text-sm font-medium text-gray-800">
-            {ERROR_MESSAGES.title}
+            {ERROR_BOUNDARY_MESSAGES.TITLE}
           </h3>
         </div>
 
         <div className="text-sm text-gray-600 mb-4">
-          <p>{ERROR_MESSAGES.description}</p>
-          <p className="mt-2">{ERROR_MESSAGES.action}</p>
+          <p>{ERROR_BOUNDARY_MESSAGES.DESCRIPTION}</p>
+          <p className="mt-2">{ERROR_BOUNDARY_MESSAGES.ACTION}</p>
         </div>
 
         <button
@@ -93,7 +79,7 @@ export class ErrorBoundary extends Component<Props, State> {
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           onClick={this.handleReload}
         >
-          {ERROR_MESSAGES.buttonText}
+          {ERROR_BOUNDARY_MESSAGES.BUTTON_TEXT}
         </button>
 
         {this.renderErrorDetails()}

@@ -16,6 +16,8 @@ const YAXIS_TICK_AMOUNT = 5;
 const YAXIS_LABEL_PRECISION = 1;
 const TOOLTIP_VALUE_PRECISION = 2;
 const GRID_PADDING_LEFT = 10;
+const BAR_COLUMN_WIDTH = '50%';
+const BAR_BORDER_RADIUS = 4;
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -84,8 +86,8 @@ const DynamicBarChart = memo(function DynamicBarChart({
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '50%',
-        borderRadius: 4,
+        columnWidth: BAR_COLUMN_WIDTH,
+        borderRadius: BAR_BORDER_RADIUS,
         distributed: false,
       },
     },

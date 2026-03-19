@@ -7,6 +7,9 @@ import { CHART_COLORS } from '@/lib/config';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const DEFAULT_CHART_HEIGHT = 300;
+const RESPONSIVE_BREAKPOINT = 640;
+const RESPONSIVE_HEIGHT_RATIO = 0.7;
+const TITLE_FONT_SIZE = '16px';
 
 export interface ChartData {
   labels: string[];
@@ -48,10 +51,10 @@ export const EmotionChart = memo<EmotionChartProps>(({
         mode: 'light'
       },
       responsive: [{
-        breakpoint: 640,
+        breakpoint: RESPONSIVE_BREAKPOINT,
         options: {
           chart: {
-            height: height * 0.7
+            height: height * RESPONSIVE_HEIGHT_RATIO
           },
           legend: {
             position: 'bottom'
@@ -64,7 +67,7 @@ export const EmotionChart = memo<EmotionChartProps>(({
       baseOptions.title = {
         text: title,
         style: {
-          fontSize: '16px',
+          fontSize: TITLE_FONT_SIZE,
           fontWeight: 'bold',
           color: CHART_COLORS.GRAY_DARK
         }

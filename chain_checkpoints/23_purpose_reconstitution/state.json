@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 5,
+  "cycle": 6,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-20T01:36:00Z",
-  "updated_at": "2026-03-20T03:50:00Z",
+  "updated_at": "2026-03-20T04:35:23.265602Z",
   "scan_progress": {
     "all_dirs": [
       "src/app",
@@ -27,10 +27,10 @@
       "src/application",
       "src/components",
       "src/domain",
-      "src/infrastructure"
+      "src/infrastructure",
+      "src/lib"
     ],
     "pending_dirs": [
-      "src/lib",
       "src/presentation",
       "src/schemas",
       "src/utils",
@@ -168,6 +168,46 @@
           "All database operations protected by timeout enforcement (autonomous durability protocol)",
           "Comprehensive test coverage: 13 test files covering CRUD operations, seed generation, configuration, features",
           "Clean Architecture compliance: Imports only from domain and lib (cross-cutting), no imports from presentation/application"
+        ]
+      },
+      {
+        "dir": "src/lib",
+        "file_count": 45,
+        "test_count": 28,
+        "has_tests": true,
+        "key_exports": [
+          "TimeoutError",
+          "withTimeout",
+          "CircuitBreaker",
+          "StructuredLogger",
+          "LoopDetector",
+          "MemoryMonitor",
+          "AppError",
+          "ValidationError",
+          "NetworkError",
+          "handleApiError",
+          "withResilientHandler",
+          "APP_CONFIG",
+          "EMOTION_CONFIG",
+          "UI_CONFIG",
+          "CHART_COLORS"
+        ],
+        "notes": [
+          "Cross-cutting layer with shared utilities and configurations",
+          "resilience/: Autonomous durability protocol components (timeout, circuit-breaker, loop-detector, memory-monitor, structured-logger)",
+          "All async operations protected by timeout enforcement (SYSTEM_CONSTITUTION.md compliance)",
+          "Circuit-breaker pattern for cascading failure prevention",
+          "LoopDetector with destroy() method and complete timer cleanup (Jest hang resolved)",
+          "StructuredLogger with automatic log compression and visibility filtering",
+          "MemoryMonitor for leak detection and GC triggering",
+          "api/: API error handling, resilient handler wrapper, request validation, response utilities",
+          "withResilientHandler() combines timeout + circuit-breaker + structured logging",
+          "config/: Application configuration (APP_CONFIG, EMOTION_CONFIG, UI_CONFIG, CHART_COLORS)",
+          "constants/: Centralized constants (messages, UI strings, API config, generation defaults)",
+          "error-handler.ts: Type-safe error classes (AppError, ValidationError, NetworkError) with normalization",
+          "Comprehensive test coverage: 28 test files covering all resilience patterns, error handling, and configuration",
+          "Clean Architecture compliance: Cross-cutting layer, imports allowed from all layers",
+          "Recent improvements: Centralized error messages, UI strings, and configuration constants"
         ]
       }
     ]

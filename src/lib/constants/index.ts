@@ -22,6 +22,7 @@ export const EMOTION_RANGES = {
   SEASONAL_IMPACT: 0.2,
   MAX_EVENT_IMPACT: 0.5,
   DISTRIBUTION_BINS: 5,
+  LABELS: ["1", "2", "3", "4", "5"] as const,
 } as const;
 
 export const GENERATION_CONSTRAINTS = {

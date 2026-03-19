@@ -4,6 +4,7 @@ import { AppError, NetworkError, normalizeError, logError } from '@/lib/error-ha
 import { API_ENDPOINTS, ERROR_MESSAGES } from '@/lib/constants/messages';
 import { SeedResponseSchema } from '@/schemas/api';
 import { validateDataSafe } from '@/lib/api/validation';
+import { withApiTimeout } from '@/lib/resilience/timeout';
 
 export function useSeedGeneration() {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -14,11 +15,11 @@ export function useSeedGeneration() {
     setError(null);
 
     try {
-      const response = await fetch(API_ENDPOINTS.SEED, {
+      const response = await withApiTimeout(fetch(API_ENDPOINTS.SEED, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ config }),
-      });
+      }));
 
       if (!response.ok) {
         throw new NetworkError(ERROR_MESSAGES.API_ERROR(response.status, response.statusText));

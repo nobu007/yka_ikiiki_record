@@ -6,6 +6,7 @@ import { DataVisualization } from './dashboard/DataVisualization';
 import { StatsResponseSchema, StatsData } from '@/schemas/api';
 import { validateDataSafe } from '@/lib/api/validation';
 import { normalizeError, logError } from '@/lib/error-handler';
+import { withApiTimeout } from '@/lib/resilience/timeout';
 
 interface DashboardProps {
   isGenerating: boolean;
@@ -37,7 +38,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
   const fetchStats = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/seed');
+      const response = await withApiTimeout(fetch('/api/seed'));
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);

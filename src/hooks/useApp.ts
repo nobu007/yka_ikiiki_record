@@ -5,6 +5,7 @@ import { APP_CONFIG, MESSAGES } from '@/lib/config';
 import { normalizeError, getUserFriendlyMessage, logError } from '@/lib/error-handler';
 import { SeedResponseSchema } from '@/schemas/api';
 import { validateDataSafe } from '@/lib/api/validation';
+import { withApiTimeout } from '@/lib/resilience/timeout';
 
 interface NotificationState {
   show: boolean;
@@ -57,11 +58,11 @@ export function useDashboard() {
         distributionPattern: APP_CONFIG.generation.defaultPattern
       };
 
-      const response = await fetch(`${APP_CONFIG.api.baseUrl}${APP_CONFIG.api.endpoints.seed}`, {
+      const response = await withApiTimeout(fetch(`${APP_CONFIG.api.baseUrl}${APP_CONFIG.api.endpoints.seed}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ config }),
-      });
+      }));
 
       if (!response.ok) {
         throw new Error(MESSAGES.error.api(response.status, response.statusText));

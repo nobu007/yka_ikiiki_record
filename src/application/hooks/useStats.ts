@@ -2,10 +2,11 @@ import useSWR from 'swr';
 import { StatsResponseSchema, StatsResponse } from '@/schemas/api';
 import { useState, useCallback } from 'react';
 import { validateDataSafe } from '@/lib/api/validation';
+import { withApiTimeout } from '@/lib/resilience/timeout';
 
 const fetcher = async (url: string): Promise<StatsResponse> => {
   try {
-    const response = await fetch(url);
+    const response = await withApiTimeout(fetch(url));
     if (!response.ok) {
       throw new Error('APIリクエストに失敗しました');
     }

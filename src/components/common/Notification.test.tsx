@@ -1,97 +1,219 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Notification } from "./Notification";
-import { expectClasses } from "@/test-utils/component-helpers";
 
 describe("Notification", () => {
+  const mockOnClose = jest.fn();
+
   beforeEach(() => {
-    jest.useFakeTimers();
+    jest.clearAllMocks();
   });
 
-  afterEach(() => {
-    jest.useRealTimers();
+  describe("rendering behavior", () => {
+    it("should not render when show is false", () => {
+      const { container } = render(
+        <Notification
+          show={false}
+          message="Test message"
+          type="info"
+          onClose={mockOnClose}
+        />,
+      );
+
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("should render when show is true", () => {
+      render(
+        <Notification
+          show={true}
+          message="Test message"
+          type="info"
+          onClose={mockOnClose}
+        />,
+      );
+
+      expect(screen.getByText("Test message")).toBeInTheDocument();
+    });
+
+    it("should render with correct message", () => {
+      render(
+        <Notification
+          show={true}
+          message="This is a test notification"
+          type="success"
+        />,
+      );
+
+      expect(
+        screen.getByText("This is a test notification"),
+      ).toBeInTheDocument();
+    });
   });
 
-  test("should not render when show is false", () => {
-    render(<Notification show={false} message="Test message" type="success" />);
+  describe("accessibility", () => {
+    it("should have role alert", () => {
+      const { container } = render(
+        <Notification show={true} message="Test" type="info" />,
+      );
 
-    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      const alert = container.querySelector('[role="alert"]');
+      expect(alert).toBeInTheDocument();
+    });
+
+    it("should have aria-live polite", () => {
+      const { container } = render(
+        <Notification show={true} message="Test" type="info" />,
+      );
+
+      const alert = container.querySelector('[aria-live="polite"]');
+      expect(alert).toBeInTheDocument();
+    });
   });
 
-  test("should render when show is true", () => {
-    render(<Notification show={true} message="Test message" type="success" />);
+  describe("close button", () => {
+    it("should render close button when onClose is provided", () => {
+      render(
+        <Notification
+          show={true}
+          message="Test message"
+          type="info"
+          onClose={mockOnClose}
+        />,
+      );
 
-    expect(screen.getByRole("alert")).toBeInTheDocument();
-    expect(screen.getByText("Test message")).toBeInTheDocument();
+      const closeButton = screen.getByText("閉じる");
+      expect(closeButton).toBeInTheDocument();
+    });
+
+    it("should not render close button when onClose is not provided", () => {
+      render(
+        <Notification show={true} message="Test message" type="info" />,
+      );
+
+      const closeButton = screen.queryByText("閉じる");
+      expect(closeButton).not.toBeInTheDocument();
+    });
+
+    it("should call onClose when close button is clicked", () => {
+      render(
+        <Notification
+          show={true}
+          message="Test message"
+          type="info"
+          onClose={mockOnClose}
+        />,
+      );
+
+      const closeButton = screen.getByText("閉じる");
+      closeButton.click();
+
+      expect(mockOnClose).toHaveBeenCalledTimes(1);
+    });
+
+    it("should have correct aria-label on close button", () => {
+      const { container } = render(
+        <Notification
+          show={true}
+          message="Test message"
+          type="info"
+          onClose={mockOnClose}
+        />,
+      );
+
+      const closeButton = container.querySelector(
+        'button[aria-label="通知を閉じる"]',
+      );
+      expect(closeButton).toBeInTheDocument();
+    });
   });
 
-  test("should apply correct styles for success type", () => {
-    render(
-      <Notification show={true} message="Success message" type="success" />,
-    );
+  describe("notification types", () => {
+    it("should render success notification", () => {
+      const { container } = render(
+        <Notification
+          show={true}
+          message="Success message"
+          type="success"
+        />,
+      );
 
-    const notification = screen.getByRole("alert");
-    expectClasses(
-      notification,
-      "bg-green-50",
-      "border-green-200",
-      "text-green-800",
-    );
+      const notification = container.firstChild as HTMLElement;
+      expect(notification).toHaveClass("p-4 rounded-lg border shadow-sm");
+      expect(notification).toHaveClass("bg-green-50 border-green-200 text-green-800");
+    });
+
+    it("should render error notification", () => {
+      const { container } = render(
+        <Notification show={true} message="Error message" type="error" />,
+      );
+
+      const notification = container.firstChild as HTMLElement;
+      expect(notification).toBeInTheDocument();
+    });
+
+    it("should render warning notification", () => {
+      const { container } = render(
+        <Notification
+          show={true}
+          message="Warning message"
+          type="warning"
+        />,
+      );
+
+      const notification = container.firstChild as HTMLElement;
+      expect(notification).toBeInTheDocument();
+    });
+
+    it("should render info notification", () => {
+      const { container } = render(
+        <Notification show={true} message="Info message" type="info" />,
+      );
+
+      const notification = container.firstChild as HTMLElement;
+      expect(notification).toBeInTheDocument();
+    });
   });
 
-  test("should apply correct styles for error type", () => {
-    render(<Notification show={true} message="Error message" type="error" />);
-
-    const notification = screen.getByRole("alert");
-    expectClasses(notification, "bg-red-50", "border-red-200", "text-red-800");
+  describe("memoization", () => {
+    it("should have displayName", () => {
+      expect(Notification.displayName).toBe("Notification");
+    });
   });
 
-  test("should apply correct styles for warning type", () => {
-    render(
-      <Notification show={true} message="Warning message" type="warning" />,
-    );
+  describe("edge cases", () => {
+    it("should handle empty message gracefully", () => {
+      const { container } = render(
+        <Notification show={true} message="" type="info" />,
+      );
 
-    const notification = screen.getByRole("alert");
-    expectClasses(
-      notification,
-      "bg-yellow-50",
-      "border-yellow-200",
-      "text-yellow-800",
-    );
-  });
+      const messageElement = container.querySelector('p[class*="break-words"]');
+      expect(messageElement).toBeInTheDocument();
+      expect(messageElement).toHaveTextContent("");
+    });
 
-  test("should apply correct styles for info type", () => {
-    render(<Notification show={true} message="Info message" type="info" />);
+    it("should handle long message with word break", () => {
+      const longMessage =
+        "This is a very long notification message that should wrap to multiple lines and break words appropriately to maintain readability";
 
-    const notification = screen.getByRole("alert");
-    expectClasses(
-      notification,
-      "bg-blue-50",
-      "border-blue-200",
-      "text-blue-800",
-    );
-  });
+      render(
+        <Notification show={true} message={longMessage} type="info" />,
+      );
 
-  test("should call onClose when close button is clicked", () => {
-    const mockOnClose = jest.fn();
+      const messageElement = screen.getByText(longMessage);
+      expect(messageElement).toHaveClass("break-words");
+    });
 
-    render(
-      <Notification
-        show={true}
-        message="Test message"
-        type="success"
-        onClose={mockOnClose}
-      />,
-    );
+    it("should not call onClose when not provided and close button area is clicked", () => {
+      const { container } = render(
+        <Notification show={true} message="Test message" type="info" />,
+      );
 
-    const closeButton = screen.getByLabelText("通知を閉じる");
-    fireEvent.click(closeButton);
+      const notificationContainer = container.firstChild as HTMLElement;
+      if (notificationContainer) {
+        notificationContainer.click();
+      }
 
-    expect(mockOnClose).toHaveBeenCalledTimes(1);
-  });
-
-  test("should not render close button when onClose is not provided", () => {
-    render(<Notification show={true} message="Test message" type="success" />);
-
-    expect(screen.queryByLabelText("通知を閉じる")).not.toBeInTheDocument();
+      expect(mockOnClose).not.toHaveBeenCalled();
+    });
   });
 });

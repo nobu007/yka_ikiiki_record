@@ -1,16 +1,23 @@
-import { useMemo, memo } from 'react';
-import { EmotionChart } from './EmotionChart';
+import { useMemo, memo } from "react";
+import { EmotionChart } from "./EmotionChart";
 
 const TIME_OF_DAY_CHART_HEIGHT = 250;
 
-export const TimeOfDayChart = memo<{ data: { morning: number; afternoon: number; evening: number } }>(({ data }) => {
-  const chartData = useMemo(() => ({
-    labels: ['朝', '昼', '夜'],
-    series: [{
-      name: '平均感情スコア',
-      data: [data.morning, data.afternoon, data.evening]
-    }]
-  }), [data]);
+export const TimeOfDayChart = memo<{
+  data: { morning: number; afternoon: number; evening: number };
+}>(({ data }) => {
+  const chartData = useMemo(
+    () => ({
+      labels: ["朝", "昼", "夜"],
+      series: [
+        {
+          name: "平均感情スコア",
+          data: [data.morning, data.afternoon, data.evening],
+        },
+      ],
+    }),
+    [data],
+  );
 
   return (
     <EmotionChart
@@ -22,4 +29,4 @@ export const TimeOfDayChart = memo<{ data: { morning: number; afternoon: number;
   );
 });
 
-TimeOfDayChart.displayName = 'TimeOfDayChart';
+TimeOfDayChart.displayName = "TimeOfDayChart";

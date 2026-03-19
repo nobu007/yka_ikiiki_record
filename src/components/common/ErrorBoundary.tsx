@@ -1,17 +1,22 @@
-'use client';
+"use client";
 
-import { Component, ErrorInfo, ReactNode } from 'react';
-import { ExclamationIcon } from './Icons';
-import { globalLogger } from '@/lib/resilience/structured-logger';
+import { Component, ErrorInfo, ReactNode } from "react";
+import { ExclamationIcon } from "./Icons";
+import { globalLogger } from "@/lib/resilience/structured-logger";
 
-type ErrorMessageKey = 'title' | 'description' | 'action' | 'buttonText' | 'devDetails';
+type ErrorMessageKey =
+  | "title"
+  | "description"
+  | "action"
+  | "buttonText"
+  | "devDetails";
 
 const ERROR_MESSAGES = {
-  title: 'エラーが発生しました',
-  description: 'アプリケーションで予期せぬエラーが発生しました。',
-  action: 'ページを更新するか、後でもう一度お試しください。',
-  buttonText: 'ページを更新',
-  devDetails: 'エラー詳細（開発モード）'
+  title: "エラーが発生しました",
+  description: "アプリケーションで予期せぬエラーが発生しました。",
+  action: "ページを更新するか、後でもう一度お試しください。",
+  buttonText: "ページを更新",
+  devDetails: "エラー詳細（開発モード）",
 } satisfies Record<ErrorMessageKey, string>;
 
 interface Props {
@@ -35,15 +40,20 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   override componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    globalLogger.error('ErrorBoundary', 'componentDidCatch', {
-      error: {
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
+    globalLogger.error(
+      "ErrorBoundary",
+      "componentDidCatch",
+      {
+        error: {
+          name: error.name,
+          message: error.message,
+          stack: error.stack,
+        },
+        componentStack: errorInfo.componentStack,
+        digest: errorInfo.digest,
       },
-      componentStack: errorInfo.componentStack,
-      digest: errorInfo.digest,
-    }, 'INTERNAL');
+      "INTERNAL",
+    );
   }
 
   private handleReload = (): void => {
@@ -51,16 +61,14 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   private renderErrorDetails = (): ReactNode => {
-    if (process.env.NODE_ENV !== 'development' || !this.state.error) {
+    if (process.env.NODE_ENV !== "development" || !this.state.error) {
       return null;
     }
 
     return (
       <details className="mt-4 p-2 bg-gray-100 rounded text-xs">
         <summary>{ERROR_MESSAGES.devDetails}</summary>
-        <pre className="mt-2 whitespace-pre-wrap">
-          {this.state.error.stack}
-        </pre>
+        <pre className="mt-2 whitespace-pre-wrap">{this.state.error.stack}</pre>
       </details>
     );
   };
@@ -70,14 +78,16 @@ export class ErrorBoundary extends Component<Props, State> {
       <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
         <div className="flex items-center mb-4">
           <ExclamationIcon />
-          <h3 className="ml-3 text-sm font-medium text-gray-800">{ERROR_MESSAGES.title}</h3>
+          <h3 className="ml-3 text-sm font-medium text-gray-800">
+            {ERROR_MESSAGES.title}
+          </h3>
         </div>
-        
+
         <div className="text-sm text-gray-600 mb-4">
           <p>{ERROR_MESSAGES.description}</p>
           <p className="mt-2">{ERROR_MESSAGES.action}</p>
         </div>
-        
+
         <button
           type="button"
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -85,15 +95,15 @@ export class ErrorBoundary extends Component<Props, State> {
         >
           {ERROR_MESSAGES.buttonText}
         </button>
-        
+
         {this.renderErrorDetails()}
       </div>
     </div>
   );
 
   override render() {
-    return this.state.hasError 
-      ? (this.props.fallback || this.renderDefaultError())
+    return this.state.hasError
+      ? this.props.fallback || this.renderDefaultError()
       : this.props.children;
   }
 }

@@ -1,7 +1,7 @@
-import { renderHook } from '@testing-library/react';
-import { useStats } from './useStats';
+import { renderHook } from "@testing-library/react";
+import { useStats } from "./useStats";
 
-jest.mock('swr', () => {
+jest.mock("swr", () => {
   const mockMutate = jest.fn();
   return {
     __esModule: true,
@@ -14,7 +14,7 @@ jest.mock('swr', () => {
   };
 });
 
-import { StatsResponse } from '@/schemas/api';
+import { StatsResponse } from "@/schemas/api";
 
 type UseSWRResponse<T> = {
   data: T | undefined;
@@ -23,11 +23,15 @@ type UseSWRResponse<T> = {
   mutate: () => Promise<void>;
 };
 
-const mockUseSWR = require('swr').default as jest.MockedFunction<
-  (key: string, fetcher: () => Promise<StatsResponse>, config?: unknown) => UseSWRResponse<StatsResponse>
+const mockUseSWR = require("swr").default as jest.MockedFunction<
+  (
+    key: string,
+    fetcher: () => Promise<StatsResponse>,
+    config?: unknown,
+  ) => UseSWRResponse<StatsResponse>
 >;
 
-describe('useStats', () => {
+describe("useStats", () => {
   const mockStatsData = {
     success: true,
     data: {
@@ -36,12 +40,12 @@ describe('useStats', () => {
         avgEmotion: 3.5,
       },
       monthlyStats: [
-        { month: '1月', avgEmotion: 3.2, count: 10 },
-        { month: '2月', avgEmotion: 3.8, count: 15 },
+        { month: "1月", avgEmotion: 3.2, count: 10 },
+        { month: "2月", avgEmotion: 3.8, count: 15 },
       ],
       dayOfWeekStats: [
-        { day: '日', avgEmotion: 3.5, count: 15 },
-        { day: '月', avgEmotion: 3.4, count: 14 },
+        { day: "日", avgEmotion: 3.5, count: 15 },
+        { day: "月", avgEmotion: 3.4, count: 14 },
       ],
       timeOfDayStats: {
         morning: 3.6,
@@ -50,7 +54,7 @@ describe('useStats', () => {
       },
       studentStats: [
         {
-          student: 'Test Student',
+          student: "Test Student",
           avgEmotion: 3.5,
           recordCount: 10,
           trendline: [3.0, 3.2, 3.5, 3.4, 3.6],
@@ -72,8 +76,8 @@ describe('useStats', () => {
     });
   });
 
-  describe('initial state', () => {
-    it('should initialize with loading state true when data is being fetched', () => {
+  describe("initial state", () => {
+    it("should initialize with loading state true when data is being fetched", () => {
       const { result } = renderHook(() => useStats());
 
       expect(result.current.isLoading).toBe(true);
@@ -81,15 +85,15 @@ describe('useStats', () => {
       expect(result.current.error).toBeUndefined();
     });
 
-    it('should have no initial error state', () => {
+    it("should have no initial error state", () => {
       const { result } = renderHook(() => useStats());
 
       expect(result.current.error).toBeUndefined();
     });
   });
 
-  describe('successful data fetching', () => {
-    it('should return stats data when fetch is successful', () => {
+  describe("successful data fetching", () => {
+    it("should return stats data when fetch is successful", () => {
       mockUseSWR.mockReturnValue({
         data: mockStatsData,
         error: undefined,
@@ -104,7 +108,7 @@ describe('useStats', () => {
       expect(result.current.error).toBeUndefined();
     });
 
-    it('should extract data field from StatsResponse', () => {
+    it("should extract data field from StatsResponse", () => {
       mockUseSWR.mockReturnValue({
         data: mockStatsData,
         error: undefined,
@@ -119,7 +123,7 @@ describe('useStats', () => {
       expect(result.current.stats?.overview.avgEmotion).toBe(3.5);
     });
 
-    it('should set loading to false after successful fetch', () => {
+    it("should set loading to false after successful fetch", () => {
       mockUseSWR.mockReturnValue({
         data: mockStatsData,
         error: undefined,
@@ -133,8 +137,8 @@ describe('useStats', () => {
     });
   });
 
-  describe('refetch functionality', () => {
-    it('should call mutate when refetch is invoked', () => {
+  describe("refetch functionality", () => {
+    it("should call mutate when refetch is invoked", () => {
       mockUseSWR.mockReturnValue({
         data: mockStatsData,
         error: undefined,
@@ -149,7 +153,7 @@ describe('useStats', () => {
       expect(mockMutate).toHaveBeenCalled();
     });
 
-    it('should return mutate function from SWR', () => {
+    it("should return mutate function from SWR", () => {
       mockUseSWR.mockReturnValue({
         data: mockStatsData,
         error: undefined,
@@ -159,12 +163,12 @@ describe('useStats', () => {
 
       const { result } = renderHook(() => useStats());
 
-      expect(typeof result.current.refetch).toBe('function');
+      expect(typeof result.current.refetch).toBe("function");
     });
   });
 
-  describe('data structure validation', () => {
-    it('should return stats with all expected fields', () => {
+  describe("data structure validation", () => {
+    it("should return stats with all expected fields", () => {
       mockUseSWR.mockReturnValue({
         data: mockStatsData,
         error: undefined,
@@ -174,15 +178,15 @@ describe('useStats', () => {
 
       const { result } = renderHook(() => useStats());
 
-      expect(result.current.stats).toHaveProperty('overview');
-      expect(result.current.stats).toHaveProperty('monthlyStats');
-      expect(result.current.stats).toHaveProperty('dayOfWeekStats');
-      expect(result.current.stats).toHaveProperty('timeOfDayStats');
-      expect(result.current.stats).toHaveProperty('studentStats');
-      expect(result.current.stats).toHaveProperty('emotionDistribution');
+      expect(result.current.stats).toHaveProperty("overview");
+      expect(result.current.stats).toHaveProperty("monthlyStats");
+      expect(result.current.stats).toHaveProperty("dayOfWeekStats");
+      expect(result.current.stats).toHaveProperty("timeOfDayStats");
+      expect(result.current.stats).toHaveProperty("studentStats");
+      expect(result.current.stats).toHaveProperty("emotionDistribution");
     });
 
-    it('should handle undefined stats gracefully', () => {
+    it("should handle undefined stats gracefully", () => {
       mockUseSWR.mockReturnValue({
         data: undefined,
         error: undefined,

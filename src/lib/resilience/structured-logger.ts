@@ -1,5 +1,5 @@
-export type LogLevel = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL';
-export type LogVisibility = 'PUBLIC' | 'INTERNAL' | 'DEBUG' | 'TRACE';
+export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL";
+export type LogVisibility = "PUBLIC" | "INTERNAL" | "DEBUG" | "TRACE";
 
 export interface LogEntry {
   timestamp: number;
@@ -26,12 +26,15 @@ export class StructuredLogger {
   private maxLogSize: number;
   private compressionThreshold: number;
 
-  constructor(maxLogSize = DEFAULT_MAX_LOG_SIZE, compressionThreshold = DEFAULT_COMPRESSION_THRESHOLD) {
+  constructor(
+    maxLogSize = DEFAULT_MAX_LOG_SIZE,
+    compressionThreshold = DEFAULT_COMPRESSION_THRESHOLD,
+  ) {
     this.maxLogSize = maxLogSize;
     this.compressionThreshold = compressionThreshold;
   }
 
-  log(entry: Omit<LogEntry, 'timestamp' | 'correlationId'>): void {
+  log(entry: Omit<LogEntry, "timestamp" | "correlationId">): void {
     const logEntry: LogEntry = {
       timestamp: Date.now(),
       correlationId: generateCorrelationId(),
@@ -46,10 +49,10 @@ export class StructuredLogger {
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
-    visibility: LogVisibility = 'DEBUG'
+    visibility: LogVisibility = "DEBUG",
   ): void {
     this.log({
-      level: 'DEBUG',
+      level: "DEBUG",
       category,
       operation,
       metadata,
@@ -61,10 +64,10 @@ export class StructuredLogger {
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
-    visibility: LogVisibility = 'INTERNAL'
+    visibility: LogVisibility = "INTERNAL",
   ): void {
     this.log({
-      level: 'INFO',
+      level: "INFO",
       category,
       operation,
       metadata,
@@ -76,10 +79,10 @@ export class StructuredLogger {
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
-    visibility: LogVisibility = 'INTERNAL'
+    visibility: LogVisibility = "INTERNAL",
   ): void {
     this.log({
-      level: 'WARN',
+      level: "WARN",
       category,
       operation,
       metadata,
@@ -91,10 +94,10 @@ export class StructuredLogger {
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
-    visibility: LogVisibility = 'INTERNAL'
+    visibility: LogVisibility = "INTERNAL",
   ): void {
     this.log({
-      level: 'ERROR',
+      level: "ERROR",
       category,
       operation,
       metadata,
@@ -106,10 +109,10 @@ export class StructuredLogger {
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
-    visibility: LogVisibility = 'INTERNAL'
+    visibility: LogVisibility = "INTERNAL",
   ): void {
     this.log({
-      level: 'FATAL',
+      level: "FATAL",
       category,
       operation,
       metadata,
@@ -127,13 +130,16 @@ export class StructuredLogger {
     return this.logs.filter((log) => this.matchesFilter(log, filter));
   }
 
-  private matchesFilter(log: LogEntry, filter: {
-    level?: LogLevel;
-    category?: string;
-    operation?: string;
-    timeRange?: [number, number];
-    visibility?: LogVisibility;
-  }): boolean {
+  private matchesFilter(
+    log: LogEntry,
+    filter: {
+      level?: LogLevel;
+      category?: string;
+      operation?: string;
+      timeRange?: [number, number];
+      visibility?: LogVisibility;
+    },
+  ): boolean {
     if (filter.level && log.level !== filter.level) return false;
     if (filter.category && log.category !== filter.category) return false;
     if (filter.operation && log.operation !== filter.operation) return false;
@@ -142,7 +148,10 @@ export class StructuredLogger {
     return true;
   }
 
-  private matchesTimeRange(timestamp: number, timeRange?: [number, number]): boolean {
+  private matchesTimeRange(
+    timestamp: number,
+    timeRange?: [number, number],
+  ): boolean {
     if (!timeRange) return true;
     const [start, end] = timeRange;
     return timestamp >= start && timestamp <= end;
@@ -169,7 +178,9 @@ export class StructuredLogger {
     const recentLogs = this.logs.slice(-COMPRESS_RECENT_LOGS_COUNT);
     const compressedOldLogs = this.logs
       .slice(0, -COMPRESS_RECENT_LOGS_COUNT)
-      .filter((log) => log.visibility !== 'DEBUG' && log.visibility !== 'TRACE');
+      .filter(
+        (log) => log.visibility !== "DEBUG" && log.visibility !== "TRACE",
+      );
 
     this.logs = [...compressedOldLogs, ...recentLogs];
   }

@@ -1,4 +1,4 @@
-import { Record } from '@/domain/entities/Record';
+import { Record } from "@/domain/entities/Record";
 
 export interface IRecordRepository {
   findById(id: number): Promise<Record | null>;

@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { ErrorBoundary } from './ErrorBoundary';
+import { render, screen, fireEvent } from "@testing-library/react";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 const originalConsoleError = console.error;
 beforeAll(() => {
@@ -10,10 +10,10 @@ afterAll(() => {
   console.error = originalConsoleError;
 });
 
-describe('ErrorBoundary', () => {
+describe("ErrorBoundary", () => {
   const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }) => {
     if (shouldThrow) {
-      throw new Error('Test error');
+      throw new Error("Test error");
     }
     return <div>No error</div>;
   };
@@ -22,48 +22,50 @@ describe('ErrorBoundary', () => {
     jest.clearAllMocks();
   });
 
-  test('renders children when there is no error', () => {
+  test("renders children when there is no error", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={false} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
-    expect(screen.getByText('No error')).toBeInTheDocument();
+    expect(screen.getByText("No error")).toBeInTheDocument();
   });
 
-  test('displays error UI when child component throws', () => {
+  test("displays error UI when child component throws", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
-    expect(screen.getByText('エラーが発生しました')).toBeInTheDocument();
-    expect(screen.getByText('アプリケーションで予期せぬエラーが発生しました。')).toBeInTheDocument();
-    expect(screen.getByText('ページを更新')).toBeInTheDocument();
+    expect(screen.getByText("エラーが発生しました")).toBeInTheDocument();
+    expect(
+      screen.getByText("アプリケーションで予期せぬエラーが発生しました。"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("ページを更新")).toBeInTheDocument();
   });
 
-  test('renders custom fallback when provided', () => {
+  test("renders custom fallback when provided", () => {
     const customFallback = <div>Custom error fallback</div>;
-    
+
     render(
       <ErrorBoundary fallback={customFallback}>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
-    expect(screen.getByText('Custom error fallback')).toBeInTheDocument();
-    expect(screen.queryByText('エラーが発生しました')).not.toBeInTheDocument();
+    expect(screen.getByText("Custom error fallback")).toBeInTheDocument();
+    expect(screen.queryByText("エラーが発生しました")).not.toBeInTheDocument();
   });
 
-  test('reloads page when reload button is clicked', () => {
+  test("reloads page when reload button is clicked", () => {
     const originalLocation = window.location;
     const mockLocation = {
       ...originalLocation,
       reload: jest.fn(),
     };
-    Object.defineProperty(window, 'location', {
+    Object.defineProperty(window, "location", {
       writable: true,
       value: mockLocation,
     });
@@ -71,23 +73,23 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
-    const reloadButton = screen.getByText('ページを更新');
+    const reloadButton = screen.getByText("ページを更新");
     fireEvent.click(reloadButton);
 
     expect(window.location.reload).toHaveBeenCalledTimes(1);
 
     // Restore original location using Object.defineProperty
-    Object.defineProperty(window, 'location', {
+    Object.defineProperty(window, "location", {
       writable: true,
       value: originalLocation,
     });
   });
 
-  test('logs error to console when error occurs', () => {
-    const testError = new Error('Test error');
+  test("logs error to console when error occurs", () => {
+    const testError = new Error("Test error");
     const ThrowSpecificError = () => {
       throw testError;
     };
@@ -95,35 +97,35 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowSpecificError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(console.error).toHaveBeenCalled();
   });
 
-  describe('development mode', () => {
+  describe("development mode", () => {
     const originalNodeEnv = process.env.NODE_ENV;
 
     beforeAll(() => {
       // Use Object.defineProperty to set read-only property
-      Object.defineProperty(process, 'env', {
-        value: { ...process.env, NODE_ENV: 'development' },
+      Object.defineProperty(process, "env", {
+        value: { ...process.env, NODE_ENV: "development" },
         writable: true,
         configurable: true,
       });
     });
 
     afterAll(() => {
-      Object.defineProperty(process, 'env', {
+      Object.defineProperty(process, "env", {
         value: { ...process.env, NODE_ENV: originalNodeEnv },
         writable: true,
         configurable: true,
       });
     });
 
-    test('shows error details in development mode', () => {
-      const testError = new Error('Test error with stack');
-      testError.stack = 'Error: Test error with stack\n    at TestComponent';
+    test("shows error details in development mode", () => {
+      const testError = new Error("Test error with stack");
+      testError.stack = "Error: Test error with stack\n    at TestComponent";
 
       const ThrowErrorWithStack = () => {
         throw testError;
@@ -132,44 +134,46 @@ describe('ErrorBoundary', () => {
       render(
         <ErrorBoundary>
           <ThrowErrorWithStack />
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
 
-      expect(screen.getByText('エラー詳細（開発モード）')).toBeInTheDocument();
+      expect(screen.getByText("エラー詳細（開発モード）")).toBeInTheDocument();
     });
   });
 
-  describe('production mode', () => {
+  describe("production mode", () => {
     const originalNodeEnv = process.env.NODE_ENV;
 
     beforeAll(() => {
-      Object.defineProperty(process, 'env', {
-        value: { ...process.env, NODE_ENV: 'production' },
+      Object.defineProperty(process, "env", {
+        value: { ...process.env, NODE_ENV: "production" },
         writable: true,
         configurable: true,
       });
     });
 
     afterAll(() => {
-      Object.defineProperty(process, 'env', {
+      Object.defineProperty(process, "env", {
         value: { ...process.env, NODE_ENV: originalNodeEnv },
         writable: true,
         configurable: true,
       });
     });
 
-    test('hides error details in production mode', () => {
+    test("hides error details in production mode", () => {
       const ThrowError = () => {
-        throw new Error('Test error');
+        throw new Error("Test error");
       };
 
       render(
         <ErrorBoundary>
           <ThrowError />
-        </ErrorBoundary>
+        </ErrorBoundary>,
       );
 
-      expect(screen.queryByText('エラー詳細（開発モード）')).not.toBeInTheDocument();
+      expect(
+        screen.queryByText("エラー詳細（開発モード）"),
+      ).not.toBeInTheDocument();
     });
   });
 });

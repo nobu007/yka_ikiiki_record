@@ -1,11 +1,11 @@
-import { StatsOverview } from './Stats';
+import { StatsOverview } from "./Stats";
 
-describe('StatsOverview', () => {
-  it('should create valid StatsOverview', () => {
+describe("StatsOverview", () => {
+  it("should create valid StatsOverview", () => {
     // Arrange
     const overview: StatsOverview = {
       count: 100,
-      avgEmotion: 3.5
+      avgEmotion: 3.5,
     };
 
     // Assert
@@ -13,11 +13,11 @@ describe('StatsOverview', () => {
     expect(overview.avgEmotion).toBe(3.5);
   });
 
-  it('should handle zero count', () => {
+  it("should handle zero count", () => {
     // Arrange
     const overview: StatsOverview = {
       count: 0,
-      avgEmotion: 0
+      avgEmotion: 0,
     };
 
     // Assert
@@ -25,11 +25,11 @@ describe('StatsOverview', () => {
     expect(overview.avgEmotion).toBe(0);
   });
 
-  it('should handle maximum values', () => {
+  it("should handle maximum values", () => {
     // Arrange
     const overview: StatsOverview = {
       count: Number.MAX_SAFE_INTEGER,
-      avgEmotion: 5.0
+      avgEmotion: 5.0,
     };
 
     // Assert

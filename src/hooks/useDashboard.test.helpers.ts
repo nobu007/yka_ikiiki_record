@@ -1,6 +1,6 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
-import { useDashboard } from './useApp';
-import { MESSAGES } from '@/lib/config';
+import { renderHook, act, waitFor } from "@testing-library/react";
+import { useDashboard } from "./useApp";
+import { MESSAGES } from "@/lib/config";
 
 export const mockSuccessResponse = {
   success: true,
@@ -10,27 +10,28 @@ export const mockSuccessResponse = {
     dayOfWeekStats: [],
     emotionDistribution: [],
     timeOfDayStats: [],
-    studentStats: []
-  }
+    studentStats: [],
+  },
 };
 
 export const mockErrorResponse = {
   success: false,
-  error: 'Generation failed'
+  error: "Generation failed",
 };
 
 export const mockValidationResponse = {
-  invalid: 'data'
+  invalid: "data",
 };
 
 export const setupMockFetch = (response: unknown, delay?: number) => {
   if (delay) {
     (global.fetch as jest.Mock).mockImplementation(
-      () => new Promise(resolve => {
-        setTimeout(() => {
-          resolve(response);
-        }, delay);
-      })
+      () =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(response);
+          }, delay);
+        }),
     );
   } else {
     (global.fetch as jest.Mock).mockResolvedValueOnce(response);
@@ -41,55 +42,72 @@ export const setupMockFetchError = (error: Error) => {
   (global.fetch as jest.Mock).mockRejectedValueOnce(error);
 };
 
-export const createMockResponse = (ok: boolean, status: number, statusText: string, data?: unknown) => ({
+export const createMockResponse = (
+  ok: boolean,
+  status: number,
+  statusText: string,
+  data?: unknown,
+) => ({
   ok,
   status,
   statusText,
-  ...(data !== undefined && { json: async () => data })
+  ...(data !== undefined && { json: async () => data }),
 });
 
 export const renderDashboardHook = () => renderHook(() => useDashboard());
 
-export const executeHandleGenerate = async (result: ReturnType<typeof renderDashboardHook>['result']) => {
+export const executeHandleGenerate = async (
+  result: ReturnType<typeof renderDashboardHook>["result"],
+) => {
   await act(async () => {
     await result.current.handleGenerate();
   });
 };
 
-export const _waitForGenerationComplete = async (result: ReturnType<typeof renderDashboardHook>['result']) => {
+export const _waitForGenerationComplete = async (
+  result: ReturnType<typeof renderDashboardHook>["result"],
+) => {
   await waitFor(() => {
     expect(result.current.isGenerating).toBe(false);
   });
 };
 
-export const expectDefaultState = (result: ReturnType<typeof renderDashboardHook>['result']) => {
+export const expectDefaultState = (
+  result: ReturnType<typeof renderDashboardHook>["result"],
+) => {
   expect(result.current.isGenerating).toBe(false);
   expect(result.current.notification).toEqual({
     show: false,
-    message: '',
-    type: 'info'
+    message: "",
+    type: "info",
   });
   expect(result.current.isLoadingMessage).toBeNull();
 };
 
-export const expectSuccessState = (result: ReturnType<typeof renderDashboardHook>['result']) => {
+export const expectSuccessState = (
+  result: ReturnType<typeof renderDashboardHook>["result"],
+) => {
   expect(result.current.isGenerating).toBe(false);
   expect(result.current.notification).toEqual({
     show: true,
     message: MESSAGES.success.dataGeneration,
-    type: 'success'
+    type: "success",
   });
   expect(result.current.isLoadingMessage).toBeNull();
 };
 
-export const expectErrorState = (result: ReturnType<typeof renderDashboardHook>['result']) => {
+export const expectErrorState = (
+  result: ReturnType<typeof renderDashboardHook>["result"],
+) => {
   expect(result.current.isGenerating).toBe(false);
   expect(result.current.notification.show).toBe(true);
-  expect(result.current.notification.type).toBe('error');
+  expect(result.current.notification.type).toBe("error");
   expect(result.current.isLoadingMessage).toBeNull();
 };
 
-export const expectLoadingState = (result: ReturnType<typeof renderDashboardHook>['result']) => {
+export const expectLoadingState = (
+  result: ReturnType<typeof renderDashboardHook>["result"],
+) => {
   expect(result.current.isGenerating).toBe(true);
   expect(result.current.isLoadingMessage).toBe(MESSAGES.loading.generating);
 };
@@ -98,10 +116,4 @@ export const clearAllMocks = () => {
   jest.clearAllMocks();
 };
 
-export {
-  renderHook,
-  act,
-  waitFor,
-  useDashboard,
-  MESSAGES
-};
+export { renderHook, act, waitFor, useDashboard, MESSAGES };

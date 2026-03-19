@@ -1,7 +1,9 @@
-'use client';
+"use client";
 
-import { memo } from 'react';
-import DynamicBarChart, { ChartData } from '@/components/charts/DynamicBarChart';
+import { memo } from "react";
+import DynamicBarChart, {
+  ChartData,
+} from "@/components/charts/DynamicBarChart";
 
 interface ChartDataSet {
   monthly: ChartData[];
@@ -21,10 +23,16 @@ interface StatsDisplayProps {
   isDark: boolean;
 }
 
-const StatsDisplay = memo(function StatsDisplay({ data, isLoading, error, onRetry, isDark }: StatsDisplayProps) {
-  const bgColor = isDark ? 'bg-gray-800' : 'bg-white';
-  const textColor = isDark ? 'text-gray-200' : 'text-gray-500';
-  const headingColor = isDark ? 'text-white' : 'text-gray-900';
+const StatsDisplay = memo(function StatsDisplay({
+  data,
+  isLoading,
+  error,
+  onRetry,
+  isDark,
+}: StatsDisplayProps) {
+  const bgColor = isDark ? "bg-gray-800" : "bg-white";
+  const textColor = isDark ? "text-gray-200" : "text-gray-500";
+  const headingColor = isDark ? "text-white" : "text-gray-900";
 
   if (isLoading) {
     return (
@@ -37,7 +45,9 @@ const StatsDisplay = memo(function StatsDisplay({ data, isLoading, error, onRetr
   if (error) {
     return (
       <div className="text-center p-4">
-        <p className="text-red-500 mb-4">エラーが発生しました: {error.message}</p>
+        <p className="text-red-500 mb-4">
+          エラーが発生しました: {error.message}
+        </p>
         <button
           onClick={onRetry}
           className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/80 transition-colors"
@@ -56,11 +66,15 @@ const StatsDisplay = memo(function StatsDisplay({ data, isLoading, error, onRetr
       <div className="grid grid-cols-2 gap-4">
         <div className={`p-4 ${bgColor} rounded-lg shadow transition-colors`}>
           <div className={`text-sm ${textColor}`}>総記録数</div>
-          <div className={`text-2xl font-bold ${headingColor}`}>{data.overview.count}</div>
+          <div className={`text-2xl font-bold ${headingColor}`}>
+            {data.overview.count}
+          </div>
         </div>
         <div className={`p-4 ${bgColor} rounded-lg shadow transition-colors`}>
           <div className={`text-sm ${textColor}`}>平均感情スコア</div>
-          <div className={`text-2xl font-bold ${headingColor}`}>{data.overview.avgEmotion}</div>
+          <div className={`text-2xl font-bold ${headingColor}`}>
+            {data.overview.avgEmotion}
+          </div>
         </div>
       </div>
 
@@ -97,6 +111,6 @@ const StatsDisplay = memo(function StatsDisplay({ data, isLoading, error, onRetr
   );
 });
 
-StatsDisplay.displayName = 'StatsDisplay';
+StatsDisplay.displayName = "StatsDisplay";
 
 export default StatsDisplay;

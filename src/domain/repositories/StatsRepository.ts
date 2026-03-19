@@ -1,4 +1,4 @@
-import { Stats } from '../entities/Stats';
+import { Stats } from "../entities/Stats";
 
 /**
  * 統計情報のリポジトリインターフェース

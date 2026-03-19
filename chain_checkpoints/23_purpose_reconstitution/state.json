@@ -1,0 +1,62 @@
+{
+  "version": "2.0",
+  "phase": "scan",
+  "cycle": 1,
+  "target_repo": "/home/jinno/yka_ikiiki_record",
+  "started_at": "2026-03-20T01:36:00Z",
+  "updated_at": "2026-03-20T01:37:00Z",
+  "scan_progress": {
+    "all_dirs": [
+      "src/app",
+      "src/application",
+      "src/components",
+      "src/domain",
+      "src/infrastructure",
+      "src/lib",
+      "src/presentation",
+      "src/schemas",
+      "src/utils",
+      "src/mirage",
+      "src/context",
+      "prisma",
+      "scripts",
+      "test"
+    ],
+    "completed_dirs": ["src/app"],
+    "pending_dirs": [
+      "src/application",
+      "src/components",
+      "src/domain",
+      "src/infrastructure",
+      "src/lib",
+      "src/presentation",
+      "src/schemas",
+      "src/utils",
+      "src/mirage",
+      "src/context",
+      "prisma",
+      "scripts",
+      "test"
+    ],
+    "findings": [
+      {
+        "dir": "src/app",
+        "file_count": 40,
+        "test_count": 4,
+        "has_tests": true,
+        "key_exports": ["Next.js App Router structure"],
+        "notes": [
+          "Next.js 15 App Router structure with route groups",
+          "API routes: /api/health, /api/seed, /api/stats",
+          "Route groups: (chart) for bar-chart, (dashboard) for dashboard",
+          "Health check endpoint implemented",
+          "Seed endpoint with Prisma/Mirage dual support",
+          "Stats endpoint for data retrieval",
+          "Comprehensive test coverage for dashboard components"
+        ]
+      }
+    ]
+  },
+  "purpose_analysis": null,
+  "gap_analysis": null
+}

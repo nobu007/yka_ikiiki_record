@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { memo, useState } from 'react';
-import type { ClassEvent } from '@/schemas/api';
-import { GENERATION_CONSTRAINTS } from '@/lib/constants';
+import { memo, useState } from "react";
+import type { ClassEvent } from "@/schemas/api";
+import { GENERATION_CONSTRAINTS } from "@/lib/constants";
 
 interface NewEventForm {
   name: string;
   startDate: string;
   endDate: string;
-  impact: number | '';
+  impact: number | "";
 }
 
 const DEFAULT_NEW_EVENT: NewEventForm = {
-  name: '',
-  startDate: '',
-  endDate: '',
-  impact: ''
+  name: "",
+  startDate: "",
+  endDate: "",
+  impact: "",
 };
 
 interface Props {
@@ -24,7 +24,11 @@ interface Props {
   onRemoveEvent: (_index: number) => void;
 }
 
-const EventManager = memo(function EventManager({ events, onAddEvent, onRemoveEvent }: Props) {
+const EventManager = memo(function EventManager({
+  events,
+  onAddEvent,
+  onRemoveEvent,
+}: Props) {
   const [newEvent, setNewEvent] = useState<NewEventForm>(DEFAULT_NEW_EVENT);
 
   const handleAddEvent = () => {
@@ -32,13 +36,13 @@ const EventManager = memo(function EventManager({ events, onAddEvent, onRemoveEv
       newEvent.name &&
       newEvent.startDate &&
       newEvent.endDate &&
-      typeof newEvent.impact === 'number'
+      typeof newEvent.impact === "number"
     ) {
       onAddEvent({
         name: newEvent.name,
         startDate: new Date(newEvent.startDate),
         endDate: new Date(newEvent.endDate),
-        impact: newEvent.impact
+        impact: newEvent.impact,
       });
       setNewEvent(DEFAULT_NEW_EVENT);
     }
@@ -53,7 +57,9 @@ const EventManager = memo(function EventManager({ events, onAddEvent, onRemoveEv
           type="text"
           placeholder="イベント名"
           value={newEvent.name}
-          onChange={(e) => setNewEvent(prev => ({ ...prev, name: e.target.value }))}
+          onChange={(e) =>
+            setNewEvent((prev) => ({ ...prev, name: e.target.value }))
+          }
           className="w-full p-2 border rounded"
         />
 
@@ -61,13 +67,17 @@ const EventManager = memo(function EventManager({ events, onAddEvent, onRemoveEv
           <input
             type="date"
             value={newEvent.startDate}
-            onChange={(e) => setNewEvent(prev => ({ ...prev, startDate: e.target.value }))}
+            onChange={(e) =>
+              setNewEvent((prev) => ({ ...prev, startDate: e.target.value }))
+            }
             className="p-2 border rounded"
           />
           <input
             type="date"
             value={newEvent.endDate}
-            onChange={(e) => setNewEvent(prev => ({ ...prev, endDate: e.target.value }))}
+            onChange={(e) =>
+              setNewEvent((prev) => ({ ...prev, endDate: e.target.value }))
+            }
             className="p-2 border rounded"
           />
         </div>
@@ -79,10 +89,12 @@ const EventManager = memo(function EventManager({ events, onAddEvent, onRemoveEv
           max={String(GENERATION_CONSTRAINTS.EVENT_IMPACT.MAX)}
           step={String(GENERATION_CONSTRAINTS.EVENT_IMPACT.STEP)}
           value={newEvent.impact}
-          onChange={(e) => setNewEvent(prev => ({
-            ...prev,
-            impact: e.target.value ? Number(e.target.value) : ''
-          }))}
+          onChange={(e) =>
+            setNewEvent((prev) => ({
+              ...prev,
+              impact: e.target.value ? Number(e.target.value) : "",
+            }))
+          }
           className="w-full p-2 border rounded"
         />
 
@@ -96,9 +108,13 @@ const EventManager = memo(function EventManager({ events, onAddEvent, onRemoveEv
 
       <div className="space-y-2">
         {events.map((event, index) => (
-          <div key={index} className="flex items-center justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded">
+          <div
+            key={index}
+            className="flex items-center justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded"
+          >
             <span className="text-sm">
-              {event.name} ({new Date(event.startDate).toLocaleDateString()} 〜 {new Date(event.endDate).toLocaleDateString()})
+              {event.name} ({new Date(event.startDate).toLocaleDateString()} 〜{" "}
+              {new Date(event.endDate).toLocaleDateString()})
             </span>
             <button
               onClick={() => onRemoveEvent(index)}
@@ -113,6 +129,6 @@ const EventManager = memo(function EventManager({ events, onAddEvent, onRemoveEv
   );
 });
 
-EventManager.displayName = 'EventManager';
+EventManager.displayName = "EventManager";
 
 export default EventManager;

@@ -1,14 +1,21 @@
-import { useMemo, memo } from 'react';
-import { EmotionChart } from './EmotionChart';
+import { useMemo, memo } from "react";
+import { EmotionChart } from "./EmotionChart";
 
-export const StudentEmotionChart = memo<{ data: Array<{ student: string; avgEmotion: number }> }>(({ data }) => {
-  const chartData = useMemo(() => ({
-    labels: data.map(d => d.student),
-    series: [{
-      name: '平均感情スコア',
-      data: data.map(d => d.avgEmotion)
-    }]
-  }), [data]);
+export const StudentEmotionChart = memo<{
+  data: Array<{ student: string; avgEmotion: number }>;
+}>(({ data }) => {
+  const chartData = useMemo(
+    () => ({
+      labels: data.map((d) => d.student),
+      series: [
+        {
+          name: "平均感情スコア",
+          data: data.map((d) => d.avgEmotion),
+        },
+      ],
+    }),
+    [data],
+  );
 
   return (
     <EmotionChart
@@ -20,4 +27,4 @@ export const StudentEmotionChart = memo<{ data: Array<{ student: string; avgEmot
   );
 });
 
-StudentEmotionChart.displayName = 'StudentEmotionChart';
+StudentEmotionChart.displayName = "StudentEmotionChart";

@@ -1,14 +1,14 @@
-import { AppError, ERROR_CODES, HTTP_STATUS } from '@/lib/error-handler';
-import { globalLogger } from './structured-logger';
+import { AppError, ERROR_CODES, HTTP_STATUS } from "@/lib/error-handler";
+import { globalLogger } from "./structured-logger";
 
 export class TimeoutError extends AppError {
   constructor(operation: string, timeoutMs: number) {
     super(
       `Operation ${operation} timed out after ${timeoutMs}ms`,
       ERROR_CODES.TIMEOUT,
-      HTTP_STATUS.REQUEST_TIMEOUT
+      HTTP_STATUS.REQUEST_TIMEOUT,
     );
-    this.name = 'TimeoutError';
+    this.name = "TimeoutError";
   }
 }
 
@@ -31,14 +31,14 @@ export const DEFAULT_TIMEOUTS: TimeoutConfig = {
 export const withTimeout = async <T>(
   operation: Promise<T>,
   timeoutMs: number,
-  operationType: string
+  operationType: string,
 ): Promise<T> => {
   const timeoutPromise = new Promise<never>((_, reject) => {
     setTimeout(() => {
-      globalLogger.error('TIMEOUT', 'OPERATION_TIMEOUT', {
+      globalLogger.error("TIMEOUT", "OPERATION_TIMEOUT", {
         operation: operationType,
         timeoutMs,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       });
       reject(new TimeoutError(operationType, timeoutMs));
     }, timeoutMs);
@@ -48,22 +48,22 @@ export const withTimeout = async <T>(
 };
 
 export const withCommandTimeout = <T>(operation: Promise<T>): Promise<T> =>
-  withTimeout(operation, DEFAULT_TIMEOUTS.command, 'command');
+  withTimeout(operation, DEFAULT_TIMEOUTS.command, "command");
 
 export const withApiTimeout = <T>(operation: Promise<T>): Promise<T> =>
-  withTimeout(operation, DEFAULT_TIMEOUTS.api, 'api');
+  withTimeout(operation, DEFAULT_TIMEOUTS.api, "api");
 
 export const withDatabaseTimeout = <T>(operation: Promise<T>): Promise<T> =>
-  withTimeout(operation, DEFAULT_TIMEOUTS.database, 'database');
+  withTimeout(operation, DEFAULT_TIMEOUTS.database, "database");
 
 export const withFileTimeout = <T>(operation: Promise<T>): Promise<T> =>
-  withTimeout(operation, DEFAULT_TIMEOUTS.file, 'file');
+  withTimeout(operation, DEFAULT_TIMEOUTS.file, "file");
 
 export const withE2ETimeout = <T>(operation: Promise<T>): Promise<T> =>
-  withTimeout(operation, DEFAULT_TIMEOUTS.e2e, 'e2e');
+  withTimeout(operation, DEFAULT_TIMEOUTS.e2e, "e2e");
 
 export const withCustomTimeout = <T>(
   operation: Promise<T>,
   timeoutMs: number,
-  operationType: string
+  operationType: string,
 ): Promise<T> => withTimeout(operation, timeoutMs, operationType);

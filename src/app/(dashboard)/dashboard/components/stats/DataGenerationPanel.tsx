@@ -1,18 +1,21 @@
-'use client';
+"use client";
 
-import { memo } from 'react';
-import { useDataGeneration } from '@/application/hooks/useDataGeneration';
-import type { DataGenerationConfig } from '@/schemas/api';
-import GenerationControls from './GenerationControls';
-import EventManager from './EventManager';
-import ClassCharacteristicsEditor from './ClassCharacteristicsEditor';
+import { memo } from "react";
+import { useDataGeneration } from "@/application/hooks/useDataGeneration";
+import type { DataGenerationConfig } from "@/schemas/api";
+import GenerationControls from "./GenerationControls";
+import EventManager from "./EventManager";
+import ClassCharacteristicsEditor from "./ClassCharacteristicsEditor";
 
 interface Props {
   onGenerate: (_config: DataGenerationConfig) => Promise<void>;
   className?: string;
 }
 
-const DataGenerationPanel = memo(function DataGenerationPanel({ onGenerate, className = '' }: Props) {
+const DataGenerationPanel = memo(function DataGenerationPanel({
+  onGenerate,
+  className = "",
+}: Props) {
   const {
     config,
     isGenerating,
@@ -25,11 +28,13 @@ const DataGenerationPanel = memo(function DataGenerationPanel({ onGenerate, clas
     removeEvent,
     updateClassCharacteristics,
     resetConfig,
-    generateData
+    generateData,
   } = useDataGeneration({ onGenerate });
 
   return (
-    <div className={`space-y-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow ${className}`}>
+    <div
+      className={`space-y-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow ${className}`}
+    >
       <h2 className="text-xl font-semibold mb-4">データ生成設定</h2>
 
       <GenerationControls
@@ -63,7 +68,7 @@ const DataGenerationPanel = memo(function DataGenerationPanel({ onGenerate, clas
           disabled={isGenerating}
           className="flex-1 p-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
         >
-          {isGenerating ? '生成中...' : 'データを生成'}
+          {isGenerating ? "生成中..." : "データを生成"}
         </button>
 
         <button
@@ -78,6 +83,6 @@ const DataGenerationPanel = memo(function DataGenerationPanel({ onGenerate, clas
   );
 });
 
-DataGenerationPanel.displayName = 'DataGenerationPanel';
+DataGenerationPanel.displayName = "DataGenerationPanel";
 
 export default DataGenerationPanel;

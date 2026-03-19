@@ -6,10 +6,13 @@ interface BreadcrumbProps {
 }
 
 export const PageBreadcrumb = memo<BreadcrumbProps>(({ pageTitle }) => {
-  const breadcrumbItems = useMemo(() => [
-    { href: '/', label: 'Home' },
-    { href: null, label: pageTitle }
-  ], [pageTitle]);
+  const breadcrumbItems = useMemo(
+    () => [
+      { href: "/", label: "Home" },
+      { href: null, label: pageTitle },
+    ],
+    [pageTitle],
+  );
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
       <h2
@@ -60,4 +63,4 @@ export const PageBreadcrumb = memo<BreadcrumbProps>(({ pageTitle }) => {
   );
 });
 
-PageBreadcrumb.displayName = 'PageBreadcrumb';
+PageBreadcrumb.displayName = "PageBreadcrumb";

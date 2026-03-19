@@ -3,11 +3,11 @@ import {
   calculateStudentStats,
   calculateTrendline,
   calculateEmotionTrend,
-} from './statsCalculator';
+} from "./statsCalculator";
 
-describe('statsCalculator - Distribution & Trend Functions', () => {
-  describe('calculateEmotionDistribution', () => {
-    it('distributes emotions into 5 buckets', () => {
+describe("statsCalculator - Distribution & Trend Functions", () => {
+  describe("calculateEmotionDistribution", () => {
+    it("distributes emotions into 5 buckets", () => {
       const emotions = [
         { date: new Date(), emotion: 1.2 },
         { date: new Date(), emotion: 2.5 },
@@ -24,11 +24,11 @@ describe('statsCalculator - Distribution & Trend Functions', () => {
       expect(result[4]).toBe(1); // 5.x
     });
 
-    it('returns all zeros for empty input', () => {
+    it("returns all zeros for empty input", () => {
       expect(calculateEmotionDistribution([])).toEqual([0, 0, 0, 0, 0]);
     });
 
-    it('clamps values outside [1,5] to boundaries', () => {
+    it("clamps values outside [1,5] to boundaries", () => {
       const emotions = [
         { date: new Date(), emotion: 0.5 },
         { date: new Date(), emotion: 6.0 },
@@ -39,8 +39,8 @@ describe('statsCalculator - Distribution & Trend Functions', () => {
     });
   });
 
-  describe('calculateStudentStats', () => {
-    it('groups by student and calculates stats', () => {
+  describe("calculateStudentStats", () => {
+    it("groups by student and calculates stats", () => {
       const emotions = [
         { date: new Date(), emotion: 3.0, student: 0 },
         { date: new Date(), emotion: 4.0, student: 0 },
@@ -48,72 +48,83 @@ describe('statsCalculator - Distribution & Trend Functions', () => {
       ];
       const result = calculateStudentStats(emotions);
       expect(result).toHaveLength(2);
-      expect(result[0]!.student).toBe('学生1');
+      expect(result[0]!.student).toBe("学生1");
       expect(result[0]!.recordCount).toBe(2);
       expect(result[0]!.avgEmotion).toBe(3.5);
-      expect(result[1]!.student).toBe('学生2');
+      expect(result[1]!.student).toBe("学生2");
       expect(result[1]!.recordCount).toBe(1);
     });
 
-    it('returns empty array for empty input', () => {
+    it("returns empty array for empty input", () => {
       expect(calculateStudentStats([])).toEqual([]);
     });
 
-    it('defaults to student 0 when student is undefined', () => {
+    it("defaults to student 0 when student is undefined", () => {
       const emotions = [{ date: new Date(), emotion: 3.0 }];
       const result = calculateStudentStats(emotions);
-      expect(result[0]!.student).toBe('学生1');
+      expect(result[0]!.student).toBe("学生1");
     });
   });
 
-  describe('calculateTrendline', () => {
-    it('returns last 7 values rounded to 1 decimal', () => {
+  describe("calculateTrendline", () => {
+    it("returns last 7 values rounded to 1 decimal", () => {
       const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       const result = calculateTrendline(input);
       expect(result).toEqual([4, 5, 6, 7, 8, 9, 10]);
     });
 
-    it('returns all if fewer than 7', () => {
+    it("returns all if fewer than 7", () => {
       expect(calculateTrendline([3.14, 2.71])).toEqual([3.1, 2.7]);
     });
 
-    it('returns empty for empty input', () => {
+    it("returns empty for empty input", () => {
       expect(calculateTrendline([])).toEqual([]);
     });
 
-    it('handles null/undefined values with fallback to 0 (line 143)', () => {
-      const inputWithNulls = [1, 2, null as unknown as number, 4, undefined as unknown as number, 6];
+    it("handles null/undefined values with fallback to 0 (line 143)", () => {
+      const inputWithNulls = [
+        1,
+        2,
+        null as unknown as number,
+        4,
+        undefined as unknown as number,
+        6,
+      ];
       const result = calculateTrendline(inputWithNulls);
       expect(result).toEqual([1.0, 2.0, 0.0, 4.0, 0.0, 6.0]);
     });
 
-    it('handles all null/undefined values', () => {
+    it("handles all null/undefined values", () => {
       const inputWithAllNulls = [null, null, undefined] as unknown as number[];
       const result = calculateTrendline(inputWithAllNulls);
       expect(result).toEqual([0.0, 0.0, 0.0]);
     });
   });
 
-  describe('calculateEmotionTrend', () => {
+  describe("calculateEmotionTrend", () => {
     it('returns "stable" for fewer than 2 elements', () => {
-      expect(calculateEmotionTrend([])).toBe('stable');
-      expect(calculateEmotionTrend([3.0])).toBe('stable');
+      expect(calculateEmotionTrend([])).toBe("stable");
+      expect(calculateEmotionTrend([3.0])).toBe("stable");
     });
 
     it('returns "up" when recent avg exceeds earlier by > 0.2', () => {
-      expect(calculateEmotionTrend([2.0, 2.0, 2.0, 3.0, 3.0, 3.0])).toBe('up');
+      expect(calculateEmotionTrend([2.0, 2.0, 2.0, 3.0, 3.0, 3.0])).toBe("up");
     });
 
     it('returns "down" when recent avg is below earlier by > 0.2', () => {
-      expect(calculateEmotionTrend([4.0, 4.0, 4.0, 3.0, 3.0, 3.0])).toBe('down');
+      expect(calculateEmotionTrend([4.0, 4.0, 4.0, 3.0, 3.0, 3.0])).toBe(
+        "down",
+      );
     });
 
     it('returns "stable" when difference is within 0.2', () => {
-      expect(calculateEmotionTrend([3.0, 3.0, 3.0, 3.1, 3.1, 3.1])).toBe('stable');
+      expect(calculateEmotionTrend([3.0, 3.0, 3.0, 3.1, 3.1, 3.1])).toBe(
+        "stable",
+      );
     });
 
     it('returns "stable" when no earlier period exists (< 4 elements)', () => {
-      expect(calculateEmotionTrend([3.0, 3.0, 3.0])).toBe('stable');
+      expect(calculateEmotionTrend([3.0, 3.0, 3.0])).toBe("stable");
     });
   });
 });

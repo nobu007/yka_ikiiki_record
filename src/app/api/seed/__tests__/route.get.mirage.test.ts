@@ -1,18 +1,18 @@
-import { NextRequest } from 'next/server';
-import { POST, GET } from '../route';
-import { dataService } from '@/infrastructure/services/dataService';
+import { NextRequest } from "next/server";
+import { POST, GET } from "../route";
+import { dataService } from "@/infrastructure/services/dataService";
 
 const originalEnv = process.env.DATABASE_PROVIDER;
 
 beforeAll(() => {
-  process.env.DATABASE_PROVIDER = 'mirage';
+  process.env.DATABASE_PROVIDER = "mirage";
 });
 
 afterAll(() => {
   process.env.DATABASE_PROVIDER = originalEnv;
 });
 
-jest.mock('@/infrastructure/services/dataService', () => ({
+jest.mock("@/infrastructure/services/dataService", () => ({
   dataService: {
     generateStats: jest.fn().mockReturnValue({
       overview: { count: 100, avgEmotion: 3.5 },
@@ -29,7 +29,7 @@ jest.mock('@/infrastructure/services/dataService', () => ({
 
 const mockIsPrismaProvider = false;
 
-jest.mock('@/infrastructure/factories/repositoryFactory', () => ({
+jest.mock("@/infrastructure/factories/repositoryFactory", () => ({
   createStatsService: jest.fn(),
   isPrismaProvider: jest.fn(() => mockIsPrismaProvider),
 }));
@@ -40,13 +40,13 @@ function createMockRequest(body: object): NextRequest {
   } as unknown as NextRequest;
 }
 
-describe('API seed route GET (Mirage provider)', () => {
+describe("API seed route GET (Mirage provider)", () => {
   beforeEach(async () => {
     const validBody = {
       config: {
         periodDays: 30,
         studentCount: 20,
-        distributionPattern: 'normal',
+        distributionPattern: "normal",
         seasonalEffects: true,
         eventEffects: [],
       },
@@ -55,7 +55,7 @@ describe('API seed route GET (Mirage provider)', () => {
     await POST(postReq);
   });
 
-  it('returns cached data when available', async () => {
+  it("returns cached data when available", async () => {
     const response = await GET();
     const body = await response.json();
 
@@ -66,15 +66,15 @@ describe('API seed route GET (Mirage provider)', () => {
     expect(body.metadata.config).toBeDefined();
   });
 
-  it('includes age in metadata', async () => {
+  it("includes age in metadata", async () => {
     const response = await GET();
     const body = await response.json();
 
-    expect(typeof body.metadata.age).toBe('number');
+    expect(typeof body.metadata.age).toBe("number");
     expect(body.metadata.age).toBeGreaterThanOrEqual(0);
   });
 
-  it('cleans up old data on GET', async () => {
+  it("cleans up old data on GET", async () => {
     const response1 = await GET();
     expect(response1.status).toBe(200);
 
@@ -82,7 +82,7 @@ describe('API seed route GET (Mirage provider)', () => {
     expect(response2.status).toBe(200);
   });
 
-  it('uses default values when config properties are missing', async () => {
+  it("uses default values when config properties are missing", async () => {
     const partialBody = {
       config: {
         periodDays: 30,
@@ -95,22 +95,28 @@ describe('API seed route GET (Mirage provider)', () => {
       expect.objectContaining({
         periodDays: 30,
         studentCount: 20,
-        distributionPattern: 'normal',
+        distributionPattern: "normal",
         seasonalEffects: true,
         eventEffects: [],
-      })
+      }),
     );
   });
 });
 
-describe('API seed route GET - cleanup logic verification', () => {
-  const { resetStoredData, setStoredDataWithTimestamp, getStoredData, cleanupOldData, DATA_TTL } = require('../route');
+describe("API seed route GET - cleanup logic verification", () => {
+  const {
+    resetStoredData,
+    setStoredDataWithTimestamp,
+    getStoredData,
+    cleanupOldData,
+    DATA_TTL,
+  } = require("../route");
 
   beforeEach(() => {
     resetStoredData();
   });
 
-  it('cleanupOldData removes expired data', () => {
+  it("cleanupOldData removes expired data", () => {
     const now = Date.now();
     const expiredTimestamp = now - DATA_TTL - 1000;
 
@@ -122,7 +128,7 @@ describe('API seed route GET - cleanup logic verification', () => {
     expect(getStoredData()).toBeNull();
   });
 
-  it('cleanupOldData preserves fresh data', () => {
+  it("cleanupOldData preserves fresh data", () => {
     const now = Date.now();
     const freshTimestamp = now - 60000;
 
@@ -134,7 +140,7 @@ describe('API seed route GET - cleanup logic verification', () => {
     expect(getStoredData()).not.toBeNull();
   });
 
-  it('resetStoredData clears all data', () => {
+  it("resetStoredData clears all data", () => {
     const now = Date.now();
     setStoredDataWithTimestamp(now);
 
@@ -145,7 +151,7 @@ describe('API seed route GET - cleanup logic verification', () => {
     expect(getStoredData()).toBeNull();
   });
 
-  it('returns 404 when no stored data exists (line 129)', async () => {
+  it("returns 404 when no stored data exists (line 129)", async () => {
     resetStoredData();
     const storedBefore = getStoredData();
 
@@ -154,7 +160,9 @@ describe('API seed route GET - cleanup logic verification', () => {
 
     expect(storedBefore).toBeNull();
     expect(responseBody.success).toBe(false);
-    expect(responseBody.error).toContain('データがありません');
-    expect(responseBody.error).toContain('まずPOSTリクエストでデータを生成してください');
+    expect(responseBody.error).toContain("データがありません");
+    expect(responseBody.error).toContain(
+      "まずPOSTリクエストでデータを生成してください",
+    );
   });
 });

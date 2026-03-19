@@ -1,13 +1,18 @@
-import { useState, useEffect, useCallback, useMemo, memo } from 'react';
-import { APP_CONFIG, MESSAGES } from '@/lib/config';
-import { Button } from './ui';
-import { LoadingSpinner, CheckIcon, PlusIcon, Notification } from './common';
-import { UsageInstructions } from './common/UsageInstructions';
-import { DataVisualization } from './dashboard/DataVisualization';
-import { StatsResponseSchema, StatsData } from '@/schemas/api';
-import { validateDataSafe } from '@/lib/api/validation';
-import { normalizeError, logError, AppError, ERROR_CODES } from '@/lib/error-handler';
-import { withApiTimeout } from '@/lib/resilience/timeout';
+import { useState, useEffect, useCallback, useMemo, memo } from "react";
+import { APP_CONFIG, MESSAGES } from "@/lib/config";
+import { Button } from "./ui";
+import { LoadingSpinner, CheckIcon, PlusIcon, Notification } from "./common";
+import { UsageInstructions } from "./common/UsageInstructions";
+import { DataVisualization } from "./dashboard/DataVisualization";
+import { StatsResponseSchema, StatsData } from "@/schemas/api";
+import { validateDataSafe } from "@/lib/api/validation";
+import {
+  normalizeError,
+  logError,
+  AppError,
+  ERROR_CODES,
+} from "@/lib/error-handler";
+import { withApiTimeout } from "@/lib/resilience/timeout";
 
 interface DashboardProps {
   isGenerating: boolean;
@@ -15,7 +20,7 @@ interface DashboardProps {
   notification: {
     show: boolean;
     message: string;
-    type: 'success' | 'error' | 'warning' | 'info';
+    type: "success" | "error" | "warning" | "info";
   };
   onNotificationClose?: () => void;
 }
@@ -24,39 +29,43 @@ const DashboardComponent: React.FC<DashboardProps> = ({
   isGenerating,
   onGenerate,
   notification,
-  onNotificationClose
+  onNotificationClose,
 }) => {
   const [stats, setStats] = useState<StatsData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const helpText = useMemo(() =>
-    isGenerating
-      ? MESSAGES.ui.dashboard.helpTextGenerating
-      : MESSAGES.ui.dashboard.helpTextReady,
-    [isGenerating]
+  const helpText = useMemo(
+    () =>
+      isGenerating
+        ? MESSAGES.ui.dashboard.helpTextGenerating
+        : MESSAGES.ui.dashboard.helpTextReady,
+    [isGenerating],
   );
 
   const fetchStats = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await withApiTimeout(fetch('/api/seed'));
+      const response = await withApiTimeout(fetch("/api/seed"));
 
       if (!response.ok) {
         throw new AppError(
           `HTTP ${response.status}: ${response.statusText}`,
           ERROR_CODES.NETWORK,
-          response.status
+          response.status,
         );
       }
 
       const rawData = await response.json();
 
-      const [validated, validationError] = validateDataSafe(rawData, StatsResponseSchema);
+      const [validated, validationError] = validateDataSafe(
+        rawData,
+        StatsResponseSchema,
+      );
       if (validationError || !validated) {
         throw new AppError(
-          validationError || 'API response validation failed',
+          validationError || "API response validation failed",
           ERROR_CODES.VALIDATION,
-          500
+          500,
         );
       }
 
@@ -65,7 +74,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
       }
     } catch (error) {
       const appError = normalizeError(error);
-      logError(appError, 'Dashboard.fetchStats');
+      logError(appError, "Dashboard.fetchStats");
     } finally {
       setIsLoading(false);
     }
@@ -76,19 +85,20 @@ const DashboardComponent: React.FC<DashboardProps> = ({
   }, [fetchStats]);
 
   useEffect(() => {
-    if (notification.show && notification.type === 'success') {
+    if (notification.show && notification.type === "success") {
       fetchStats();
     }
   }, [notification.show, notification.type, fetchStats]);
 
-  const featuresList = useMemo(() => 
-    MESSAGES.ui.features.generatedData.map((feature, index) => (
-      <li key={index} className="flex items-center text-sm text-gray-600">
-        <CheckIcon />
-        {feature}
-      </li>
-    )),
-    []
+  const featuresList = useMemo(
+    () =>
+      MESSAGES.ui.features.generatedData.map((feature, index) => (
+        <li key={index} className="flex items-center text-sm text-gray-600">
+          <CheckIcon />
+          {feature}
+        </li>
+      )),
+    [],
   );
 
   return (
@@ -99,11 +109,9 @@ const DashboardComponent: React.FC<DashboardProps> = ({
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               {MESSAGES.ui.dashboard.title}
             </h1>
-            <p className="text-gray-600">
-              {APP_CONFIG.description}
-            </p>
+            <p className="text-gray-600">{APP_CONFIG.description}</p>
           </header>
-          
+
           {notification.show && (
             <Notification
               show={notification.show}
@@ -112,7 +120,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
               {...(onNotificationClose && { onClose: onNotificationClose })}
             />
           )}
-          
+
           <main className="space-y-8">
             <section className="bg-gray-50 rounded-lg p-6">
               <header className="mb-6">
@@ -122,20 +130,18 @@ const DashboardComponent: React.FC<DashboardProps> = ({
                 <p className="text-gray-600 mb-4 leading-relaxed">
                   {MESSAGES.ui.dashboard.dataGenerationDescription}
                 </p>
-                
+
                 <div className="bg-white rounded-md p-4 mb-6">
                   <h3 className="text-sm font-medium text-gray-700 mb-3">
                     生成されるデータ
                   </h3>
-                  <ul className="space-y-2">
-                    {featuresList}
-                  </ul>
+                  <ul className="space-y-2">{featuresList}</ul>
                 </div>
               </header>
-              
+
               <div className="flex items-center justify-center">
-                <Button 
-                  onClick={onGenerate} 
+                <Button
+                  onClick={onGenerate}
                   disabled={isGenerating}
                   aria-describedby="generate-help"
                 >
@@ -152,8 +158,11 @@ const DashboardComponent: React.FC<DashboardProps> = ({
                   )}
                 </Button>
               </div>
-              
-              <p id="generate-help" className="mt-4 text-sm text-gray-500 text-center">
+
+              <p
+                id="generate-help"
+                className="mt-4 text-sm text-gray-500 text-center"
+              >
                 {helpText}
               </p>
             </section>
@@ -163,9 +172,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
         </div>
 
         {/* Data Visualization Section */}
-        {stats && !isLoading && (
-          <DataVisualization data={stats} />
-        )}
+        {stats && !isLoading && <DataVisualization data={stats} />}
 
         {isLoading && (
           <div className="bg-white shadow-lg rounded-xl p-8 text-center">
@@ -176,8 +183,12 @@ const DashboardComponent: React.FC<DashboardProps> = ({
 
         {!stats && !isLoading && (
           <div className="bg-white shadow-lg rounded-xl p-8 text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">データがありません</h3>
-            <p className="text-gray-600 mb-4">上のボタンをクリックしてテストデータを生成してください</p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              データがありません
+            </h3>
+            <p className="text-gray-600 mb-4">
+              上のボタンをクリックしてテストデータを生成してください
+            </p>
           </div>
         )}
       </div>
@@ -186,6 +197,6 @@ const DashboardComponent: React.FC<DashboardProps> = ({
 };
 
 const Dashboard = memo(DashboardComponent);
-Dashboard.displayName = 'Dashboard';
+Dashboard.displayName = "Dashboard";
 
 export { Dashboard };

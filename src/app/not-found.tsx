@@ -46,6 +46,6 @@ const NotFound = memo(function NotFound() {
   );
 });
 
-NotFound.displayName = 'NotFound';
+NotFound.displayName = "NotFound";
 
 export default NotFound;

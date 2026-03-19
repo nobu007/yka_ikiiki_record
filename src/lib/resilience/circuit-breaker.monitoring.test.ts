@@ -1,17 +1,14 @@
-import {
-  CircuitBreaker,
-  createCircuitBreaker,
-} from './circuit-breaker';
+import { CircuitBreaker, createCircuitBreaker } from "./circuit-breaker";
 
-describe('CircuitBreaker', () => {
-  describe('execute - monitoring period', () => {
+describe("CircuitBreaker", () => {
+  describe("execute - monitoring period", () => {
     let circuitBreaker: CircuitBreaker;
 
     beforeEach(() => {
       circuitBreaker = createCircuitBreaker();
     });
 
-    it('should reset failure count after monitoring period expires', async () => {
+    it("should reset failure count after monitoring period expires", async () => {
       const config = {
         failureThreshold: 3,
         resetTimeout: 10000,
@@ -19,7 +16,7 @@ describe('CircuitBreaker', () => {
       };
 
       const failingOperation = async () => {
-        throw new Error('Operation failed');
+        throw new Error("Operation failed");
       };
 
       for (let i = 0; i < 2; i++) {
@@ -43,10 +40,10 @@ describe('CircuitBreaker', () => {
       }
 
       expect(circuitBreaker.getFailureCount()).toBe(1);
-      expect(circuitBreaker.getState()).toBe('CLOSED');
+      expect(circuitBreaker.getState()).toBe("CLOSED");
     });
 
-    it('should not reset failure count within monitoring period', async () => {
+    it("should not reset failure count within monitoring period", async () => {
       const config = {
         failureThreshold: 3,
         resetTimeout: 10000,
@@ -54,7 +51,7 @@ describe('CircuitBreaker', () => {
       };
 
       const failingOperation = async () => {
-        throw new Error('Operation failed');
+        throw new Error("Operation failed");
       };
 
       for (let i = 0; i < 2; i++) {
@@ -78,10 +75,10 @@ describe('CircuitBreaker', () => {
       }
 
       expect(circuitBreaker.getFailureCount()).toBe(3);
-      expect(circuitBreaker.getState()).toBe('OPEN');
+      expect(circuitBreaker.getState()).toBe("OPEN");
     });
 
-    it('should accumulate failures across monitoring period boundary', async () => {
+    it("should accumulate failures across monitoring period boundary", async () => {
       const config = {
         failureThreshold: 4,
         resetTimeout: 10000,
@@ -89,7 +86,7 @@ describe('CircuitBreaker', () => {
       };
 
       const failingOperation = async () => {
-        throw new Error('Operation failed');
+        throw new Error("Operation failed");
       };
 
       for (let i = 0; i < 2; i++) {
@@ -115,7 +112,7 @@ describe('CircuitBreaker', () => {
       }
 
       expect(circuitBreaker.getFailureCount()).toBe(2);
-      expect(circuitBreaker.getState()).toBe('CLOSED');
+      expect(circuitBreaker.getState()).toBe("CLOSED");
     });
   });
 });

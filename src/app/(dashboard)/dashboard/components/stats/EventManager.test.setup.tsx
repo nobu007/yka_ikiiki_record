@@ -1,21 +1,21 @@
-import type { ClassEvent } from '@/schemas/api';
+import type { ClassEvent } from "@/schemas/api";
 
 /**
  * Mock events for testing
  */
 export const mockEvents: ClassEvent[] = [
   {
-    name: 'テスト勉強会',
-    startDate: new Date('2026-01-15'),
-    endDate: new Date('2026-01-20'),
-    impact: 0.5
+    name: "テスト勉強会",
+    startDate: new Date("2026-01-15"),
+    endDate: new Date("2026-01-20"),
+    impact: 0.5,
   },
   {
-    name: '運動会',
-    startDate: new Date('2026-02-10'),
-    endDate: new Date('2026-02-10'),
-    impact: -0.3
-  }
+    name: "運動会",
+    startDate: new Date("2026-02-10"),
+    endDate: new Date("2026-02-10"),
+    impact: -0.3,
+  },
 ];
 
 /**
@@ -38,5 +38,5 @@ export function clearMocks(): void {
 export const defaultProps = {
   events: mockEvents,
   onAddEvent: mockOnAddEvent,
-  onRemoveEvent: mockOnRemoveEvent
+  onRemoveEvent: mockOnRemoveEvent,
 };

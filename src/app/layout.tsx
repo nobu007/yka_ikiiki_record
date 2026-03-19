@@ -1,13 +1,16 @@
-import { makeServer } from '@/mirage/server';
-import './globals.css';
+import { makeServer } from "@/mirage/server";
+import "./globals.css";
 
-if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_MOCK === 'true') {
-  makeServer({ environment: 'development' });
+if (
+  process.env.NODE_ENV === "development" &&
+  process.env.NEXT_PUBLIC_MOCK === "true"
+) {
+  makeServer({ environment: "development" });
 }
 
 export const metadata = {
-  title: 'Dashboard',
-  description: 'ダッシュボードアプリケーション',
+  title: "Dashboard",
+  description: "ダッシュボードアプリケーション",
 };
 
 export default function RootLayout({

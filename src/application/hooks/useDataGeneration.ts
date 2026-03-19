@@ -1,12 +1,12 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 import {
   DataGenerationConfig,
   DEFAULT_CONFIG,
   EmotionDistributionPattern,
   EventEffect,
   ClassCharacteristics,
-  DATA_GENERATION_BOUNDS
-} from '@/domain/entities/DataGeneration';
+  DATA_GENERATION_BOUNDS,
+} from "@/domain/entities/DataGeneration";
 
 interface UseDataGenerationProps {
   onGenerate: (_config: DataGenerationConfig) => Promise<void>;
@@ -18,56 +18,68 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
   const [error, setError] = useState<Error | null>(null);
 
   const updateStudentCount = useCallback((count: number) => {
-    setConfig(prev => ({
+    setConfig((prev) => ({
       ...prev,
-      studentCount: Math.max(DATA_GENERATION_BOUNDS.MIN_STUDENTS, Math.min(DATA_GENERATION_BOUNDS.MAX_STUDENTS, count))
+      studentCount: Math.max(
+        DATA_GENERATION_BOUNDS.MIN_STUDENTS,
+        Math.min(DATA_GENERATION_BOUNDS.MAX_STUDENTS, count),
+      ),
     }));
   }, []);
 
   const updatePeriodDays = useCallback((days: number) => {
-    setConfig(prev => ({
+    setConfig((prev) => ({
       ...prev,
-      periodDays: Math.max(DATA_GENERATION_BOUNDS.MIN_PERIOD_DAYS, Math.min(DATA_GENERATION_BOUNDS.MAX_PERIOD_DAYS, days))
+      periodDays: Math.max(
+        DATA_GENERATION_BOUNDS.MIN_PERIOD_DAYS,
+        Math.min(DATA_GENERATION_BOUNDS.MAX_PERIOD_DAYS, days),
+      ),
     }));
   }, []);
 
-  const updateDistributionPattern = useCallback((pattern: EmotionDistributionPattern) => {
-    setConfig(prev => ({
-      ...prev,
-      distributionPattern: pattern
-    }));
-  }, []);
+  const updateDistributionPattern = useCallback(
+    (pattern: EmotionDistributionPattern) => {
+      setConfig((prev) => ({
+        ...prev,
+        distributionPattern: pattern,
+      }));
+    },
+    [],
+  );
 
   const toggleSeasonalEffects = useCallback(() => {
-    setConfig(prev => ({
+    setConfig((prev) => ({
       ...prev,
-      seasonalEffects: !prev.seasonalEffects
+      seasonalEffects: !prev.seasonalEffects,
     }));
   }, []);
 
   const addEvent = useCallback((event: EventEffect) => {
-    setConfig(prev => ({
+    setConfig((prev) => ({
       ...prev,
-      eventEffects: [...prev.eventEffects, event]
+      eventEffects: [...prev.eventEffects, event],
     }));
   }, []);
 
   const removeEvent = useCallback((index: number) => {
-    setConfig(prev => ({
+    setConfig((prev) => ({
       ...prev,
-      eventEffects: prev.eventEffects.filter((_, i) => i !== index)
+      eventEffects: prev.eventEffects.filter((_, i) => i !== index),
     }));
   }, []);
 
-  const updateClassCharacteristics = useCallback((characteristics: Partial<ClassCharacteristics>) => {
-    setConfig(prev => ({
-      ...prev,
-      classCharacteristics: {
-        ...prev.classCharacteristics,
-        ...characteristics
-      }
-    }));
-  }, []);
+  const updateClassCharacteristics = useCallback(
+    (characteristics: Partial<ClassCharacteristics>) => {
+      setConfig((prev) => ({
+        ...prev,
+        classCharacteristics: {
+          ...prev.classCharacteristics,
+          ...characteristics,
+        },
+      }));
+    },
+    [],
+  );
 
   const resetConfig = useCallback(() => {
     setConfig(DEFAULT_CONFIG);
@@ -80,7 +92,7 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     try {
       await onGenerate(config);
     } catch (e) {
-      setError(e instanceof Error ? e : new Error('データ生成に失敗しました'));
+      setError(e instanceof Error ? e : new Error("データ生成に失敗しました"));
     } finally {
       setIsGenerating(false);
     }
@@ -98,6 +110,6 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
     removeEvent,
     updateClassCharacteristics,
     resetConfig,
-    generateData
+    generateData,
   };
 }

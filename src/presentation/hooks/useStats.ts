@@ -1,6 +1,6 @@
-import { useCallback, useMemo } from 'react';
-import { useStats as useApplicationStats } from '@/application/hooks/useStats';
-import { globalLogger } from '@/lib/resilience';
+import { useCallback, useMemo } from "react";
+import { useStats as useApplicationStats } from "@/application/hooks/useStats";
+import { globalLogger } from "@/lib/resilience";
 
 export const useStats = () => {
   const { stats, error, isLoading, refetch } = useApplicationStats();
@@ -8,8 +8,8 @@ export const useStats = () => {
   const displayError = useMemo(() => {
     if (!error) return null;
     return {
-      title: 'エラーが発生しました',
-      message: error.message
+      title: "エラーが発生しました",
+      message: error.message,
     };
   }, [error]);
 
@@ -24,9 +24,9 @@ export const useStats = () => {
     try {
       await refetch();
     } catch (err) {
-      globalLogger.error('PRESENTATION', 'REFETCH_ERROR', {
-        component: 'useStats',
-        error: err instanceof Error ? err.message : String(err)
+      globalLogger.error("PRESENTATION", "REFETCH_ERROR", {
+        component: "useStats",
+        error: err instanceof Error ? err.message : String(err),
       });
     }
   }, [refetch]);
@@ -35,6 +35,6 @@ export const useStats = () => {
     stats: displayStats,
     error: displayError,
     isLoading,
-    refetch: handleRefetch
+    refetch: handleRefetch,
   };
 };

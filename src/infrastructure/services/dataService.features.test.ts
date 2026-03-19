@@ -1,32 +1,35 @@
-import { dataService } from './dataService';
-import type { DataGenerationConfig } from './dataService';
+import { dataService } from "./dataService";
+import type { DataGenerationConfig } from "./dataService";
 
-describe('DataService - Feature Variations', () => {
+describe("DataService - Feature Variations", () => {
   const minimalConfig: DataGenerationConfig = {
     periodDays: 7,
     studentCount: 2,
-    distributionPattern: 'normal',
+    distributionPattern: "normal",
     seasonalEffects: false,
     eventEffects: [],
   };
 
-  describe('distribution patterns', () => {
-    const patterns = ['normal', 'bimodal', 'stress', 'happy'] as const;
+  describe("distribution patterns", () => {
+    const patterns = ["normal", "bimodal", "stress", "happy"] as const;
 
-    it.each(patterns)('should generate valid stats for "%s" pattern', (pattern) => {
-      const config: DataGenerationConfig = {
-        ...minimalConfig,
-        distributionPattern: pattern,
-      };
-      const stats = dataService.generateStats(config);
-      expect(stats.overview.count).toBeGreaterThan(0);
-      expect(stats.overview.avgEmotion).toBeGreaterThanOrEqual(1);
-      expect(stats.overview.avgEmotion).toBeLessThanOrEqual(5);
-    });
+    it.each(patterns)(
+      'should generate valid stats for "%s" pattern',
+      (pattern) => {
+        const config: DataGenerationConfig = {
+          ...minimalConfig,
+          distributionPattern: pattern,
+        };
+        const stats = dataService.generateStats(config);
+        expect(stats.overview.count).toBeGreaterThan(0);
+        expect(stats.overview.avgEmotion).toBeGreaterThanOrEqual(1);
+        expect(stats.overview.avgEmotion).toBeLessThanOrEqual(5);
+      },
+    );
   });
 
-  describe('seasonal effects', () => {
-    it('should produce valid results with seasonal effects enabled', () => {
+  describe("seasonal effects", () => {
+    it("should produce valid results with seasonal effects enabled", () => {
       const config: DataGenerationConfig = {
         ...minimalConfig,
         seasonalEffects: true,
@@ -38,8 +41,8 @@ describe('DataService - Feature Variations', () => {
     });
   });
 
-  describe('class characteristics', () => {
-    it('should apply class characteristics when provided', () => {
+  describe("class characteristics", () => {
+    it("should apply class characteristics when provided", () => {
       const config: DataGenerationConfig = {
         ...minimalConfig,
         classCharacteristics: {
@@ -53,11 +56,11 @@ describe('DataService - Feature Variations', () => {
       expect(stats.overview.avgEmotion).toBeLessThanOrEqual(5);
     });
 
-    it('should produce different results with different volatility values', () => {
+    it("should produce different results with different volatility values", () => {
       const baseConfig: DataGenerationConfig = {
         periodDays: 30,
         studentCount: 10,
-        distributionPattern: 'normal',
+        distributionPattern: "normal",
         seasonalEffects: false,
         eventEffects: [],
       };
@@ -78,8 +81,8 @@ describe('DataService - Feature Variations', () => {
     });
   });
 
-  describe('event effects', () => {
-    it('should apply event effects to emotion generation', () => {
+  describe("event effects", () => {
+    it("should apply event effects to emotion generation", () => {
       const today = new Date();
       const weekAgo = new Date(today);
       weekAgo.setDate(weekAgo.getDate() - 7);

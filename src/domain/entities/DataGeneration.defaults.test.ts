@@ -1,11 +1,11 @@
-import { DEFAULT_CONFIG, EMOTION_CONSTANTS } from './DataGeneration';
+import { DEFAULT_CONFIG, EMOTION_CONSTANTS } from "./DataGeneration";
 
-describe('DEFAULT_CONFIG', () => {
-  it('should have valid default values', () => {
+describe("DEFAULT_CONFIG", () => {
+  it("should have valid default values", () => {
     // Assert
     expect(DEFAULT_CONFIG.studentCount).toBe(25);
     expect(DEFAULT_CONFIG.periodDays).toBe(30);
-    expect(DEFAULT_CONFIG.distributionPattern).toBe('normal');
+    expect(DEFAULT_CONFIG.distributionPattern).toBe("normal");
     expect(DEFAULT_CONFIG.seasonalEffects).toBe(false);
     expect(DEFAULT_CONFIG.eventEffects).toEqual([]);
     expect(DEFAULT_CONFIG.classCharacteristics.baselineEmotion).toBe(3.0);
@@ -13,31 +13,43 @@ describe('DEFAULT_CONFIG', () => {
     expect(DEFAULT_CONFIG.classCharacteristics.cohesion).toBe(0.7);
   });
 
-  it('should be a valid DataGenerationConfig', () => {
+  it("should be a valid DataGenerationConfig", () => {
     // Assert
-    expect(DEFAULT_CONFIG).toHaveProperty('studentCount');
-    expect(DEFAULT_CONFIG).toHaveProperty('periodDays');
-    expect(DEFAULT_CONFIG).toHaveProperty('distributionPattern');
-    expect(DEFAULT_CONFIG).toHaveProperty('seasonalEffects');
-    expect(DEFAULT_CONFIG).toHaveProperty('eventEffects');
-    expect(DEFAULT_CONFIG).toHaveProperty('classCharacteristics');
+    expect(DEFAULT_CONFIG).toHaveProperty("studentCount");
+    expect(DEFAULT_CONFIG).toHaveProperty("periodDays");
+    expect(DEFAULT_CONFIG).toHaveProperty("distributionPattern");
+    expect(DEFAULT_CONFIG).toHaveProperty("seasonalEffects");
+    expect(DEFAULT_CONFIG).toHaveProperty("eventEffects");
+    expect(DEFAULT_CONFIG).toHaveProperty("classCharacteristics");
   });
 
-  it('should have reasonable default values', () => {
+  it("should have reasonable default values", () => {
     // Assert
     expect(DEFAULT_CONFIG.studentCount).toBeGreaterThan(0);
     expect(DEFAULT_CONFIG.periodDays).toBeGreaterThan(0);
-    expect(DEFAULT_CONFIG.classCharacteristics.baselineEmotion).toBeGreaterThanOrEqual(1.0);
-    expect(DEFAULT_CONFIG.classCharacteristics.baselineEmotion).toBeLessThanOrEqual(5.0);
-    expect(DEFAULT_CONFIG.classCharacteristics.volatility).toBeGreaterThanOrEqual(0.0);
-    expect(DEFAULT_CONFIG.classCharacteristics.volatility).toBeLessThanOrEqual(1.0);
-    expect(DEFAULT_CONFIG.classCharacteristics.cohesion).toBeGreaterThanOrEqual(0.0);
-    expect(DEFAULT_CONFIG.classCharacteristics.cohesion).toBeLessThanOrEqual(1.0);
+    expect(
+      DEFAULT_CONFIG.classCharacteristics.baselineEmotion,
+    ).toBeGreaterThanOrEqual(1.0);
+    expect(
+      DEFAULT_CONFIG.classCharacteristics.baselineEmotion,
+    ).toBeLessThanOrEqual(5.0);
+    expect(
+      DEFAULT_CONFIG.classCharacteristics.volatility,
+    ).toBeGreaterThanOrEqual(0.0);
+    expect(DEFAULT_CONFIG.classCharacteristics.volatility).toBeLessThanOrEqual(
+      1.0,
+    );
+    expect(DEFAULT_CONFIG.classCharacteristics.cohesion).toBeGreaterThanOrEqual(
+      0.0,
+    );
+    expect(DEFAULT_CONFIG.classCharacteristics.cohesion).toBeLessThanOrEqual(
+      1.0,
+    );
   });
 });
 
-describe('EMOTION_CONSTANTS', () => {
-  it('should have valid emotion range constants', () => {
+describe("EMOTION_CONSTANTS", () => {
+  it("should have valid emotion range constants", () => {
     // Assert
     expect(EMOTION_CONSTANTS.MIN_EMOTION).toBe(1.0);
     expect(EMOTION_CONSTANTS.MAX_EMOTION).toBe(5.0);
@@ -46,14 +58,18 @@ describe('EMOTION_CONSTANTS', () => {
     expect(EMOTION_CONSTANTS.MAX_EVENT_IMPACT).toBe(0.5);
   });
 
-  it('should validate emotion range logic', () => {
+  it("should validate emotion range logic", () => {
     // Assert
-    expect(EMOTION_CONSTANTS.MIN_EMOTION).toBeLessThan(EMOTION_CONSTANTS.MAX_EMOTION);
-    expect(EMOTION_CONSTANTS.SEASONAL_IMPACT).toBeLessThan(EMOTION_CONSTANTS.MAX_EVENT_IMPACT);
+    expect(EMOTION_CONSTANTS.MIN_EMOTION).toBeLessThan(
+      EMOTION_CONSTANTS.MAX_EMOTION,
+    );
+    expect(EMOTION_CONSTANTS.SEASONAL_IMPACT).toBeLessThan(
+      EMOTION_CONSTANTS.MAX_EVENT_IMPACT,
+    );
     expect(EMOTION_CONSTANTS.DEFAULT_STDDEV).toBeGreaterThan(0);
   });
 
-  it('should ensure constants are within reasonable bounds', () => {
+  it("should ensure constants are within reasonable bounds", () => {
     // Assert
     expect(EMOTION_CONSTANTS.SEASONAL_IMPACT).toBeGreaterThan(0);
     expect(EMOTION_CONSTANTS.SEASONAL_IMPACT).toBeLessThan(1);
@@ -61,13 +77,13 @@ describe('EMOTION_CONSTANTS', () => {
     expect(EMOTION_CONSTANTS.MAX_EVENT_IMPACT).toBeLessThan(1);
   });
 
-  it('should be used consistently with DEFAULT_CONFIG', () => {
+  it("should be used consistently with DEFAULT_CONFIG", () => {
     // Assert
-    expect(DEFAULT_CONFIG.classCharacteristics.baselineEmotion).toBeGreaterThanOrEqual(
-      EMOTION_CONSTANTS.MIN_EMOTION
-    );
-    expect(DEFAULT_CONFIG.classCharacteristics.baselineEmotion).toBeLessThanOrEqual(
-      EMOTION_CONSTANTS.MAX_EMOTION
-    );
+    expect(
+      DEFAULT_CONFIG.classCharacteristics.baselineEmotion,
+    ).toBeGreaterThanOrEqual(EMOTION_CONSTANTS.MIN_EMOTION);
+    expect(
+      DEFAULT_CONFIG.classCharacteristics.baselineEmotion,
+    ).toBeLessThanOrEqual(EMOTION_CONSTANTS.MAX_EMOTION);
   });
 });

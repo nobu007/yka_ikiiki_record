@@ -16,7 +16,7 @@ const demoData = [
   { name: "Sep", value: 215 },
   { name: "Oct", value: 390 },
   { name: "Nov", value: 280 },
-  { name: "Dec", value: 112 }
+  { name: "Dec", value: 112 },
 ];
 
 const UI_FEEDBACK_DELAY_MS = 1000;
@@ -29,7 +29,7 @@ export default function BarChartContent() {
     setIsLoading(true);
     setError(null);
     try {
-      await new Promise(resolve => setTimeout(resolve, UI_FEEDBACK_DELAY_MS));
+      await new Promise((resolve) => setTimeout(resolve, UI_FEEDBACK_DELAY_MS));
     } catch (err) {
       setError(err instanceof Error ? err : new Error(String(err)));
     } finally {
@@ -50,21 +50,14 @@ export default function BarChartContent() {
         </button>
       </div>
 
-      <ComponentCard
-        title="月別統計"
-        desc="月別の統計データを表示します"
-      >
+      <ComponentCard title="月別統計" desc="月別の統計データを表示します">
         {error ? (
           <div className="text-red-500 p-4 border border-red-200 rounded-md bg-red-50">
             <p className="font-semibold">エラーが発生しました</p>
             <p className="text-sm">{error.message}</p>
           </div>
         ) : (
-          <DynamicBarChart
-            data={demoData}
-            title="月別データ"
-            height={300}
-          />
+          <DynamicBarChart data={demoData} title="月別データ" height={300} />
         )}
       </ComponentCard>
     </div>

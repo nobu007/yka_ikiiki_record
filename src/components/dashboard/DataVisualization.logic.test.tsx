@@ -1,179 +1,179 @@
-import { render, screen } from '@testing-library/react';
-import { DataVisualization } from './DataVisualization';
-import { StatsData } from '@/schemas/api';
+import { render, screen } from "@testing-library/react";
+import { DataVisualization } from "./DataVisualization";
+import { StatsData } from "@/schemas/api";
 
 const mockStats: StatsData = {
   overview: {
     count: 1000,
-    avgEmotion: 75.5
+    avgEmotion: 75.5,
   },
   monthlyStats: [
-    { month: '2025-01', avgEmotion: 70, count: 100 },
-    { month: '2025-02', avgEmotion: 75, count: 120 },
-    { month: '2025-03', avgEmotion: 80, count: 110 }
+    { month: "2025-01", avgEmotion: 70, count: 100 },
+    { month: "2025-02", avgEmotion: 75, count: 120 },
+    { month: "2025-03", avgEmotion: 80, count: 110 },
   ],
   dayOfWeekStats: [
-    { day: '0', avgEmotion: 72, count: 140 },
-    { day: '1', avgEmotion: 76, count: 150 },
-    { day: '2', avgEmotion: 74, count: 145 }
+    { day: "0", avgEmotion: 72, count: 140 },
+    { day: "1", avgEmotion: 76, count: 150 },
+    { day: "2", avgEmotion: 74, count: 145 },
   ],
   emotionDistribution: [50, 80, 120, 150, 100],
   timeOfDayStats: {
     morning: 70,
     afternoon: 75,
-    evening: 73
+    evening: 73,
   },
   studentStats: [
     {
-      student: '生徒A',
+      student: "生徒A",
       recordCount: 50,
       avgEmotion: 75.5,
-      trendline: [70, 72, 75, 78, 80]
+      trendline: [70, 72, 75, 78, 80],
     },
     {
-      student: '生徒B',
+      student: "生徒B",
       recordCount: 45,
       avgEmotion: 72.3,
-      trendline: [75, 74, 73, 72, 71]
+      trendline: [75, 74, 73, 72, 71],
     },
     {
-      student: '生徒C',
+      student: "生徒C",
       recordCount: 60,
       avgEmotion: 78.9,
-      trendline: [80, 80, 80]
+      trendline: [80, 80, 80],
     },
     {
-      student: '生徒D',
+      student: "生徒D",
       recordCount: 40,
       avgEmotion: 69.2,
-      trendline: [65]
+      trendline: [65],
     },
     {
-      student: '生徒E',
+      student: "生徒E",
       recordCount: 55,
       avgEmotion: 76.8,
-      trendline: [70, 75, 80]
-    }
-  ]
+      trendline: [70, 75, 80],
+    },
+  ],
 };
 
-describe('DataVisualization Logic', () => {
-  describe('Student Statistics Table', () => {
-    it('should render all student statistics', () => {
+describe("DataVisualization Logic", () => {
+  describe("Student Statistics Table", () => {
+    it("should render all student statistics", () => {
       render(<DataVisualization data={mockStats} />);
 
-      expect(screen.getByText('生徒A')).toBeInTheDocument();
-      expect(screen.getByText('生徒B')).toBeInTheDocument();
-      expect(screen.getByText('生徒C')).toBeInTheDocument();
-      expect(screen.getByText('生徒D')).toBeInTheDocument();
-      expect(screen.getByText('生徒E')).toBeInTheDocument();
+      expect(screen.getByText("生徒A")).toBeInTheDocument();
+      expect(screen.getByText("生徒B")).toBeInTheDocument();
+      expect(screen.getByText("生徒C")).toBeInTheDocument();
+      expect(screen.getByText("生徒D")).toBeInTheDocument();
+      expect(screen.getByText("生徒E")).toBeInTheDocument();
     });
 
-    it('should display record counts for all students', () => {
+    it("should display record counts for all students", () => {
       render(<DataVisualization data={mockStats} />);
 
-      const container = screen.getByText('詳細統計').parentElement;
-      expect(container?.textContent).toContain('50');
-      expect(container?.textContent).toContain('45');
-      expect(container?.textContent).toContain('60');
-      expect(container?.textContent).toContain('40');
-      expect(container?.textContent).toContain('55');
+      const container = screen.getByText("詳細統計").parentElement;
+      expect(container?.textContent).toContain("50");
+      expect(container?.textContent).toContain("45");
+      expect(container?.textContent).toContain("60");
+      expect(container?.textContent).toContain("40");
+      expect(container?.textContent).toContain("55");
     });
 
-    it('should display average scores for all students', () => {
+    it("should display average scores for all students", () => {
       render(<DataVisualization data={mockStats} />);
 
-      const container = screen.getByText('詳細統計').parentElement;
-      expect(container?.textContent).toContain('75.5');
-      expect(container?.textContent).toContain('72.3');
-      expect(container?.textContent).toContain('78.9');
-      expect(container?.textContent).toContain('69.2');
-      expect(container?.textContent).toContain('76.8');
+      const container = screen.getByText("詳細統計").parentElement;
+      expect(container?.textContent).toContain("75.5");
+      expect(container?.textContent).toContain("72.3");
+      expect(container?.textContent).toContain("78.9");
+      expect(container?.textContent).toContain("69.2");
+      expect(container?.textContent).toContain("76.8");
     });
   });
 
-  describe('Trend Arrow Formatting', () => {
-    it('should render upward trend arrow for increasing trendlines', () => {
+  describe("Trend Arrow Formatting", () => {
+    it("should render upward trend arrow for increasing trendlines", () => {
       render(<DataVisualization data={mockStats} />);
 
-      const studentARow = screen.getByText('生徒A').closest('tr');
-      expect(studentARow?.textContent).toContain('↗');
+      const studentARow = screen.getByText("生徒A").closest("tr");
+      expect(studentARow?.textContent).toContain("↗");
     });
 
-    it('should render downward trend arrow for decreasing trendlines', () => {
+    it("should render downward trend arrow for decreasing trendlines", () => {
       render(<DataVisualization data={mockStats} />);
 
-      const studentBRow = screen.getByText('生徒B').closest('tr');
-      expect(studentBRow?.textContent).toContain('↘');
+      const studentBRow = screen.getByText("生徒B").closest("tr");
+      expect(studentBRow?.textContent).toContain("↘");
     });
 
-    it('should render stable trend arrow for constant trendlines', () => {
+    it("should render stable trend arrow for constant trendlines", () => {
       render(<DataVisualization data={mockStats} />);
 
-      const studentCRow = screen.getByText('生徒C').closest('tr');
-      expect(studentCRow?.textContent).toContain('→');
+      const studentCRow = screen.getByText("生徒C").closest("tr");
+      expect(studentCRow?.textContent).toContain("→");
     });
 
-    it('should render neutral arrow for single data point', () => {
+    it("should render neutral arrow for single data point", () => {
       render(<DataVisualization data={mockStats} />);
 
-      const studentDRow = screen.getByText('生徒D').closest('tr');
-      expect(studentDRow?.textContent).not.toContain('↗');
-      expect(studentDRow?.textContent).not.toContain('↘');
-      expect(studentDRow?.textContent).not.toContain('→');
+      const studentDRow = screen.getByText("生徒D").closest("tr");
+      expect(studentDRow?.textContent).not.toContain("↗");
+      expect(studentDRow?.textContent).not.toContain("↘");
+      expect(studentDRow?.textContent).not.toContain("→");
     });
 
-    it('should handle empty trendline gracefully (line 23 prev undefined branch)', () => {
+    it("should handle empty trendline gracefully (line 23 prev undefined branch)", () => {
       const statsWithEmptyTrendline: StatsData = {
         ...mockStats,
         studentStats: [
           {
-            student: '生徒F',
+            student: "生徒F",
             recordCount: 0,
             avgEmotion: 0,
-            trendline: []
-          }
-        ]
+            trendline: [],
+          },
+        ],
       };
 
       render(<DataVisualization data={statsWithEmptyTrendline} />);
 
-      expect(screen.getByText('生徒F')).toBeInTheDocument();
+      expect(screen.getByText("生徒F")).toBeInTheDocument();
     });
 
-    it('should render upward trend for volatile increasing trendlines', () => {
+    it("should render upward trend for volatile increasing trendlines", () => {
       render(<DataVisualization data={mockStats} />);
 
-      const studentERow = screen.getByText('生徒E').closest('tr');
-      expect(studentERow?.textContent).toContain('↗');
+      const studentERow = screen.getByText("生徒E").closest("tr");
+      expect(studentERow?.textContent).toContain("↗");
     });
   });
 
-  describe('Data Integration', () => {
-    it('should integrate overview stats correctly', () => {
+  describe("Data Integration", () => {
+    it("should integrate overview stats correctly", () => {
       const { container } = render(<DataVisualization data={mockStats} />);
 
-      expect(container.textContent).toContain('1,000');
-      expect(container.textContent).toContain('75.5');
+      expect(container.textContent).toContain("1,000");
+      expect(container.textContent).toContain("75.5");
     });
 
-    it('should integrate chart data correctly', () => {
+    it("should integrate chart data correctly", () => {
       render(<DataVisualization data={mockStats} />);
 
-      const sections = screen.getAllByRole('generic');
-      const chartSections = sections.filter(section => {
+      const sections = screen.getAllByRole("generic");
+      const chartSections = sections.filter((section) => {
         const classes = section.className;
-        return classes && classes.includes('bg-white rounded-lg p-6 shadow-sm');
+        return classes && classes.includes("bg-white rounded-lg p-6 shadow-sm");
       });
 
       expect(chartSections.length).toBeGreaterThan(0);
     });
 
-    it('should pass correct props to child components', () => {
+    it("should pass correct props to child components", () => {
       render(<DataVisualization data={mockStats} />);
 
-      expect(screen.getByText('データ概要')).toBeInTheDocument();
-      expect(screen.getByText('詳細統計')).toBeInTheDocument();
+      expect(screen.getByText("データ概要")).toBeInTheDocument();
+      expect(screen.getByText("詳細統計")).toBeInTheDocument();
     });
   });
 });

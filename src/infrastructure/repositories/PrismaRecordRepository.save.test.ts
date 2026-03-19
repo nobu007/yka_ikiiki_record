@@ -1,9 +1,9 @@
-import { setupTest } from './PrismaRecordRepository.setup';
-import { Record } from '@/domain/entities/Record';
+import { setupTest } from "./PrismaRecordRepository.setup";
+import { Record } from "@/domain/entities/Record";
 
-describe('PrismaRecordRepository - save', () => {
-  let repository: ReturnType<typeof setupTest>['repository'];
-  let prisma: ReturnType<typeof setupTest>['prisma'];
+describe("PrismaRecordRepository - save", () => {
+  let repository: ReturnType<typeof setupTest>["repository"];
+  let prisma: ReturnType<typeof setupTest>["prisma"];
 
   beforeAll(() => {
     const setup = setupTest();
@@ -15,12 +15,12 @@ describe('PrismaRecordRepository - save', () => {
     jest.clearAllMocks();
   });
 
-  describe('save', () => {
-    it('should create a new record without id', async () => {
+  describe("save", () => {
+    it("should create a new record without id", async () => {
       const record: Record = {
         emotion: 85.5,
-        date: new Date('2024-01-15T10:30:00'),
-        student: '学生1',
+        date: new Date("2024-01-15T10:30:00"),
+        student: "学生1",
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -58,12 +58,12 @@ describe('PrismaRecordRepository - save', () => {
       });
     });
 
-    it('should create a new record with comment', async () => {
+    it("should create a new record with comment", async () => {
       const record: Record = {
         emotion: 75.0,
-        date: new Date('2024-01-15T10:30:00'),
-        student: '学生2',
-        comment: '今日は充実した一日でした',
+        date: new Date("2024-01-15T10:30:00"),
+        student: "学生2",
+        comment: "今日は充実した一日でした",
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -85,12 +85,12 @@ describe('PrismaRecordRepository - save', () => {
       expect(saved.comment).toBe(record.comment);
     });
 
-    it('should update an existing record with id', async () => {
+    it("should update an existing record with id", async () => {
       const existingRecord = {
         id: 1,
         emotion: 50.0,
-        date: new Date('2024-01-15T10:30:00'),
-        student: '学生3',
+        date: new Date("2024-01-15T10:30:00"),
+        student: "学生3",
         comment: null,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -99,9 +99,9 @@ describe('PrismaRecordRepository - save', () => {
       const updatedRecord: Record = {
         id: 1,
         emotion: 90.0,
-        date: new Date('2024-01-16T11:00:00'),
-        student: '学生3',
-        comment: '更新されたコメント',
+        date: new Date("2024-01-16T11:00:00"),
+        student: "学生3",
+        comment: "更新されたコメント",
         createdAt: existingRecord.createdAt,
         updatedAt: new Date(),
       };
@@ -117,7 +117,7 @@ describe('PrismaRecordRepository - save', () => {
 
       expect(saved.id).toBe(1);
       expect(saved.emotion).toBe(90.0);
-      expect(saved.comment).toBe('更新されたコメント');
+      expect(saved.comment).toBe("更新されたコメント");
       expect(prisma.record.upsert).toHaveBeenCalledWith({
         where: { id: 1 },
         create: expect.objectContaining({
@@ -125,16 +125,16 @@ describe('PrismaRecordRepository - save', () => {
         }),
         update: expect.objectContaining({
           emotion: 90.0,
-          comment: '更新されたコメント',
+          comment: "更新されたコメント",
         }),
       });
     });
 
-    it('should handle undefined comment when saving', async () => {
+    it("should handle undefined comment when saving", async () => {
       const record: Record = {
         emotion: 60.0,
-        date: new Date('2024-01-15T10:30:00'),
-        student: '学生4',
+        date: new Date("2024-01-15T10:30:00"),
+        student: "学生4",
         // Omit comment property entirely instead of setting to undefined
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -159,20 +159,20 @@ describe('PrismaRecordRepository - save', () => {
     });
   });
 
-  describe('saveMany', () => {
-    it('should save multiple records', async () => {
+  describe("saveMany", () => {
+    it("should save multiple records", async () => {
       const records: Record[] = [
         {
           emotion: 80.0,
-          date: new Date('2024-01-15T10:00:00'),
-          student: '学生1',
+          date: new Date("2024-01-15T10:00:00"),
+          student: "学生1",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           emotion: 85.0,
-          date: new Date('2024-01-15T11:00:00'),
-          student: '学生2',
+          date: new Date("2024-01-15T11:00:00"),
+          student: "学生2",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -192,14 +192,16 @@ describe('PrismaRecordRepository - save', () => {
 
       expect(saved).toHaveLength(2);
       expect(prisma.record.createMany).toHaveBeenCalledWith({
-        data: records.map((r) => expect.objectContaining({
-          emotion: r.emotion,
-          student: r.student,
-        })),
+        data: records.map((r) =>
+          expect.objectContaining({
+            emotion: r.emotion,
+            student: r.student,
+          }),
+        ),
       });
     });
 
-    it('should handle empty array', async () => {
+    it("should handle empty array", async () => {
       (prisma.record.createMany as jest.Mock).mockResolvedValue({ count: 0 });
       (prisma.record.findMany as jest.Mock).mockResolvedValue([]);
 
@@ -211,20 +213,20 @@ describe('PrismaRecordRepository - save', () => {
       });
     });
 
-    it('should save records with and without comments', async () => {
+    it("should save records with and without comments", async () => {
       const records: Record[] = [
         {
           emotion: 70.0,
-          date: new Date('2024-01-15T10:00:00'),
-          student: '学生1',
-          comment: 'コメントあり',
+          date: new Date("2024-01-15T10:00:00"),
+          student: "学生1",
+          comment: "コメントあり",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           emotion: 75.0,
-          date: new Date('2024-01-15T11:00:00'),
-          student: '学生2',
+          date: new Date("2024-01-15T11:00:00"),
+          student: "学生2",
           createdAt: new Date(),
           updatedAt: new Date(),
         },

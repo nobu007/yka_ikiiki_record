@@ -1,5 +1,12 @@
 "use client";
-import { createContext, useContext, useState, useEffect, useCallback, memo } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  memo,
+} from "react";
 
 type SidebarContextType = {
   isExpanded: boolean;
@@ -24,63 +31,63 @@ export const useSidebar = () => {
   return context;
 };
 
-export const SidebarProvider = memo<{ children: React.ReactNode }>(({ 
-  children 
-}) => {
-  const [isExpanded, setIsExpanded] = useState(true);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [activeItem, setActiveItem] = useState<string | null>(null);
-  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+export const SidebarProvider = memo<{ children: React.ReactNode }>(
+  ({ children }) => {
+    const [isExpanded, setIsExpanded] = useState(true);
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const [activeItem, setActiveItem] = useState<string | null>(null);
+    const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      if (!mobile) {
-        setIsMobileOpen(false);
-      }
-    };
+    useEffect(() => {
+      const handleResize = () => {
+        const mobile = window.innerWidth < 768;
+        setIsMobile(mobile);
+        if (!mobile) {
+          setIsMobileOpen(false);
+        }
+      };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+      handleResize();
+      window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, []);
 
-  const toggleSidebar = useCallback(() => {
-    setIsExpanded((prev) => !prev);
-  }, []);
+    const toggleSidebar = useCallback(() => {
+      setIsExpanded((prev) => !prev);
+    }, []);
 
-  const toggleMobileSidebar = useCallback(() => {
-    setIsMobileOpen((prev) => !prev);
-  }, []);
+    const toggleMobileSidebar = useCallback(() => {
+      setIsMobileOpen((prev) => !prev);
+    }, []);
 
-  const toggleSubmenu = useCallback((item: string) => {
-    setOpenSubmenu((prev) => (prev === item ? null : item));
-  }, []);
+    const toggleSubmenu = useCallback((item: string) => {
+      setOpenSubmenu((prev) => (prev === item ? null : item));
+    }, []);
 
-  return (
-    <SidebarContext.Provider
-      value={{
-        isExpanded: isMobile ? false : isExpanded,
-        isMobileOpen,
-        isHovered,
-        activeItem,
-        openSubmenu,
-        toggleSidebar,
-        toggleMobileSidebar,
-        setIsHovered,
-        setActiveItem,
-        toggleSubmenu,
-      }}
-    >
-      {children}
-    </SidebarContext.Provider>
-  );
-});
+    return (
+      <SidebarContext.Provider
+        value={{
+          isExpanded: isMobile ? false : isExpanded,
+          isMobileOpen,
+          isHovered,
+          activeItem,
+          openSubmenu,
+          toggleSidebar,
+          toggleMobileSidebar,
+          setIsHovered,
+          setActiveItem,
+          toggleSubmenu,
+        }}
+      >
+        {children}
+      </SidebarContext.Provider>
+    );
+  },
+);
 
-SidebarProvider.displayName = 'SidebarProvider';
+SidebarProvider.displayName = "SidebarProvider";

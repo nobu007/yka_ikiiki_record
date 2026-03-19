@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react';
-import { useStats } from './useStats';
-import { StatsResponse } from '@/schemas/api';
+import { renderHook } from "@testing-library/react";
+import { useStats } from "./useStats";
+import { StatsResponse } from "@/schemas/api";
 
-jest.mock('swr', () => {
+jest.mock("swr", () => {
   const mockMutate = jest.fn();
   return {
     __esModule: true,
@@ -22,11 +22,15 @@ type UseSWRResponse<T> = {
   mutate: () => Promise<void>;
 };
 
-const mockUseSWR = require('swr').default as jest.MockedFunction<
-  (key: string, fetcher: () => Promise<StatsResponse>, config?: unknown) => UseSWRResponse<StatsResponse>
+const mockUseSWR = require("swr").default as jest.MockedFunction<
+  (
+    key: string,
+    fetcher: () => Promise<StatsResponse>,
+    config?: unknown,
+  ) => UseSWRResponse<StatsResponse>
 >;
 
-describe('useStats integration scenarios', () => {
+describe("useStats integration scenarios", () => {
   const mockStatsData = {
     success: true,
     data: {
@@ -35,12 +39,12 @@ describe('useStats integration scenarios', () => {
         avgEmotion: 3.5,
       },
       monthlyStats: [
-        { month: '1月', avgEmotion: 3.2, count: 10 },
-        { month: '2月', avgEmotion: 3.8, count: 15 },
+        { month: "1月", avgEmotion: 3.2, count: 10 },
+        { month: "2月", avgEmotion: 3.8, count: 15 },
       ],
       dayOfWeekStats: [
-        { day: '日', avgEmotion: 3.5, count: 15 },
-        { day: '月', avgEmotion: 3.4, count: 14 },
+        { day: "日", avgEmotion: 3.5, count: 15 },
+        { day: "月", avgEmotion: 3.4, count: 14 },
       ],
       timeOfDayStats: {
         morning: 3.6,
@@ -49,7 +53,7 @@ describe('useStats integration scenarios', () => {
       },
       studentStats: [
         {
-          student: 'Test Student',
+          student: "Test Student",
           avgEmotion: 3.5,
           recordCount: 10,
           trendline: [3.0, 3.2, 3.5, 3.4, 3.6],
@@ -71,8 +75,8 @@ describe('useStats integration scenarios', () => {
     });
   });
 
-  describe('happy path scenarios', () => {
-    it('should handle complete happy path: loading -> success', () => {
+  describe("happy path scenarios", () => {
+    it("should handle complete happy path: loading -> success", () => {
       mockUseSWR.mockReturnValue({
         data: mockStatsData,
         error: undefined,
@@ -87,7 +91,7 @@ describe('useStats integration scenarios', () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    it('should maintain stats data across re-renders when no new fetch', () => {
+    it("should maintain stats data across re-renders when no new fetch", () => {
       mockUseSWR.mockReturnValue({
         data: mockStatsData,
         error: undefined,

@@ -1,8 +1,8 @@
-import { PrismaRecordRepository } from './PrismaRecordRepository';
-import { Record } from '@/domain/entities/Record';
-import { TestPrismaClient } from './PrismaRecordRepository.test.types';
+import { PrismaRecordRepository } from "./PrismaRecordRepository";
+import { Record } from "@/domain/entities/Record";
+import { TestPrismaClient } from "./PrismaRecordRepository.test.types";
 
-jest.mock('@prisma/client', () => {
+jest.mock("@prisma/client", () => {
   const mockPrismaClient = {
     record: {
       findUnique: jest.fn(),
@@ -30,7 +30,8 @@ export interface TestSetup {
 }
 
 export function setupTest(): TestSetup {
-  const prisma = new (require('@prisma/client').PrismaClient)() as unknown as TestPrismaClient;
+  const prisma =
+    new (require("@prisma/client").PrismaClient)() as unknown as TestPrismaClient;
   const repository = new PrismaRecordRepository(prisma);
 
   return { repository, prisma };
@@ -39,8 +40,8 @@ export function setupTest(): TestSetup {
 export function createMockRecord(overrides: Partial<Record> = {}): Record {
   return {
     emotion: 85.5,
-    date: new Date('2024-01-15T10:30:00'),
-    student: '学生1',
+    date: new Date("2024-01-15T10:30:00"),
+    student: "学生1",
     createdAt: new Date(),
     updatedAt: new Date(),
     ...overrides,
@@ -57,12 +58,14 @@ export interface MockPrismaRecord {
   updatedAt: Date;
 }
 
-export function createMockPrismaRecord(overrides: Partial<MockPrismaRecord> = {}): MockPrismaRecord {
+export function createMockPrismaRecord(
+  overrides: Partial<MockPrismaRecord> = {},
+): MockPrismaRecord {
   return {
     id: 1,
     emotion: 85.5,
-    date: new Date('2024-01-15T10:30:00'),
-    student: '学生1',
+    date: new Date("2024-01-15T10:30:00"),
+    student: "学生1",
     comment: null,
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -1,10 +1,10 @@
-export * from './messages';
-export * from './ui';
+export * from "./messages";
+export * from "./ui";
 
 export const APP_CONFIG = {
-  NAME: 'イキイキレコード',
-  VERSION: '0.1.0',
-  DESCRIPTION: '生徒の学習データを生成・管理するダッシュボードです',
+  NAME: "イキイキレコード",
+  VERSION: "0.1.0",
+  DESCRIPTION: "生徒の学習データを生成・管理するダッシュボードです",
 } as const;
 
 export const GENERATION_DEFAULTS = {

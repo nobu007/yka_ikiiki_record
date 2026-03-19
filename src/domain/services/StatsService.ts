@@ -1,7 +1,10 @@
-import { Stats } from '../entities/Stats';
-import { StatsRepository } from '../repositories/StatsRepository';
-import { DataGenerationConfig, DEFAULT_CONFIG } from '../entities/DataGeneration';
-import { generateEmotion } from './EmotionGenerator';
+import { Stats } from "../entities/Stats";
+import { StatsRepository } from "../repositories/StatsRepository";
+import {
+  DataGenerationConfig,
+  DEFAULT_CONFIG,
+} from "../entities/DataGeneration";
+import { generateEmotion } from "./EmotionGenerator";
 import {
   calculateMonthlyStats,
   calculateDayOfWeekStats,
@@ -9,10 +12,15 @@ import {
   calculateEmotionDistribution,
   calculateStudentStats,
   calculateAverage,
-  getRandomHour
-} from '@/utils/statsCalculator';
+  getRandomHour,
+} from "@/utils/statsCalculator";
 
-type EmotionData = { date: Date; student: number; emotion: number; hour: number };
+type EmotionData = {
+  date: Date;
+  student: number;
+  emotion: number;
+  hour: number;
+};
 
 export class StatsService {
   constructor(private readonly repository: StatsRepository) {}
@@ -21,25 +29,27 @@ export class StatsService {
     return await this.repository.getStats();
   }
 
-  async generateSeedData(config: DataGenerationConfig = DEFAULT_CONFIG): Promise<void> {
+  async generateSeedData(
+    config: DataGenerationConfig = DEFAULT_CONFIG,
+  ): Promise<void> {
     const stats = this.generateStatsData(config);
     await this.repository.saveStats(stats);
   }
 
   private generateStatsData(config: DataGenerationConfig): Stats {
     const allEmotions = this.generateEmotionData(config);
-    const emotions = allEmotions.map(e => e.emotion);
-    
+    const emotions = allEmotions.map((e) => e.emotion);
+
     return {
       overview: {
         count: allEmotions.length,
-        avgEmotion: calculateAverage(emotions)
+        avgEmotion: calculateAverage(emotions),
       },
       monthlyStats: calculateMonthlyStats(allEmotions),
       studentStats: calculateStudentStats(allEmotions),
       dayOfWeekStats: calculateDayOfWeekStats(allEmotions),
       emotionDistribution: calculateEmotionDistribution(allEmotions),
-      timeOfDayStats: calculateTimeOfDayStats(allEmotions)
+      timeOfDayStats: calculateTimeOfDayStats(allEmotions),
     };
   }
 
@@ -48,7 +58,11 @@ export class StatsService {
     startDate.setDate(startDate.getDate() - config.periodDays);
     const allEmotions: EmotionData[] = [];
 
-    for (let studentIndex = 0; studentIndex < config.studentCount; studentIndex++) {
+    for (
+      let studentIndex = 0;
+      studentIndex < config.studentCount;
+      studentIndex++
+    ) {
       for (let day = 0; day < config.periodDays; day++) {
         const date = new Date(startDate);
         date.setDate(date.getDate() + day);
@@ -59,7 +73,7 @@ export class StatsService {
             date,
             student: studentIndex,
             emotion: generateEmotion(config, date, studentIndex),
-            hour: getRandomHour()
+            hour: getRandomHour(),
           });
         }
       }

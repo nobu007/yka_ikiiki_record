@@ -1,18 +1,19 @@
-'use client';
+"use client";
 
-import { memo } from 'react';
-import { useDashboard } from '@/hooks/useApp';
-import { ErrorBoundary, LoadingOverlay } from '@/components/common';
-import { Dashboard } from '@/components/Dashboard';
+import { memo } from "react";
+import { useDashboard } from "@/hooks/useApp";
+import { ErrorBoundary, LoadingOverlay } from "@/components/common";
+import { Dashboard } from "@/components/Dashboard";
 
 const DashboardPage = memo(function DashboardPage() {
-  const { isGenerating, notification, handleGenerate, isLoadingMessage } = useDashboard();
+  const { isGenerating, notification, handleGenerate, isLoadingMessage } =
+    useDashboard();
 
   return (
     <ErrorBoundary>
       <LoadingOverlay
         isLoading={isGenerating}
-        message={isLoadingMessage || 'データを生成中...'}
+        message={isLoadingMessage || "データを生成中..."}
       />
 
       <Dashboard
@@ -24,6 +25,6 @@ const DashboardPage = memo(function DashboardPage() {
   );
 });
 
-DashboardPage.displayName = 'DashboardPage';
+DashboardPage.displayName = "DashboardPage";
 
 export default DashboardPage;

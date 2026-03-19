@@ -5,53 +5,50 @@
  * INV-TEST-001
  */
 
-import { render, screen } from '@testing-library/react';
-import ChartWrapper from './ChartWrapper';
-import { mockChildren } from './ChartWrapper.test.setup';
+import { render, screen } from "@testing-library/react";
+import ChartWrapper from "./ChartWrapper";
+import { mockChildren } from "./ChartWrapper.test.setup";
 
-describe('ChartWrapper Loading State (INV-TEST-001)', () => {
-  it('should display loading spinner when isLoading is true', () => {
-    render(
-      <ChartWrapper isLoading={true}>
-        {mockChildren}
-      </ChartWrapper>
+describe("ChartWrapper Loading State (INV-TEST-001)", () => {
+  it("should display loading spinner when isLoading is true", () => {
+    render(<ChartWrapper isLoading={true}>{mockChildren}</ChartWrapper>);
+
+    expect(screen.getByRole("status")).toHaveAttribute(
+      "aria-label",
+      "グラフローディング中",
     );
-
-    expect(screen.getByRole('status')).toHaveAttribute('aria-label', 'グラフローディング中');
-    expect(screen.queryByTestId('chart-content')).not.toBeInTheDocument();
+    expect(screen.queryByTestId("chart-content")).not.toBeInTheDocument();
   });
 
-  it('should not display loading spinner when isLoading is false', () => {
-    render(
-      <ChartWrapper isLoading={false}>
-        {mockChildren}
-      </ChartWrapper>
-    );
+  it("should not display loading spinner when isLoading is false", () => {
+    render(<ChartWrapper isLoading={false}>{mockChildren}</ChartWrapper>);
 
-    expect(screen.queryByRole('status', { name: 'グラフローディング中' })).not.toBeInTheDocument();
-    expect(screen.getByTestId('chart-content')).toBeInTheDocument();
+    expect(
+      screen.queryByRole("status", { name: "グラフローディング中" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId("chart-content")).toBeInTheDocument();
   });
 
-  it('should not display loading spinner when isLoading is undefined', () => {
-    render(
-      <ChartWrapper>
-        {mockChildren}
-      </ChartWrapper>
-    );
+  it("should not display loading spinner when isLoading is undefined", () => {
+    render(<ChartWrapper>{mockChildren}</ChartWrapper>);
 
-    expect(screen.queryByRole('status', { name: 'グラフローディング中' })).not.toBeInTheDocument();
-    expect(screen.getByTestId('chart-content')).toBeInTheDocument();
+    expect(
+      screen.queryByRole("status", { name: "グラフローディング中" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId("chart-content")).toBeInTheDocument();
   });
 
-  it('should prioritize loading state over error state', () => {
-    const error = new Error('Test error');
+  it("should prioritize loading state over error state", () => {
+    const error = new Error("Test error");
     render(
       <ChartWrapper isLoading={true} error={error}>
         {mockChildren}
-      </ChartWrapper>
+      </ChartWrapper>,
     );
 
-    expect(screen.getByRole('status', { name: 'グラフローディング中' })).toBeInTheDocument();
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: "グラフローディング中" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 });

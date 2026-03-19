@@ -1,12 +1,12 @@
-import { ClassCharacteristics } from './DataGeneration';
+import { ClassCharacteristics } from "./DataGeneration";
 
-describe('ClassCharacteristics', () => {
-  it('should create valid ClassCharacteristics', () => {
+describe("ClassCharacteristics", () => {
+  it("should create valid ClassCharacteristics", () => {
     // Arrange
     const characteristics: ClassCharacteristics = {
       baselineEmotion: 3.2,
       volatility: 0.4,
-      cohesion: 0.8
+      cohesion: 0.8,
     };
 
     // Assert
@@ -15,16 +15,16 @@ describe('ClassCharacteristics', () => {
     expect(characteristics.cohesion).toBe(0.8);
   });
 
-  it('should handle boundary values', () => {
+  it("should handle boundary values", () => {
     // Arrange
     const boundaryCases: ClassCharacteristics[] = [
       { baselineEmotion: 1.0, volatility: 0.1, cohesion: 0.1 },
       { baselineEmotion: 5.0, volatility: 1.0, cohesion: 1.0 },
-      { baselineEmotion: 2.5, volatility: 0.5, cohesion: 0.7 }
+      { baselineEmotion: 2.5, volatility: 0.5, cohesion: 0.7 },
     ];
 
     // Assert
-    boundaryCases.forEach(char => {
+    boundaryCases.forEach((char) => {
       expect(char.baselineEmotion).toBeGreaterThanOrEqual(1.0);
       expect(char.baselineEmotion).toBeLessThanOrEqual(5.0);
       expect(char.volatility).toBeGreaterThanOrEqual(0.1);
@@ -34,22 +34,26 @@ describe('ClassCharacteristics', () => {
     });
   });
 
-  it('should validate relationship between characteristics', () => {
+  it("should validate relationship between characteristics", () => {
     // Arrange
     const highCohesionClass: ClassCharacteristics = {
       baselineEmotion: 3.8,
       volatility: 0.2,
-      cohesion: 0.9
+      cohesion: 0.9,
     };
 
     const lowCohesionClass: ClassCharacteristics = {
       baselineEmotion: 2.8,
       volatility: 0.8,
-      cohesion: 0.3
+      cohesion: 0.3,
     };
 
     // Assert
-    expect(highCohesionClass.cohesion).toBeGreaterThan(lowCohesionClass.cohesion);
-    expect(highCohesionClass.volatility).toBeLessThan(lowCohesionClass.volatility);
+    expect(highCohesionClass.cohesion).toBeGreaterThan(
+      lowCohesionClass.cohesion,
+    );
+    expect(highCohesionClass.volatility).toBeLessThan(
+      lowCohesionClass.volatility,
+    );
   });
 });

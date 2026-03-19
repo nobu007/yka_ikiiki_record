@@ -1,10 +1,10 @@
-import { NextRequest } from 'next/server';
-import { POST } from '../route';
+import { NextRequest } from "next/server";
+import { POST } from "../route";
 
 const originalEnv = process.env.DATABASE_PROVIDER;
 
 beforeAll(() => {
-  process.env.DATABASE_PROVIDER = 'mirage';
+  process.env.DATABASE_PROVIDER = "mirage";
 });
 
 afterAll(() => {
@@ -28,12 +28,12 @@ const mockStatsService = {
 
 let mockIsPrismaProvider = false;
 
-jest.mock('@/infrastructure/factories/repositoryFactory', () => ({
+jest.mock("@/infrastructure/factories/repositoryFactory", () => ({
   createStatsService: jest.fn(() => mockStatsService),
   isPrismaProvider: jest.fn(() => mockIsPrismaProvider),
 }));
 
-jest.mock('@/infrastructure/services/dataService', () => ({
+jest.mock("@/infrastructure/services/dataService", () => ({
   dataService: {
     generateStats: jest.fn(),
   },
@@ -47,7 +47,7 @@ function createMockRequest(body: object): NextRequest {
   } as unknown as NextRequest;
 }
 
-describe('API seed route POST (Prisma provider)', () => {
+describe("API seed route POST (Prisma provider)", () => {
   beforeAll(() => {
     mockIsPrismaProvider = true;
   });
@@ -60,17 +60,17 @@ describe('API seed route POST (Prisma provider)', () => {
     jest.clearAllMocks();
   });
 
-  it('calls generateSeedData when using Prisma provider', async () => {
+  it("calls generateSeedData when using Prisma provider", async () => {
     const req = createMockRequest({});
     const response = await POST(req);
     const body = await response.json();
 
     expect(mockGenerateSeedData).toHaveBeenCalledTimes(1);
     expect(body.success).toBe(true);
-    expect(body.message).toBe('テストデータの生成が完了しました');
+    expect(body.message).toBe("テストデータの生成が完了しました");
   });
 
-  it('ignores request body and uses Prisma seed logic', async () => {
+  it("ignores request body and uses Prisma seed logic", async () => {
     const req = createMockRequest({
       config: { studentCount: 999 },
     });
@@ -79,8 +79,10 @@ describe('API seed route POST (Prisma provider)', () => {
     expect(mockGenerateSeedData).toHaveBeenCalledTimes(1);
   });
 
-  it('handles errors from generateSeedData', async () => {
-    mockGenerateSeedData.mockRejectedValueOnce(new Error('Database connection failed'));
+  it("handles errors from generateSeedData", async () => {
+    mockGenerateSeedData.mockRejectedValueOnce(
+      new Error("Database connection failed"),
+    );
 
     const req = createMockRequest({});
     const response = await POST(req);

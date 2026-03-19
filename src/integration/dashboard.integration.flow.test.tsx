@@ -3,25 +3,27 @@
  * Tests the complete flow from user action to data display
  */
 
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import DashboardPage from '@/app/(dashboard)/dashboard/page';
-import * as hooks from '@/hooks/useApp';
+import { render, screen, fireEvent, act } from "@testing-library/react";
+import DashboardPage from "@/app/(dashboard)/dashboard/page";
+import * as hooks from "@/hooks/useApp";
 
 // Mock hooks
-jest.mock('@/hooks/useApp');
+jest.mock("@/hooks/useApp");
 
-const mockUseDashboard = hooks.useDashboard as unknown as jest.MockedFunction<typeof hooks.useDashboard>;
+const mockUseDashboard = hooks.useDashboard as unknown as jest.MockedFunction<
+  typeof hooks.useDashboard
+>;
 
 // Simple test wrapper
 const createTestWrapper = () => {
   const TestWrapper = ({ children }: { children: React.ReactNode }) => (
     <>{children}</>
   );
-  TestWrapper.displayName = 'TestWrapper';
+  TestWrapper.displayName = "TestWrapper";
   return TestWrapper;
 };
 
-describe('Dashboard Integration - Data Flow', () => {
+describe("Dashboard Integration - Data Flow", () => {
   const mockHandleInitialGeneration = jest.fn();
 
   beforeEach(() => {
@@ -30,37 +32,41 @@ describe('Dashboard Integration - Data Flow', () => {
     // Default mock implementation
     mockUseDashboard.mockReturnValue({
       isGenerating: false,
-      notification: { show: false, message: '', type: 'success' },
+      notification: { show: false, message: "", type: "success" },
       handleGenerate: mockHandleInitialGeneration,
       isLoadingMessage: null,
     });
   });
 
-  describe('Complete Data Flow', () => {
-    it('should render dashboard with all components', () => {
+  describe("Complete Data Flow", () => {
+    it("should render dashboard with all components", () => {
       const Wrapper = createTestWrapper();
 
       render(
         <Wrapper>
           <DashboardPage />
-        </Wrapper>
+        </Wrapper>,
       );
 
       // Check main elements are present
-      expect(screen.getByText('イキイキレコード - 教師ダッシュボード')).toBeInTheDocument();
-      expect(screen.getByText('生徒の学習データを生成・管理するダッシュボードです')).toBeInTheDocument();
-      expect(screen.getByText('データ生成')).toBeInTheDocument();
-      expect(screen.getByText('使い方')).toBeInTheDocument();
+      expect(
+        screen.getByText("イキイキレコード - 教師ダッシュボード"),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("生徒の学習データを生成・管理するダッシュボードです"),
+      ).toBeInTheDocument();
+      expect(screen.getByText("データ生成")).toBeInTheDocument();
+      expect(screen.getByText("使い方")).toBeInTheDocument();
     });
 
-    it('should handle data generation flow successfully', async () => {
+    it("should handle data generation flow successfully", async () => {
       const Wrapper = createTestWrapper();
 
       // Mock successful generation
       mockHandleInitialGeneration.mockResolvedValue(undefined);
       mockUseDashboard.mockReturnValue({
         isGenerating: false,
-        notification: { show: false, message: '', type: 'success' },
+        notification: { show: false, message: "", type: "success" },
         handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
       });
@@ -68,12 +74,12 @@ describe('Dashboard Integration - Data Flow', () => {
       render(
         <Wrapper>
           <DashboardPage />
-        </Wrapper>
+        </Wrapper>,
       );
 
       // Click generate button within act
       await act(async () => {
-        const generateButton = screen.getByText('初期データを生成');
+        const generateButton = screen.getByText("初期データを生成");
         fireEvent.click(generateButton);
       });
 
@@ -81,32 +87,32 @@ describe('Dashboard Integration - Data Flow', () => {
       expect(mockHandleInitialGeneration).toHaveBeenCalledTimes(1);
     });
 
-    it('should show loading state during generation', () => {
+    it("should show loading state during generation", () => {
       const Wrapper = createTestWrapper();
 
       // Mock loading state
       mockUseDashboard.mockReturnValue({
         isGenerating: true,
-        notification: { show: false, message: '', type: 'success' },
+        notification: { show: false, message: "", type: "success" },
         handleGenerate: mockHandleInitialGeneration,
-        isLoadingMessage: 'データを生成中...',
+        isLoadingMessage: "データを生成中...",
       });
 
       render(
         <Wrapper>
           <DashboardPage />
-        </Wrapper>
+        </Wrapper>,
       );
 
       // Check loading overlay is present
-      expect(screen.getByText('データを生成中...')).toBeInTheDocument();
+      expect(screen.getByText("データを生成中...")).toBeInTheDocument();
 
       // Button should be disabled and show loading text
-      const generateButton = screen.getByText('生成中...');
+      const generateButton = screen.getByText("生成中...");
       expect(generateButton).toBeDisabled();
     });
 
-    it('should display success notification after generation', () => {
+    it("should display success notification after generation", () => {
       const Wrapper = createTestWrapper();
 
       // Mock success notification
@@ -114,8 +120,8 @@ describe('Dashboard Integration - Data Flow', () => {
         isGenerating: false,
         notification: {
           show: true,
-          message: 'テストデータの生成が完了しました',
-          type: 'success'
+          message: "テストデータの生成が完了しました",
+          type: "success",
         },
         handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
@@ -124,14 +130,16 @@ describe('Dashboard Integration - Data Flow', () => {
       render(
         <Wrapper>
           <DashboardPage />
-        </Wrapper>
+        </Wrapper>,
       );
 
       // Check success notification is displayed
-      expect(screen.getByText('テストデータの生成が完了しました')).toBeInTheDocument();
+      expect(
+        screen.getByText("テストデータの生成が完了しました"),
+      ).toBeInTheDocument();
     });
 
-    it('should display error notification on generation failure', () => {
+    it("should display error notification on generation failure", () => {
       const Wrapper = createTestWrapper();
 
       // Mock error notification
@@ -139,8 +147,8 @@ describe('Dashboard Integration - Data Flow', () => {
         isGenerating: false,
         notification: {
           show: true,
-          message: 'データの生成に失敗しました',
-          type: 'error'
+          message: "データの生成に失敗しました",
+          type: "error",
         },
         handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
@@ -149,11 +157,13 @@ describe('Dashboard Integration - Data Flow', () => {
       render(
         <Wrapper>
           <DashboardPage />
-        </Wrapper>
+        </Wrapper>,
       );
 
       // Check error notification is displayed
-      expect(screen.getByText('データの生成に失敗しました')).toBeInTheDocument();
+      expect(
+        screen.getByText("データの生成に失敗しました"),
+      ).toBeInTheDocument();
     });
   });
 });

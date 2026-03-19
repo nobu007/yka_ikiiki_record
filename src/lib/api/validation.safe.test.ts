@@ -1,19 +1,19 @@
-import { validateDataSafe } from './validation';
-import { z } from 'zod';
+import { validateDataSafe } from "./validation";
+import { z } from "zod";
 
-describe('validation - Safe Validation', () => {
+describe("validation - Safe Validation", () => {
   const testSchema = z.object({
     name: z.string().min(1),
     age: z.number().min(0),
-    email: z.string().email().optional()
+    email: z.string().email().optional(),
   });
 
-  describe('validateDataSafe', () => {
-    it('should validate valid data successfully', () => {
+  describe("validateDataSafe", () => {
+    it("should validate valid data successfully", () => {
       const validData = {
-        name: 'John Doe',
+        name: "John Doe",
         age: 25,
-        email: 'john@example.com'
+        email: "john@example.com",
       };
 
       const [result, error] = validateDataSafe(validData, testSchema);
@@ -22,39 +22,39 @@ describe('validation - Safe Validation', () => {
       expect(error).toBeNull();
     });
 
-    it('should return error for invalid data', () => {
+    it("should return error for invalid data", () => {
       const invalidData = {
-        name: '',
+        name: "",
         age: -5,
-        email: 'invalid-email'
+        email: "invalid-email",
       };
 
       const [result, error] = validateDataSafe(invalidData, testSchema);
 
       expect(result).toBeNull();
       expect(error).toBeDefined();
-      expect(typeof error).toBe('string');
+      expect(typeof error).toBe("string");
     });
 
-    it('should format multiple validation errors', () => {
+    it("should format multiple validation errors", () => {
       const invalidData = {
-        name: '',
+        name: "",
         age: -5,
-        email: 'not-an-email'
+        email: "not-an-email",
       };
 
       const [result, error] = validateDataSafe(invalidData, testSchema);
 
       expect(result).toBeNull();
-      expect(error).toContain('name:');
-      expect(error).toContain('age:');
-      expect(error).toContain('email:');
+      expect(error).toContain("name:");
+      expect(error).toContain("age:");
+      expect(error).toContain("email:");
     });
 
-    it('should handle partial valid data with optional fields', () => {
+    it("should handle partial valid data with optional fields", () => {
       const partialData = {
-        name: 'Jane Doe',
-        age: 30
+        name: "Jane Doe",
+        age: 30,
       };
 
       const [result, error] = validateDataSafe(partialData, testSchema);
@@ -63,7 +63,7 @@ describe('validation - Safe Validation', () => {
       expect(error).toBeNull();
     });
 
-    it('should handle null/undefined data', () => {
+    it("should handle null/undefined data", () => {
       const [result1, error1] = validateDataSafe(null, testSchema);
       const [result2, error2] = validateDataSafe(undefined, testSchema);
 
@@ -73,28 +73,28 @@ describe('validation - Safe Validation', () => {
       expect(error2).toBeDefined();
     });
 
-    it('should handle complex nested schemas', () => {
+    it("should handle complex nested schemas", () => {
       const complexSchema = z.object({
         user: z.object({
           profile: z.object({
             name: z.string(),
-            preferences: z.array(z.string()).optional()
-          })
+            preferences: z.array(z.string()).optional(),
+          }),
         }),
-        metadata: z.record(z.string(), z.unknown()).optional()
+        metadata: z.record(z.string(), z.unknown()).optional(),
       });
 
       const complexData = {
         user: {
           profile: {
-            name: 'Test User',
-            preferences: ['option1', 'option2']
-          }
+            name: "Test User",
+            preferences: ["option1", "option2"],
+          },
         },
         metadata: {
-          source: 'web',
-          timestamp: Date.now().toString()
-        }
+          source: "web",
+          timestamp: Date.now().toString(),
+        },
       };
 
       const [result, error] = validateDataSafe(complexData, complexSchema);
@@ -103,15 +103,17 @@ describe('validation - Safe Validation', () => {
       expect(error).toBeNull();
     });
 
-    it('should handle array validation', () => {
-      const arraySchema = z.array(z.object({
-        id: z.number(),
-        name: z.string()
-      }));
+    it("should handle array validation", () => {
+      const arraySchema = z.array(
+        z.object({
+          id: z.number(),
+          name: z.string(),
+        }),
+      );
 
       const arrayData = [
-        { id: 1, name: 'Item 1' },
-        { id: 2, name: 'Item 2' }
+        { id: 1, name: "Item 1" },
+        { id: 2, name: "Item 2" },
       ];
 
       const [result, error] = validateDataSafe(arrayData, arraySchema);
@@ -120,32 +122,38 @@ describe('validation - Safe Validation', () => {
       expect(error).toBeNull();
     });
 
-    it('should handle non-ZodError exceptions', () => {
+    it("should handle non-ZodError exceptions", () => {
       const throwingSchema = {
         parse: jest.fn().mockImplementation(() => {
-          throw new Error('Non-ZodError');
-        })
+          throw new Error("Non-ZodError");
+        }),
       } as unknown as z.ZodSchema<{ id: number }>;
 
       const [result, error] = validateDataSafe({ id: 1 }, throwingSchema);
 
       expect(result).toBeNull();
-      expect(error).toBe('不明なバリデーションエラーが発生しました');
+      expect(error).toBe("不明なバリデーションエラーが発生しました");
     });
 
-    it('should handle union types', () => {
+    it("should handle union types", () => {
       const unionSchema = z.union([
-        z.object({ type: z.literal('user'), name: z.string() }),
-        z.object({ type: z.literal('admin'), permissions: z.array(z.string()) })
+        z.object({ type: z.literal("user"), name: z.string() }),
+        z.object({
+          type: z.literal("admin"),
+          permissions: z.array(z.string()),
+        }),
       ]);
 
-      const userData = { type: 'user' as const, name: 'John' };
+      const userData = { type: "user" as const, name: "John" };
       const [result1, error1] = validateDataSafe(userData, unionSchema);
 
       expect(result1).toEqual(userData);
       expect(error1).toBeNull();
 
-      const adminData = { type: 'admin' as const, permissions: ['read', 'write'] };
+      const adminData = {
+        type: "admin" as const,
+        permissions: ["read", "write"],
+      };
       const [result2, error2] = validateDataSafe(adminData, unionSchema);
 
       expect(result2).toEqual(adminData);

@@ -1,6 +1,6 @@
-import { createServer, Factory, Model, Response } from 'miragejs';
-import { calculateMonthlyStats } from '@/utils/statsCalculator';
-import { globalLogger } from '@/lib/resilience';
+import { createServer, Factory, Model, Response } from "miragejs";
+import { calculateMonthlyStats } from "@/utils/statsCalculator";
+import { globalLogger } from "@/lib/resilience";
 
 type Record = {
   emotion: number;
@@ -9,7 +9,7 @@ type Record = {
   comment: string | undefined;
 };
 
-export function makeServer({ environment = 'development' } = {}) {
+export function makeServer({ environment = "development" } = {}) {
   const server = createServer({
     environment,
 
@@ -40,55 +40,67 @@ export function makeServer({ environment = 'development' } = {}) {
         },
         comment() {
           const comments = [
-            '今日は充実した一日でした',
-            '少し疲れました',
-            'とても楽しかったです',
-            '難しい課題に取り組みました',
-            'チームでの作業が上手くいきました',
+            "今日は充実した一日でした",
+            "少し疲れました",
+            "とても楽しかったです",
+            "難しい課題に取り組みました",
+            "チームでの作業が上手くいきました",
           ];
           return comments[Math.floor(Math.random() * comments.length)];
         },
       }),
     },
 
-    seeds() {
-    },
+    seeds() {},
 
     routes() {
-      this.namespace = 'api';
+      this.namespace = "api";
 
-      this.post('/seed', function (schema) {
+      this.post("/seed", function (schema) {
         try {
           schema.db.emptyData();
 
           Array.from({ length: 750 }).forEach(() => {
-            schema.create('record', {});
+            schema.create("record", {});
           });
 
-          return new Response(200, {}, { message: 'Data seeded successfully' });
+          return new Response(200, {}, { message: "Data seeded successfully" });
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-          globalLogger.error('MIRAGE', 'SEED_FAILED', { error: errorMessage });
-          return new Response(500, {}, { error: `Failed to seed data: ${errorMessage}` });
+          const errorMessage =
+            error instanceof Error ? error.message : "Unknown error";
+          globalLogger.error("MIRAGE", "SEED_FAILED", { error: errorMessage });
+          return new Response(
+            500,
+            {},
+            { error: `Failed to seed data: ${errorMessage}` },
+          );
         }
       });
 
-      this.get('/stats', (schema) => {
+      this.get("/stats", (schema) => {
         try {
-          const records = schema.all('record').models;
-          
+          const records = schema.all("record").models;
+
           const transformedRecords = records.map((record: Record) => ({
             date: new Date(record.date),
             emotion: record.emotion,
-            student: parseInt(record.student.toString().replace('学生', '')) - 1,
-            hour: new Date(record.date).getHours()
+            student:
+              parseInt(record.student.toString().replace("学生", "")) - 1,
+            hour: new Date(record.date).getHours(),
           }));
-          
+
           return calculateMonthlyStats(transformedRecords);
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-          globalLogger.error('MIRAGE', 'STATS_CALCULATION_FAILED', { error: errorMessage });
-          return new Response(500, {}, { error: `Failed to calculate stats: ${errorMessage}` });
+          const errorMessage =
+            error instanceof Error ? error.message : "Unknown error";
+          globalLogger.error("MIRAGE", "STATS_CALCULATION_FAILED", {
+            error: errorMessage,
+          });
+          return new Response(
+            500,
+            {},
+            { error: `Failed to calculate stats: ${errorMessage}` },
+          );
         }
       });
     },

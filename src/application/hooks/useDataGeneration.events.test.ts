@@ -1,7 +1,11 @@
-import { act } from '@testing-library/react';
-import { setupTestHook, createMockOnGenerate, createMockEvent } from './useDataGeneration.test.utils';
+import { act } from "@testing-library/react";
+import {
+  setupTestHook,
+  createMockOnGenerate,
+  createMockEvent,
+} from "./useDataGeneration.test.utils";
 
-describe('useDataGeneration - Event Management', () => {
+describe("useDataGeneration - Event Management", () => {
   let mockOnGenerate: jest.Mock;
 
   beforeEach(() => {
@@ -9,8 +13,8 @@ describe('useDataGeneration - Event Management', () => {
     jest.clearAllMocks();
   });
 
-  describe('event management - add events', () => {
-    it('should add single event to event effects', () => {
+  describe("event management - add events", () => {
+    it("should add single event to event effects", () => {
       const { result } = setupTestHook(mockOnGenerate);
       const event = createMockEvent();
 
@@ -22,10 +26,10 @@ describe('useDataGeneration - Event Management', () => {
       expect(result.current.config.eventEffects[0]).toEqual(event);
     });
 
-    it('should add multiple events', () => {
+    it("should add multiple events", () => {
       const { result } = setupTestHook(mockOnGenerate);
-      const event1 = createMockEvent({ name: 'Event 1' });
-      const event2 = createMockEvent({ name: 'Event 2', impact: -0.3 });
+      const event1 = createMockEvent({ name: "Event 1" });
+      const event2 = createMockEvent({ name: "Event 2", impact: -0.3 });
 
       act(() => {
         result.current.addEvent(event1);
@@ -38,11 +42,11 @@ describe('useDataGeneration - Event Management', () => {
     });
   });
 
-  describe('event management - remove events', () => {
-    it('should remove event by index', () => {
+  describe("event management - remove events", () => {
+    it("should remove event by index", () => {
       const { result } = setupTestHook(mockOnGenerate);
-      const event1 = createMockEvent({ name: 'Event 1' });
-      const event2 = createMockEvent({ name: 'Event 2', impact: -0.3 });
+      const event1 = createMockEvent({ name: "Event 1" });
+      const event2 = createMockEvent({ name: "Event 2", impact: -0.3 });
 
       act(() => {
         result.current.addEvent(event1);
@@ -54,7 +58,7 @@ describe('useDataGeneration - Event Management', () => {
       expect(result.current.config.eventEffects[0]).toEqual(event2);
     });
 
-    it('should handle removing non-existent index gracefully', () => {
+    it("should handle removing non-existent index gracefully", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {

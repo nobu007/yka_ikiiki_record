@@ -1,23 +1,23 @@
-import { render, waitFor, screen } from '@testing-library/react';
-import { Dashboard } from './Dashboard';
-import { mockProps, mockStats } from './Dashboard.test.setup';
+import { render, waitFor, screen } from "@testing-library/react";
+import { Dashboard } from "./Dashboard";
+import { mockProps, mockStats } from "./Dashboard.test.setup";
 
 global.fetch = jest.fn();
 
-describe('Dashboard', () => {
+describe("Dashboard", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('Data Fetching', () => {
-    it('should fetch stats on mount', async () => {
+  describe("Data Fetching", () => {
+    it("should fetch stats on mount", async () => {
       const mockResponse = {
         ok: true,
         status: 200,
         json: jest.fn().mockResolvedValue({
           success: true,
-          data: mockStats
-        })
+          data: mockStats,
+        }),
       };
 
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
@@ -25,13 +25,13 @@ describe('Dashboard', () => {
       render(<Dashboard {...mockProps} />);
 
       await waitFor(() => {
-        expect(global.fetch).toHaveBeenCalledWith('/api/seed');
+        expect(global.fetch).toHaveBeenCalledWith("/api/seed");
       });
     });
 
-    it('should handle fetch errors gracefully', async () => {
+    it("should handle fetch errors gracefully", async () => {
       (global.fetch as jest.Mock).mockRejectedValueOnce(
-        new Error('Network error')
+        new Error("Network error"),
       );
 
       render(<Dashboard {...mockProps} />);
@@ -41,15 +41,15 @@ describe('Dashboard', () => {
       });
     });
 
-    it('should handle HTTP error responses (line 43 branch)', async () => {
+    it("should handle HTTP error responses (line 43 branch)", async () => {
       const mockErrorResponse = {
         ok: false,
         status: 500,
-        statusText: 'Internal Server Error',
+        statusText: "Internal Server Error",
         json: jest.fn().mockResolvedValue({
           success: false,
-          error: 'Server error'
-        })
+          error: "Server error",
+        }),
       };
 
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockErrorResponse);
@@ -57,19 +57,19 @@ describe('Dashboard', () => {
       render(<Dashboard {...mockProps} />);
 
       await waitFor(() => {
-        expect(global.fetch).toHaveBeenCalledWith('/api/seed');
+        expect(global.fetch).toHaveBeenCalledWith("/api/seed");
       });
     });
 
-    it('should handle HTTP 404 error responses', async () => {
+    it("should handle HTTP 404 error responses", async () => {
       const mockErrorResponse = {
         ok: false,
         status: 404,
-        statusText: 'Not Found',
+        statusText: "Not Found",
         json: jest.fn().mockResolvedValue({
           success: false,
-          error: 'Not found'
-        })
+          error: "Not found",
+        }),
       };
 
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockErrorResponse);
@@ -77,18 +77,18 @@ describe('Dashboard', () => {
       render(<Dashboard {...mockProps} />);
 
       await waitFor(() => {
-        expect(global.fetch).toHaveBeenCalledWith('/api/seed');
+        expect(global.fetch).toHaveBeenCalledWith("/api/seed");
       });
     });
 
-    it('should handle validation error with default message (line 50)', async () => {
+    it("should handle validation error with default message (line 50)", async () => {
       const mockResponse = {
         ok: true,
         status: 200,
         json: jest.fn().mockResolvedValue({
           success: false,
-          error: null
-        })
+          error: null,
+        }),
       };
 
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
@@ -96,11 +96,11 @@ describe('Dashboard', () => {
       render(<Dashboard {...mockProps} />);
 
       await waitFor(() => {
-        expect(global.fetch).toHaveBeenCalledWith('/api/seed');
+        expect(global.fetch).toHaveBeenCalledWith("/api/seed");
       });
     });
 
-    it('should handle validation error with custom error message (line 52)', async () => {
+    it("should handle validation error with custom error message (line 52)", async () => {
       const mockResponse = {
         ok: true,
         status: 200,
@@ -108,8 +108,8 @@ describe('Dashboard', () => {
           success: true,
           data: {
             overview: {
-              count: 'invalid',
-              avgEmotion: 3.5
+              count: "invalid",
+              avgEmotion: 3.5,
             },
             monthlyStats: [],
             dayOfWeekStats: [],
@@ -117,11 +117,11 @@ describe('Dashboard', () => {
             timeOfDayStats: {
               morning: 3.2,
               afternoon: 3.8,
-              evening: 3.5
+              evening: 3.5,
             },
-            studentStats: []
-          }
-        })
+            studentStats: [],
+          },
+        }),
       };
 
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);
@@ -129,18 +129,18 @@ describe('Dashboard', () => {
       render(<Dashboard {...mockProps} />);
 
       await waitFor(() => {
-        expect(global.fetch).toHaveBeenCalledWith('/api/seed');
+        expect(global.fetch).toHaveBeenCalledWith("/api/seed");
       });
     });
 
-    it('should display data visualization when stats are loaded', async () => {
+    it("should display data visualization when stats are loaded", async () => {
       const mockResponse = {
         ok: true,
         status: 200,
         json: jest.fn().mockResolvedValue({
           success: true,
-          data: mockStats
-        })
+          data: mockStats,
+        }),
       };
 
       (global.fetch as jest.Mock).mockResolvedValueOnce(mockResponse);

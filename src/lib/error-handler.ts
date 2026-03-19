@@ -1,5 +1,5 @@
-import { MESSAGES } from '@/lib/config';
-import { globalLogger } from '@/lib/resilience/structured-logger';
+import { MESSAGES } from "@/lib/config";
+import { globalLogger } from "@/lib/resilience/structured-logger";
 
 export const HTTP_STATUS = {
   OK: 200,
@@ -9,52 +9,55 @@ export const HTTP_STATUS = {
   NOT_FOUND: 404,
   REQUEST_TIMEOUT: 408,
   INTERNAL_SERVER_ERROR: 500,
-  SERVICE_UNAVAILABLE: 503
+  SERVICE_UNAVAILABLE: 503,
 } as const;
 
 export const ERROR_CODES = {
-  UNKNOWN: 'UNKNOWN_ERROR',
-  VALIDATION: 'VALIDATION_ERROR',
-  NETWORK: 'NETWORK_ERROR',
-  TIMEOUT: 'TIMEOUT_ERROR',
-  GENERATION: 'GENERATION_ERROR',
-  NOT_FOUND: 'NOT_FOUND_ERROR',
-  PERMISSION: 'PERMISSION_ERROR'
+  UNKNOWN: "UNKNOWN_ERROR",
+  VALIDATION: "VALIDATION_ERROR",
+  NETWORK: "NETWORK_ERROR",
+  TIMEOUT: "TIMEOUT_ERROR",
+  GENERATION: "GENERATION_ERROR",
+  NOT_FOUND: "NOT_FOUND_ERROR",
+  PERMISSION: "PERMISSION_ERROR",
 } as const;
 
-export type ErrorCodeType = typeof ERROR_CODES[keyof typeof ERROR_CODES];
+export type ErrorCodeType = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
 
-const NETWORK_ERROR_PATTERNS = ['fetch', 'network', 'connection'] as const;
+const NETWORK_ERROR_PATTERNS = ["fetch", "network", "connection"] as const;
 
 export class AppError extends Error {
   constructor(
     message: string,
     public code: ErrorCodeType = ERROR_CODES.UNKNOWN,
     public statusCode: number = HTTP_STATUS.INTERNAL_SERVER_ERROR,
-    public details?: Record<string, unknown>
+    public details?: Record<string, unknown>,
   ) {
     super(message);
-    this.name = 'AppError';
+    this.name = "AppError";
   }
 }
 
 export class ValidationError extends AppError {
   constructor(message: string, details?: Record<string, unknown>) {
     super(message, ERROR_CODES.VALIDATION, HTTP_STATUS.BAD_REQUEST, details);
-    this.name = 'ValidationError';
+    this.name = "ValidationError";
   }
 }
 
 export class NetworkError extends AppError {
-  constructor(message: string = MESSAGES.error.network, statusCode: number = 0) {
+  constructor(
+    message: string = MESSAGES.error.network,
+    statusCode: number = 0,
+  ) {
     super(message, ERROR_CODES.NETWORK, statusCode);
-    this.name = 'NetworkError';
+    this.name = "NetworkError";
   }
 }
 
-const isNetworkRelated = (error: Error): boolean => 
-  error.name === 'TypeError' || 
-  NETWORK_ERROR_PATTERNS.some(pattern => error.message.includes(pattern));
+const isNetworkRelated = (error: Error): boolean =>
+  error.name === "TypeError" ||
+  NETWORK_ERROR_PATTERNS.some((pattern) => error.message.includes(pattern));
 
 export function normalizeError(error: unknown): AppError {
   if (error instanceof AppError) return error;
@@ -62,10 +65,14 @@ export function normalizeError(error: unknown): AppError {
   if (error instanceof Error) {
     return isNetworkRelated(error)
       ? new NetworkError(error.message)
-      : new AppError(error.message, ERROR_CODES.UNKNOWN, HTTP_STATUS.INTERNAL_SERVER_ERROR);
+      : new AppError(
+          error.message,
+          ERROR_CODES.UNKNOWN,
+          HTTP_STATUS.INTERNAL_SERVER_ERROR,
+        );
   }
 
-  if (typeof error === 'string') return new AppError(error);
+  if (typeof error === "string") return new AppError(error);
 
   return new AppError(MESSAGES.error.unexpected);
 }
@@ -84,7 +91,7 @@ export function getUserFriendlyMessage(error: unknown): string {
     [ERROR_CODES.TIMEOUT]: MESSAGES.error.timeout,
     [ERROR_CODES.GENERATION]: MESSAGES.error.generation,
     [ERROR_CODES.NOT_FOUND]: MESSAGES.error.notFound,
-    [ERROR_CODES.PERMISSION]: MESSAGES.error.permission
+    [ERROR_CODES.PERMISSION]: MESSAGES.error.permission,
   };
 
   return messageMap[normalized.code] || normalized.message;
@@ -92,9 +99,9 @@ export function getUserFriendlyMessage(error: unknown): string {
 
 export function logError(error: unknown, context?: string): void {
   const normalized = normalizeError(error);
-  const category = context || 'APP';
+  const category = context || "APP";
 
-  globalLogger.error(category, 'logError', {
+  globalLogger.error(category, "logError", {
     code: normalized.code,
     message: normalized.message,
     status: normalized.statusCode,
@@ -108,13 +115,13 @@ export const isNetworkError = (error: unknown): boolean => {
   return normalized.code === ERROR_CODES.NETWORK || normalized.statusCode === 0;
 };
 
-export const isValidationError = (error: unknown): boolean => 
+export const isValidationError = (error: unknown): boolean =>
   normalizeError(error).code === ERROR_CODES.VALIDATION;
 
-export const isNotFoundError = (error: unknown): boolean => 
+export const isNotFoundError = (error: unknown): boolean =>
   normalizeError(error).code === ERROR_CODES.NOT_FOUND;
 
-export const isTimeoutError = (error: unknown): boolean => 
+export const isTimeoutError = (error: unknown): boolean =>
   normalizeError(error).code === ERROR_CODES.TIMEOUT;
 
 export const isServerError = (error: unknown): boolean =>

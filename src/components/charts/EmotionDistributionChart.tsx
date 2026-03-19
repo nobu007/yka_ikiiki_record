@@ -1,15 +1,20 @@
-import { useMemo, memo } from 'react';
-import { EmotionChart } from './EmotionChart';
+import { useMemo, memo } from "react";
+import { EmotionChart } from "./EmotionChart";
 
 export const EmotionDistributionChart = memo<{ data: number[] }>(({ data }) => {
-  const labels = ['1', '2', '3', '4', '5'];
-  const chartData = useMemo(() => ({
-    labels,
-    series: [{
-      name: '分布',
-      data
-    }]
-  }), [labels, data]);
+  const labels = ["1", "2", "3", "4", "5"];
+  const chartData = useMemo(
+    () => ({
+      labels,
+      series: [
+        {
+          name: "分布",
+          data,
+        },
+      ],
+    }),
+    [labels, data],
+  );
 
   return (
     <EmotionChart
@@ -21,4 +26,4 @@ export const EmotionDistributionChart = memo<{ data: number[] }>(({ data }) => {
   );
 });
 
-EmotionDistributionChart.displayName = 'EmotionDistributionChart';
+EmotionDistributionChart.displayName = "EmotionDistributionChart";

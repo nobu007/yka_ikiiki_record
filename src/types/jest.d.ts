@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 declare global {
   const fetch: jest.MockedFunction<typeof fetch>;

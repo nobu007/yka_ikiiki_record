@@ -1,4 +1,4 @@
-import { Stats } from '@/domain/entities/Stats';
+import { Stats } from "@/domain/entities/Stats";
 
 export const createEmptyStats = (): Stats => ({
   overview: { count: 0, avgEmotion: 0 },
@@ -6,7 +6,7 @@ export const createEmptyStats = (): Stats => ({
   studentStats: [],
   dayOfWeekStats: [],
   emotionDistribution: [],
-  timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 }
+  timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 },
 });
 
 export const createValidStats = (overrides: Partial<Stats> = {}): Stats => ({
@@ -16,5 +16,5 @@ export const createValidStats = (overrides: Partial<Stats> = {}): Stats => ({
   dayOfWeekStats: [],
   emotionDistribution: [],
   timeOfDayStats: { morning: 10, afternoon: 20, evening: 30 },
-  ...overrides
+  ...overrides,
 });

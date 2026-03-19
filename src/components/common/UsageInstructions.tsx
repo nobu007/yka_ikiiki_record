@@ -1,12 +1,15 @@
-import { useMemo, memo } from 'react';
+import { useMemo, memo } from "react";
 
 export const UsageInstructions = memo(() => {
-  const instructions = useMemo(() => [
-    '「初期データを生成」ボタンをクリックしてテストデータを作成します',
-    '生成が完了すると統計データが表示されます',
-    'グラフやチャートで生徒の感情データを確認できます',
-    '何度でもデータを再生成して異なるパターンを試せます'
-  ], []);
+  const instructions = useMemo(
+    () => [
+      "「初期データを生成」ボタンをクリックしてテストデータを作成します",
+      "生成が完了すると統計データが表示されます",
+      "グラフやチャートで生徒の感情データを確認できます",
+      "何度でもデータを再生成して異なるパターンを試せます",
+    ],
+    [],
+  );
 
   return (
     <section className="bg-blue-50 rounded-lg p-6">
@@ -23,4 +26,4 @@ export const UsageInstructions = memo(() => {
   );
 });
 
-UsageInstructions.displayName = 'UsageInstructions';
+UsageInstructions.displayName = "UsageInstructions";

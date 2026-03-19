@@ -1,4 +1,4 @@
-import { globalLogger } from './structured-logger';
+import { globalLogger } from "./structured-logger";
 
 const DEFAULT_MEMORY_LIMIT_MB = 512;
 const BYTES_PER_MB = 1024 * 1024;
@@ -13,7 +13,7 @@ export class MemoryMonitor {
 
   constructor(
     memoryLimit = DEFAULT_MEMORY_LIMIT_MB * BYTES_PER_MB,
-    checkInterval = DEFAULT_CHECK_INTERVAL_MS
+    checkInterval = DEFAULT_CHECK_INTERVAL_MS,
   ) {
     this.memoryLimit = memoryLimit;
     this.checkInterval = checkInterval;
@@ -47,7 +47,7 @@ export class MemoryMonitor {
       global.gc();
     }
 
-    globalLogger.fatal('MEMORY', 'OVERFLOW', {
+    globalLogger.fatal("MEMORY", "OVERFLOW", {
       heapUsed: usage.heapUsed,
       heapTotal: usage.heapTotal,
       external: usage.external,
@@ -56,7 +56,7 @@ export class MemoryMonitor {
   }
 
   private logMemoryMetrics(usage: NodeJS.MemoryUsage): void {
-    globalLogger.debug('MEMORY', 'METRICS', {
+    globalLogger.debug("MEMORY", "METRICS", {
       heapUsed: usage.heapUsed,
       heapTotal: usage.heapTotal,
       external: usage.external,

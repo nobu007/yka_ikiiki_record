@@ -1,5 +1,5 @@
-import { act, waitFor } from '@testing-library/react';
-import { DEFAULT_CONFIG } from '@/domain/entities/DataGeneration';
+import { act, waitFor } from "@testing-library/react";
+import { DEFAULT_CONFIG } from "@/domain/entities/DataGeneration";
 import {
   setupTestHook,
   createMockOnGenerate,
@@ -13,9 +13,9 @@ import {
   VALID_PERIOD_DAYS,
   BELOW_MIN_PERIOD_DAYS,
   ABOVE_MAX_PERIOD_DAYS,
-} from './useDataGeneration.test.utils';
+} from "./useDataGeneration.test.utils";
 
-describe('useDataGeneration - Configuration', () => {
+describe("useDataGeneration - Configuration", () => {
   let mockOnGenerate: jest.Mock;
 
   beforeEach(() => {
@@ -23,8 +23,8 @@ describe('useDataGeneration - Configuration', () => {
     jest.clearAllMocks();
   });
 
-  describe('initialization', () => {
-    it('should initialize with default config', () => {
+  describe("initialization", () => {
+    it("should initialize with default config", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       expect(result.current.config).toEqual(DEFAULT_CONFIG);
@@ -33,8 +33,8 @@ describe('useDataGeneration - Configuration', () => {
     });
   });
 
-  describe('config updates - student count', () => {
-    it('should update student count within valid range', () => {
+  describe("config updates - student count", () => {
+    it("should update student count within valid range", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
@@ -44,7 +44,7 @@ describe('useDataGeneration - Configuration', () => {
       expect(result.current.config.studentCount).toBe(VALID_STUDENT_COUNT);
     });
 
-    it('should enforce minimum student count', () => {
+    it("should enforce minimum student count", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
@@ -54,7 +54,7 @@ describe('useDataGeneration - Configuration', () => {
       expect(result.current.config.studentCount).toBe(MIN_STUDENTS);
     });
 
-    it('should enforce maximum student count', () => {
+    it("should enforce maximum student count", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
@@ -65,8 +65,8 @@ describe('useDataGeneration - Configuration', () => {
     });
   });
 
-  describe('config updates - period days', () => {
-    it('should update period days within valid range', () => {
+  describe("config updates - period days", () => {
+    it("should update period days within valid range", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
@@ -76,7 +76,7 @@ describe('useDataGeneration - Configuration', () => {
       expect(result.current.config.periodDays).toBe(VALID_PERIOD_DAYS);
     });
 
-    it('should enforce minimum period days', () => {
+    it("should enforce minimum period days", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
@@ -86,7 +86,7 @@ describe('useDataGeneration - Configuration', () => {
       expect(result.current.config.periodDays).toBe(MIN_PERIOD_DAYS);
     });
 
-    it('should enforce maximum period days', () => {
+    it("should enforce maximum period days", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
@@ -97,20 +97,20 @@ describe('useDataGeneration - Configuration', () => {
     });
   });
 
-  describe('config updates - distribution pattern', () => {
-    it('should update distribution pattern', () => {
+  describe("config updates - distribution pattern", () => {
+    it("should update distribution pattern", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
-        result.current.updateDistributionPattern('bimodal');
+        result.current.updateDistributionPattern("bimodal");
       });
 
-      expect(result.current.config.distributionPattern).toBe('bimodal');
+      expect(result.current.config.distributionPattern).toBe("bimodal");
     });
   });
 
-  describe('config updates - seasonal effects', () => {
-    it('should toggle seasonal effects from false to true', () => {
+  describe("config updates - seasonal effects", () => {
+    it("should toggle seasonal effects from false to true", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       expect(result.current.config.seasonalEffects).toBe(false);
@@ -122,7 +122,7 @@ describe('useDataGeneration - Configuration', () => {
       expect(result.current.config.seasonalEffects).toBe(true);
     });
 
-    it('should toggle seasonal effects from true to false', () => {
+    it("should toggle seasonal effects from true to false", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
@@ -139,35 +139,41 @@ describe('useDataGeneration - Configuration', () => {
     });
   });
 
-  describe('config updates - class characteristics', () => {
-    it('should update class characteristics partially', () => {
+  describe("config updates - class characteristics", () => {
+    it("should update class characteristics partially", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
         result.current.updateClassCharacteristics({ baselineEmotion: 4.0 });
       });
 
-      expect(result.current.config.classCharacteristics.baselineEmotion).toBe(4.0);
-      expect(result.current.config.classCharacteristics.volatility).toBe(DEFAULT_CONFIG.classCharacteristics.volatility);
+      expect(result.current.config.classCharacteristics.baselineEmotion).toBe(
+        4.0,
+      );
+      expect(result.current.config.classCharacteristics.volatility).toBe(
+        DEFAULT_CONFIG.classCharacteristics.volatility,
+      );
     });
 
-    it('should merge multiple characteristics', () => {
+    it("should merge multiple characteristics", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
         result.current.updateClassCharacteristics({
           baselineEmotion: 4.0,
-          volatility: 0.3
+          volatility: 0.3,
         });
       });
 
-      expect(result.current.config.classCharacteristics.baselineEmotion).toBe(4.0);
+      expect(result.current.config.classCharacteristics.baselineEmotion).toBe(
+        4.0,
+      );
       expect(result.current.config.classCharacteristics.volatility).toBe(0.3);
     });
   });
 
-  describe('config reset', () => {
-    it('should reset config to default', () => {
+  describe("config reset", () => {
+    it("should reset config to default", () => {
       const { result } = setupTestHook(mockOnGenerate);
 
       act(() => {
@@ -179,9 +185,9 @@ describe('useDataGeneration - Configuration', () => {
       expect(result.current.config).toEqual(DEFAULT_CONFIG);
     });
 
-    it('should reset config values while preserving error state', async () => {
+    it("should reset config values while preserving error state", async () => {
       const { result } = setupTestHook(mockOnGenerate);
-      mockOnGenerate.mockRejectedValueOnce(new Error('Test error'));
+      mockOnGenerate.mockRejectedValueOnce(new Error("Test error"));
 
       await act(async () => {
         await result.current.generateData();

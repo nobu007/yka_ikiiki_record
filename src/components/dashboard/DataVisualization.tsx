@@ -1,13 +1,13 @@
-import { useMemo, useCallback, memo } from 'react';
+import { useMemo, useCallback, memo } from "react";
 import {
   MonthlyEmotionChart,
   DayOfWeekChart,
   EmotionDistributionChart,
   TimeOfDayChart,
   StudentEmotionChart,
-  EmotionTrendChart
-} from '@/components/charts';
-import { StatsData } from '@/schemas/api';
+  EmotionTrendChart,
+} from "@/components/charts";
+import { StatsData } from "@/schemas/api";
 
 const MAX_STUDENTS_IN_TABLE = 10;
 const ALTERNATING_ROW_MODULO = 2;
@@ -19,16 +19,19 @@ interface DataVisualizationProps {
 
 export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
   const formatTrendArrow = useCallback((trendline: number[]) => {
-    if (trendline.length < 2) return '';
+    if (trendline.length < 2) return "";
     const lastIndex = trendline.length - 1;
     const prevIndex = trendline.length - 2;
     const last = trendline[lastIndex];
     const prev = trendline[prevIndex];
-    if (last === undefined || prev === undefined) return '';
-    return last > prev ? '↗️' : last < prev ? '↘️' : '→';
+    if (last === undefined || prev === undefined) return "";
+    return last > prev ? "↗️" : last < prev ? "↘️" : "→";
   }, []);
 
-  const studentStatsSlice = useMemo(() => data.studentStats.slice(0, MAX_STUDENTS_IN_TABLE), [data.studentStats]);
+  const studentStatsSlice = useMemo(
+    () => data.studentStats.slice(0, MAX_STUDENTS_IN_TABLE),
+    [data.studentStats],
+  );
   return (
     <div className="space-y-8">
       {/* Overview Statistics */}
@@ -37,11 +40,17 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-blue-50 p-4 rounded-lg">
             <h3 className="text-sm font-medium text-blue-900 mb-1">総記録数</h3>
-            <p className="text-2xl font-bold text-blue-600">{data.overview.count.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-blue-600">
+              {data.overview.count.toLocaleString()}
+            </p>
           </div>
           <div className="bg-green-50 p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-green-900 mb-1">平均感情スコア</h3>
-            <p className="text-2xl font-bold text-green-600">{data.overview.avgEmotion}</p>
+            <h3 className="text-sm font-medium text-green-900 mb-1">
+              平均感情スコア
+            </h3>
+            <p className="text-2xl font-bold text-green-600">
+              {data.overview.avgEmotion}
+            </p>
           </div>
         </div>
       </section>
@@ -102,7 +111,14 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {studentStatsSlice.map((student, index) => (
-                <tr key={student.student} className={index % ALTERNATING_ROW_MODULO === 0 ? 'bg-white' : 'bg-gray-50'}>
+                <tr
+                  key={student.student}
+                  className={
+                    index % ALTERNATING_ROW_MODULO === 0
+                      ? "bg-white"
+                      : "bg-gray-50"
+                  }
+                >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {student.student}
                   </td>
@@ -118,7 +134,9 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
                         {formatTrendArrow(student.trendline)}
                       </span>
                       <span className="text-xs">
-                        {student.trendline.slice(-RECENT_TREND_POINTS).join(' → ')}
+                        {student.trendline
+                          .slice(-RECENT_TREND_POINTS)
+                          .join(" → ")}
                       </span>
                     </div>
                   </td>
@@ -132,4 +150,4 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
   );
 });
 
-DataVisualization.displayName = 'DataVisualization';
+DataVisualization.displayName = "DataVisualization";

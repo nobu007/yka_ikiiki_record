@@ -4,8 +4,8 @@
  * Shared mocks, helpers, and fixtures for ChartWrapper tests
  */
 
-import { render, screen } from '@testing-library/react';
-import ChartWrapper from './ChartWrapper';
+import { render, screen } from "@testing-library/react";
+import ChartWrapper from "./ChartWrapper";
 
 // Mock children for testing
 export const mockChildren = <div data-testid="chart-content">Test Chart</div>;
@@ -16,13 +16,11 @@ export function renderChartWrapper(props = {}) {
     children: mockChildren,
   };
 
-  return render(
-    <ChartWrapper {...defaultProps} {...props} />
-  );
+  return render(<ChartWrapper {...defaultProps} {...props} />);
 }
 
 // Helper to create a test error
-export function createTestError(message: string = 'Test error message'): Error {
+export function createTestError(message: string = "Test error message"): Error {
   return new Error(message);
 }
 

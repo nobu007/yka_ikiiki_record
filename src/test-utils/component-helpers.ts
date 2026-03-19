@@ -20,8 +20,11 @@
  * @param element - The DOM element to check
  * @param classNames - Variable number of class names to assert
  */
-export function expectClasses(element: HTMLElement, ...classNames: string[]): void {
-  classNames.forEach(className => {
+export function expectClasses(
+  element: HTMLElement,
+  ...classNames: string[]
+): void {
+  classNames.forEach((className) => {
     expect(element).toHaveClass(className);
   });
 }
@@ -42,6 +45,8 @@ export function expectClasses(element: HTMLElement, ...classNames: string[]): vo
  * @param fn - The function to mock
  * @returns A properly typed Jest mock function
  */
-export function createMockedFunction<T extends (...args: never[]) => unknown>(fn: T): jest.MockedFunction<T> {
+export function createMockedFunction<T extends (...args: never[]) => unknown>(
+  fn: T,
+): jest.MockedFunction<T> {
   return fn as unknown as jest.MockedFunction<T>;
 }

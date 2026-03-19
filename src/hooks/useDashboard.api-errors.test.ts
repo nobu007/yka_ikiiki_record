@@ -1,14 +1,22 @@
-import { renderDashboardHook, executeHandleGenerate, expectErrorState, clearAllMocks, mockErrorResponse, createMockResponse, setupMockFetch } from './useDashboard.test.helpers';
+import {
+  renderDashboardHook,
+  executeHandleGenerate,
+  expectErrorState,
+  clearAllMocks,
+  mockErrorResponse,
+  createMockResponse,
+  setupMockFetch,
+} from "./useDashboard.test.helpers";
 
 global.fetch = jest.fn();
 
-describe('useDashboard - API Error Handling', () => {
+describe("useDashboard - API Error Handling", () => {
   beforeEach(() => {
     clearAllMocks();
   });
 
-  it('should handle API error response', async () => {
-    setupMockFetch(createMockResponse(false, 500, 'Internal Server Error'));
+  it("should handle API error response", async () => {
+    setupMockFetch(createMockResponse(false, 500, "Internal Server Error"));
 
     const { result } = renderDashboardHook();
 
@@ -17,8 +25,8 @@ describe('useDashboard - API Error Handling', () => {
     expectErrorState(result);
   });
 
-  it('should handle API response with success:false', async () => {
-    setupMockFetch(createMockResponse(true, 200, 'OK', mockErrorResponse));
+  it("should handle API response with success:false", async () => {
+    setupMockFetch(createMockResponse(true, 200, "OK", mockErrorResponse));
 
     const { result } = renderDashboardHook();
 
@@ -27,48 +35,48 @@ describe('useDashboard - API Error Handling', () => {
     expectErrorState(result);
   });
 
-  it('should handle API response with error message', async () => {
+  it("should handle API response with error message", async () => {
     const errorResponse = {
       success: false,
-      error: 'Specific generation error',
+      error: "Specific generation error",
       data: {
         overview: { count: 100, avgEmotion: 75.5 },
         monthlyStats: [],
         dayOfWeekStats: [],
         emotionDistribution: [],
         timeOfDayStats: [],
-        studentStats: []
-      }
+        studentStats: [],
+      },
     };
 
-    setupMockFetch(createMockResponse(true, 200, 'OK', errorResponse));
+    setupMockFetch(createMockResponse(true, 200, "OK", errorResponse));
 
     const { result } = renderDashboardHook();
 
     await executeHandleGenerate(result);
 
     expect(result.current.isGenerating).toBe(false);
-    expect(result.current.notification.type).toBe('error');
+    expect(result.current.notification.type).toBe("error");
     expect(result.current.notification.message).toBeTruthy();
   });
 
-  it('should handle API response with success:false and no error message', async () => {
+  it("should handle API response with success:false and no error message", async () => {
     const errorResponse = {
-      success: false
+      success: false,
     };
 
-    setupMockFetch(createMockResponse(true, 200, 'OK', errorResponse));
+    setupMockFetch(createMockResponse(true, 200, "OK", errorResponse));
 
     const { result } = renderDashboardHook();
 
     await executeHandleGenerate(result);
 
     expect(result.current.isGenerating).toBe(false);
-    expect(result.current.notification.type).toBe('error');
+    expect(result.current.notification.type).toBe("error");
   });
 
-  it('should handle 404 error', async () => {
-    setupMockFetch(createMockResponse(false, 404, 'Not Found'));
+  it("should handle 404 error", async () => {
+    setupMockFetch(createMockResponse(false, 404, "Not Found"));
 
     const { result } = renderDashboardHook();
 

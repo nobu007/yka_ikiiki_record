@@ -1,35 +1,35 @@
-import React from 'react';
+import React from "react";
 /**
  * DynamicBarChart Edge Cases Tests
  *
  * Tests data validation edge cases, props edge cases, and error handling
  */
 
-import DynamicBarChart from './DynamicBarChart';
-import type { ChartData } from './DynamicBarChart';
+import DynamicBarChart from "./DynamicBarChart";
+import type { ChartData } from "./DynamicBarChart";
 
-describe('DynamicBarChart Edge Cases', () => {
+describe("DynamicBarChart Edge Cases", () => {
   const mockData: ChartData[] = [
-    { name: 'Item 1', value: 3.5 },
-    { name: 'Item 2', value: 4.2 },
-    { name: 'Item 3', value: 2.8 },
+    { name: "Item 1", value: 3.5 },
+    { name: "Item 2", value: 4.2 },
+    { name: "Item 3", value: 2.8 },
   ];
 
-  describe('Data Validation Edge Cases', () => {
-    it('should handle empty data', () => {
+  describe("Data Validation Edge Cases", () => {
+    it("should handle empty data", () => {
       const props = { data: [] };
       const element = React.createElement(DynamicBarChart, props);
       expect(element).toBeDefined();
     });
 
-    it('should handle single data point', () => {
-      const singleData: ChartData[] = [{ name: 'Only', value: 3.5 }];
+    it("should handle single data point", () => {
+      const singleData: ChartData[] = [{ name: "Only", value: 3.5 }];
       const props = { data: singleData };
       const element = React.createElement(DynamicBarChart, props);
       expect(element).toBeDefined();
     });
 
-    it('should handle many data points', () => {
+    it("should handle many data points", () => {
       const manyData = Array.from({ length: 50 }, (_, i) => ({
         name: `Item ${i}`,
         value: Math.random() * 5,
@@ -39,41 +39,41 @@ describe('DynamicBarChart Edge Cases', () => {
       expect(element).toBeDefined();
     });
 
-    it('should handle zero values', () => {
+    it("should handle zero values", () => {
       const zeroData: ChartData[] = [
-        { name: 'Zero', value: 0 },
-        { name: 'Positive', value: 3.5 },
+        { name: "Zero", value: 0 },
+        { name: "Positive", value: 3.5 },
       ];
       const props = { data: zeroData };
       const element = React.createElement(DynamicBarChart, props);
       expect(element).toBeDefined();
     });
 
-    it('should handle decimal values', () => {
+    it("should handle decimal values", () => {
       const decimalData: ChartData[] = [
-        { name: 'Precise 1', value: 3.14159 },
-        { name: 'Precise 2', value: 2.71828 },
+        { name: "Precise 1", value: 3.14159 },
+        { name: "Precise 2", value: 2.71828 },
       ];
       const props = { data: decimalData };
       const element = React.createElement(DynamicBarChart, props);
       expect(element).toBeDefined();
     });
 
-    it('should handle negative values', () => {
+    it("should handle negative values", () => {
       const negativeData: ChartData[] = [
-        { name: 'Negative', value: -1.5 },
-        { name: 'Positive', value: 3.5 },
+        { name: "Negative", value: -1.5 },
+        { name: "Positive", value: 3.5 },
       ];
       const props = { data: negativeData };
       const element = React.createElement(DynamicBarChart, props);
       expect(element).toBeDefined();
     });
 
-    it('should handle NaN values in data', () => {
+    it("should handle NaN values in data", () => {
       const dataWithNaN: ChartData[] = [
-        { name: 'Valid', value: 3.5 },
-        { name: 'Invalid', value: NaN },
-        { name: 'Also Valid', value: 4.2 },
+        { name: "Valid", value: 3.5 },
+        { name: "Invalid", value: NaN },
+        { name: "Also Valid", value: 4.2 },
       ];
       const props = { data: dataWithNaN };
       const element = React.createElement(DynamicBarChart, props);
@@ -81,27 +81,27 @@ describe('DynamicBarChart Edge Cases', () => {
     });
   });
 
-  describe('Props Edge Cases', () => {
-    it('should handle very large height', () => {
+  describe("Props Edge Cases", () => {
+    it("should handle very large height", () => {
       const props = { data: mockData, height: 10000 };
       const element = React.createElement(DynamicBarChart, props);
       expect(element.props.height).toBe(10000);
     });
 
-    it('should handle very small height', () => {
+    it("should handle very small height", () => {
       const props = { data: mockData, height: 50 };
       const element = React.createElement(DynamicBarChart, props);
       expect(element.props.height).toBe(50);
     });
 
-    it('should handle empty title', () => {
-      const props = { data: mockData, title: '' };
+    it("should handle empty title", () => {
+      const props = { data: mockData, title: "" };
       const element = React.createElement(DynamicBarChart, props);
-      expect(element.props.title).toBe('');
+      expect(element.props.title).toBe("");
     });
 
-    it('should handle very long title', () => {
-      const longTitle = 'A'.repeat(1000);
+    it("should handle very long title", () => {
+      const longTitle = "A".repeat(1000);
       const props = { data: mockData, title: longTitle };
       const element = React.createElement(DynamicBarChart, props);
       expect(element.props.title).toBe(longTitle);

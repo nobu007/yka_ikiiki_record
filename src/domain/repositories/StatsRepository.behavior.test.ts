@@ -1,12 +1,12 @@
-import { StatsRepository } from './StatsRepository';
-import { Stats } from '../entities/Stats';
-import { createEmptyStats } from '@/test-utils/fixtures';
+import { StatsRepository } from "./StatsRepository";
+import { Stats } from "../entities/Stats";
+import { createEmptyStats } from "@/test-utils/fixtures";
 
 type MockedStatsRepository = {
-  [K in keyof StatsRepository]: jest.MockedFunction<StatsRepository[K]>
+  [K in keyof StatsRepository]: jest.MockedFunction<StatsRepository[K]>;
 };
 
-describe('StatsRepository Method Behavior', () => {
+describe("StatsRepository Method Behavior", () => {
   let mockRepository: MockedStatsRepository;
   let mockStats: Stats;
 
@@ -15,28 +15,43 @@ describe('StatsRepository Method Behavior', () => {
     mockStats = {
       overview: { count: 150, avgEmotion: 3.8 },
       monthlyStats: [
-        { month: '2024-01', count: 50, avgEmotion: 3.5 },
-        { month: '2024-02', count: 55, avgEmotion: 4.0 }
+        { month: "2024-01", count: 50, avgEmotion: 3.5 },
+        { month: "2024-02", count: 55, avgEmotion: 4.0 },
       ],
       studentStats: [
-        { student: '田中太郎', recordCount: 25, avgEmotion: 3.7, trendline: [3.0, 3.5, 4.0] }
+        {
+          student: "田中太郎",
+          recordCount: 25,
+          avgEmotion: 3.7,
+          trendline: [3.0, 3.5, 4.0],
+        },
       ],
-      dayOfWeekStats: [
-        { day: '月曜日', avgEmotion: 3.6, count: 30 }
-      ],
+      dayOfWeekStats: [{ day: "月曜日", avgEmotion: 3.6, count: 30 }],
       emotionDistribution: [20, 30, 40, 25, 35],
-      timeOfDayStats: { morning: 3.4, afternoon: 3.8, evening: 4.2 }
+      timeOfDayStats: { morning: 3.4, afternoon: 3.8, evening: 4.2 },
     };
 
     mockRepository = {
-      getStats: jest.fn().mockResolvedValue(mockStats) as unknown as jest.MockedFunction<StatsRepository['getStats']>,
-      saveStats: jest.fn().mockResolvedValue(undefined) as unknown as jest.MockedFunction<StatsRepository['saveStats']>,
-      generateSeedData: jest.fn().mockResolvedValue(undefined) as unknown as jest.MockedFunction<StatsRepository['generateSeedData']>
+      getStats: jest
+        .fn()
+        .mockResolvedValue(mockStats) as unknown as jest.MockedFunction<
+        StatsRepository["getStats"]
+      >,
+      saveStats: jest
+        .fn()
+        .mockResolvedValue(undefined) as unknown as jest.MockedFunction<
+        StatsRepository["saveStats"]
+      >,
+      generateSeedData: jest
+        .fn()
+        .mockResolvedValue(undefined) as unknown as jest.MockedFunction<
+        StatsRepository["generateSeedData"]
+      >,
     };
   });
 
-  describe('getStats', () => {
-    it('should return Stats object', async () => {
+  describe("getStats", () => {
+    it("should return Stats object", async () => {
       // Act
       const result = await mockRepository.getStats();
 
@@ -47,7 +62,7 @@ describe('StatsRepository Method Behavior', () => {
       expect(result.overview.avgEmotion).toBe(3.8);
     });
 
-    it('should handle empty stats', async () => {
+    it("should handle empty stats", async () => {
       // Arrange
       const emptyStats = createEmptyStats();
       mockRepository.getStats.mockResolvedValue(emptyStats);
@@ -61,9 +76,9 @@ describe('StatsRepository Method Behavior', () => {
       expect(result.studentStats).toEqual([]);
     });
 
-    it('should handle repository errors', async () => {
+    it("should handle repository errors", async () => {
       // Arrange
-      const errorMessage = 'Database connection failed';
+      const errorMessage = "Database connection failed";
       mockRepository.getStats.mockRejectedValue(new Error(errorMessage));
 
       // Act & Assert
@@ -71,8 +86,8 @@ describe('StatsRepository Method Behavior', () => {
     });
   });
 
-  describe('saveStats', () => {
-    it('should save stats successfully', async () => {
+  describe("saveStats", () => {
+    it("should save stats successfully", async () => {
       // Act
       await mockRepository.saveStats(mockStats);
 
@@ -81,22 +96,25 @@ describe('StatsRepository Method Behavior', () => {
       expect(mockRepository.saveStats).toHaveBeenCalledWith(mockStats);
     });
 
-    it('should handle different stats configurations', async () => {
+    it("should handle different stats configurations", async () => {
       // Arrange
       const differentStats: Stats = {
         overview: { count: 200, avgEmotion: 4.2 },
         monthlyStats: [
-          { month: '2024-03', count: 70, avgEmotion: 4.1 },
-          { month: '2024-04', count: 75, avgEmotion: 4.3 }
+          { month: "2024-03", count: 70, avgEmotion: 4.1 },
+          { month: "2024-04", count: 75, avgEmotion: 4.3 },
         ],
         studentStats: [
-          { student: '山田花子', recordCount: 30, avgEmotion: 4.0, trendline: [3.8, 4.0, 4.2] }
+          {
+            student: "山田花子",
+            recordCount: 30,
+            avgEmotion: 4.0,
+            trendline: [3.8, 4.0, 4.2],
+          },
         ],
-        dayOfWeekStats: [
-          { day: '金曜日', avgEmotion: 4.5, count: 40 }
-        ],
+        dayOfWeekStats: [{ day: "金曜日", avgEmotion: 4.5, count: 40 }],
         emotionDistribution: [15, 25, 35, 20, 30],
-        timeOfDayStats: { morning: 3.9, afternoon: 4.3, evening: 4.6 }
+        timeOfDayStats: { morning: 3.9, afternoon: 4.3, evening: 4.6 },
       };
 
       // Act
@@ -106,18 +124,20 @@ describe('StatsRepository Method Behavior', () => {
       expect(mockRepository.saveStats).toHaveBeenCalledWith(differentStats);
     });
 
-    it('should handle save errors', async () => {
+    it("should handle save errors", async () => {
       // Arrange
-      const errorMessage = 'Save operation failed';
+      const errorMessage = "Save operation failed";
       mockRepository.saveStats.mockRejectedValue(new Error(errorMessage));
 
       // Act & Assert
-      await expect(mockRepository.saveStats(mockStats)).rejects.toThrow(errorMessage);
+      await expect(mockRepository.saveStats(mockStats)).rejects.toThrow(
+        errorMessage,
+      );
     });
   });
 
-  describe('generateSeedData', () => {
-    it('should generate seed data successfully', async () => {
+  describe("generateSeedData", () => {
+    it("should generate seed data successfully", async () => {
       // Act
       await mockRepository.generateSeedData();
 
@@ -125,16 +145,20 @@ describe('StatsRepository Method Behavior', () => {
       expect(mockRepository.generateSeedData).toHaveBeenCalledTimes(1);
     });
 
-    it('should handle seed generation errors', async () => {
+    it("should handle seed generation errors", async () => {
       // Arrange
-      const errorMessage = 'Seed generation failed';
-      mockRepository.generateSeedData.mockRejectedValue(new Error(errorMessage));
+      const errorMessage = "Seed generation failed";
+      mockRepository.generateSeedData.mockRejectedValue(
+        new Error(errorMessage),
+      );
 
       // Act & Assert
-      await expect(mockRepository.generateSeedData()).rejects.toThrow(errorMessage);
+      await expect(mockRepository.generateSeedData()).rejects.toThrow(
+        errorMessage,
+      );
     });
 
-    it('should not return any value', async () => {
+    it("should not return any value", async () => {
       // Act
       const result = await mockRepository.generateSeedData();
 

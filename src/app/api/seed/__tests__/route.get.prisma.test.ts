@@ -1,9 +1,9 @@
-import { GET } from '../route';
+import { GET } from "../route";
 
 const originalEnv = process.env.DATABASE_PROVIDER;
 
 beforeAll(() => {
-  process.env.DATABASE_PROVIDER = 'mirage';
+  process.env.DATABASE_PROVIDER = "mirage";
 });
 
 afterAll(() => {
@@ -27,12 +27,12 @@ const mockStatsService = {
 
 let mockIsPrismaProvider = false;
 
-jest.mock('@/infrastructure/factories/repositoryFactory', () => ({
+jest.mock("@/infrastructure/factories/repositoryFactory", () => ({
   createStatsService: jest.fn(() => mockStatsService),
   isPrismaProvider: jest.fn(() => mockIsPrismaProvider),
 }));
 
-jest.mock('@/infrastructure/services/dataService', () => ({
+jest.mock("@/infrastructure/services/dataService", () => ({
   dataService: {
     generateStats: jest.fn(),
   },
@@ -40,7 +40,7 @@ jest.mock('@/infrastructure/services/dataService', () => ({
   StatsData: {},
 }));
 
-describe('API seed route GET (Prisma provider)', () => {
+describe("API seed route GET (Prisma provider)", () => {
   beforeAll(() => {
     mockIsPrismaProvider = true;
   });
@@ -53,7 +53,7 @@ describe('API seed route GET (Prisma provider)', () => {
     jest.clearAllMocks();
   });
 
-  it('returns stats from Prisma database', async () => {
+  it("returns stats from Prisma database", async () => {
     const response = await GET();
     const body = await response.json();
 
@@ -62,8 +62,8 @@ describe('API seed route GET (Prisma provider)', () => {
     expect(body.data).toBeDefined();
   });
 
-  it('handles errors from getStats', async () => {
-    mockGetStats.mockRejectedValueOnce(new Error('Query failed'));
+  it("handles errors from getStats", async () => {
+    mockGetStats.mockRejectedValueOnce(new Error("Query failed"));
 
     const response = await GET();
     const body = await response.json();

@@ -9,7 +9,9 @@
  * Type guard to check if a value is not null or undefined.
  * Use this to narrow types after extracting mock call arguments.
  */
-export function isNotNullOrUndefined<T>(value: T | null | undefined): value is T {
+export function isNotNullOrUndefined<T>(
+  value: T | null | undefined,
+): value is T {
   return value !== null && value !== undefined;
 }
 

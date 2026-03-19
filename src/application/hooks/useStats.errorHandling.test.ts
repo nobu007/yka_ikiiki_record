@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react';
-import { useStats } from './useStats';
-import { StatsResponse } from '@/schemas/api';
+import { renderHook } from "@testing-library/react";
+import { useStats } from "./useStats";
+import { StatsResponse } from "@/schemas/api";
 
-jest.mock('swr', () => {
+jest.mock("swr", () => {
   const mockMutate = jest.fn();
   return {
     __esModule: true,
@@ -22,11 +22,15 @@ type UseSWRResponse<T> = {
   mutate: () => Promise<void>;
 };
 
-const mockUseSWR = require('swr').default as jest.MockedFunction<
-  (key: string, fetcher: () => Promise<StatsResponse>, config?: unknown) => UseSWRResponse<StatsResponse>
+const mockUseSWR = require("swr").default as jest.MockedFunction<
+  (
+    key: string,
+    fetcher: () => Promise<StatsResponse>,
+    config?: unknown,
+  ) => UseSWRResponse<StatsResponse>
 >;
 
-describe('useStats error handling', () => {
+describe("useStats error handling", () => {
   const mockStatsData = {
     success: true,
     data: {
@@ -35,12 +39,12 @@ describe('useStats error handling', () => {
         avgEmotion: 3.5,
       },
       monthlyStats: [
-        { month: '1月', avgEmotion: 3.2, count: 10 },
-        { month: '2月', avgEmotion: 3.8, count: 15 },
+        { month: "1月", avgEmotion: 3.2, count: 10 },
+        { month: "2月", avgEmotion: 3.8, count: 15 },
       ],
       dayOfWeekStats: [
-        { day: '日', avgEmotion: 3.5, count: 15 },
-        { day: '月', avgEmotion: 3.4, count: 14 },
+        { day: "日", avgEmotion: 3.5, count: 15 },
+        { day: "月", avgEmotion: 3.4, count: 14 },
       ],
       timeOfDayStats: {
         morning: 3.6,
@@ -49,7 +53,7 @@ describe('useStats error handling', () => {
       },
       studentStats: [
         {
-          student: 'Test Student',
+          student: "Test Student",
           avgEmotion: 3.5,
           recordCount: 10,
           trendline: [3.0, 3.2, 3.5, 3.4, 3.6],
@@ -71,9 +75,9 @@ describe('useStats error handling', () => {
     });
   });
 
-  describe('SWR error handling', () => {
-    it('should handle SWR error and return it', () => {
-      const swrError = new Error('SWR fetch failed');
+  describe("SWR error handling", () => {
+    it("should handle SWR error and return it", () => {
+      const swrError = new Error("SWR fetch failed");
       mockUseSWR.mockReturnValue({
         data: undefined,
         error: swrError,
@@ -88,8 +92,8 @@ describe('useStats error handling', () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    it('should handle non-Error swrError objects', () => {
-      const nonErrorError = 'String error message';
+    it("should handle non-Error swrError objects", () => {
+      const nonErrorError = "String error message";
       mockUseSWR.mockReturnValue({
         data: undefined,
         error: nonErrorError as unknown as Error,
@@ -104,15 +108,17 @@ describe('useStats error handling', () => {
     });
   });
 
-  describe('fetcher error handling', () => {
-    it('should throw error when response is not ok', async () => {
+  describe("fetcher error handling", () => {
+    it("should throw error when response is not ok", async () => {
       const mockResponse = {
         ok: false,
         status: 500,
         json: async () => ({}),
       } as Response;
 
-      jest.spyOn(await import('@/lib/resilience/timeout'), 'withApiTimeout').mockResolvedValue(mockResponse);
+      jest
+        .spyOn(await import("@/lib/resilience/timeout"), "withApiTimeout")
+        .mockResolvedValue(mockResponse);
 
       mockUseSWR.mockReturnValue({
         data: mockStatsData,
@@ -123,43 +129,47 @@ describe('useStats error handling', () => {
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (url: string) => Promise<unknown>;
+      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (
+        url: string,
+      ) => Promise<unknown>;
 
-      await expect(fetcher('/api/stats')).rejects.toThrow('APIリクエストに失敗しました');
+      await expect(fetcher("/api/stats")).rejects.toThrow(
+        "APIリクエストに失敗しました",
+      );
     });
 
-    it('should throw ValidationError when validation fails (line 19)', async () => {
+    it("should throw ValidationError when validation fails (line 19)", async () => {
       const mockResponse = {
         ok: true,
         status: 200,
-        json: async () => ({ invalid: 'data' }),
+        json: async () => ({ invalid: "data" }),
       } as Response;
 
-      jest.spyOn(await import('@/lib/resilience/timeout'), 'withApiTimeout').mockResolvedValue(mockResponse);
+      jest
+        .spyOn(await import("@/lib/resilience/timeout"), "withApiTimeout")
+        .mockResolvedValue(mockResponse);
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (url: string) => Promise<unknown>;
+      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (
+        url: string,
+      ) => Promise<unknown>;
 
-      await expect(fetcher('/api/stats')).rejects.toThrow();
+      await expect(fetcher("/api/stats")).rejects.toThrow();
     });
 
-    it('should throw AppError when validated.success is false (line 23)', async () => {
+    it("should throw AppError when validated.success is false (line 23)", async () => {
       const validStatsData = {
         success: false,
-        error: 'Custom error message',
+        error: "Custom error message",
         data: {
           overview: { count: 100, avgEmotion: 3.5 },
-          monthlyStats: [
-            { month: '1月', avgEmotion: 3.2, count: 10 },
-          ],
-          dayOfWeekStats: [
-            { day: '日', avgEmotion: 3.5, count: 15 },
-          ],
+          monthlyStats: [{ month: "1月", avgEmotion: 3.2, count: 10 }],
+          dayOfWeekStats: [{ day: "日", avgEmotion: 3.5, count: 15 }],
           timeOfDayStats: { morning: 3.6, afternoon: 3.4, evening: 3.2 },
           studentStats: [
             {
-              student: 'Test Student',
+              student: "Test Student",
               avgEmotion: 3.5,
               recordCount: 10,
               trendline: [3.0, 3.2, 3.5],
@@ -175,25 +185,35 @@ describe('useStats error handling', () => {
         json: async () => validStatsData,
       } as Response;
 
-      jest.spyOn(await import('@/lib/resilience/timeout'), 'withApiTimeout').mockResolvedValue(mockResponse);
+      jest
+        .spyOn(await import("@/lib/resilience/timeout"), "withApiTimeout")
+        .mockResolvedValue(mockResponse);
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (url: string) => Promise<unknown>;
+      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (
+        url: string,
+      ) => Promise<unknown>;
 
-      await expect(fetcher('/api/stats')).rejects.toThrow('Custom error message');
+      await expect(fetcher("/api/stats")).rejects.toThrow(
+        "Custom error message",
+      );
     });
 
-    it('should throw AppError for unknown errors in catch block (line 31)', async () => {
-      jest.spyOn(await import('@/lib/resilience/timeout'), 'withApiTimeout').mockRejectedValue(
-        new Error('Unknown network error')
-      );
+    it("should throw AppError for unknown errors in catch block (line 31)", async () => {
+      jest
+        .spyOn(await import("@/lib/resilience/timeout"), "withApiTimeout")
+        .mockRejectedValue(new Error("Unknown network error"));
 
       renderHook(() => useStats());
 
-      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (url: string) => Promise<unknown>;
+      const fetcher = mockUseSWR.mock.calls[0]?.[1] as (
+        url: string,
+      ) => Promise<unknown>;
 
-      await expect(fetcher('/api/stats')).rejects.toThrow('不明なエラーが発生しました');
+      await expect(fetcher("/api/stats")).rejects.toThrow(
+        "不明なエラーが発生しました",
+      );
     });
   });
 });

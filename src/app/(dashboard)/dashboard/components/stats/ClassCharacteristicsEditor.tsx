@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { memo } from 'react';
-import type { ClassCharacteristics } from '@/schemas/api';
+import { memo } from "react";
+import type { ClassCharacteristics } from "@/schemas/api";
 
 interface Props {
   characteristics: ClassCharacteristics;
@@ -10,7 +10,7 @@ interface Props {
 
 const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({
   characteristics,
-  onUpdate
+  onUpdate,
 }: Props) {
   return (
     <div className="space-y-4">
@@ -26,7 +26,9 @@ const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({
           max="3.5"
           step="0.1"
           value={characteristics.baselineEmotion}
-          onChange={(e) => onUpdate({ baselineEmotion: Number(e.target.value) })}
+          onChange={(e) =>
+            onUpdate({ baselineEmotion: Number(e.target.value) })
+          }
           className="w-full"
         />
       </div>
@@ -64,6 +66,6 @@ const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({
   );
 });
 
-ClassCharacteristicsEditor.displayName = 'ClassCharacteristicsEditor';
+ClassCharacteristicsEditor.displayName = "ClassCharacteristicsEditor";
 
 export default ClassCharacteristicsEditor;

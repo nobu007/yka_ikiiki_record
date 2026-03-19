@@ -1,9 +1,9 @@
-import { StatsRepository } from '@/domain/repositories/StatsRepository';
-import { StatsService } from '@/domain/services/StatsService';
-import { MockStatsRepository } from '@/infrastructure/storage/MockStatsRepository';
-import { PrismaStatsRepository } from '@/infrastructure/repositories/PrismaStatsRepository';
-import { PrismaRecordRepository } from '@/infrastructure/repositories/PrismaRecordRepository';
-import { isPrismaProvider as checkIsPrismaProvider } from '@/lib/config/env';
+import { StatsRepository } from "@/domain/repositories/StatsRepository";
+import { StatsService } from "@/domain/services/StatsService";
+import { MockStatsRepository } from "@/infrastructure/storage/MockStatsRepository";
+import { PrismaStatsRepository } from "@/infrastructure/repositories/PrismaStatsRepository";
+import { PrismaRecordRepository } from "@/infrastructure/repositories/PrismaRecordRepository";
+import { isPrismaProvider as checkIsPrismaProvider } from "@/lib/config/env";
 
 export function createStatsRepository(): StatsRepository {
   if (checkIsPrismaProvider()) {

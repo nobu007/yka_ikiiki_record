@@ -1,14 +1,14 @@
-import { AppError, ERROR_CODES } from '@/lib/error-handler';
-import { globalLogger } from './structured-logger';
+import { AppError, ERROR_CODES } from "@/lib/error-handler";
+import { globalLogger } from "./structured-logger";
 
 export class InfiniteLoopError extends AppError {
   constructor(operationId: string) {
     super(
       `Operation ${operationId} exceeded maximum iterations`,
       ERROR_CODES.UNKNOWN,
-      500
+      500,
     );
-    this.name = 'InfiniteLoopError';
+    this.name = "InfiniteLoopError";
   }
 }
 
@@ -21,7 +21,10 @@ export class LoopDetector {
   private readonly timeWindow: number;
   private pendingTimeouts = new Set<NodeJS.Timeout>();
 
-  constructor(maxIterations = DEFAULT_MAX_ITERATIONS, timeWindow = DEFAULT_TIME_WINDOW) {
+  constructor(
+    maxIterations = DEFAULT_MAX_ITERATIONS,
+    timeWindow = DEFAULT_TIME_WINDOW,
+  ) {
     this.maxIterations = maxIterations;
     this.timeWindow = timeWindow;
   }
@@ -30,11 +33,11 @@ export class LoopDetector {
     const currentCount = this.operationCounts.get(operationId) || 0;
 
     if (currentCount > this.maxIterations) {
-      globalLogger.error('LOOP_DETECTOR', 'INFINITE_LOOP_DETECTED', {
+      globalLogger.error("LOOP_DETECTOR", "INFINITE_LOOP_DETECTED", {
         operation: operationId,
         iterationCount: currentCount,
         maxIterations: this.maxIterations,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       });
       throw new InfiniteLoopError(operationId);
     }
@@ -72,7 +75,7 @@ export class LoopDetector {
 
 export const createLoopDetector = (
   maxIterations?: number,
-  timeWindow?: number
+  timeWindow?: number,
 ): LoopDetector => new LoopDetector(maxIterations, timeWindow);
 
 export const globalLoopDetector = createLoopDetector();
@@ -80,7 +83,7 @@ export const globalLoopDetector = createLoopDetector();
 export const safeLoop = <T>(
   operationId: string,
   iterable: T[],
-  callback: (item: T, index: number) => void
+  callback: (item: T, index: number) => void,
 ): void => {
   const detector = createLoopDetector();
 
@@ -97,7 +100,7 @@ export const safeLoop = <T>(
 export const safeAsyncLoop = async <T>(
   operationId: string,
   iterable: T[],
-  callback: (item: T, index: number) => Promise<void>
+  callback: (item: T, index: number) => Promise<void>,
 ): Promise<void> => {
   const detector = createLoopDetector();
 

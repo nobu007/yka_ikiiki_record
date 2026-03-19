@@ -1,7 +1,7 @@
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import GenerationControls from './GenerationControls';
-import { DEFAULT_CONFIG, type DataGenerationConfig } from '@/schemas/api';
+import { render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import GenerationControls from "./GenerationControls";
+import { DEFAULT_CONFIG, type DataGenerationConfig } from "@/schemas/api";
 
 /**
  * Shared test utilities and mocks for GenerationControls tests
@@ -11,8 +11,8 @@ export const mockConfig: DataGenerationConfig = {
   ...DEFAULT_CONFIG,
   studentCount: 30,
   periodDays: 90,
-  distributionPattern: 'normal',
-  seasonalEffects: false
+  distributionPattern: "normal",
+  seasonalEffects: false,
 };
 
 export const mockOnUpdateStudentCount = jest.fn();
@@ -23,7 +23,9 @@ export const mockOnToggleSeasonalEffects = jest.fn();
 /**
  * Renders GenerationControls with default props
  */
-export function renderGenerationControls(config: DataGenerationConfig = mockConfig) {
+export function renderGenerationControls(
+  config: DataGenerationConfig = mockConfig,
+) {
   return render(
     <GenerationControls
       config={config}
@@ -31,7 +33,7 @@ export function renderGenerationControls(config: DataGenerationConfig = mockConf
       onUpdatePeriodDays={mockOnUpdatePeriodDays}
       onUpdateDistributionPattern={mockOnUpdateDistributionPattern}
       onToggleSeasonalEffects={mockOnToggleSeasonalEffects}
-    />
+    />,
   );
 }
 

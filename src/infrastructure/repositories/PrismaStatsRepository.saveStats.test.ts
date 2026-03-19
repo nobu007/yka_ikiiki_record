@@ -1,14 +1,15 @@
-import { PrismaStatsRepository } from './PrismaStatsRepository';
-import { PrismaRecordRepository } from './PrismaRecordRepository';
+import { PrismaStatsRepository } from "./PrismaStatsRepository";
+import { PrismaRecordRepository } from "./PrismaRecordRepository";
 
-jest.mock('./PrismaRecordRepository');
+jest.mock("./PrismaRecordRepository");
 
-describe('PrismaStatsRepository.saveStats', () => {
+describe("PrismaStatsRepository.saveStats", () => {
   let repository: PrismaStatsRepository;
   let mockRecordRepository: jest.Mocked<PrismaRecordRepository>;
 
   beforeAll(() => {
-    mockRecordRepository = new PrismaRecordRepository() as jest.Mocked<PrismaRecordRepository>;
+    mockRecordRepository =
+      new PrismaRecordRepository() as jest.Mocked<PrismaRecordRepository>;
     repository = new PrismaStatsRepository(mockRecordRepository);
   });
 
@@ -16,7 +17,7 @@ describe('PrismaStatsRepository.saveStats', () => {
     jest.clearAllMocks();
   });
 
-  it('should convert stats to records and save', async () => {
+  it("should convert stats to records and save", async () => {
     const stats = {
       overview: {
         count: 2,
@@ -24,7 +25,7 @@ describe('PrismaStatsRepository.saveStats', () => {
       },
       monthlyStats: [
         {
-          month: '2024-01',
+          month: "2024-01",
           count: 2,
           avgEmotion: 82.5,
         },
@@ -46,7 +47,7 @@ describe('PrismaStatsRepository.saveStats', () => {
     expect(mockRecordRepository.saveMany).toHaveBeenCalled();
   });
 
-  it('should handle empty monthly stats', async () => {
+  it("should handle empty monthly stats", async () => {
     const stats = {
       overview: {
         count: 0,
@@ -68,7 +69,7 @@ describe('PrismaStatsRepository.saveStats', () => {
     await expect(repository.saveStats(stats)).resolves.not.toThrow();
   });
 
-  it('should handle out of bounds student index with fallback to Unknown', async () => {
+  it("should handle out of bounds student index with fallback to Unknown", async () => {
     const stats = {
       overview: {
         count: 2,
@@ -76,7 +77,7 @@ describe('PrismaStatsRepository.saveStats', () => {
       },
       monthlyStats: [
         {
-          month: '2024-01',
+          month: "2024-01",
           count: 2,
           avgEmotion: 82.5,
         },
@@ -96,9 +97,10 @@ describe('PrismaStatsRepository.saveStats', () => {
     await repository.saveStats(stats);
 
     expect(mockRecordRepository.saveMany).toHaveBeenCalled();
-    const savedRecords = mockRecordRepository.saveMany.mock.calls[0]![0] as Array<{ student: string }>;
-    savedRecords.forEach(record => {
-      expect(record.student).toBe('Unknown');
+    const savedRecords = mockRecordRepository.saveMany.mock
+      .calls[0]![0] as Array<{ student: string }>;
+    savedRecords.forEach((record) => {
+      expect(record.student).toBe("Unknown");
     });
   });
 });

@@ -24,6 +24,6 @@ export const GridShape = memo(() => {
   );
 });
 
-GridShape.displayName = 'GridShape';
+GridShape.displayName = "GridShape";
 
 export default GridShape;

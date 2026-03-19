@@ -1,22 +1,24 @@
-import { StatsRepository } from './StatsRepository';
-import { Stats } from '../entities/Stats';
-import { createEmptyStats } from '@/test-utils/fixtures';
+import { StatsRepository } from "./StatsRepository";
+import { Stats } from "../entities/Stats";
+import { createEmptyStats } from "@/test-utils/fixtures";
 
-describe('StatsRepository Integration', () => {
-  describe('Workflow Simulation', () => {
-    it('should simulate complete repository workflow', async () => {
+describe("StatsRepository Integration", () => {
+  describe("Workflow Simulation", () => {
+    it("should simulate complete repository workflow", async () => {
       // Arrange
       let savedStats: Stats | null = null;
       const integrationRepository: StatsRepository = {
         getStats: jest.fn().mockImplementation(async () => {
-          return savedStats || {
-            overview: { count: 0, avgEmotion: 0 },
-            monthlyStats: [],
-            studentStats: [],
-            dayOfWeekStats: [],
-            emotionDistribution: [],
-            timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 }
-          };
+          return (
+            savedStats || {
+              overview: { count: 0, avgEmotion: 0 },
+              monthlyStats: [],
+              studentStats: [],
+              dayOfWeekStats: [],
+              emotionDistribution: [],
+              timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 },
+            }
+          );
         }),
         saveStats: jest.fn().mockImplementation(async (stats: Stats) => {
           savedStats = stats;
@@ -24,13 +26,20 @@ describe('StatsRepository Integration', () => {
         generateSeedData: jest.fn().mockImplementation(async () => {
           savedStats = {
             overview: { count: 100, avgEmotion: 3.5 },
-            monthlyStats: [{ month: '2024-01', count: 30, avgEmotion: 3.5 }],
-            studentStats: [{ student: 'テスト生徒', recordCount: 10, avgEmotion: 3.5, trendline: [3.5] }],
-            dayOfWeekStats: [{ day: '月曜日', avgEmotion: 3.5, count: 10 }],
+            monthlyStats: [{ month: "2024-01", count: 30, avgEmotion: 3.5 }],
+            studentStats: [
+              {
+                student: "テスト生徒",
+                recordCount: 10,
+                avgEmotion: 3.5,
+                trendline: [3.5],
+              },
+            ],
+            dayOfWeekStats: [{ day: "月曜日", avgEmotion: 3.5, count: 10 }],
             emotionDistribution: [20, 20, 20, 20, 20],
-            timeOfDayStats: { morning: 3.4, afternoon: 3.5, evening: 3.6 }
+            timeOfDayStats: { morning: 3.4, afternoon: 3.5, evening: 3.6 },
           };
-        })
+        }),
       };
 
       // Act
@@ -38,7 +47,10 @@ describe('StatsRepository Integration', () => {
       const retrievedStats = await integrationRepository.getStats();
       await integrationRepository.saveStats({
         ...retrievedStats,
-        overview: { count: retrievedStats.overview.count + 10, avgEmotion: 3.6 }
+        overview: {
+          count: retrievedStats.overview.count + 10,
+          avgEmotion: 3.6,
+        },
       });
       const finalStats = await integrationRepository.getStats();
 
@@ -50,7 +62,7 @@ describe('StatsRepository Integration', () => {
       expect(finalStats.overview.avgEmotion).toBe(3.6);
     });
 
-    it('should handle concurrent operations', async () => {
+    it("should handle concurrent operations", async () => {
       // Arrange
       const concurrentRepository: StatsRepository = {
         getStats: jest.fn().mockResolvedValue({
@@ -59,10 +71,10 @@ describe('StatsRepository Integration', () => {
           studentStats: [],
           dayOfWeekStats: [],
           emotionDistribution: [],
-          timeOfDayStats: { morning: 3.0, afternoon: 3.0, evening: 3.0 }
+          timeOfDayStats: { morning: 3.0, afternoon: 3.0, evening: 3.0 },
         }),
         saveStats: jest.fn().mockResolvedValue(undefined),
-        generateSeedData: jest.fn().mockResolvedValue(undefined)
+        generateSeedData: jest.fn().mockResolvedValue(undefined),
       };
 
       // Act
@@ -71,7 +83,7 @@ describe('StatsRepository Integration', () => {
       const operations = [
         concurrentRepository.getStats(),
         concurrentRepository.saveStats(emptyStats),
-        concurrentRepository.generateSeedData()
+        concurrentRepository.generateSeedData(),
       ];
 
       // Assert

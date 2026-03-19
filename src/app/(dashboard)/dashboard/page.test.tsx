@@ -8,15 +8,15 @@
  * - Integration with hooks
  */
 
-import { render, screen } from '@testing-library/react';
-import DashboardPage from './page';
-import { useDashboard } from '@/hooks/useApp';
+import { render, screen } from "@testing-library/react";
+import DashboardPage from "./page";
+import { useDashboard } from "@/hooks/useApp";
 
-jest.mock('@/hooks/useApp');
-jest.mock('next/dynamic', () => ({
+jest.mock("@/hooks/useApp");
+jest.mock("next/dynamic", () => ({
   __esModule: true,
   default: (...args: unknown[]) => {
-    const dynamicModule = jest.requireActual('next/dynamic');
+    const dynamicModule = jest.requireActual("next/dynamic");
     const dynamicActualComp = dynamicModule.default;
     const RequiredComponent = dynamicActualComp(args[0]);
     if (RequiredComponent.preload) {
@@ -28,41 +28,43 @@ jest.mock('next/dynamic', () => ({
   },
 }));
 
-describe('DashboardPage', () => {
-  const mockUseDashboard = useDashboard as jest.MockedFunction<typeof useDashboard>;
+describe("DashboardPage", () => {
+  const mockUseDashboard = useDashboard as jest.MockedFunction<
+    typeof useDashboard
+  >;
 
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseDashboard.mockReturnValue({
       isGenerating: false,
-      notification: { show: false, type: 'info', message: '' },
+      notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
       isLoadingMessage: null,
     });
   });
 
-  it('should render dashboard component', () => {
+  it("should render dashboard component", () => {
     render(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it('should pass isGenerating state to Dashboard', () => {
+  it("should pass isGenerating state to Dashboard", () => {
     mockUseDashboard.mockReturnValue({
       isGenerating: true,
-      notification: { show: false, type: 'info', message: '' },
+      notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
-      isLoadingMessage: 'データを生成中...',
+      isLoadingMessage: "データを生成中...",
     });
 
     render(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it('should pass notification to Dashboard', () => {
+  it("should pass notification to Dashboard", () => {
     const notification = {
       show: true,
-      type: 'success' as const,
-      message: 'Data generated successfully',
+      type: "success" as const,
+      message: "Data generated successfully",
     };
 
     mockUseDashboard.mockReturnValue({
@@ -73,52 +75,52 @@ describe('DashboardPage', () => {
     });
 
     render(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it('should pass handleGenerate callback to Dashboard', () => {
+  it("should pass handleGenerate callback to Dashboard", () => {
     const handleGenerate = jest.fn();
 
     mockUseDashboard.mockReturnValue({
       isGenerating: false,
-      notification: { show: false, type: 'info', message: '' },
+      notification: { show: false, type: "info", message: "" },
       handleGenerate,
       isLoadingMessage: null,
     });
 
     render(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it('should display loading message when generating', () => {
+  it("should display loading message when generating", () => {
     mockUseDashboard.mockReturnValue({
       isGenerating: true,
-      notification: { show: false, type: 'info', message: '' },
+      notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
-      isLoadingMessage: 'データを生成中...',
+      isLoadingMessage: "データを生成中...",
     });
 
     render(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it('should use default loading message when isLoadingMessage is empty', () => {
+  it("should use default loading message when isLoadingMessage is empty", () => {
     mockUseDashboard.mockReturnValue({
       isGenerating: true,
-      notification: { show: false, type: 'info', message: '' },
+      notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
       isLoadingMessage: null,
     });
 
     render(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it('should display success notification', () => {
+  it("should display success notification", () => {
     const notification = {
       show: true,
-      type: 'success' as const,
-      message: 'Operation successful',
+      type: "success" as const,
+      message: "Operation successful",
     };
 
     mockUseDashboard.mockReturnValue({
@@ -129,14 +131,14 @@ describe('DashboardPage', () => {
     });
 
     render(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it('should display error notification', () => {
+  it("should display error notification", () => {
     const notification = {
       show: true,
-      type: 'error' as const,
-      message: 'Operation failed',
+      type: "error" as const,
+      message: "Operation failed",
     };
 
     mockUseDashboard.mockReturnValue({
@@ -147,41 +149,41 @@ describe('DashboardPage', () => {
     });
 
     render(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it('should render error boundary', () => {
+  it("should render error boundary", () => {
     render(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it('should handle notification with show false', () => {
+  it("should handle notification with show false", () => {
     mockUseDashboard.mockReturnValue({
       isGenerating: false,
-      notification: { show: false, type: 'info', message: '' },
+      notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
       isLoadingMessage: null,
     });
 
     render(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it('should have correct display name', () => {
-    expect(DashboardPage.displayName).toBe('DashboardPage');
+  it("should have correct display name", () => {
+    expect(DashboardPage.displayName).toBe("DashboardPage");
   });
 
-  it('should be memoized component', () => {
+  it("should be memoized component", () => {
     const { rerender } = render(<DashboardPage />);
 
     mockUseDashboard.mockReturnValue({
       isGenerating: true,
-      notification: { show: false, type: 'info', message: '' },
+      notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
-      isLoadingMessage: 'データを生成中...',
+      isLoadingMessage: "データを生成中...",
     });
 
     rerender(<DashboardPage />);
-    expect(screen.getByRole('main')).toBeInTheDocument();
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 });

@@ -1,14 +1,20 @@
-'use client';
+"use client";
 
-import { memo } from 'react';
-import type { DataGenerationConfig, EmotionDistributionPattern } from '@/schemas/api';
-import { GENERATION_CONSTRAINTS } from '@/lib/constants';
+import { memo } from "react";
+import type {
+  DataGenerationConfig,
+  EmotionDistributionPattern,
+} from "@/schemas/api";
+import { GENERATION_CONSTRAINTS } from "@/lib/constants";
 
-const DISTRIBUTION_PATTERNS: { label: string; value: EmotionDistributionPattern }[] = [
-  { label: '正規分布', value: 'normal' },
-  { label: '二峰分布', value: 'bimodal' },
-  { label: 'ストレス型', value: 'stress' },
-  { label: 'ハッピー型', value: 'happy' }
+const DISTRIBUTION_PATTERNS: {
+  label: string;
+  value: EmotionDistributionPattern;
+}[] = [
+  { label: "正規分布", value: "normal" },
+  { label: "二峰分布", value: "bimodal" },
+  { label: "ストレス型", value: "stress" },
+  { label: "ハッピー型", value: "happy" },
 ] as const;
 
 interface Props {
@@ -24,7 +30,7 @@ const GenerationControls = memo(function GenerationControls({
   onUpdateStudentCount,
   onUpdatePeriodDays,
   onUpdateDistributionPattern,
-  onToggleSeasonalEffects
+  onToggleSeasonalEffects,
 }: Props) {
   return (
     <>
@@ -69,8 +75,8 @@ const GenerationControls = memo(function GenerationControls({
               onClick={() => onUpdateDistributionPattern(value)}
               className={`p-2 text-sm rounded ${
                 config.distributionPattern === value
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700'
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-100 dark:bg-gray-700"
               }`}
             >
               {label}
@@ -92,6 +98,6 @@ const GenerationControls = memo(function GenerationControls({
   );
 });
 
-GenerationControls.displayName = 'GenerationControls';
+GenerationControls.displayName = "GenerationControls";
 
 export default GenerationControls;

@@ -1,8 +1,10 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const EnvSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  DATABASE_PROVIDER: z.enum(['mirage', 'prisma']).default('mirage'),
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
+  DATABASE_PROVIDER: z.enum(["mirage", "prisma"]).default("mirage"),
   DATABASE_URL: z.string().url().optional(),
   NEXT_PUBLIC_API_URL: z.string().url().optional(),
 });
@@ -19,10 +21,10 @@ function validateEnv(): Env {
 
   const env = EnvSchema.parse(rawEnv);
 
-  if (env.DATABASE_PROVIDER === 'prisma' && !env.DATABASE_URL) {
+  if (env.DATABASE_PROVIDER === "prisma" && !env.DATABASE_URL) {
     throw new Error(
-      'DATABASE_URL is required when DATABASE_PROVIDER=prisma. ' +
-      'Please set the DATABASE_URL environment variable.'
+      "DATABASE_URL is required when DATABASE_PROVIDER=prisma. " +
+        "Please set the DATABASE_URL environment variable.",
     );
   }
 
@@ -39,17 +41,17 @@ export function getEnv(): Env {
 }
 
 export function isPrismaProvider(): boolean {
-  return getEnv().DATABASE_PROVIDER === 'prisma';
+  return getEnv().DATABASE_PROVIDER === "prisma";
 }
 
 export function isDevelopment(): boolean {
-  return getEnv().NODE_ENV === 'development';
+  return getEnv().NODE_ENV === "development";
 }
 
 export function isProduction(): boolean {
-  return getEnv().NODE_ENV === 'production';
+  return getEnv().NODE_ENV === "production";
 }
 
 export function isTest(): boolean {
-  return getEnv().NODE_ENV === 'test';
+  return getEnv().NODE_ENV === "test";
 }

@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
+import { NextResponse } from "next/server";
+import { z } from "zod";
 
 export type ApiResponse<T> = {
   success: boolean;
@@ -10,7 +10,7 @@ export type ApiResponse<T> = {
 
 export function createSuccessResponse<T>(
   data: T & { success?: boolean },
-  schema?: z.ZodSchema<T>
+  schema?: z.ZodSchema<T>,
 ) {
   try {
     const validatedData = schema ? schema.parse(data) : data;
@@ -24,14 +24,14 @@ export function createSuccessResponse<T>(
   } catch (error) {
     if (error instanceof z.ZodError) {
       const errorMessage = error.errors
-        .map((err) => `${err.path.join('.')}: ${err.message}`)
-        .join(', ');
+        .map((err) => `${err.path.join(".")}: ${err.message}`)
+        .join(", ");
       return createErrorResponse(
-        'レスポンスの検証に失敗しました: ' + errorMessage,
-        400
+        "レスポンスの検証に失敗しました: " + errorMessage,
+        400,
       );
     }
-    return createErrorResponse('レスポンスの検証に失敗しました', 500);
+    return createErrorResponse("レスポンスの検証に失敗しました", 500);
   }
 }
 
@@ -41,7 +41,7 @@ export function createSuccessResponse<T>(
 export function createErrorResponse(message: string, status = 500) {
   const response = {
     success: false,
-    error: message
+    error: message,
   };
   return NextResponse.json(response, { status });
 }

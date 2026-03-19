@@ -9,16 +9,16 @@ import {
   calculateStudentStats,
   calculateDayOfWeekStats,
   calculateEmotionDistribution,
-  calculateTimeOfDayStats
-} from '@/utils/statsCalculator';
-import { APP_CONFIG } from '@/lib/config';
-import { DATA_GENERATION_PARAMS } from '@/lib/constants';
-import { StatsData } from '@/schemas/api';
+  calculateTimeOfDayStats,
+} from "@/utils/statsCalculator";
+import { APP_CONFIG } from "@/lib/config";
+import { DATA_GENERATION_PARAMS } from "@/lib/constants";
+import { StatsData } from "@/schemas/api";
 
 export interface DataGenerationConfig {
   periodDays: number;
   studentCount: number;
-  distributionPattern: 'normal' | 'bimodal' | 'stress' | 'happy';
+  distributionPattern: "normal" | "bimodal" | "stress" | "happy";
   classCharacteristics?: {
     volatility: number;
     baselineEmotion: number;
@@ -39,45 +39,66 @@ interface EmotionRecord {
 }
 
 class DataService {
-  private generateEmotion(config: DataGenerationConfig, date: Date, _studentIndex: number): number {
+  private generateEmotion(
+    config: DataGenerationConfig,
+    date: Date,
+    _studentIndex: number,
+  ): number {
     let emotion = generateBaseEmotion(config.distributionPattern);
 
     if (config.classCharacteristics) {
-      emotion = emotion * (1 + (config.classCharacteristics.volatility - DATA_GENERATION_PARAMS.VOLATILITY.BASELINE) * DATA_GENERATION_PARAMS.VOLATILITY.MULTIPLIER);
-      emotion += (config.classCharacteristics.baselineEmotion - DATA_GENERATION_PARAMS.BASELINE_EMOTION.CENTER) * DATA_GENERATION_PARAMS.BASELINE_EMOTION.MULTIPLIER;
+      emotion =
+        emotion *
+        (1 +
+          (config.classCharacteristics.volatility -
+            DATA_GENERATION_PARAMS.VOLATILITY.BASELINE) *
+            DATA_GENERATION_PARAMS.VOLATILITY.MULTIPLIER);
+      emotion +=
+        (config.classCharacteristics.baselineEmotion -
+          DATA_GENERATION_PARAMS.BASELINE_EMOTION.CENTER) *
+        DATA_GENERATION_PARAMS.BASELINE_EMOTION.MULTIPLIER;
     }
 
     if (config.seasonalEffects) {
       emotion += calculateSeasonalEffect(date);
     }
 
-    const events = config.eventEffects.map(event => ({
+    const events = config.eventEffects.map((event) => ({
       ...event,
       startDate: new Date(event.startDate),
-      endDate: new Date(event.endDate)
+      endDate: new Date(event.endDate),
     }));
     emotion += calculateEventEffect(date, events);
 
     return clampEmotion(emotion);
   }
 
-  private generateEmotionRecords(config: DataGenerationConfig): EmotionRecord[] {
+  private generateEmotionRecords(
+    config: DataGenerationConfig,
+  ): EmotionRecord[] {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - config.periodDays);
     const records: EmotionRecord[] = [];
 
-    for (let studentIndex = 0; studentIndex < config.studentCount; studentIndex++) {
+    for (
+      let studentIndex = 0;
+      studentIndex < config.studentCount;
+      studentIndex++
+    ) {
       for (let day = 0; day < config.periodDays; day++) {
         const date = new Date(startDate);
         date.setDate(date.getDate() + day);
-        const recordCount = Math.floor(Math.random() * DATA_GENERATION_PARAMS.RECORDS_PER_DAY.MAX) + DATA_GENERATION_PARAMS.RECORDS_PER_DAY.MIN;
+        const recordCount =
+          Math.floor(
+            Math.random() * DATA_GENERATION_PARAMS.RECORDS_PER_DAY.MAX,
+          ) + DATA_GENERATION_PARAMS.RECORDS_PER_DAY.MIN;
 
         for (let i = 0; i < recordCount; i++) {
           records.push({
             date,
             student: studentIndex,
             emotion: this.generateEmotion(config, date, studentIndex),
-            hour: getRandomHour()
+            hour: getRandomHour(),
           });
         }
       }
@@ -88,19 +109,19 @@ class DataService {
 
   generateStats(config: DataGenerationConfig): StatsData {
     const allEmotions = this.generateEmotionRecords(config);
-    const emotions = allEmotions.map(e => e.emotion);
+    const emotions = allEmotions.map((e) => e.emotion);
     const avgEmotion = average(emotions);
 
     return {
       overview: {
         count: allEmotions.length,
-        avgEmotion
+        avgEmotion,
       },
       monthlyStats: calculateMonthlyStats(allEmotions),
       studentStats: calculateStudentStats(allEmotions),
       dayOfWeekStats: calculateDayOfWeekStats(allEmotions),
       emotionDistribution: calculateEmotionDistribution(allEmotions),
-      timeOfDayStats: calculateTimeOfDayStats(allEmotions)
+      timeOfDayStats: calculateTimeOfDayStats(allEmotions),
     };
   }
 
@@ -110,7 +131,7 @@ class DataService {
       studentCount: APP_CONFIG.generation.defaultStudentCount,
       distributionPattern: APP_CONFIG.generation.defaultPattern,
       seasonalEffects: true,
-      eventEffects: []
+      eventEffects: [],
     };
     return config;
   }

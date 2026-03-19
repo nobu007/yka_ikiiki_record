@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-import { IRecordRepository } from '@/domain/repositories/IRecordRepository';
-import { Record } from '@/domain/entities/Record';
-import { withDatabaseTimeout } from '@/lib/resilience/timeout';
+import { PrismaClient } from "@prisma/client";
+import { IRecordRepository } from "@/domain/repositories/IRecordRepository";
+import { Record } from "@/domain/entities/Record";
+import { withDatabaseTimeout } from "@/lib/resilience/timeout";
 
 export class PrismaRecordRepository implements IRecordRepository {
   private prisma: PrismaClient;
@@ -14,7 +14,7 @@ export class PrismaRecordRepository implements IRecordRepository {
     const record = await withDatabaseTimeout(
       this.prisma.record.findUnique({
         where: { id },
-      })
+      }),
     );
 
     if (!record) {
@@ -27,8 +27,8 @@ export class PrismaRecordRepository implements IRecordRepository {
   async findAll(): Promise<Record[]> {
     const records = await withDatabaseTimeout(
       this.prisma.record.findMany({
-        orderBy: { date: 'desc' },
-      })
+        orderBy: { date: "desc" },
+      }),
     );
 
     return records.map((record) => this.toDomain(record));
@@ -43,8 +43,8 @@ export class PrismaRecordRepository implements IRecordRepository {
             lte: endDate,
           },
         },
-        orderBy: { date: 'desc' },
-      })
+        orderBy: { date: "desc" },
+      }),
     );
 
     return records.map((record) => this.toDomain(record));
@@ -54,8 +54,8 @@ export class PrismaRecordRepository implements IRecordRepository {
     const records = await withDatabaseTimeout(
       this.prisma.record.findMany({
         where: { student },
-        orderBy: { date: 'desc' },
-      })
+        orderBy: { date: "desc" },
+      }),
     );
 
     return records.map((record) => this.toDomain(record));
@@ -79,7 +79,7 @@ export class PrismaRecordRepository implements IRecordRepository {
           student: data.student,
           comment: data.comment || null,
         },
-      })
+      }),
     );
 
     return this.toDomain(saved);
@@ -89,15 +89,19 @@ export class PrismaRecordRepository implements IRecordRepository {
     await withDatabaseTimeout(
       this.prisma.record.createMany({
         data: records.map((record) => this.toPrisma(record)),
-      })
+      }),
     );
 
     const createdRecords = await withDatabaseTimeout(
       this.prisma.record.findMany({
         where: {
-          id: { in: records.map((r) => r.id).filter((id): id is number => id !== undefined) },
+          id: {
+            in: records
+              .map((r) => r.id)
+              .filter((id): id is number => id !== undefined),
+          },
         },
-      })
+      }),
     );
 
     return createdRecords.map((record) => this.toDomain(record));
@@ -107,20 +111,16 @@ export class PrismaRecordRepository implements IRecordRepository {
     await withDatabaseTimeout(
       this.prisma.record.delete({
         where: { id },
-      })
+      }),
     );
   }
 
   async deleteAll(): Promise<void> {
-    await withDatabaseTimeout(
-      this.prisma.record.deleteMany({})
-    );
+    await withDatabaseTimeout(this.prisma.record.deleteMany({}));
   }
 
   async count(): Promise<number> {
-    return withDatabaseTimeout(
-      this.prisma.record.count()
-    );
+    return withDatabaseTimeout(this.prisma.record.count());
   }
 
   private toDomain(prismaRecord: {

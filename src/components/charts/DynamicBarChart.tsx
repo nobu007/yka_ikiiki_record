@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { memo, useEffect, useMemo, useState } from 'react';
-import { ApexOptions } from 'apexcharts';
-import dynamic from 'next/dynamic';
-import ChartWrapper from './ChartWrapper';
-import { CHART_COLORS } from '@/lib/config';
+import { memo, useEffect, useMemo, useState } from "react";
+import { ApexOptions } from "apexcharts";
+import dynamic from "next/dynamic";
+import ChartWrapper from "./ChartWrapper";
+import { CHART_COLORS } from "@/lib/config";
 
 const CHART_ANIMATION_SPEED_MS = 800;
 const CHART_DYNAMIC_ANIMATION_SPEED_MS = 350;
@@ -16,13 +16,17 @@ const YAXIS_TICK_AMOUNT = 5;
 const YAXIS_LABEL_PRECISION = 1;
 const TOOLTIP_VALUE_PRECISION = 2;
 const GRID_PADDING_LEFT = 10;
-const BAR_COLUMN_WIDTH = '50%';
+const BAR_COLUMN_WIDTH = "50%";
 const BAR_BORDER_RADIUS = 4;
 
-const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
   loading: () => (
-    <div role="status" aria-label="グラフローディング中" className="animate-pulse">
+    <div
+      role="status"
+      aria-label="グラフローディング中"
+      className="animate-pulse"
+    >
       <div className="h-64 bg-gray-200 rounded dark:bg-gray-700"></div>
     </div>
   ),
@@ -44,7 +48,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
   data,
   height = 300,
   title,
-  isDark = false
+  isDark = false,
 }: DynamicBarChartProps) {
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -55,116 +59,129 @@ const DynamicBarChart = memo(function DynamicBarChart({
 
   const validData = useMemo(() => {
     try {
-      return data.map(item => ({
-        name: String(item.name),
-        value: Number(item.value)
-      })).filter(item => !isNaN(item.value));
+      return data
+        .map((item) => ({
+          name: String(item.name),
+          value: Number(item.value),
+        }))
+        .filter((item) => !isNaN(item.value));
     } catch (error) {
-      setError(error instanceof Error ? error : new Error('Data transformation failed'));
+      setError(
+        error instanceof Error
+          ? error
+          : new Error("Data transformation failed"),
+      );
       return [];
     }
   }, [data]);
 
-  const options: ApexOptions = useMemo(() => ({
-    chart: {
-      type: 'bar',
-      height,
-      toolbar: {
-        show: false,
-      },
-      animations: {
-        enabled: mounted && typeof window !== 'undefined',
-        easing: 'easeinout',
-        speed: CHART_ANIMATION_SPEED_MS,
-        dynamicAnimation: {
-          enabled: true,
-          speed: CHART_DYNAMIC_ANIMATION_SPEED_MS
-        }
-      },
-      background: isDark ? CHART_COLORS.BG_DARK : CHART_COLORS.BG_LIGHT,
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: BAR_COLUMN_WIDTH,
-        borderRadius: BAR_BORDER_RADIUS,
-        distributed: false,
-      },
-    },
-    colors: [CHART_COLORS.PRIMARY],
-    dataLabels: {
-      enabled: validData.length <= DATALABELS_ENABLE_THRESHOLD,
-    },
-    xaxis: {
-      categories: validData.map(item => item.name),
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
-      labels: {
-        style: {
-          colors: isDark ? CHART_COLORS.GRAY_LIGHT : CHART_COLORS.GRAY_DARK,
+  const options: ApexOptions = useMemo(
+    () => ({
+      chart: {
+        type: "bar",
+        height,
+        toolbar: {
+          show: false,
         },
-        rotateAlways: validData.length > LABEL_ROTATION_THRESHOLD,
+        animations: {
+          enabled: mounted && typeof window !== "undefined",
+          easing: "easeinout",
+          speed: CHART_ANIMATION_SPEED_MS,
+          dynamicAnimation: {
+            enabled: true,
+            speed: CHART_DYNAMIC_ANIMATION_SPEED_MS,
+          },
+        },
+        background: isDark ? CHART_COLORS.BG_DARK : CHART_COLORS.BG_LIGHT,
       },
-    },
-    yaxis: {
-      min: 0,
-      max: YAXIS_MAX_VALUE,
-      tickAmount: YAXIS_TICK_AMOUNT,
-      labels: {
-        formatter: (val) => val.toFixed(YAXIS_LABEL_PRECISION),
-        style: {
-          colors: isDark ? CHART_COLORS.GRAY_LIGHT : CHART_COLORS.GRAY_DARK,
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: BAR_COLUMN_WIDTH,
+          borderRadius: BAR_BORDER_RADIUS,
+          distributed: false,
         },
       },
-    },
-    grid: {
-      borderColor: isDark ? CHART_COLORS.BORDER_DARK : CHART_COLORS.BORDER_LIGHT,
-      padding: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: GRID_PADDING_LEFT,
+      colors: [CHART_COLORS.PRIMARY],
+      dataLabels: {
+        enabled: validData.length <= DATALABELS_ENABLE_THRESHOLD,
       },
-    },
-    tooltip: {
-      theme: isDark ? 'dark' : 'light',
-      y: {
-        formatter: (val) => val.toFixed(TOOLTIP_VALUE_PRECISION),
+      xaxis: {
+        categories: validData.map((item) => item.name),
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels: {
+          style: {
+            colors: isDark ? CHART_COLORS.GRAY_LIGHT : CHART_COLORS.GRAY_DARK,
+          },
+          rotateAlways: validData.length > LABEL_ROTATION_THRESHOLD,
+        },
       },
-    },
-  }), [height, validData, isDark, mounted]);
+      yaxis: {
+        min: 0,
+        max: YAXIS_MAX_VALUE,
+        tickAmount: YAXIS_TICK_AMOUNT,
+        labels: {
+          formatter: (val) => val.toFixed(YAXIS_LABEL_PRECISION),
+          style: {
+            colors: isDark ? CHART_COLORS.GRAY_LIGHT : CHART_COLORS.GRAY_DARK,
+          },
+        },
+      },
+      grid: {
+        borderColor: isDark
+          ? CHART_COLORS.BORDER_DARK
+          : CHART_COLORS.BORDER_LIGHT,
+        padding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: GRID_PADDING_LEFT,
+        },
+      },
+      tooltip: {
+        theme: isDark ? "dark" : "light",
+        y: {
+          formatter: (val) => val.toFixed(TOOLTIP_VALUE_PRECISION),
+        },
+      },
+    }),
+    [height, validData, isDark, mounted],
+  );
 
-  const series = useMemo(() => [{
-    name: 'スコア',
-    data: validData.map(item => item.value),
-  }], [validData]);
-
+  const series = useMemo(
+    () => [
+      {
+        name: "スコア",
+        data: validData.map((item) => item.value),
+      },
+    ],
+    [validData],
+  );
 
   const wrapperProps: {
-      height: number;
-      isLoading: boolean;
-      error: Error | null;
-      isDark: boolean;
-      title?: string;
-    } = {
-      height,
-      isLoading: !mounted,
-      error,
-      isDark,
-    };
+    height: number;
+    isLoading: boolean;
+    error: Error | null;
+    isDark: boolean;
+    title?: string;
+  } = {
+    height,
+    isLoading: !mounted,
+    error,
+    isDark,
+  };
 
-    if (title !== undefined) {
-      wrapperProps.title = title;
-    }
+  if (title !== undefined) {
+    wrapperProps.title = title;
+  }
 
-    return (
-    <ChartWrapper
-      {...wrapperProps}
-    >
+  return (
+    <ChartWrapper {...wrapperProps}>
       {validData.length === 0 ? (
         <div
           className="w-full flex items-center justify-center"
@@ -187,6 +204,6 @@ const DynamicBarChart = memo(function DynamicBarChart({
   );
 });
 
-DynamicBarChart.displayName = 'DynamicBarChart';
+DynamicBarChart.displayName = "DynamicBarChart";
 
 export default DynamicBarChart;

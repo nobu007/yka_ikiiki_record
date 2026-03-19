@@ -57,9 +57,6 @@ export function handleApiError(error: unknown): NextResponse {
   );
 }
 
-/**
- * 特定のエラーを生成するファクトリー関数
- */
 export const createError = {
   badRequest: (message: string = "リクエストが正しくありません") =>
     new AppError(message, ERROR_CODES.VALIDATION, HTTP_STATUS.BAD_REQUEST),
@@ -148,10 +145,6 @@ export interface JsonReadable {
   json(): Promise<unknown>;
 }
 
-/**
- * リクエストデータの安全なパース
- * Works with any JsonReadable (Request, mock, etc.) - Dependency Inversion Principle
- */
 export async function parseRequestBody(source: JsonReadable): Promise<unknown> {
   try {
     return await source.json();

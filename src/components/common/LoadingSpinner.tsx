@@ -66,9 +66,6 @@ export const LoadingSpinner = memo<LoadingSpinnerProps>(
 
 LoadingSpinner.displayName = "LoadingSpinner";
 
-/**
- * ローディングオーバーレイコンポーネント
- */
 export const LoadingOverlay = memo<{ isLoading: boolean; message?: string }>(
   ({ isLoading, message = LOADING_MESSAGES.OVERLAY }) => {
     if (!isLoading) return null;
@@ -88,9 +85,6 @@ export const LoadingOverlay = memo<{ isLoading: boolean; message?: string }>(
 
 LoadingOverlay.displayName = "LoadingOverlay";
 
-/**
- * ローディングカードコンポーネント
- */
 export const LoadingCard = memo<{ message?: string }>(
   ({ message = LOADING_MESSAGES.CARD }) => {
     return (

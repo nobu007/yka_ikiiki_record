@@ -35,9 +35,6 @@ export function createSuccessResponse<T>(
   }
 }
 
-/**
- * エラーレスポンスを作成する
- */
 export function createErrorResponse(message: string, status = 500) {
   const response = {
     success: false,

@@ -1,6 +1,3 @@
-/**
- * APIエラーメッセージ
- */
 export const API_ERROR_MESSAGES = {
   VALIDATION: {
     REQUEST: "リクエストの形式が正しくありません",
@@ -24,9 +21,6 @@ export const API_ERROR_MESSAGES = {
   },
 } as const;
 
-/**
- * HTTPステータスコード
- */
 export const HTTP_STATUS = {
   OK: 200,
   CREATED: 201,
@@ -37,25 +31,16 @@ export const HTTP_STATUS = {
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
-/**
- * APIレスポンスのデフォルト値
- */
 export const DEFAULT_API_RESPONSE = {
   SUCCESS_MESSAGE: "処理が成功しました",
   ERROR_MESSAGE: "予期せぬエラーが発生しました",
 } as const;
 
-/**
- * APIのエンドポイント
- */
 export const API_ENDPOINTS = {
   SEED: "/api/seed",
   STATS: "/api/stats",
 } as const;
 
-/**
- * API操作名（ログ・モニタリング用）
- */
 export const API_OPERATIONS = {
   GET_STATS: "GET /api/stats",
   GET_HEALTH: "GET /api/health",

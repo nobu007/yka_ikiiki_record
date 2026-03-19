@@ -1,17 +1,9 @@
 import { z } from "zod";
 
-/**
- * データを指定されたスキーマで検証する
- * @throws {z.ZodError} バリデーションエラー時
- */
 export function validateData<T>(data: unknown, schema: z.ZodSchema<T>): T {
   return schema.parse(data);
 }
 
-/**
- * データを検証し、エラーをハンドリングする
- * @returns [検証済みデータ, エラーメッセージ]
- */
 export function validateDataSafe<T>(
   data: unknown,
   schema: z.ZodSchema<T>,
@@ -30,9 +22,6 @@ export function validateDataSafe<T>(
   }
 }
 
-/**
- * リクエストボディを検証する
- */
 export async function validateRequestBody<T>(
   request: Request,
   schema: z.ZodSchema<T>,

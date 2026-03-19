@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 import { useDashboard } from '@/hooks/useApp';
-import { ErrorBoundary, LoadingOverlay } from '@/components/ui';
+import { ErrorBoundary, LoadingOverlay } from '@/components/common';
 import { Dashboard } from '@/components/Dashboard';
 
 const DashboardPage = memo(function DashboardPage() {

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { APP_CONFIG, MESSAGES } from '@/lib/config';
-import { Button, LoadingSpinner, CheckIcon, PlusIcon, Notification } from './ui';
+import { Button } from './ui';
+import { LoadingSpinner, CheckIcon, PlusIcon, Notification } from './common';
 import { UsageInstructions } from './common/UsageInstructions';
 import { DataVisualization } from './dashboard/DataVisualization';
 import { StatsResponseSchema, StatsData } from '@/schemas/api';

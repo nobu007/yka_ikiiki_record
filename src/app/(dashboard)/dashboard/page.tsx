@@ -4,6 +4,7 @@ import { memo } from "react";
 import { useDashboard } from "@/hooks/useApp";
 import { ErrorBoundary, LoadingOverlay } from "@/components/common";
 import { Dashboard } from "@/components/Dashboard";
+import { LOADING_MESSAGES } from "@/lib/constants/messages";
 
 const DashboardPage = memo(function DashboardPage() {
   const { isGenerating, notification, handleGenerate, isLoadingMessage } =
@@ -13,7 +14,7 @@ const DashboardPage = memo(function DashboardPage() {
     <ErrorBoundary>
       <LoadingOverlay
         isLoading={isGenerating}
-        message={isLoadingMessage || "データを生成中..."}
+        message={isLoadingMessage || LOADING_MESSAGES.GENERATING_DATA}
       />
 
       <Dashboard

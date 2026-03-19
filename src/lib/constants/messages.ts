@@ -8,6 +8,7 @@ export const LOADING_MESSAGES = {
 } as const;
 
 export const ERROR_MESSAGES = {
+  TITLE: "エラーが発生しました",
   UNEXPECTED: "予期せぬエラーが発生しました",
   UNKNOWN: "不明なエラーが発生しました",
   VALIDATION: "入力内容を確認してください",

@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useStats as useApplicationStats } from "@/application/hooks/useStats";
 import { globalLogger } from "@/lib/resilience";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 export const useStats = () => {
   const { stats, error, isLoading, refetch } = useApplicationStats();
@@ -8,7 +9,7 @@ export const useStats = () => {
   const displayError = useMemo(() => {
     if (!error) return null;
     return {
-      title: "エラーが発生しました",
+      title: ERROR_MESSAGES.TITLE,
       message: error.message,
     };
   }, [error]);

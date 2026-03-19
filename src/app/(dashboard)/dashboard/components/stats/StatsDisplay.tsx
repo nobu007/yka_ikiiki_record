@@ -5,6 +5,7 @@ import DynamicBarChart, {
   ChartData,
 } from "@/components/charts/DynamicBarChart";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
+import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
 interface ChartDataSet {
   monthly: ChartData[];
@@ -47,7 +48,7 @@ const StatsDisplay = memo(function StatsDisplay({
     return (
       <div className="text-center p-4">
         <p className="text-red-500 mb-4">
-          エラーが発生しました: {error.message}
+          {ERROR_MESSAGES.TITLE}: {error.message}
         </p>
         <button
           onClick={onRetry}

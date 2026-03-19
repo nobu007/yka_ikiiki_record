@@ -5,7 +5,7 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import ChartWrapper from "./ChartWrapper";
 import { CHART_COLORS } from "@/lib/config";
-import { ERROR_MESSAGES, ACCESSIBILITY_MESSAGES } from "@/lib/constants/messages";
+import { ERROR_MESSAGES, ACCESSIBILITY_MESSAGES, CHART_TITLES } from "@/lib/constants/messages";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
@@ -145,7 +145,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
   const series = useMemo(
     () => [
       {
-        name: "スコア",
+        name: CHART_TITLES.SERIES_NAME,
         data: validData.map((item) => item.value),
       },
     ],

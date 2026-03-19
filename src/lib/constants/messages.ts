@@ -73,6 +73,7 @@ export const CHART_TITLES = {
   EMOTION_DISTRIBUTION: "感情スコア分布",
   EMOTION_TREND_TOP_STUDENTS: "感情スコア推移（上位5名）",
   STUDENT_EMOTION_SCORES: "生徒別感情スコア",
+  SERIES_NAME: "スコア",
 } as const;
 
 export const DASHBOARD_FEATURES = [

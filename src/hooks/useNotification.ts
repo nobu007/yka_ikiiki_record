@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import { UI_CONSTANTS } from "@/lib/constants";
+import { getNotificationTimeout } from "@/lib/constants/ui";
 
 interface NotificationState {
   show: boolean;
@@ -33,10 +33,9 @@ export function useNotification() {
       setNotification({ show: true, message, type });
 
       if (autoClose) {
-        const timeoutKey = type.toUpperCase() as keyof typeof UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION;
         timeoutRef.current = setTimeout(() => {
           setNotification((prev) => ({ ...prev, show: false }));
-        }, UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION[timeoutKey]);
+        }, getNotificationTimeout(type));
       }
     },
     [clearNotification],

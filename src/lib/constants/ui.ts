@@ -96,3 +96,15 @@ export const getAnimationClasses = (
   };
   return `transition-all duration-${durationMap[duration]}`;
 };
+
+export const getNotificationTimeout = (
+  type: "success" | "error" | "warning" | "info",
+): number => {
+  const timeoutMap: Record<"success" | "error" | "warning" | "info", number> = {
+    success: UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION.SUCCESS,
+    error: UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION.ERROR,
+    warning: UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION.WARNING,
+    info: UI_CONSTANTS.NOTIFICATION.AUTO_CLOSE_DURATION.INFO,
+  };
+  return timeoutMap[type];
+};

@@ -1,6 +1,16 @@
 import { MESSAGES } from '@/lib/config';
 import { globalLogger } from '@/lib/resilience/structured-logger';
 
+export const HTTP_STATUS = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+  SERVICE_UNAVAILABLE: 503
+} as const;
+
 export const ERROR_CODES = {
   UNKNOWN: 'UNKNOWN_ERROR',
   VALIDATION: 'VALIDATION_ERROR',
@@ -19,7 +29,7 @@ export class AppError extends Error {
   constructor(
     message: string,
     public code: ErrorCodeType = ERROR_CODES.UNKNOWN,
-    public statusCode: number = 500,
+    public statusCode: number = HTTP_STATUS.INTERNAL_SERVER_ERROR,
     public details?: Record<string, unknown>
   ) {
     super(message);
@@ -29,7 +39,7 @@ export class AppError extends Error {
 
 export class ValidationError extends AppError {
   constructor(message: string, details?: Record<string, unknown>) {
-    super(message, ERROR_CODES.VALIDATION, 400, details);
+    super(message, ERROR_CODES.VALIDATION, HTTP_STATUS.BAD_REQUEST, details);
     this.name = 'ValidationError';
   }
 }
@@ -47,15 +57,15 @@ const isNetworkRelated = (error: Error): boolean =>
 
 export function normalizeError(error: unknown): AppError {
   if (error instanceof AppError) return error;
-  
+
   if (error instanceof Error) {
-    return isNetworkRelated(error) 
+    return isNetworkRelated(error)
       ? new NetworkError(error.message)
-      : new AppError(error.message, ERROR_CODES.UNKNOWN, 500);
+      : new AppError(error.message, ERROR_CODES.UNKNOWN, HTTP_STATUS.INTERNAL_SERVER_ERROR);
   }
-  
+
   if (typeof error === 'string') return new AppError(error);
-  
+
   return new AppError(MESSAGES.error.unexpected);
 }
 
@@ -106,5 +116,5 @@ export const isNotFoundError = (error: unknown): boolean =>
 export const isTimeoutError = (error: unknown): boolean => 
   normalizeError(error).code === ERROR_CODES.TIMEOUT;
 
-export const isServerError = (error: unknown): boolean => 
-  normalizeError(error).statusCode >= 500;
+export const isServerError = (error: unknown): boolean =>
+  normalizeError(error).statusCode >= HTTP_STATUS.INTERNAL_SERVER_ERROR;

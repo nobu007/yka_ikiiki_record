@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { NextResponse } from 'next/server';
 import { createErrorResponse } from './response';
-import { AppError, normalizeError, logError, ERROR_CODES } from '@/lib/error-handler';
+import { AppError, normalizeError, logError, ERROR_CODES, HTTP_STATUS } from '@/lib/error-handler';
 import { withCustomTimeout } from '@/lib/resilience';
 import { globalCircuitBreaker, globalLogger } from '@/lib/resilience';
 import type { CircuitBreakerConfig } from '@/lib/resilience';
@@ -27,11 +27,11 @@ function isSyntaxErrorWithBody(error: unknown): error is SyntaxError & { body: b
 export function handleApiError(error: unknown): NextResponse {
   if (error instanceof z.ZodError) {
     const message = formatZodError(error);
-    return createErrorResponse(`入力データの検証に失敗しました: ${message}`, 400);
+    return createErrorResponse(`入力データの検証に失敗しました: ${message}`, HTTP_STATUS.BAD_REQUEST);
   }
 
   if (isSyntaxErrorWithBody(error)) {
-    return createErrorResponse('リクエストボディのJSON形式が正しくありません', 400);
+    return createErrorResponse('リクエストボディのJSON形式が正しくありません', HTTP_STATUS.BAD_REQUEST);
   }
 
   const normalizedError = normalizeError(error);
@@ -39,7 +39,7 @@ export function handleApiError(error: unknown): NextResponse {
 
   return createErrorResponse(
     normalizedError.message,
-    normalizedError.statusCode || 500
+    normalizedError.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR
   );
 }
 
@@ -47,20 +47,20 @@ export function handleApiError(error: unknown): NextResponse {
  * 特定のエラーを生成するファクトリー関数
  */
 export const createError = {
-  badRequest: (message: string = 'リクエストが正しくありません') => 
-    new AppError(message, ERROR_CODES.VALIDATION, 400),
-  unauthorized: (message: string = '認証が必要です') => 
-    new AppError(message, ERROR_CODES.PERMISSION, 401),
-  forbidden: (message: string = 'アクセスが拒否されました') => 
-    new AppError(message, ERROR_CODES.PERMISSION, 403),
-  notFound: (message: string = 'リソースが見つかりません') => 
-    new AppError(message, ERROR_CODES.NOT_FOUND, 404),
-  timeout: (message: string = 'リクエストがタイムアウトしました') => 
+  badRequest: (message: string = 'リクエストが正しくありません') =>
+    new AppError(message, ERROR_CODES.VALIDATION, HTTP_STATUS.BAD_REQUEST),
+  unauthorized: (message: string = '認証が必要です') =>
+    new AppError(message, ERROR_CODES.PERMISSION, HTTP_STATUS.UNAUTHORIZED),
+  forbidden: (message: string = 'アクセスが拒否されました') =>
+    new AppError(message, ERROR_CODES.PERMISSION, HTTP_STATUS.FORBIDDEN),
+  notFound: (message: string = 'リソースが見つかりません') =>
+    new AppError(message, ERROR_CODES.NOT_FOUND, HTTP_STATUS.NOT_FOUND),
+  timeout: (message: string = 'リクエストがタイムアウトしました') =>
     new AppError(message, ERROR_CODES.TIMEOUT, 408),
-  generation: (message: string = 'データ生成に失敗しました') => 
-    new AppError(message, ERROR_CODES.GENERATION, 500),
-  internal: (message: string = 'サーバーエラーが発生しました') => 
-    new AppError(message, ERROR_CODES.UNKNOWN, 500)
+  generation: (message: string = 'データ生成に失敗しました') =>
+    new AppError(message, ERROR_CODES.GENERATION, HTTP_STATUS.INTERNAL_SERVER_ERROR),
+  internal: (message: string = 'サーバーエラーが発生しました') =>
+    new AppError(message, ERROR_CODES.UNKNOWN, HTTP_STATUS.INTERNAL_SERVER_ERROR)
 } as const;
 
 /**

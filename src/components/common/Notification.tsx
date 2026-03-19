@@ -1,5 +1,6 @@
 import { useCallback, memo } from "react";
 import { NotificationIcon } from "./Icons";
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 type NotificationType = "success" | "error" | "warning" | "info";
 
@@ -27,7 +28,7 @@ export const Notification = memo<NotificationProps>(
 
     return (
       <div
-        className={`mb-4 p-4 border rounded-lg shadow-sm transition-all duration-300 ${NOTIFICATION_STYLES[type]}`}
+        className={`${UI_CONSTANTS.NOTIFICATION.BASE_CLASSES} ${NOTIFICATION_STYLES[type]}`}
         role="alert"
         aria-live="polite"
       >

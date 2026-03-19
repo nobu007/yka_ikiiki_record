@@ -132,6 +132,16 @@ describe('StructuredLogger', () => {
       expect(logs.length).toBeGreaterThan(0);
     });
 
+    it('should exclude logs outside time range', () => {
+      const now = Date.now();
+      logger.info('TIMERANGE', 'inside', { timestamp: now });
+
+      const logs = logger.getLogs({
+        timeRange: [now - 10000, now - 5000],
+      });
+      expect(logs).toHaveLength(0);
+    });
+
     it('should combine multiple filters', () => {
       const logs = logger.getLogs({
         level: 'INFO',
@@ -167,6 +177,15 @@ describe('StructuredLogger', () => {
 
       const logs = logger.getRecentLogs(10);
       expect(logs).toHaveLength(2);
+    });
+
+    it('should use default count of 100 when not specified', () => {
+      for (let i = 0; i < 50; i++) {
+        logger.info('TEST', `operation-${i}`);
+      }
+
+      const recentLogs = logger.getRecentLogs();
+      expect(recentLogs).toHaveLength(50);
     });
   });
 

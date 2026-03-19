@@ -1,5 +1,6 @@
 import { createServer, Factory, Model, Response } from 'miragejs';
 import { calculateMonthlyStats } from '@/utils/statsCalculator';
+import { globalLogger } from '@/lib/resilience';
 
 type Record = {
   emotion: number;
@@ -67,8 +68,7 @@ export function makeServer({ environment = 'development' } = {}) {
           return new Response(200, {}, { message: 'Data seeded successfully' });
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-          // Dev-only error logging - Mirage is only used in development/test environment
-          console.error('[Mirage] Seed failed:', errorMessage);
+          globalLogger.error('MIRAGE', 'SEED_FAILED', { error: errorMessage });
           return new Response(500, {}, { error: `Failed to seed data: ${errorMessage}` });
         }
       });
@@ -87,8 +87,7 @@ export function makeServer({ environment = 'development' } = {}) {
           return calculateMonthlyStats(transformedRecords);
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-          // Dev-only error logging - Mirage is only used in development/test environment
-          console.error('[Mirage] Stats calculation failed:', errorMessage);
+          globalLogger.error('MIRAGE', 'STATS_CALCULATION_FAILED', { error: errorMessage });
           return new Response(500, {}, { error: `Failed to calculate stats: ${errorMessage}` });
         }
       });

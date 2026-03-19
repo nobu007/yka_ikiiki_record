@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "phase": "scan",
-  "cycle": 1,
+  "cycle": 2,
   "target_repo": "/home/jinno/yka_ikiiki_record",
   "started_at": "2026-03-19T12:03:28Z",
-  "updated_at": "2026-03-19T12:03:28Z",
+  "updated_at": "2026-03-19T12:57:35Z",
   "scan_progress": {
     "all_dirs": [
       "src/domain",
@@ -26,9 +26,8 @@
       "scripts",
       "prisma"
     ],
-    "completed_dirs": ["src/domain"],
+    "completed_dirs": ["src/domain", "src/application"],
     "pending_dirs": [
-      "src/application",
       "src/infrastructure",
       "src/presentation",
       "src/components",
@@ -65,6 +64,31 @@
           "Core domain entities and repositories",
           "Tests are in test/ directory following project convention",
           "Clean Architecture compliance: no dependencies on other layers"
+        ]
+      },
+      {
+        "dir": "src/application",
+        "file_count": 11,
+        "has_tests": true,
+        "test_files": [
+          "useDataGeneration.bounds.test.ts",
+          "useDataGeneration.config.test.ts",
+          "useDataGeneration.events.test.ts",
+          "useDataGeneration.generation.test.ts",
+          "useDataGeneration.integration.test.ts",
+          "useSeedGeneration.test.ts"
+        ],
+        "key_exports": [
+          "useDataGeneration",
+          "useSeedGeneration",
+          "useStats"
+        ],
+        "notes": [
+          "Application layer hooks (Clean Architecture)",
+          "useDataGeneration: Manages data generation config and state",
+          "useStats: SWR-based stats fetching with validation",
+          "Comprehensive test coverage: 6 test files covering bounds, config, events, generation, integration",
+          "Depends on domain layer entities and lib layer validation"
         ]
       }
     ]

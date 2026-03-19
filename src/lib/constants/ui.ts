@@ -57,6 +57,17 @@ export const UI_CONSTANTS = {
     INFO: "text-blue-500",
     SUCCESS_LIGHT: "text-green-400",
     ERROR_LIGHT: "text-red-400",
+    PRIMARY: "text-blue-600",
+    SECONDARY: "text-gray-600",
+    WHITE: "text-white",
+  } as const,
+
+  LOADING_SPINNER: {
+    SIZE: {
+      SM: "h-4 w-4",
+      MD: "h-8 w-8",
+      LG: "h-12 w-12",
+    } as const,
   } as const,
 
   ERROR_BOUNDARY: {

@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { LOADING_MESSAGES } from "@/lib/constants/messages";
+import { UI_CONSTANTS } from "@/lib/constants/ui";
 
 type LoadingSize = "sm" | "md" | "lg";
 type LoadingColor = "primary" | "secondary" | "white";
@@ -11,16 +12,16 @@ interface LoadingSpinnerProps {
   label?: string;
 }
 
-const SIZE_CLASSES = {
-  sm: "h-4 w-4",
-  md: "h-8 w-8",
-  lg: "h-12 w-12",
+const SIZE_MAP = {
+  sm: UI_CONSTANTS.LOADING_SPINNER.SIZE.SM,
+  md: UI_CONSTANTS.LOADING_SPINNER.SIZE.MD,
+  lg: UI_CONSTANTS.LOADING_SPINNER.SIZE.LG,
 } satisfies Record<LoadingSize, string>;
 
-const COLOR_CLASSES = {
-  primary: "text-blue-600",
-  secondary: "text-gray-600",
-  white: "text-white",
+const COLOR_MAP = {
+  primary: UI_CONSTANTS.COLOR.PRIMARY,
+  secondary: UI_CONSTANTS.COLOR.SECONDARY,
+  white: UI_CONSTANTS.COLOR.WHITE,
 } satisfies Record<LoadingColor, string>;
 
 export const LoadingSpinner = memo<LoadingSpinnerProps>(
@@ -37,7 +38,7 @@ export const LoadingSpinner = memo<LoadingSpinnerProps>(
         aria-label={label}
       >
         <svg
-          className={`animate-spin ${SIZE_CLASSES[size]} ${COLOR_CLASSES[color]}`}
+          className={`animate-spin ${SIZE_MAP[size]} ${COLOR_MAP[color]}`}
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"

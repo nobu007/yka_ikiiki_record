@@ -153,6 +153,12 @@ export const DASHBOARD_CONTROLS = {
     STRESS: "ストレス型",
     HAPPY: "ハッピー型",
   },
+  CLASS_CHARACTERISTICS: {
+    TITLE: "クラス特性",
+    BASELINE_EMOTION_LABEL: "基準感情値",
+    VOLATILITY_LABEL: "変動の大きさ",
+    COHESION_LABEL: "クラスの結束度",
+  },
 } as const;
 
 export const API_ERROR_MESSAGES = {

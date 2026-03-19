@@ -3,6 +3,7 @@
 import { memo } from "react";
 import type { ClassCharacteristics } from "@/schemas/api";
 import { GENERATION_CONSTRAINTS } from "@/lib/constants";
+import { DASHBOARD_CONTROLS } from "@/lib/constants/messages";
 
 interface Props {
   characteristics: ClassCharacteristics;
@@ -15,11 +16,14 @@ const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({
 }: Props) {
   return (
     <div className="space-y-4">
-      <label className="block text-sm font-medium">クラス特性</label>
+      <label className="block text-sm font-medium">
+        {DASHBOARD_CONTROLS.CLASS_CHARACTERISTICS.TITLE}
+      </label>
 
       <div className="space-y-2">
         <label className="block text-xs">
-          基準感情値: {characteristics.baselineEmotion}
+          {DASHBOARD_CONTROLS.CLASS_CHARACTERISTICS.BASELINE_EMOTION_LABEL}:{" "}
+          {characteristics.baselineEmotion}
         </label>
         <input
           type="range"
@@ -36,7 +40,8 @@ const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({
 
       <div className="space-y-2">
         <label className="block text-xs">
-          変動の大きさ: {characteristics.volatility}
+          {DASHBOARD_CONTROLS.CLASS_CHARACTERISTICS.VOLATILITY_LABEL}:{" "}
+          {characteristics.volatility}
         </label>
         <input
           type="range"
@@ -51,7 +56,8 @@ const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({
 
       <div className="space-y-2">
         <label className="block text-xs">
-          クラスの結束度: {characteristics.cohesion}
+          {DASHBOARD_CONTROLS.CLASS_CHARACTERISTICS.COHESION_LABEL}:{" "}
+          {characteristics.cohesion}
         </label>
         <input
           type="range"

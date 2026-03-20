@@ -9,6 +9,13 @@ export class CircuitBreakerOpenError extends AppError {
   }
 }
 
+/**
+ * Configuration options for circuit breaker behavior
+ *
+ * @property failureThreshold - Number of consecutive failures before opening circuit (default: 5)
+ * @property resetTimeout - Time in ms to wait before attempting recovery (default: 60000)
+ * @property monitoringPeriod - Time window in ms for counting failures (default: 30000)
+ */
 export interface CircuitBreakerConfig {
   failureThreshold: number;
   resetTimeout: number;
@@ -23,11 +30,43 @@ const DEFAULT_CIRCUIT_BREAKER_CONFIG: CircuitBreakerConfig = {
 
 type CircuitState = "CLOSED" | "OPEN" | "HALF_OPEN";
 
+/**
+ * Circuit Breaker implementation for preventing cascading failures
+ *
+ * Per SYSTEM_CONSTITUTION.md §6: Implements circuit-breaker pattern to prevent
+ * cascading failures and automatic state transitions (CLOSED → OPEN → HALF_OPEN)
+ *
+ * @see {@link https://martinfowler.com/bliki/CircuitBreaker.html}
+ */
 export class CircuitBreaker {
   private failures = 0;
   private lastFailureTime = 0;
   private state: CircuitState = "CLOSED";
 
+  /**
+   * Executes an operation with circuit breaker protection
+   *
+   * @template T - Return type of the operation
+   * @param operation - Async operation to execute
+   * @param config - Circuit breaker configuration (optional, uses defaults)
+   * @returns Promise that resolves with operation result or rejects with CircuitBreakerOpenError
+   * @throws {CircuitBreakerOpenError} When circuit is OPEN and reset timeout hasn't elapsed
+   *
+   * @example
+   * ```ts
+   * const breaker = new CircuitBreaker();
+   * try {
+   *   const result = await breaker.execute(
+   *     async () => await fetchData(),
+   *     { failureThreshold: 5, resetTimeout: 60000, monitoringPeriod: 30000 }
+   *   );
+   * } catch (error) {
+   *   if (error instanceof CircuitBreakerOpenError) {
+   *     // Handle circuit breaker open state
+   *   }
+   * }
+   * ```
+   */
   async execute<T>(
     operation: () => Promise<T>,
     config: CircuitBreakerConfig = DEFAULT_CIRCUIT_BREAKER_CONFIG,
@@ -107,14 +146,26 @@ export class CircuitBreaker {
     }
   }
 
+  /**
+   * Gets the current circuit state
+   * @returns Current state ("CLOSED" | "OPEN" | "HALF_OPEN")
+   */
   getState(): CircuitState {
     return this.state;
   }
 
+  /**
+   * Gets the current failure count
+   * @returns Number of consecutive failures in current monitoring period
+   */
   getFailureCount(): number {
     return this.failures;
   }
 
+  /**
+   * Resets the circuit breaker to initial state
+   * Useful for testing or manual recovery
+   */
   reset(): void {
     this.failures = 0;
     this.lastFailureTime = 0;

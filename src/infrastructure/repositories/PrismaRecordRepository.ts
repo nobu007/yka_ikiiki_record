@@ -5,6 +5,7 @@ import { RecordSchema } from "@/schemas/api";
 import { withDatabaseTimeout } from "@/lib/resilience/timeout";
 import { DATABASE_CONSTRAINTS } from "@/lib/constants";
 import { globalLogger } from "@/lib/resilience";
+import { ValidationError } from "@/lib/error-handler";
 
 export class PrismaRecordRepository implements IRecordRepository {
   private prisma: PrismaClient;
@@ -72,8 +73,9 @@ export class PrismaRecordRepository implements IRecordRepository {
         validationErrors: validationResult.error.errors,
         data: record,
       });
-      throw new Error(
+      throw new ValidationError(
         `Cannot save invalid record: ${validationResult.error.errors.map((e) => e.message).join(", ")}`,
+        { validationErrors: validationResult.error.errors, record },
       );
     }
 
@@ -117,8 +119,13 @@ export class PrismaRecordRepository implements IRecordRepository {
       const errorMessages = validationErrors
         .flatMap((e) => e.errors)
         .join("; ");
-      throw new Error(
+      throw new ValidationError(
         `Cannot save invalid records: ${validationErrors.length} of ${records.length} records failed validation. Errors: ${errorMessages}`,
+        {
+          failedCount: validationErrors.length,
+          totalCount: records.length,
+          validationErrors,
+        },
       );
     }
 

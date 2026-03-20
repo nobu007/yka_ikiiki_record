@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ValidationError } from "@/lib/error-handler";
 
 const EnvSchema = z.object({
   NODE_ENV: z
@@ -22,9 +23,10 @@ function validateEnv(): Env {
   const env = EnvSchema.parse(rawEnv);
 
   if (env.DATABASE_PROVIDER === "prisma" && !env.DATABASE_URL) {
-    throw new Error(
+    throw new ValidationError(
       "DATABASE_URL is required when DATABASE_PROVIDER=prisma. " +
         "Please set the DATABASE_URL environment variable.",
+      { provider: env.DATABASE_PROVIDER },
     );
   }
 

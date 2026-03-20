@@ -110,19 +110,41 @@ export function logError(error: unknown, context?: string): void {
   });
 }
 
-export const isNetworkError = (error: unknown): boolean => {
-  const normalized = normalizeError(error);
-  return normalized.code === ERROR_CODES.NETWORK || normalized.statusCode === 0;
+export const isAppError = (error: unknown): error is AppError => {
+  return error instanceof AppError;
 };
 
-export const isValidationError = (error: unknown): boolean =>
-  normalizeError(error).code === ERROR_CODES.VALIDATION;
+export const isValidationError = (error: unknown): error is ValidationError => {
+  if (!(error instanceof AppError)) {
+    return false;
+  }
+  return error.code === ERROR_CODES.VALIDATION;
+};
 
-export const isNotFoundError = (error: unknown): boolean =>
-  normalizeError(error).code === ERROR_CODES.NOT_FOUND;
+export const isNetworkError = (error: unknown): error is NetworkError => {
+  if (!(error instanceof AppError)) {
+    return false;
+  }
+  return error.code === ERROR_CODES.NETWORK || error.statusCode === 0;
+};
 
-export const isTimeoutError = (error: unknown): boolean =>
-  normalizeError(error).code === ERROR_CODES.TIMEOUT;
+export const isNotFoundError = (error: unknown): error is AppError => {
+  if (!(error instanceof AppError)) {
+    return false;
+  }
+  return error.code === ERROR_CODES.NOT_FOUND;
+};
 
-export const isServerError = (error: unknown): boolean =>
-  normalizeError(error).statusCode >= HTTP_STATUS.INTERNAL_SERVER_ERROR;
+export const isTimeoutError = (error: unknown): error is AppError => {
+  if (!(error instanceof AppError)) {
+    return false;
+  }
+  return error.code === ERROR_CODES.TIMEOUT;
+};
+
+export const isServerError = (error: unknown): error is AppError => {
+  if (!(error instanceof AppError)) {
+    return false;
+  }
+  return error.statusCode >= HTTP_STATUS.INTERNAL_SERVER_ERROR;
+};

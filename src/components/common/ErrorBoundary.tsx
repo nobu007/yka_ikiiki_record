@@ -6,16 +6,64 @@ import { globalLogger } from "@/lib/resilience/structured-logger";
 import { ERROR_BOUNDARY_MESSAGES } from "@/lib/constants/messages";
 import { reloadPage } from "@/lib/constants/browser";
 
+/**
+ * Props for ErrorBoundary component.
+ */
 interface Props {
+  /** Child components to be wrapped with error boundary protection */
   children: ReactNode;
+  /** Optional custom fallback UI to render when an error occurs */
   fallback?: ReactNode;
 }
 
+/**
+ * State for ErrorBoundary component.
+ */
 interface State {
+  /** Whether an error has been caught */
   hasError: boolean;
+  /** The error object that was caught (if any) */
   error?: Error;
 }
 
+/**
+ * React Error Boundary component for catching and handling JavaScript errors in component trees.
+ *
+ * This class component wraps child components and catches JavaScript errors anywhere in the
+ * child component tree, logs error information to the structured logging system, and displays
+ * a fallback UI. It prevents the entire app from crashing and provides a recovery mechanism.
+ *
+ * **Features:**
+ * - Catches JavaScript errors in component tree
+ * - Logs errors with full stack traces to structured logger
+ * - Displays user-friendly error message with reload option
+ * - Shows detailed error stack trace in development mode
+ * - Supports custom fallback UI via props
+ * - Integrates with autonomous resilience logging system
+ *
+ * **Lifecycle:**
+ * 1. `getDerivedStateFromError` - Updates state when error is caught
+ * 2. `componentDidCatch` - Logs error details to structured logger
+ * 3. `render` - Displays fallback UI or children based on error state
+ *
+ * @example
+ * ```tsx
+ * // Basic usage with default error UI
+ * <ErrorBoundary>
+ *   <MyComponent />
+ * </ErrorBoundary>
+ *
+ * // With custom fallback UI
+ * <ErrorBoundary fallback={<CustomErrorUI />}>
+ *   <MyComponent />
+ * </ErrorBoundary>
+ *
+ * // Wrapping entire application
+ * <ErrorBoundary>
+ *   <App />
+ * </ErrorBoundary>
+ * ```
+ */
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -26,6 +74,17 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
+  /**
+   * Lifecycle method called when an error is caught by the boundary.
+   *
+   * Logs comprehensive error information including:
+   * - Error name, message, and stack trace
+   * - Component stack from errorInfo
+   * - Error digest for React error tracking
+   *
+   * All errors are logged with INTERNAL visibility level to ensure
+   * they are captured by the autonomous resilience monitoring system.
+   */
   override componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     globalLogger.error(
       "ErrorBoundary",

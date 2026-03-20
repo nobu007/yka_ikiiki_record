@@ -1,8 +1,5 @@
-import { GET } from "./route";
 import { promises as fs } from "fs";
-import path from "path";
-
-const METRICS_FILE_PATH = path.join(process.cwd(), "data", "judgment_metrics.csv");
+import { GET } from "./route";
 
 describe("GET /api/metrics", () => {
   const originalReadFile = fs.readFile;

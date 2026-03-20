@@ -198,9 +198,5 @@ const DashboardComponent = memo<DashboardProps>(
   },
 );
 
-DashboardComponent.displayName = "DashboardComponent";
-
 export const Dashboard = DashboardComponent;
 Dashboard.displayName = "Dashboard";
-
-export default DashboardComponent;

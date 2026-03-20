@@ -3,15 +3,64 @@ import { NotificationIcon } from "./Icons";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 import { ACCESSIBILITY_MESSAGES } from "@/lib/constants/messages";
 
+/**
+ * Notification type variants with corresponding visual styles.
+ */
 type NotificationType = "success" | "error" | "warning" | "info";
 
+/**
+ * Props for Notification component.
+ */
 interface NotificationProps {
+  /** Whether to display the notification */
   show: boolean;
+  /** Message content to display */
   message: string;
+  /** Type of notification determining icon and styling */
   type: NotificationType;
+  /** Optional callback when close button is clicked */
   onClose?: () => void;
 }
 
+/**
+ * A notification banner component for displaying success, error, warning, or info messages.
+ *
+ * Renders an alert banner with appropriate icon, styling, and optional close button.
+ * The component uses ARIA live regions for accessibility and returns null when hidden,
+ * preventing DOM clutter when not in use.
+ *
+ * **Features:**
+ * - Four notification types with distinct visual styling
+ * - Accessible with proper ARIA attributes (role="alert", aria-live="polite")
+ * - Optional close button with keyboard navigation support
+ * - Memoized for performance optimization
+ *
+ * @example
+ * ```tsx
+ * // Success notification
+ * <Notification
+ *   show={true}
+ *   message="Data saved successfully!"
+ *   type="success"
+ *   onClose={() => setShowNotification(false)}
+ * />
+ *
+ * // Error notification
+ * <Notification
+ *   show={hasError}
+ *   message="Failed to load data. Please try again."
+ *   type="error"
+ * />
+ *
+ * // Warning notification
+ * <Notification
+ *   show={showWarning}
+ *   message="Changes will be lost if you continue."
+ *   type="warning"
+ *   onClose={handleWarningClose}
+ * />
+ * ```
+ */
 export const Notification = memo<NotificationProps>(
   ({ show, message, type, onClose }) => {
     const handleClose = useCallback(() => {

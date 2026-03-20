@@ -158,13 +158,13 @@ class MetaChecker:
                                         covered_statements += 1
 
                             # Count branches
+                            # A branch is covered if ANY of its outcomes has been executed
                             for branch_list in b.values():
-                                if isinstance(branch_list, list):
-                                    for v in branch_list:
-                                        if isinstance(v, int):
-                                            total_branches += 1
-                                            if v > 0:
-                                                covered_branches += 1
+                                if isinstance(branch_list, list) and len(branch_list) > 0:
+                                    total_branches += 1
+                                    # Check if any outcome has been executed
+                                    if any(v > 0 for v in branch_list if isinstance(v, int)):
+                                        covered_branches += 1
 
                             # Count functions
                             for v in f.values():

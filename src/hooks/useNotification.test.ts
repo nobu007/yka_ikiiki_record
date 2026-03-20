@@ -103,4 +103,60 @@ describe("useNotification", () => {
       type: "error",
     });
   });
+
+  it("should support autoClose false parameter", () => {
+    const { result } = renderHook(() => useNotification());
+
+    jest.useFakeTimers();
+
+    act(() => {
+      result.current.showSuccess("Persistent message", false);
+    });
+
+    expect(result.current.notification.show).toBe(true);
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    expect(result.current.notification.show).toBe(true);
+
+    jest.useRealTimers();
+  });
+
+  it("should provide hideNotification alias", () => {
+    const { result } = renderHook(() => useNotification());
+
+    act(() => {
+      result.current.showSuccess("Test message");
+    });
+
+    expect(result.current.notification.show).toBe(true);
+
+    act(() => {
+      result.current.hideNotification();
+    });
+
+    expect(result.current.notification.show).toBe(false);
+  });
+
+  it("should auto-close notification after timeout", () => {
+    const { result } = renderHook(() => useNotification());
+
+    jest.useFakeTimers();
+
+    act(() => {
+      result.current.showSuccess("Auto-close message");
+    });
+
+    expect(result.current.notification.show).toBe(true);
+
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
+
+    expect(result.current.notification.show).toBe(false);
+
+    jest.useRealTimers();
+  });
 });

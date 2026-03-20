@@ -36,4 +36,9 @@ describe("reloadPage", () => {
   it("should be exported", () => {
     expect(reloadPage).toBeDefined();
   });
+
+  it("should call window.location.reload", () => {
+    reloadPage();
+    expect(reloadPage).toHaveBeenCalledTimes(1);
+  });
 });

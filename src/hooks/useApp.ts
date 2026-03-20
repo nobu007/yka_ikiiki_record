@@ -22,6 +22,41 @@ import {
   LOADING_MESSAGES,
 } from "@/lib/constants/messages";
 
+/**
+ * Custom hook for managing dashboard data generation operations.
+ *
+ * This hook provides functionality to trigger seed data generation for the dashboard,
+ * managing the generation state, notifications, and error handling. It uses the
+ * application's default configuration for data generation parameters.
+ *
+ * @remarks
+ * The hook integrates with the notification system to provide user feedback
+ * during the generation process. It automatically handles API timeouts,
+ * response validation, and error normalization.
+ *
+ * @example
+ * ```tsx
+ * function DashboardPage() {
+ *   const { isGenerating, notification, handleGenerate, isLoadingMessage } = useDashboard();
+ *
+ *   return (
+ *     <div>
+ *       {notification && <NotificationBanner {...notification} />}
+ *       {isLoadingMessage && <LoadingSpinner message={isLoadingMessage} />}
+ *       <button onClick={handleGenerate} disabled={isGenerating}>
+ *         {isGenerating ? 'Generating...' : 'Generate Data'}
+ *       </button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * @returns An object containing:
+ *   - `isGenerating`: Boolean indicating whether data generation is in progress
+ *   - `notification`: Current notification state (success/error) or null
+ *   - `handleGenerate`: Async function to trigger seed data generation
+ *   - `isLoadingMessage`: Loading message string during generation, null otherwise
+ */
 export function useDashboard() {
   const [isGenerating, setIsGenerating] = useState(false);
   const { notification, showSuccess, showError, clearNotification } =

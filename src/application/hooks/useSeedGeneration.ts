@@ -13,6 +13,54 @@ import { SeedResponseSchema } from "@/schemas/api";
 import { validateDataSafe } from "@/lib/api/validation";
 import { withApiTimeout } from "@/lib/resilience/timeout";
 
+/**
+ * Custom hook for managing seed data generation with custom configuration.
+ *
+ * This hook provides a lower-level interface for generating seed data with
+ * custom configuration parameters. Unlike `useDashboard` which uses default
+ * configuration, this hook allows callers to specify custom period days,
+ * student count, and distribution patterns.
+ *
+ * @remarks
+ * The hook throws errors on failure, allowing calling code to handle
+ * errors appropriately. It integrates with the autonomous resilience
+ * protocols through API timeout enforcement and structured error handling.
+ *
+ * @example
+ * ```tsx
+ * function SeedControlPanel() {
+ *   const { isGenerating, error, generateSeed } = useSeedGeneration();
+ *
+ *   const handleGenerate = async () => {
+ *     try {
+ *       await generateSeed({
+ *         periodDays: 90,
+ *         studentCount: 30,
+ *         distributionPattern: 'random',
+ *       });
+ *       // Success - handle completion
+ *     } catch (err) {
+ *       // Error already captured in hook state
+ *     }
+ *   };
+ *
+ *   return (
+ *     <div>
+ *       {error && <ErrorMessage error={error} />}
+ *       <button onClick={handleGenerate} disabled={isGenerating}>
+ *         Generate Custom Seed
+ *       </button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * @returns An object containing:
+ *   - `isGenerating`: Boolean indicating whether generation is in progress
+ *   - `error`: AppError if generation failed, null otherwise
+ *   - `generateSeed`: Async function that accepts a DataGenerationConfig
+ *                    and triggers seed data generation
+ */
 export function useSeedGeneration() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<AppError | null>(null);

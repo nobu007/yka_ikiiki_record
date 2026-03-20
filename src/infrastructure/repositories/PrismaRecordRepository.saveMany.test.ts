@@ -107,12 +107,10 @@ describe("PrismaRecordRepository - saveMany", () => {
 
 describe("PrismaRecordRepository - saveMany validation", () => {
   let repository: ReturnType<typeof setupTest>["repository"];
-  let prisma: ReturnType<typeof setupTest>["prisma"];
 
   beforeAll(() => {
     const setup = setupTest();
     repository = setup.repository;
-    prisma = setup.prisma;
   });
 
   afterEach(() => {

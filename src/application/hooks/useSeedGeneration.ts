@@ -26,7 +26,9 @@ export function useSeedGeneration() {
         const response = await withApiTimeout(
           fetch(API_ENDPOINTS.SEED, {
             method: HTTP_METHODS.POST,
-            headers: { [HTTP_HEADERS.CONTENT_TYPE]: HTTP_HEADERS.APPLICATION_JSON },
+            headers: {
+              [HTTP_HEADERS.CONTENT_TYPE]: HTTP_HEADERS.APPLICATION_JSON,
+            },
             body: JSON.stringify({ config }),
           }),
         );

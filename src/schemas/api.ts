@@ -12,10 +12,7 @@ const BaseResponseSchema = z.object({
 
 export const RecordSchema = z.object({
   id: z.number().int().positive().optional(),
-  emotion: z
-    .number()
-    .min(EMOTION_RANGES.MIN)
-    .max(EMOTION_RANGES.MAX),
+  emotion: z.number().min(EMOTION_RANGES.MIN).max(EMOTION_RANGES.MAX),
   date: z.date(),
   student: z.string().min(1).max(100),
   comment: z.string().max(500).optional(),

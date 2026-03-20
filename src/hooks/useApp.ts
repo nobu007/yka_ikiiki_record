@@ -16,11 +16,16 @@ import { SeedResponseSchema } from "@/schemas/api";
 import { validateDataSafe } from "@/lib/api/validation";
 import { withApiTimeout } from "@/lib/resilience/timeout";
 import { useNotification } from "@/hooks/useNotification";
-import { SUCCESS_MESSAGES, ERROR_MESSAGES, LOADING_MESSAGES } from "@/lib/constants/messages";
+import {
+  SUCCESS_MESSAGES,
+  ERROR_MESSAGES,
+  LOADING_MESSAGES,
+} from "@/lib/constants/messages";
 
 export function useDashboard() {
   const [isGenerating, setIsGenerating] = useState(false);
-  const { notification, showSuccess, showError, clearNotification } = useNotification();
+  const { notification, showSuccess, showError, clearNotification } =
+    useNotification();
 
   const handleGenerate = useCallback(async () => {
     try {
@@ -36,7 +41,9 @@ export function useDashboard() {
       const response = await withApiTimeout(
         fetch(`${APP_CONFIG.api.baseUrl}${APP_CONFIG.api.endpoints.seed}`, {
           method: HTTP_METHODS.POST,
-          headers: { [HTTP_HEADERS.CONTENT_TYPE]: HTTP_HEADERS.APPLICATION_JSON },
+          headers: {
+            [HTTP_HEADERS.CONTENT_TYPE]: HTTP_HEADERS.APPLICATION_JSON,
+          },
           body: JSON.stringify({ config }),
         }),
       );

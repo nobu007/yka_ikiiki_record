@@ -9,7 +9,7 @@ describe("STORAGE_KEYS", () => {
     expect(STORAGE_KEYS).toEqual(
       expect.objectContaining({
         THEME: expect.any(String),
-      })
+      }),
     );
   });
 
@@ -30,7 +30,7 @@ describe("THEME_CLASSES", () => {
     expect(THEME_CLASSES).toEqual(
       expect.objectContaining({
         DARK: expect.any(String),
-      })
+      }),
     );
   });
 

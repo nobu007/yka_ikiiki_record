@@ -1,6 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { mockWindowLocation, mockProcessEnv } from "@/test-utils/component-helpers";
+import {
+  mockWindowLocation,
+  mockProcessEnv,
+} from "@/test-utils/component-helpers";
 
 const originalConsoleError = console.error;
 beforeAll(() => {

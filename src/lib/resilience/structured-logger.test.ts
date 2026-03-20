@@ -1,7 +1,4 @@
-import {
-  StructuredLogger,
-  globalLogger,
-} from "./structured-logger";
+import { StructuredLogger, globalLogger } from "./structured-logger";
 
 describe("StructuredLogger", () => {
   let logger: StructuredLogger;

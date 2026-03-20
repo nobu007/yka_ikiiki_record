@@ -126,7 +126,9 @@ describe("useDataGeneration - Data Generation", () => {
 
       await waitFor(() => {
         expect(result.current.error).toBeInstanceOf(Error);
-        expect(result.current.error?.message).toBe("予期せぬエラーが発生しました");
+        expect(result.current.error?.message).toBe(
+          "予期せぬエラーが発生しました",
+        );
       });
     });
   });

@@ -109,7 +109,9 @@ export const expectLoadingState = (
   result: ReturnType<typeof renderDashboardHook>["result"],
 ) => {
   expect(result.current.isGenerating).toBe(true);
-  expect(result.current.isLoadingMessage).toBe(LOADING_MESSAGES.GENERATING_DATA);
+  expect(result.current.isLoadingMessage).toBe(
+    LOADING_MESSAGES.GENERATING_DATA,
+  );
 };
 
 export const clearAllMocks = () => {

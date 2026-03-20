@@ -5,7 +5,11 @@ import DynamicBarChart, {
   ChartData,
 } from "@/components/charts/DynamicBarChart";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
-import { ERROR_MESSAGES, UI_TEXT, CHART_TITLES } from "@/lib/constants/messages";
+import {
+  ERROR_MESSAGES,
+  UI_TEXT,
+  CHART_TITLES,
+} from "@/lib/constants/messages";
 
 interface ChartDataSet {
   monthly: ChartData[];
@@ -60,20 +64,25 @@ const StatsDisplay = memo(function StatsDisplay({
     );
   }
 
-  if (!data) return <p className="text-center">{ERROR_MESSAGES.NOT_FOUND_SHORT}</p>;
+  if (!data)
+    return <p className="text-center">{ERROR_MESSAGES.NOT_FOUND_SHORT}</p>;
 
   return (
     <div className="space-y-6">
       {/* 概要統計 */}
       <div className="grid grid-cols-2 gap-4">
         <div className={`p-4 ${bgColor} rounded-lg shadow transition-colors`}>
-          <div className={`text-sm ${textColor}`}>{CHART_TITLES.TOTAL_RECORDS}</div>
+          <div className={`text-sm ${textColor}`}>
+            {CHART_TITLES.TOTAL_RECORDS}
+          </div>
           <div className={`text-2xl font-bold ${headingColor}`}>
             {data.overview.count}
           </div>
         </div>
         <div className={`p-4 ${bgColor} rounded-lg shadow transition-colors`}>
-          <div className={`text-sm ${textColor}`}>{CHART_TITLES.AVERAGE_EMOTION_SCORE}</div>
+          <div className={`text-sm ${textColor}`}>
+            {CHART_TITLES.AVERAGE_EMOTION_SCORE}
+          </div>
           <div className={`text-2xl font-bold ${headingColor}`}>
             {data.overview.avgEmotion}
           </div>

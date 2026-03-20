@@ -32,8 +32,16 @@ const SeedRequestSchema = z.object({
       .default(APP_CONFIG.generation.defaultPattern),
     classCharacteristics: z
       .object({
-        volatility: z.number().min(0).max(1).default(GENERATION_DEFAULTS.VOLATILITY),
-        baselineEmotion: z.number().min(1).max(5).default(GENERATION_DEFAULTS.BASELINE_EMOTION),
+        volatility: z
+          .number()
+          .min(0)
+          .max(1)
+          .default(GENERATION_DEFAULTS.VOLATILITY),
+        baselineEmotion: z
+          .number()
+          .min(1)
+          .max(5)
+          .default(GENERATION_DEFAULTS.BASELINE_EMOTION),
       })
       .optional(),
     seasonalEffects: z.boolean().default(true),

@@ -35,7 +35,9 @@ export const ChartWrapper = memo<ChartWrapperProps>(
           role="status"
           aria-label={ACCESSIBILITY_MESSAGES.CHART_LOADING}
         >
-          <div className={`animate-spin rounded-full ${UI_CONSTANTS.CHART.SPINNER_SIZE} border-b-2 border-primary`}></div>
+          <div
+            className={`animate-spin rounded-full ${UI_CONSTANTS.CHART.SPINNER_SIZE} border-b-2 border-primary`}
+          ></div>
         </div>
       );
     }

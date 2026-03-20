@@ -17,7 +17,9 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
       aria-label={ACCESSIBILITY_MESSAGES.CHART_LOADING}
       className="animate-pulse"
     >
-      <div className={`${UI_CONSTANTS.CHART_CONFIG.SKELETON_HEIGHT} bg-gray-200 rounded dark:bg-gray-700`}></div>
+      <div
+        className={`${UI_CONSTANTS.CHART_CONFIG.SKELETON_HEIGHT} bg-gray-200 rounded dark:bg-gray-700`}
+      ></div>
     </div>
   ),
 });
@@ -90,7 +92,9 @@ const DynamicBarChart = memo(function DynamicBarChart({
       },
       colors: [CHART_COLORS.PRIMARY],
       dataLabels: {
-        enabled: validData.length <= UI_CONSTANTS.CHART_CONFIG.DATALABELS_ENABLE_THRESHOLD,
+        enabled:
+          validData.length <=
+          UI_CONSTANTS.CHART_CONFIG.DATALABELS_ENABLE_THRESHOLD,
       },
       xaxis: {
         categories: validData.map((item) => item.name),
@@ -104,7 +108,9 @@ const DynamicBarChart = memo(function DynamicBarChart({
           style: {
             colors: isDark ? CHART_COLORS.GRAY_LIGHT : CHART_COLORS.GRAY_DARK,
           },
-          rotateAlways: validData.length > UI_CONSTANTS.CHART_CONFIG.LABEL_ROTATION_THRESHOLD,
+          rotateAlways:
+            validData.length >
+            UI_CONSTANTS.CHART_CONFIG.LABEL_ROTATION_THRESHOLD,
         },
       },
       yaxis: {
@@ -112,7 +118,8 @@ const DynamicBarChart = memo(function DynamicBarChart({
         max: UI_CONSTANTS.CHART_CONFIG.YAXIS_MAX_VALUE,
         tickAmount: UI_CONSTANTS.CHART_CONFIG.YAXIS_TICK_AMOUNT,
         labels: {
-          formatter: (val) => val.toFixed(UI_CONSTANTS.CHART_CONFIG.YAXIS_LABEL_PRECISION),
+          formatter: (val) =>
+            val.toFixed(UI_CONSTANTS.CHART_CONFIG.YAXIS_LABEL_PRECISION),
           style: {
             colors: isDark ? CHART_COLORS.GRAY_LIGHT : CHART_COLORS.GRAY_DARK,
           },
@@ -132,7 +139,8 @@ const DynamicBarChart = memo(function DynamicBarChart({
       tooltip: {
         theme: isDark ? "dark" : "light",
         y: {
-          formatter: (val) => val.toFixed(UI_CONSTANTS.CHART_CONFIG.TOOLTIP_VALUE_PRECISION),
+          formatter: (val) =>
+            val.toFixed(UI_CONSTANTS.CHART_CONFIG.TOOLTIP_VALUE_PRECISION),
         },
       },
     }),

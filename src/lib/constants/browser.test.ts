@@ -9,7 +9,7 @@ describe("WINDOW_EVENTS", () => {
     expect(WINDOW_EVENTS).toEqual(
       expect.objectContaining({
         RESIZE: expect.any(String),
-      })
+      }),
     );
   });
 

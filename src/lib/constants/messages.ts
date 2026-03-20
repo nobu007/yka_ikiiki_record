@@ -190,7 +190,8 @@ export const INSTRUCTIONS_SECTION = {
   STEPS: [
     {
       title: "データの生成",
-      description: "「テストデータを生成」ボタンをクリックして、サンプル学習データを作成します。",
+      description:
+        "「テストデータを生成」ボタンをクリックして、サンプル学習データを作成します。",
       icon: "M12 6v6m0 0v6m0-6h6m-6 0H6",
     },
     {

@@ -86,9 +86,7 @@ describe("Notification", () => {
     });
 
     it("should not render close button when onClose is not provided", () => {
-      render(
-        <Notification show={true} message="Test message" type="info" />,
-      );
+      render(<Notification show={true} message="Test message" type="info" />);
 
       const closeButton = screen.queryByText("閉じる");
       expect(closeButton).not.toBeInTheDocument();
@@ -130,16 +128,14 @@ describe("Notification", () => {
   describe("notification types", () => {
     it("should render success notification", () => {
       const { container } = render(
-        <Notification
-          show={true}
-          message="Success message"
-          type="success"
-        />,
+        <Notification show={true} message="Success message" type="success" />,
       );
 
       const notification = container.firstChild as HTMLElement;
       expect(notification).toHaveClass("p-4 rounded-lg border shadow-sm");
-      expect(notification).toHaveClass("bg-green-50 border-green-200 text-green-800");
+      expect(notification).toHaveClass(
+        "bg-green-50 border-green-200 text-green-800",
+      );
     });
 
     it("should render error notification", () => {
@@ -153,11 +149,7 @@ describe("Notification", () => {
 
     it("should render warning notification", () => {
       const { container } = render(
-        <Notification
-          show={true}
-          message="Warning message"
-          type="warning"
-        />,
+        <Notification show={true} message="Warning message" type="warning" />,
       );
 
       const notification = container.firstChild as HTMLElement;
@@ -195,9 +187,7 @@ describe("Notification", () => {
       const longMessage =
         "This is a very long notification message that should wrap to multiple lines and break words appropriately to maintain readability";
 
-      render(
-        <Notification show={true} message={longMessage} type="info" />,
-      );
+      render(<Notification show={true} message={longMessage} type="info" />);
 
       const messageElement = screen.getByText(longMessage);
       expect(messageElement).toHaveClass("break-words");

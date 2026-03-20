@@ -1,8 +1,4 @@
-import {
-  LOGGER_CONSTANTS,
-  LOG_LEVELS,
-  LOG_VISIBILITY,
-} from "@/lib/constants";
+import { LOGGER_CONSTANTS, LOG_LEVELS, LOG_VISIBILITY } from "@/lib/constants";
 
 export type LogLevel = (typeof LOG_LEVELS)[keyof typeof LOG_LEVELS];
 export type LogVisibility =
@@ -159,7 +155,9 @@ export class StructuredLogger {
     return timestamp >= start && timestamp <= end;
   }
 
-  getRecentLogs(count: number = LOGGER_CONSTANTS.RECENT_LOGS_COUNT): LogEntry[] {
+  getRecentLogs(
+    count: number = LOGGER_CONSTANTS.RECENT_LOGS_COUNT,
+  ): LogEntry[] {
     return this.logs.slice(-count);
   }
 
@@ -177,11 +175,15 @@ export class StructuredLogger {
   }
 
   private compressLogs(): void {
-    const recentLogs = this.logs.slice(-LOGGER_CONSTANTS.COMPRESS_RECENT_LOGS_COUNT);
+    const recentLogs = this.logs.slice(
+      -LOGGER_CONSTANTS.COMPRESS_RECENT_LOGS_COUNT,
+    );
     const compressedOldLogs = this.logs
       .slice(0, -LOGGER_CONSTANTS.COMPRESS_RECENT_LOGS_COUNT)
       .filter(
-        (log) => log.visibility !== LOG_VISIBILITY.DEBUG && log.visibility !== LOG_VISIBILITY.TRACE,
+        (log) =>
+          log.visibility !== LOG_VISIBILITY.DEBUG &&
+          log.visibility !== LOG_VISIBILITY.TRACE,
       );
 
     this.logs = [...compressedOldLogs, ...recentLogs];

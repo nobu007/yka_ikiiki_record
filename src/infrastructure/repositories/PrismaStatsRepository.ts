@@ -72,7 +72,9 @@ export class PrismaStatsRepository implements StatsRepository {
         const studentIndex = Math.floor(
           Math.random() * stats.studentStats.length,
         );
-        const student = stats.studentStats[studentIndex]?.student || FALLBACK_VALUES.UNKNOWN_STUDENT;
+        const student =
+          stats.studentStats[studentIndex]?.student ||
+          FALLBACK_VALUES.UNKNOWN_STUDENT;
         records.push({
           date: new Date(monthly.month + "-01"),
           student,

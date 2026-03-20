@@ -99,7 +99,7 @@ describe("API_OPERATIONS", () => {
         GET_HEALTH: expect.any(String),
         GET_SEED: expect.any(String),
         POST_SEED: expect.any(String),
-      })
+      }),
     );
   });
 });

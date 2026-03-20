@@ -14,7 +14,8 @@ const GridImage = memo(() => (
 GridImage.displayName = "GridImage";
 
 export const GridShape = memo(() => {
-  const imageWrapperClasses = "absolute -z-1 w-full max-w-[250px] xl:max-w-[450px]";
+  const imageWrapperClasses =
+    "absolute -z-1 w-full max-w-[250px] xl:max-w-[450px]";
 
   return (
     <>

@@ -29,7 +29,9 @@ export default function BarChartContent() {
     setIsLoading(true);
     setError(null);
     try {
-      await new Promise((resolve) => setTimeout(resolve, UI_CONSTANTS.FEEDBACK.DELAY_MS));
+      await new Promise((resolve) =>
+        setTimeout(resolve, UI_CONSTANTS.FEEDBACK.DELAY_MS),
+      );
     } catch (error) {
       setError(normalizeError(error));
     } finally {
@@ -57,7 +59,11 @@ export default function BarChartContent() {
             <p className="text-sm">{error.message}</p>
           </div>
         ) : (
-          <DynamicBarChart data={demoData} title="月別データ" height={UI_CONSTANTS.CHART.HEIGHT.DEFAULT} />
+          <DynamicBarChart
+            data={demoData}
+            title="月別データ"
+            height={UI_CONSTANTS.CHART.HEIGHT.DEFAULT}
+          />
         )}
       </ComponentCard>
     </div>

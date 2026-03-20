@@ -7,7 +7,8 @@ export class MemoryMonitor {
   private intervalId: NodeJS.Timeout | null = null;
 
   constructor(
-    memoryLimit: number = MEMORY_MONITOR_CONSTANTS.MEMORY_LIMIT_MB * MEMORY_MONITOR_CONSTANTS.BYTES_PER_MB,
+    memoryLimit: number = MEMORY_MONITOR_CONSTANTS.MEMORY_LIMIT_MB *
+      MEMORY_MONITOR_CONSTANTS.BYTES_PER_MB,
     checkInterval: number = MEMORY_MONITOR_CONSTANTS.CHECK_INTERVAL_MS,
   ) {
     this.memoryLimit = memoryLimit;
@@ -66,11 +67,19 @@ export class MemoryMonitor {
 
   getUsagePercentage(): number {
     const usage = process.memoryUsage();
-    return (usage.heapUsed / this.memoryLimit) * MEMORY_MONITOR_CONSTANTS.PERCENTAGE_MULTIPLIER;
+    return (
+      (usage.heapUsed / this.memoryLimit) *
+      MEMORY_MONITOR_CONSTANTS.PERCENTAGE_MULTIPLIER
+    );
   }
 
-  isNearLimit(threshold: number = MEMORY_MONITOR_CONSTANTS.THRESHOLD_RATIO): boolean {
-    return this.getUsagePercentage() > threshold * MEMORY_MONITOR_CONSTANTS.PERCENTAGE_MULTIPLIER;
+  isNearLimit(
+    threshold: number = MEMORY_MONITOR_CONSTANTS.THRESHOLD_RATIO,
+  ): boolean {
+    return (
+      this.getUsagePercentage() >
+      threshold * MEMORY_MONITOR_CONSTANTS.PERCENTAGE_MULTIPLIER
+    );
   }
 }
 

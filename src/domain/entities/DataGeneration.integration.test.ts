@@ -81,6 +81,8 @@ describe("DataGeneration Integration Tests", () => {
       EMOTION_CONSTANTS.MAX_EVENT_IMPACT * -1,
     );
     // Verify alignment with centralized constants
-    expect(EMOTION_CONSTANTS.MAX_EVENT_IMPACT).toBe(EMOTION_RANGES.MAX_EVENT_IMPACT);
+    expect(EMOTION_CONSTANTS.MAX_EVENT_IMPACT).toBe(
+      EMOTION_RANGES.MAX_EVENT_IMPACT,
+    );
   });
 });

@@ -49,7 +49,6 @@ function createMockRequest(body: object): NextRequest {
 }
 
 describe("API seed route POST (Prisma provider)", () => {
-
   beforeEach(() => {
     jest.clearAllMocks();
   });

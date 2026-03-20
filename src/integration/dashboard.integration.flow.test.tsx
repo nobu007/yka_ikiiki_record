@@ -106,7 +106,9 @@ describe("Dashboard Integration - Data Flow", () => {
       );
 
       // Check loading overlay is present
-      expect(screen.getByText(LOADING_MESSAGES.GENERATING_DATA)).toBeInTheDocument();
+      expect(
+        screen.getByText(LOADING_MESSAGES.GENERATING_DATA),
+      ).toBeInTheDocument();
 
       // Button should be disabled and show loading text
       const generateButton = screen.getByText("生成中...");

@@ -100,7 +100,7 @@ describe("DynamicBarChart Formatter Functions", () => {
   describe("Formatter Component Integration", () => {
     it("should render chart with y-axis formatter for decimal values", () => {
       const { container } = render(
-        <DynamicBarChart data={mockData} height={400} isDark={false} />
+        <DynamicBarChart data={mockData} height={400} isDark={false} />,
       );
 
       expect(container.firstChild).toBeDefined();
@@ -108,7 +108,7 @@ describe("DynamicBarChart Formatter Functions", () => {
 
     it("should render chart with y-axis formatter in dark mode", () => {
       const { container } = render(
-        <DynamicBarChart data={mockData} height={350} isDark={true} />
+        <DynamicBarChart data={mockData} height={350} isDark={true} />,
       );
 
       expect(container.firstChild).toBeDefined();
@@ -121,14 +121,16 @@ describe("DynamicBarChart Formatter Functions", () => {
         { name: "Item 3", value: 5 },
       ];
 
-      const { container } = render(<DynamicBarChart data={integerData} height={300} />);
+      const { container } = render(
+        <DynamicBarChart data={integerData} height={300} />,
+      );
 
       expect(container.firstChild).toBeDefined();
     });
 
     it("should render chart with tooltip formatter for various values", () => {
       const { container } = render(
-        <DynamicBarChart data={mockData} height={400} title="Test Chart" />
+        <DynamicBarChart data={mockData} height={400} title="Test Chart" />,
       );
 
       expect(container.firstChild).toBeDefined();
@@ -141,7 +143,7 @@ describe("DynamicBarChart Formatter Functions", () => {
           height={350}
           isDark={false}
           title="Light Mode Chart"
-        />
+        />,
       );
 
       expect(container.firstChild).toBeDefined();
@@ -153,7 +155,9 @@ describe("DynamicBarChart Formatter Functions", () => {
         value: Math.random() * 5,
       }));
 
-      const { container } = render(<DynamicBarChart data={largeData} height={450} />);
+      const { container } = render(
+        <DynamicBarChart data={largeData} height={450} />,
+      );
 
       expect(container.firstChild).toBeDefined();
     });
@@ -162,7 +166,7 @@ describe("DynamicBarChart Formatter Functions", () => {
   describe("Formatter Integration with Grid Options (lines 124-134)", () => {
     it("should render chart with formatters and grid padding", () => {
       const { container } = render(
-        <DynamicBarChart data={mockData} height={300} isDark={false} />
+        <DynamicBarChart data={mockData} height={300} isDark={false} />,
       );
 
       expect(container.firstChild).toBeDefined();
@@ -170,7 +174,7 @@ describe("DynamicBarChart Formatter Functions", () => {
 
     it("should render chart with formatters and dark mode grid", () => {
       const { container } = render(
-        <DynamicBarChart data={mockData} height={350} isDark={true} />
+        <DynamicBarChart data={mockData} height={350} isDark={true} />,
       );
 
       expect(container.firstChild).toBeDefined();
@@ -185,7 +189,9 @@ describe("DynamicBarChart Formatter Functions", () => {
         { name: "Item 3", value: 0 },
       ];
 
-      const { container } = render(<DynamicBarChart data={zeroData} height={400} />);
+      const { container } = render(
+        <DynamicBarChart data={zeroData} height={400} />,
+      );
 
       expect(container.firstChild).toBeDefined();
     });
@@ -198,7 +204,7 @@ describe("DynamicBarChart Formatter Functions", () => {
       ];
 
       const { container } = render(
-        <DynamicBarChart data={largeDecimalData} height={400} isDark={true} />
+        <DynamicBarChart data={largeDecimalData} height={400} isDark={true} />,
       );
 
       expect(container.firstChild).toBeDefined();
@@ -212,7 +218,9 @@ describe("DynamicBarChart Formatter Functions", () => {
         { name: "Many decimals", value: 3.14159 },
       ];
 
-      const { container } = render(<DynamicBarChart data={mixedData} height={400} />);
+      const { container } = render(
+        <DynamicBarChart data={mixedData} height={400} />,
+      );
 
       expect(container.firstChild).toBeDefined();
     });
@@ -224,7 +232,9 @@ describe("DynamicBarChart Formatter Functions", () => {
         { name: "Item 3", value: 1.5 },
       ];
 
-      const { container } = render(<DynamicBarChart data={negativeData} height={400} />);
+      const { container } = render(
+        <DynamicBarChart data={negativeData} height={400} />,
+      );
 
       expect(container.firstChild).toBeDefined();
     });
@@ -240,7 +250,8 @@ describe("DynamicBarChart Formatter Functions", () => {
     });
 
     it("should have valid tooltip precision configuration", () => {
-      const tooltipPrecision = UI_CONSTANTS.CHART_CONFIG.TOOLTIP_VALUE_PRECISION;
+      const tooltipPrecision =
+        UI_CONSTANTS.CHART_CONFIG.TOOLTIP_VALUE_PRECISION;
 
       expect(typeof tooltipPrecision).toBe("number");
       expect(tooltipPrecision).toBeGreaterThan(0);
@@ -250,7 +261,8 @@ describe("DynamicBarChart Formatter Functions", () => {
     it("should format values without errors for both formatters", () => {
       const testValues = [0, 0.5, 1, 1.5, 2.71828, 3.14159, 4.999999];
       const yaxisPrecision = UI_CONSTANTS.CHART_CONFIG.YAXIS_LABEL_PRECISION;
-      const tooltipPrecision = UI_CONSTANTS.CHART_CONFIG.TOOLTIP_VALUE_PRECISION;
+      const tooltipPrecision =
+        UI_CONSTANTS.CHART_CONFIG.TOOLTIP_VALUE_PRECISION;
 
       testValues.forEach((value) => {
         expect(() => value.toFixed(yaxisPrecision)).not.toThrow();

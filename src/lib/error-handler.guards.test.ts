@@ -108,7 +108,11 @@ describe("error-handler: Type Guards", () => {
   });
 
   test("isNotFoundError enables type narrowing to AppError", () => {
-    const unknownError: unknown = new AppError("Not found", ERROR_CODES.NOT_FOUND, 404);
+    const unknownError: unknown = new AppError(
+      "Not found",
+      ERROR_CODES.NOT_FOUND,
+      404,
+    );
 
     if (isNotFoundError(unknownError)) {
       expect(unknownError.code).toBe(ERROR_CODES.NOT_FOUND);
@@ -130,7 +134,11 @@ describe("error-handler: Type Guards", () => {
   });
 
   test("isTimeoutError enables type narrowing to AppError", () => {
-    const unknownError: unknown = new AppError("Timeout", ERROR_CODES.TIMEOUT, 408);
+    const unknownError: unknown = new AppError(
+      "Timeout",
+      ERROR_CODES.TIMEOUT,
+      408,
+    );
 
     if (isTimeoutError(unknownError)) {
       expect(unknownError.code).toBe(ERROR_CODES.TIMEOUT);
@@ -152,7 +160,11 @@ describe("error-handler: Type Guards", () => {
   });
 
   test("isServerError enables type narrowing to AppError", () => {
-    const unknownError: unknown = new AppError("Server error", ERROR_CODES.UNKNOWN, 500);
+    const unknownError: unknown = new AppError(
+      "Server error",
+      ERROR_CODES.UNKNOWN,
+      500,
+    );
 
     if (isServerError(unknownError)) {
       expect(unknownError.statusCode).toBeGreaterThanOrEqual(500);

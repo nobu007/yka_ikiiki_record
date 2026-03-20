@@ -34,7 +34,7 @@ interface DashboardProps {
 }
 
 const DashboardComponent = memo<DashboardProps>(
-  ({ isGenerating, onGenerate, notification, onNotificationClose }) => {
+  function Dashboard({ isGenerating, onGenerate, notification, onNotificationClose }) {
     const [stats, setStats] = useState<StatsData | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 

@@ -14,7 +14,7 @@ IkiIki Record is an innovative educational infrastructure aimed at schools in Ja
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: Next.js 13+ (App Router), TypeScript, Tailwind CSS
+- **Frontend**: Next.js 16 (App Router), TypeScript 5, Tailwind CSS
 - **Testing**: Jest, React Testing Library, Playwright
 - **Architecture**: Clean Architecture, Domain-Driven Design
 - **Charts**: ApexCharts

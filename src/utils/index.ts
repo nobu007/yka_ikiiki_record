@@ -1,0 +1,18 @@
+export {
+  clamp,
+  average,
+  calculateAverage,
+  generateNormalRandom,
+  clampEmotion,
+  generateBaseEmotion,
+  calculateSeasonalEffect,
+  calculateEventEffect,
+  getRandomHour,
+  calculateMonthlyStats,
+  calculateDayOfWeekStats,
+  calculateTimeOfDayStats,
+  calculateEmotionDistribution,
+  calculateStudentStats,
+  calculateTrendline,
+  calculateEmotionTrend,
+} from './statsCalculator';

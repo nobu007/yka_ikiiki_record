@@ -1,13 +1,36 @@
 import { memo } from "react";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 
+/**
+ * Notification type variants for icon selection.
+ */
 type NotificationType = "success" | "error" | "warning" | "info";
 
+/**
+ * Common props for all icon components.
+ */
 interface IconProps {
+  /** Additional CSS classes to apply */
   className?: string;
+  /** Whether to hide from screen readers (default: true) */
   ariaHidden?: boolean;
 }
 
+/**
+ * A checkmark icon for success states and completion indicators.
+ *
+ * Displays a green circle with a checkmark, commonly used for:
+ * - Completed items in lists
+ * - Success indicators
+ * - Confirmation dialogs
+ *
+ * @example
+ * ```tsx
+ * <CheckIcon />
+ * <CheckIcon className="h-6 w-6" />
+ * <CheckIcon ariaHidden={false} />
+ * ```
+ */
 export const CheckIcon = memo<IconProps>(
   ({ className = "", ariaHidden = true }) => (
     <svg
@@ -26,6 +49,20 @@ export const CheckIcon = memo<IconProps>(
 );
 CheckIcon.displayName = "CheckIcon";
 
+/**
+ * A plus icon for adding new items or expand actions.
+ *
+ * Displays a simple plus sign in a circle, commonly used for:
+ * - Add buttons
+ * - Create new item actions
+ * - Expand/collapse controls
+ *
+ * @example
+ * ```tsx
+ * <PlusIcon />
+ * <PlusIcon className="h-4 w-4" />
+ * ```
+ */
 export const PlusIcon = memo<IconProps>(
   ({ className = "", ariaHidden = true }) => (
     <svg
@@ -46,6 +83,20 @@ export const PlusIcon = memo<IconProps>(
 );
 PlusIcon.displayName = "PlusIcon";
 
+/**
+ * An exclamation mark icon for warnings and errors.
+ *
+ * Displays a triangle with exclamation mark, commonly used for:
+ * - Error messages
+ * - Warning alerts
+ * - Error boundaries
+ *
+ * @example
+ * ```tsx
+ * <ExclamationIcon />
+ * <ExclamationIcon className="text-red-500" />
+ * ```
+ */
 export const ExclamationIcon = memo<IconProps>(
   ({ className = "", ariaHidden = true }) => (
     <svg
@@ -66,10 +117,17 @@ export const ExclamationIcon = memo<IconProps>(
 );
 ExclamationIcon.displayName = "ExclamationIcon";
 
+/**
+ * Props for NotificationIcon component.
+ */
 interface NotificationIconProps extends IconProps {
+  /** Type of notification determining which icon and color to display */
   type: NotificationType;
 }
 
+/**
+ * SVG path data for each notification type.
+ */
 const NOTIFICATION_ICONS = {
   success:
     "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z",
@@ -80,6 +138,9 @@ const NOTIFICATION_ICONS = {
   info: "M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z",
 } satisfies Record<NotificationType, string>;
 
+/**
+ * Color mapping for each notification type.
+ */
 const NOTIFICATION_COLORS = {
   success: UI_CONSTANTS.COLOR.SUCCESS,
   error: UI_CONSTANTS.COLOR.ERROR,
@@ -87,6 +148,26 @@ const NOTIFICATION_COLORS = {
   info: UI_CONSTANTS.COLOR.INFO,
 } satisfies Record<NotificationType, string>;
 
+/**
+ * A dynamic notification icon that displays different icons based on notification type.
+ *
+ * This component renders the appropriate icon and color for each notification type:
+ * - Success: Green checkmark
+ * - Error: Red X mark
+ * - Warning: Yellow triangle
+ * - Info: Blue circle with 'i'
+ *
+ * Used in conjunction with the Notification component to provide visual
+ * context for different message types.
+ *
+ * @example
+ * ```tsx
+ * <NotificationIcon type="success" />
+ * <NotificationIcon type="error" />
+ * <NotificationIcon type="warning" />
+ * <NotificationIcon type="info" />
+ * ```
+ */
 export const NotificationIcon = memo<NotificationIconProps>(
   ({ type, className = "", ariaHidden = true }) => (
     <svg

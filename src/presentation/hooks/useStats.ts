@@ -3,6 +3,31 @@ import { useStats as useApplicationStats } from "@/application/hooks/useStats";
 import { globalLogger } from "@/lib/resilience";
 import { ERROR_MESSAGES } from "@/lib/constants/messages";
 
+/**
+ * Presentation layer hook for consuming and formatting statistics data.
+ *
+ * Wraps the application layer's useStats hook to provide presentation-specific
+ * error formatting and refetch error handling. This hook transforms raw
+ * application data into UI-ready formats.
+ *
+ * @returns Object containing:
+ *   - stats: Formatted statistics data or null if not loaded
+ *   - error: Formatted error object with title and message, or null if no error
+ *   - isLoading: Boolean indicating if data is currently being fetched
+ *   - refetch: Function to manually trigger a data refetch with error handling
+ *
+ * @example
+ * ```tsx
+ * function MyComponent() {
+ *   const { stats, error, isLoading, refetch } = useStats();
+ *
+ *   if (isLoading) return <Spinner />;
+ *   if (error) return <ErrorAlert title={error.title} message={error.message} />;
+ *
+ *   return <StatsDisplay data={stats} onRefresh={refetch} />;
+ * }
+ * ```
+ */
 export const useStats = () => {
   const { stats, error, isLoading, refetch } = useApplicationStats();
 

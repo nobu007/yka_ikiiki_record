@@ -1,5 +1,4 @@
 import { GET } from "./route";
-import { NextRequest } from "next/server";
 
 describe("GET /api/metrics", () => {
   beforeEach(() => {

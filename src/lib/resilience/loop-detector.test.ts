@@ -18,6 +18,32 @@ describe("LoopDetector", () => {
     detector.destroy();
   });
 
+  describe("constructor", () => {
+    it("should use default values when called without parameters", () => {
+      const defaultDetector = new LoopDetector();
+
+      expect(defaultDetector).toBeInstanceOf(LoopDetector);
+
+      for (let i = 0; i < 500; i++) {
+        expect(() => defaultDetector.checkIteration("default-test")).not.toThrow();
+      }
+
+      defaultDetector.destroy();
+    });
+
+    it("should use custom values when provided", () => {
+      const customDetector = new LoopDetector(50, 5000);
+
+      expect(customDetector).toBeInstanceOf(LoopDetector);
+
+      for (let i = 0; i < 50; i++) {
+        expect(() => customDetector.checkIteration("custom-test")).not.toThrow();
+      }
+
+      customDetector.destroy();
+    });
+  });
+
   describe("InfiniteLoopError", () => {
     it("should create error with correct properties", () => {
       const error = new InfiniteLoopError("test-operation");

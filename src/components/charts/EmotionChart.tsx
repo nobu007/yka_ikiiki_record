@@ -6,24 +6,87 @@ import { CHART_COLORS, CHART_CONFIG } from "@/lib/config";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
+/**
+ * Data structure for chart rendering.
+ */
 export interface ChartData {
+  /** X-axis labels for data points */
   labels: string[];
+  /** Data series with names and values */
   series: Array<{
     name: string;
     data: number[];
   }>;
 }
 
+/**
+ * Props for EmotionChart component.
+ */
 export interface EmotionChartProps {
+  /** Chart data containing labels and series */
   data: ChartData;
+  /** Optional chart title */
   title?: string;
+  /** Chart height in pixels (default: from CHART_CONFIG) */
   height?: number;
+  /** Chart type variant (default: "line") */
   type?: "line" | "bar" | "area" | "pie" | "donut";
+  /** Custom color palette (default: CHART_COLORS.PALETTE) */
   colors?: string[];
 }
 
 const defaultColors = CHART_COLORS.PALETTE;
 
+/**
+ * A flexible chart component for visualizing emotion statistics data.
+ *
+ * Wraps ApexCharts with dynamic import for client-side only rendering, preventing
+ * SSR issues. Supports multiple chart types (line, bar, area, pie, donut) with
+ * responsive design and customizable styling.
+ *
+ * **Features:**
+ * - Multiple chart types with unified API
+ * - Responsive design with breakpoint-based height adjustment
+ * - Dynamic import to prevent SSR hydration issues
+ * - Memoized for performance optimization
+ * - Customizable colors and styling
+ * - Optional title with configurable font styling
+ *
+ * **Responsive Behavior:**
+ * - Above breakpoint: uses configured height
+ * - Below breakpoint: reduces height by RESPONSIVE_HEIGHT_RATIO
+ * - Legend moves to bottom on mobile
+ *
+ * @example
+ * ```tsx
+ * // Line chart
+ * <EmotionChart
+ *   type="line"
+ *   data={{
+ *     labels: ["Jan", "Feb", "Mar"],
+ *     series: [{ name: "Emotion", data: [65, 70, 75] }]
+ *   }}
+ *   title="Monthly Emotion Trends"
+ * />
+ *
+ * // Bar chart with custom colors
+ * <EmotionChart
+ *   type="bar"
+ *   data={{...}}
+ *   colors={['#FF6B6B', '#4ECDC4']}
+ *   height={400}
+ * />
+ *
+ * // Pie chart
+ * <EmotionChart
+ *   type="pie"
+ *   data={{
+ *     labels: ["Happy", "Sad", "Neutral"],
+ *     series: [{ name: "Distribution", data: [40, 30, 30] }]
+ *   }}
+ * />
+ * ```
+ */
 export const EmotionChart = memo<EmotionChartProps>(
   ({
     data,

@@ -95,8 +95,8 @@ export const HELP_TEXT = {
 } as const;
 
 export const CONTEXT_ERROR_MESSAGES = {
-  THEME_PROVIDER: "useTheme must be used within a ThemeProvider",
-  SIDEBAR_PROVIDER: "useSidebar must be used within a SidebarProvider",
+  THEME_PROVIDER: "useThemeはThemeProvider内で使用してください",
+  SIDEBAR_PROVIDER: "useSidebarはSidebarProvider内で使用してください",
 } as const;
 
 export const ERROR_BOUNDARY_MESSAGES = {

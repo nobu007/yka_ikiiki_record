@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+/**
+ * Standard API response structure for all endpoints.
+ *
+ * Provides a consistent format for successful and error responses across
+ * the application, with optional data payload and message/error fields.
+ *
+ * @template T - Type of the data payload (if present)
+ */
 export type ApiResponse<T> = {
   success: boolean;
   data?: T;

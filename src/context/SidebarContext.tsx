@@ -10,6 +10,7 @@ import {
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 import { CONTEXT_ERROR_MESSAGES } from "@/lib/constants/messages";
 import { WINDOW_EVENTS } from "@/lib/constants/browser";
+import { AppError, ERROR_CODES } from "@/lib/error-handler";
 
 type SidebarContextType = {
   isExpanded: boolean;
@@ -29,7 +30,10 @@ const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 export const useSidebar = () => {
   const context = useContext(SidebarContext);
   if (!context) {
-    throw new Error(CONTEXT_ERROR_MESSAGES.SIDEBAR_PROVIDER);
+    throw new AppError(
+      CONTEXT_ERROR_MESSAGES.SIDEBAR_PROVIDER,
+      ERROR_CODES.PERMISSION,
+    );
   }
   return context;
 };

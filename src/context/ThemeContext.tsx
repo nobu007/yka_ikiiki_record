@@ -10,6 +10,7 @@ import {
 } from "react";
 import { CONTEXT_ERROR_MESSAGES } from "@/lib/constants/messages";
 import { STORAGE_KEYS, THEME_CLASSES } from "@/lib/constants/storage";
+import { AppError, ERROR_CODES } from "@/lib/error-handler";
 
 type Theme = "light" | "dark";
 
@@ -62,7 +63,10 @@ ThemeProvider.displayName = "ThemeProvider";
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error(CONTEXT_ERROR_MESSAGES.THEME_PROVIDER);
+    throw new AppError(
+      CONTEXT_ERROR_MESSAGES.THEME_PROVIDER,
+      ERROR_CODES.PERMISSION,
+    );
   }
   return context;
 };

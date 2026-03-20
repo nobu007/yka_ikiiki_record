@@ -2,7 +2,7 @@
 
 import DynamicBarChart from "@/components/charts/DynamicBarChart";
 import { ComponentCard } from "@/components/common/ComponentCard";
-import { useState, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 import { getButtonClasses, UI_CONSTANTS } from "@/lib/constants/ui";
 import { normalizeError, type AppError } from "@/lib/error-handler";
 
@@ -21,7 +21,7 @@ const demoData = [
   { name: "Dec", value: 112 },
 ];
 
-export default function BarChartContent() {
+const BarChartContent = memo(function BarChartContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<AppError | null>(null);
 
@@ -68,4 +68,8 @@ export default function BarChartContent() {
       </ComponentCard>
     </div>
   );
-}
+});
+
+BarChartContent.displayName = "BarChartContent";
+
+export default BarChartContent;

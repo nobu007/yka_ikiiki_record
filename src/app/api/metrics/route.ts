@@ -49,7 +49,7 @@ async function getLatestMetrics(): Promise<MetricsResponse["judgment"] | null> {
     }
 
     const [
-      _timestamp,
+      _timestampStr,
       scoreStr,
       violationsStr,
       statementsStr,

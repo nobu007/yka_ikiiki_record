@@ -13,6 +13,33 @@ import { globalCircuitBreaker, globalLogger } from "@/lib/resilience";
 import type { CircuitBreakerConfig } from "@/lib/resilience";
 import { API_ERROR_MESSAGES } from "@/lib/constants/messages";
 
+/**
+ * API error handling utilities and resilience patterns.
+ *
+ * This module provides comprehensive error handling for Next.js API routes including:
+ * - Zod validation error formatting
+ * - JSON syntax error detection
+ * - Standardized error response creation
+ * - Resilient handler wrapper with timeout and circuit-breaker
+ *
+ * **Error Types Handled:**
+ * - Zod validation errors (400 Bad Request)
+ * - JSON syntax errors (400 Bad Request)
+ * - AppError instances with custom status codes
+ * - Unknown errors (500 Internal Server Error)
+ *
+ * **Resilience Features:**
+ * - Automatic timeout enforcement (prevents hanging requests)
+ * - Circuit-breaker pattern (prevents cascading failures)
+ * - Structured error logging (full observability)
+ */
+
+/**
+ * Formats Zod validation errors into human-readable messages.
+ *
+ * @param error - Zod error to format
+ * @returns Comma-separated error messages with field paths
+ */
 const formatZodError = (error: z.ZodError): string => {
   return error.errors
     .map((err) => {
@@ -33,6 +60,29 @@ function isSyntaxErrorWithBody(
   return "body" in syntaxError && syntaxError.body === true;
 }
 
+/**
+ * Handles API errors and returns appropriate error responses.
+ *
+ * Processes different error types and generates standardized error responses:
+ * - Zod validation errors → 400 with field-specific messages
+ * - JSON syntax errors → 400 with invalid JSON message
+ * - AppError instances → Uses error's status code and message
+ * - Unknown errors → 500 with generic error message
+ *
+ * All errors are logged before generating the response.
+ *
+ * @param error - The error to handle (any type)
+ * @returns NextResponse with appropriate status code and error message
+ *
+ * @example
+ * ```ts
+ * try {
+ *   const data = JSON.parse(request.body);
+ * } catch (error) {
+ *   return handleApiError(error);
+ * }
+ * ```
+ */
 export function handleApiError(error: unknown): NextResponse {
   if (error instanceof z.ZodError) {
     const message = formatZodError(error);
@@ -58,6 +108,25 @@ export function handleApiError(error: unknown): NextResponse {
   );
 }
 
+/**
+ * Factory object for creating typed AppError instances with default messages.
+ *
+ * Provides convenient methods for creating common HTTP error types with
+ * appropriate status codes and default error messages. Each method returns
+ * an AppError instance that can be thrown or returned.
+ *
+ * @example
+ * ```ts
+ * // Create 404 error
+ * throw createError.notFound("User not found");
+ *
+ * // Create 401 error with default message
+ * throw createError.unauthorized();
+ *
+ * // Create 400 error
+ * return createError.badRequest("Invalid email format");
+ * ```
+ */
 export const createError = {
   badRequest: (message: string = API_ERROR_MESSAGES.BAD_REQUEST) =>
     new AppError(message, ERROR_CODES.VALIDATION, HTTP_STATUS.BAD_REQUEST),

@@ -1,17 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { withResilientHandler } from "@/lib/api/error-handler";
 import { createRecordRepository } from "@/infrastructure/factories/repositoryFactory";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { API_OPERATIONS } from "@/lib/constants/api";
 import type { Record } from "@/schemas/api";
 
+const ExportQuerySchema = z.object({
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  student: z.string().optional(),
+});
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   return withResilientHandler(
     async () => {
       const searchParams = req.nextUrl.searchParams;
-      const startDate = searchParams.get("startDate");
-      const endDate = searchParams.get("endDate");
-      const student = searchParams.get("student");
+      const queryParams = Object.fromEntries(searchParams.entries());
+      const { startDate, endDate, student } = ExportQuerySchema.parse(queryParams);
 
       const repository = createRecordRepository();
       let records;
@@ -19,7 +25,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       if (startDate && endDate) {
         records = await repository.findByDateRange(
           new Date(startDate),
-          new Date(endDate)
+          new Date(endDate),
         );
       } else if (student) {
         records = await repository.findByStudent(student);

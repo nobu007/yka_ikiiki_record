@@ -63,6 +63,28 @@ const DynamicBarChart = memo(function DynamicBarChart({
     }
   }, [data]);
 
+  const categories = useMemo(
+    () => validData.map((item) => item.name),
+    [validData],
+  );
+
+  const seriesData = useMemo(
+    () => validData.map((item) => item.value),
+    [validData],
+  );
+
+  const dataLabelsEnabled = useMemo(
+    () =>
+      validData.length <= UI_CONSTANTS.CHART_CONFIG.DATALABELS_ENABLE_THRESHOLD,
+    [validData.length],
+  );
+
+  const rotateLabels = useMemo(
+    () =>
+      validData.length > UI_CONSTANTS.CHART_CONFIG.LABEL_ROTATION_THRESHOLD,
+    [validData.length],
+  );
+
   const options: ApexOptions = useMemo(
     () => ({
       chart: {
@@ -92,12 +114,10 @@ const DynamicBarChart = memo(function DynamicBarChart({
       },
       colors: [CHART_COLORS.PRIMARY],
       dataLabels: {
-        enabled:
-          validData.length <=
-          UI_CONSTANTS.CHART_CONFIG.DATALABELS_ENABLE_THRESHOLD,
+        enabled: dataLabelsEnabled,
       },
       xaxis: {
-        categories: validData.map((item) => item.name),
+        categories,
         axisBorder: {
           show: false,
         },
@@ -108,9 +128,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
           style: {
             colors: isDark ? CHART_COLORS.GRAY_LIGHT : CHART_COLORS.GRAY_DARK,
           },
-          rotateAlways:
-            validData.length >
-            UI_CONSTANTS.CHART_CONFIG.LABEL_ROTATION_THRESHOLD,
+          rotateAlways: rotateLabels,
         },
       },
       yaxis: {
@@ -144,17 +162,24 @@ const DynamicBarChart = memo(function DynamicBarChart({
         },
       },
     }),
-    [height, validData, isDark, mounted],
+    [
+      height,
+      isDark,
+      mounted,
+      categories,
+      dataLabelsEnabled,
+      rotateLabels,
+    ],
   );
 
   const series = useMemo(
     () => [
       {
         name: CHART_TITLES.SERIES_NAME,
-        data: validData.map((item) => item.value),
+        data: seriesData,
       },
     ],
-    [validData],
+    [seriesData],
   );
 
   const wrapperProps: {

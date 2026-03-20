@@ -59,6 +59,22 @@ const isNetworkRelated = (error: Error): boolean =>
   error.name === "TypeError" ||
   NETWORK_ERROR_PATTERNS.some((pattern) => error.message.includes(pattern));
 
+/**
+ * Normalizes any error into a standardized AppError instance.
+ *
+ * @param {unknown} error - The error to normalize (can be any type)
+ * @returns {AppError} A standardized AppError instance
+ *
+ * @example
+ * ```ts
+ * try {
+ *   await riskyOperation();
+ * } catch (error) {
+ *   const normalized = normalizeError(error);
+ *   logError(normalized);
+ * }
+ * ```
+ */
 export function normalizeError(error: unknown): AppError {
   if (error instanceof AppError) return error;
 
@@ -77,6 +93,22 @@ export function normalizeError(error: unknown): AppError {
   return new AppError(ERROR_MESSAGES.UNEXPECTED);
 }
 
+/**
+ * Converts any error into a user-friendly message.
+ *
+ * @param {unknown} error - The error to convert
+ * @returns {string} A user-friendly error message
+ *
+ * @example
+ * ```ts
+ * try {
+ *   await operation();
+ * } catch (error) {
+ *   const message = getUserFriendlyMessage(error);
+ *   alert(message);
+ * }
+ * ```
+ */
 export function getUserFriendlyMessage(error: unknown): string {
   const normalized = normalizeError(error);
 
@@ -97,6 +129,22 @@ export function getUserFriendlyMessage(error: unknown): string {
   return messageMap[normalized.code] || normalized.message;
 }
 
+/**
+ * Logs an error using the structured logger with full context.
+ *
+ * @param {unknown} error - The error to log
+ * @param {string} [context] - Optional context label for categorization
+ * @returns {void}
+ *
+ * @example
+ * ```ts
+ * try {
+ *   await fetchData();
+ * } catch (error) {
+ *   logError(error, "API_FETCH");
+ * }
+ * ```
+ */
 export function logError(error: unknown, context?: string): void {
   const normalized = normalizeError(error);
   const category = context || "APP";
@@ -110,10 +158,36 @@ export function logError(error: unknown, context?: string): void {
   });
 }
 
+/**
+ * Type guard to check if an error is an AppError instance.
+ *
+ * @param {unknown} error - The error to check
+ * @returns {error is AppError} True if the error is an AppError
+ *
+ * @example
+ * ```ts
+ * if (isAppError(error)) {
+ *   console.log(error.code); // TypeScript knows this is safe
+ * }
+ * ```
+ */
 export const isAppError = (error: unknown): error is AppError => {
   return error instanceof AppError;
 };
 
+/**
+ * Type guard to check if an error is a ValidationError.
+ *
+ * @param {unknown} error - The error to check
+ * @returns {error is ValidationError} True if the error is a ValidationError
+ *
+ * @example
+ * ```ts
+ * if (isValidationError(error)) {
+ *   // Handle validation errors specifically
+ * }
+ * ```
+ */
 export const isValidationError = (error: unknown): error is ValidationError => {
   if (!(error instanceof AppError)) {
     return false;
@@ -121,6 +195,19 @@ export const isValidationError = (error: unknown): error is ValidationError => {
   return error.code === ERROR_CODES.VALIDATION;
 };
 
+/**
+ * Type guard to check if an error is a NetworkError.
+ *
+ * @param {unknown} error - The error to check
+ * @returns {error is NetworkError} True if the error is a NetworkError
+ *
+ * @example
+ * ```ts
+ * if (isNetworkError(error)) {
+ *   // Retry logic or offline handling
+ * }
+ * ```
+ */
 export const isNetworkError = (error: unknown): error is NetworkError => {
   if (!(error instanceof AppError)) {
     return false;
@@ -128,6 +215,19 @@ export const isNetworkError = (error: unknown): error is NetworkError => {
   return error.code === ERROR_CODES.NETWORK || error.statusCode === 0;
 };
 
+/**
+ * Type guard to check if an error is a NotFoundError.
+ *
+ * @param {unknown} error - The error to check
+ * @returns {error is AppError} True if the error has NOT_FOUND code
+ *
+ * @example
+ * ```ts
+ * if (isNotFoundError(error)) {
+ *   // Show 404 page or message
+ * }
+ * ```
+ */
 export const isNotFoundError = (error: unknown): error is AppError => {
   if (!(error instanceof AppError)) {
     return false;
@@ -135,6 +235,19 @@ export const isNotFoundError = (error: unknown): error is AppError => {
   return error.code === ERROR_CODES.NOT_FOUND;
 };
 
+/**
+ * Type guard to check if an error is a TimeoutError.
+ *
+ * @param {unknown} error - The error to check
+ * @returns {error is AppError} True if the error has TIMEOUT code
+ *
+ * @example
+ * ```ts
+ * if (isTimeoutError(error)) {
+ *   // Retry with longer timeout
+ * }
+ * ```
+ */
 export const isTimeoutError = (error: unknown): error is AppError => {
   if (!(error instanceof AppError)) {
     return false;
@@ -142,6 +255,19 @@ export const isTimeoutError = (error: unknown): error is AppError => {
   return error.code === ERROR_CODES.TIMEOUT;
 };
 
+/**
+ * Type guard to check if an error is a server error (5xx).
+ *
+ * @param {unknown} error - The error to check
+ * @returns {error is AppError} True if the error has 5xx status code
+ *
+ * @example
+ * ```ts
+ * if (isServerError(error)) {
+ *   // Server error - may not be retryable immediately
+ * }
+ * ```
+ */
 export const isServerError = (error: unknown): error is AppError => {
   if (!(error instanceof AppError)) {
     return false;

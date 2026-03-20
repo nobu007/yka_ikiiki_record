@@ -7,7 +7,7 @@ import { DASHBOARD_CONTROLS } from "@/lib/constants/messages";
 
 interface Props {
   characteristics: ClassCharacteristics;
-  onUpdate: (updates: Partial<ClassCharacteristics>) => void;
+  onUpdate: (_updates: Partial<ClassCharacteristics>) => void;
 }
 
 const ClassCharacteristicsEditor = memo(function ClassCharacteristicsEditor({

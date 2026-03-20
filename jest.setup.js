@@ -82,3 +82,31 @@ afterEach(() => {
     (global.fetch as jest.MockedFunction<typeof fetch>).mockReset();
   }
 });
+
+// Clean up global resilience singletons after all tests
+// This prevents Jest worker processes from hanging due to active timers
+afterAll(() => {
+  // Import and cleanup global singletons
+  // Using dynamic import to avoid loading these modules during setup if not needed
+  try {
+    const resilience = require('@/lib/resilience');
+    if (resilience.globalMemoryMonitor) {
+      resilience.globalMemoryMonitor.stopMonitoring();
+    }
+    if (resilience.globalLoopDetector) {
+      resilience.globalLoopDetector.destroy();
+    }
+  } catch (e) {
+    // Ignore errors if resilience module is not used in tests
+  }
+
+  // Also cleanup global circuit breaker
+  try {
+    const { globalCircuitBreaker } = require('@/lib/resilience');
+    if (globalCircuitBreaker && typeof globalCircuitBreaker.reset === 'function') {
+      globalCircuitBreaker.reset();
+    }
+  } catch (e) {
+    // Ignore errors if circuit breaker is not used
+  }
+});

@@ -34,8 +34,10 @@ export const withTimeout = async <T>(
   timeoutMs: number,
   operationType: string,
 ): Promise<T> => {
+  let timeoutId: NodeJS.Timeout | null = null;
+
   const timeoutPromise = new Promise<never>((_, reject) => {
-    setTimeout(() => {
+    timeoutId = setTimeout(() => {
       globalLogger.error("TIMEOUT", "OPERATION_TIMEOUT", {
         operation: operationType,
         timeoutMs,
@@ -45,7 +47,13 @@ export const withTimeout = async <T>(
     }, timeoutMs);
   });
 
-  return Promise.race([operation, timeoutPromise]);
+  try {
+    return await Promise.race([operation, timeoutPromise]);
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  }
 };
 
 export const withCommandTimeout = <T>(operation: Promise<T>): Promise<T> =>

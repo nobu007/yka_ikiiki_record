@@ -88,4 +88,15 @@ export interface IRecordRepository {
    * @returns Promise resolving to the count.
    */
   count(): Promise<number>;
+
+  /**
+   * Disconnects from the data source and releases resources.
+   *
+   * Implementations should close database connections, clear caches,
+   * and perform any necessary cleanup. This method should be called
+   * when the repository instance is no longer needed.
+   *
+   * @returns Promise that resolves when disconnection completes.
+   */
+  disconnect(): Promise<void>;
 }

@@ -50,6 +50,10 @@ export class MockRecordRepository implements IRecordRepository {
   async count(): Promise<number> {
     return this.records.size;
   }
+
+  async disconnect(): Promise<void> {
+    this.records.clear();
+  }
 }
 
 /**

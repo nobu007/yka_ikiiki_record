@@ -1,9 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ErrorBoundary } from "./ErrorBoundary";
-import {
-  mockWindowLocation,
-  mockProcessEnv,
-} from "@/test-utils/component-helpers";
+import { mockProcessEnv } from "@/test-utils/component-helpers";
 import { reloadPage } from "@/lib/constants/browser";
 
 jest.mock("@/lib/constants/browser", () => ({

@@ -52,54 +52,6 @@ export function createMockedFunction<T extends (...args: never[]) => unknown>(
 }
 
 /**
- * Mocks window.location with a reload spy.
- *
- * Automatically handles cleanup by restoring the original location after the test.
- * Should be called in beforeEach or at the start of a test.
- *
- * @example
- * ```ts
- * beforeEach(() => {
- *   mockWindowLocation();
- * });
- *
- * test("reloads page", () => {
- *   // ... test code that triggers reload
- *   expect(window.location.reload).toHaveBeenCalled();
- * });
- * ```
- *
- * @returns An object with restore function for manual cleanup if needed
- */
-export function mockWindowLocation(): { restore: () => void } {
-  const originalLocation = window.location;
-  delete (window as Partial<Window>).location;
-
-  const mockReload = jest.fn();
-  const mockLocation = {
-    ...originalLocation,
-    reload: mockReload,
-  };
-
-  Object.defineProperty(window, "location", {
-    value: mockLocation,
-    writable: true,
-    configurable: true,
-  });
-
-  return {
-    restore: () => {
-      delete (window as Partial<Window>).location;
-      Object.defineProperty(window, "location", {
-        value: originalLocation,
-        writable: true,
-        configurable: true,
-      });
-    },
-  };
-}
-
-/**
  * Mocks process.env.NODE_ENV for testing environment-specific behavior.
  *
  * Automatically handles cleanup by restoring the original env after the test.

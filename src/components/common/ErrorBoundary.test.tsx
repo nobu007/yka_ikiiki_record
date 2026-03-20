@@ -4,6 +4,12 @@ import {
   mockWindowLocation,
   mockProcessEnv,
 } from "@/test-utils/component-helpers";
+import { reloadPage } from "@/lib/constants/browser";
+
+jest.mock("@/lib/constants/browser", () => ({
+  ...jest.requireActual("@/lib/constants/browser"),
+  reloadPage: jest.fn(),
+}));
 
 const originalConsoleError = console.error;
 beforeAll(() => {
@@ -64,8 +70,6 @@ describe("ErrorBoundary", () => {
   });
 
   test("reloads page when reload button is clicked", () => {
-    const { restore: restoreLocation } = mockWindowLocation();
-
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
@@ -75,9 +79,7 @@ describe("ErrorBoundary", () => {
     const reloadButton = screen.getByText("ページを更新");
     fireEvent.click(reloadButton);
 
-    expect(window.location.reload).toHaveBeenCalledTimes(1);
-
-    restoreLocation();
+    expect(reloadPage).toHaveBeenCalledTimes(1);
   });
 
   test("logs error to console when error occurs", () => {

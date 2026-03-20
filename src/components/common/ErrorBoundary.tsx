@@ -4,6 +4,7 @@ import { Component, ErrorInfo, ReactNode } from "react";
 import { ExclamationIcon } from "./Icons";
 import { globalLogger } from "@/lib/resilience/structured-logger";
 import { ERROR_BOUNDARY_MESSAGES } from "@/lib/constants/messages";
+import { reloadPage } from "@/lib/constants/browser";
 
 interface Props {
   children: ReactNode;
@@ -43,7 +44,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   private handleReload = (): void => {
-    window.location.reload();
+    reloadPage();
   };
 
   private renderErrorDetails = (): ReactNode => {

@@ -73,21 +73,27 @@ export function createMockedFunction<T extends (...args: never[]) => unknown>(
  */
 export function mockWindowLocation(): { restore: () => void } {
   const originalLocation = window.location;
+  delete (window as Partial<Window>).location;
+
+  const mockReload = jest.fn();
   const mockLocation = {
     ...originalLocation,
-    reload: jest.fn(),
+    reload: mockReload,
   };
 
   Object.defineProperty(window, "location", {
-    writable: true,
     value: mockLocation,
+    writable: true,
+    configurable: true,
   });
 
   return {
     restore: () => {
+      delete (window as Partial<Window>).location;
       Object.defineProperty(window, "location", {
-        writable: true,
         value: originalLocation,
+        writable: true,
+        configurable: true,
       });
     },
   };

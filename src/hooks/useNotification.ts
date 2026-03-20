@@ -1,13 +1,76 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { getNotificationTimeout } from "@/lib/constants/ui";
 
-interface NotificationState {
+/**
+ * State object for notification display
+ */
+export interface NotificationState {
+  /** Whether the notification is currently visible */
   show: boolean;
+  /** The notification message to display */
   message: string;
+  /** The type of notification, affecting styling and behavior */
   type: "success" | "error" | "warning" | "info";
 }
 
-export function useNotification() {
+/**
+ * Return type for useNotification hook
+ */
+export interface UseNotificationResult {
+  /** Current notification state */
+  notification: NotificationState;
+  /** Show a success notification (green) */
+  showSuccess: (message: string, autoClose?: boolean) => void;
+  /** Show an error notification (red) */
+  showError: (message: string, autoClose?: boolean) => void;
+  /** Show a warning notification (yellow) */
+  showWarning: (message: string, autoClose?: boolean) => void;
+  /** Show an info notification (blue) */
+  showInfo: (message: string, autoClose?: boolean) => void;
+  /** Hide the current notification */
+  clearNotification: () => void;
+  /** Alias for clearNotification */
+  hideNotification: () => void;
+}
+
+/**
+ * React hook for managing toast/snackbar notifications.
+ *
+ * Provides a complete notification system with automatic timeout-based dismissal,
+ * multiple notification types (success, error, warning, info), and manual control.
+ *
+ * @returns {UseNotificationResult} Object containing notification state and control functions
+ *
+ * @example
+ * ```tsx
+ * function MyComponent() {
+ *   const { notification, showSuccess, showError, clearNotification } = useNotification();
+ *
+ *   const handleAction = async () => {
+ *     try {
+ *       await performAction();
+ *       showSuccess('Action completed successfully');
+ *     } catch (error) {
+ *       showError('Action failed. Please try again.');
+ *     }
+ *   };
+ *
+ *   return (
+ *     <>
+ *       <button onClick={handleAction}>Perform Action</button>
+ *       {notification.show && (
+ *         <NotificationBanner
+ *           type={notification.type}
+ *           message={notification.message}
+ *           onClose={clearNotification}
+ *         />
+ *       )}
+ *     </>
+ *   );
+ * }
+ * ```
+ */
+export function useNotification(): UseNotificationResult {
   const [notification, setNotification] = useState<NotificationState>({
     show: false,
     message: "",

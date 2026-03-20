@@ -2,13 +2,27 @@ import { memo } from "react";
 import { LOADING_MESSAGES } from "@/lib/constants/messages";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 
+/**
+ * Supported loading spinner sizes.
+ */
 type LoadingSize = "sm" | "md" | "lg";
+
+/**
+ * Supported loading spinner colors.
+ */
 type LoadingColor = "primary" | "secondary" | "white";
 
+/**
+ * Props for LoadingSpinner component.
+ */
 interface LoadingSpinnerProps {
+  /** Size of the spinner (default: "md") */
   size?: LoadingSize;
+  /** Color scheme of the spinner (default: "primary") */
   color?: LoadingColor;
+  /** Additional CSS classes to apply */
   className?: string;
+  /** Accessibility label for screen readers (default: from LOADING_MESSAGES) */
   label?: string;
 }
 
@@ -24,6 +38,24 @@ const COLOR_MAP = {
   white: UI_CONSTANTS.COLOR.WHITE,
 } satisfies Record<LoadingColor, string>;
 
+/**
+ * A customizable loading spinner component with accessibility support.
+ *
+ * Renders an animated SVG spinner with proper ARIA attributes for screen readers.
+ * The component is memoized for performance and supports multiple sizes and colors.
+ *
+ * @example
+ * ```tsx
+ * // Default spinner
+ * <LoadingSpinner />
+ *
+ * // Small white spinner
+ * <LoadingSpinner size="sm" color="white" />
+ *
+ * // Large spinner with custom label
+ * <LoadingSpinner size="lg" label="Loading your data..." />
+ * ```
+ */
 export const LoadingSpinner = memo<LoadingSpinnerProps>(
   ({
     size = "md",
@@ -66,6 +98,25 @@ export const LoadingSpinner = memo<LoadingSpinnerProps>(
 
 LoadingSpinner.displayName = "LoadingSpinner";
 
+/**
+ * A full-screen overlay modal with a centered loading spinner.
+ *
+ * This component creates a modal overlay that covers the entire viewport with a
+ * semi-transparent backdrop. Displays a loading spinner and optional message in a
+ * centered card. Returns null when not loading, rendering nothing in the DOM.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <LoadingOverlay isLoading={true} />
+ *
+ * // With custom message
+ * <LoadingOverlay isLoading={true} message="Generating seed data..." />
+ *
+ * // Conditional rendering
+ * <LoadingOverlay isLoading={isGenerating} message="Processing..." />
+ * ```
+ */
 export const LoadingOverlay = memo<{ isLoading: boolean; message?: string }>(
   ({ isLoading, message = LOADING_MESSAGES.OVERLAY }) => {
     if (!isLoading) return null;
@@ -85,6 +136,28 @@ export const LoadingOverlay = memo<{ isLoading: boolean; message?: string }>(
 
 LoadingOverlay.displayName = "LoadingOverlay";
 
+/**
+ * A card component containing a loading spinner and message.
+ *
+ * This component renders a white card with rounded corners and shadow,
+ * containing a centered loading spinner and optional message text.
+ * Useful for inline loading states within content areas.
+ *
+ * @example
+ * ```tsx
+ * // Default usage
+ * <LoadingCard />
+ *
+ * // With custom message
+ * <LoadingCard message="Loading statistics..." />
+ *
+ * // In a grid or layout
+ * <div className="grid grid-cols-2 gap-4">
+ *   <DataCard />
+ *   <LoadingCard message="Loading..." />
+ * </div>
+ * ```
+ */
 export const LoadingCard = memo<{ message?: string }>(
   ({ message = LOADING_MESSAGES.CARD }) => {
     return (

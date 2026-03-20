@@ -5,6 +5,7 @@ import { MockStatsRepository } from "@/infrastructure/storage/MockStatsRepositor
 import { PrismaStatsRepository } from "@/infrastructure/repositories/PrismaStatsRepository";
 import { PrismaRecordRepository } from "@/infrastructure/repositories/PrismaRecordRepository";
 import { isPrismaProvider } from "@/lib/config/env";
+import { ValidationError } from "@/lib/error-handler";
 
 export function createStatsRepository(): StatsRepository {
   if (isPrismaProvider()) {
@@ -20,7 +21,7 @@ export function createRecordRepository(): IRecordRepository {
     return new PrismaRecordRepository();
   }
 
-  throw new Error("Record repository not available in Mirage mode");
+  throw new ValidationError("Record repository not available in Mirage mode");
 }
 
 export function createStatsService(): StatsService {

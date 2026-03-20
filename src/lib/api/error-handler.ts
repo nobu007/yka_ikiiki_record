@@ -88,6 +88,30 @@ export const createError = {
  * Combines timeout enforcement, circuit-breaker, and structured logging
  *
  * Per SYSTEM_CONSTITUTION.md §6: All async operations must have timeouts
+ *
+ * @template T - Type of NextResponse to return
+ * @param handler - Async handler function that returns a NextResponse
+ * @param options - Configuration options for resilience
+ * @param options.timeoutMs - Timeout in milliseconds (default: DEFAULT_TIMEOUTS.api)
+ * @param options.circuitBreakerConfig - Optional circuit breaker configuration
+ * @param options.operationName - Name for logging/tracing (default: "API_HANDLER")
+ * @returns Promise that resolves to handler result or error response
+ *
+ * @example
+ * ```ts
+ * export async function GET() {
+ *   return withResilientHandler(
+ *     async () => {
+ *       const data = await fetchData();
+ *       return NextResponse.json(data);
+ *     },
+ *     {
+ *       operationName: "GET_DATA",
+ *       timeoutMs: 5000,
+ *     }
+ *   );
+ * }
+ * ```
  */
 export function withResilientHandler<T extends NextResponse>(
   handler: () => Promise<T>,

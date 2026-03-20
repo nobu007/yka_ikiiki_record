@@ -3,6 +3,7 @@ import { withResilientHandler } from "@/lib/api/error-handler";
 import { createRecordRepository } from "@/infrastructure/factories/repositoryFactory";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { API_OPERATIONS } from "@/lib/constants/api";
+import type { Record } from "@/schemas/api";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   return withResilientHandler(
@@ -43,15 +44,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   );
 }
 
-function convertToCSV(records: Array<{
-  id?: number;
-  emotion: number;
-  date: Date;
-  student: string;
-  comment?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}>): string {
+function convertToCSV(records: Record[]): string {
   if (records.length === 0) {
     return "ID,Emotion,Date,Student,Comment,CreatedAt,UpdatedAt\n";
   }
@@ -75,8 +68,13 @@ function convertToCSV(records: Array<{
   return csvContent;
 }
 
-function formatDate(date: Date): string {
-  return date.toISOString().split("T")[0];
+function formatDate(date: Date | string): string {
+  if (typeof date === 'string') {
+    return date;
+  }
+  const isoString = date.toISOString();
+  const parts = isoString.split("T");
+  return parts[0] ?? isoString;
 }
 
 function escapeCSV(value: string): string {

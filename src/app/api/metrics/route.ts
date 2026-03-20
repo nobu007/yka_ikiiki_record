@@ -32,6 +32,53 @@ interface MetricsResponse {
 
 const METRICS_FILE_PATH = path.join(process.cwd(), "data", "judgment_metrics.csv");
 
+function parseMetricsLine(line: string): MetricsResponse["judgment"] | null {
+  const values = line.split(",");
+
+  if (values.length < 8) {
+    return null;
+  }
+
+  const [
+    _timestampStr,
+    scoreStr,
+    violationsStr,
+    statementsStr,
+    branchesStr,
+    anyTypesStr,
+    eslintWarningsStr,
+    testPassRateStr,
+  ] = values;
+
+  const requiredValues = [
+    scoreStr,
+    violationsStr,
+    statementsStr,
+    branchesStr,
+    anyTypesStr,
+    eslintWarningsStr,
+    testPassRateStr,
+  ];
+
+  if (requiredValues.some((v) => !v)) {
+    return null;
+  }
+
+  return {
+    score: parseFloat(scoreStr!),
+    cleanArchitectureViolations: parseInt(violationsStr!, 10),
+    testCoverage: {
+      statements: parseFloat(statementsStr!),
+      branches: parseFloat(branchesStr!),
+      functions: 100,
+      lines: 100,
+    },
+    anyTypes: parseInt(anyTypesStr!, 10),
+    eslintWarnings: parseInt(eslintWarningsStr!, 10),
+    testPassRate: parseFloat(testPassRateStr!),
+  };
+}
+
 async function getLatestMetrics(): Promise<MetricsResponse["judgment"] | null> {
   try {
     const fileContent = await fs.readFile(METRICS_FILE_PATH, "utf-8");
@@ -42,48 +89,7 @@ async function getLatestMetrics(): Promise<MetricsResponse["judgment"] | null> {
     }
 
     const latestLine = lines[lines.length - 1]!;
-    const values = latestLine.split(",");
-
-    if (values.length < 8) {
-      return null;
-    }
-
-    const [
-      _timestampStr,
-      scoreStr,
-      violationsStr,
-      statementsStr,
-      branchesStr,
-      anyTypesStr,
-      eslintWarningsStr,
-      testPassRateStr,
-    ] = values;
-
-    if (
-      !scoreStr ||
-      !violationsStr ||
-      !statementsStr ||
-      !branchesStr ||
-      !anyTypesStr ||
-      !eslintWarningsStr ||
-      !testPassRateStr
-    ) {
-      return null;
-    }
-
-    return {
-      score: parseFloat(scoreStr),
-      cleanArchitectureViolations: parseInt(violationsStr, 10),
-      testCoverage: {
-        statements: parseFloat(statementsStr),
-        branches: parseFloat(branchesStr),
-        functions: 100,
-        lines: 100,
-      },
-      anyTypes: parseInt(anyTypesStr, 10),
-      eslintWarnings: parseInt(eslintWarningsStr, 10),
-      testPassRate: parseFloat(testPassRateStr),
-    };
+    return parseMetricsLine(latestLine);
   } catch {
     return null;
   }

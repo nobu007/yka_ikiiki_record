@@ -39,6 +39,15 @@ describe("reloadPage", () => {
 
   it("should call window.location.reload", () => {
     reloadPage();
+
     expect(reloadPage).toHaveBeenCalledTimes(1);
+  });
+
+  it("should be callable multiple times", () => {
+    reloadPage();
+    reloadPage();
+    reloadPage();
+
+    expect(reloadPage).toHaveBeenCalledTimes(3);
   });
 });

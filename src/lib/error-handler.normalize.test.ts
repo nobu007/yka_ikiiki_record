@@ -113,5 +113,12 @@ describe("error-handler: normalizeError & getUserFriendlyMessage", () => {
 
       expect(message).toBe("予期せぬエラーが発生しました");
     });
+
+    test("returns original message for error codes not in messageMap", () => {
+      const customError = new AppError("Custom code message", "CUSTOM_CODE" as ErrorCodeType);
+      const message = getUserFriendlyMessage(customError);
+
+      expect(message).toBe("Custom code message");
+    });
   });
 });

@@ -102,4 +102,42 @@ describe("repositoryFactory", () => {
       expect(service.constructor.name).toBe("StatsService");
     });
   });
+
+  describe("createRecordRepository", () => {
+    it("should throw error when provider is mirage", () => {
+      process.env.DATABASE_PROVIDER = "mirage";
+
+      const {
+        createRecordRepository,
+      } = require("@/infrastructure/factories/repositoryFactory");
+
+      expect(() => createRecordRepository()).toThrow(
+        "Record repository not available in Mirage mode"
+      );
+    });
+
+    it("should throw error when provider is not set", () => {
+      delete process.env.DATABASE_PROVIDER;
+
+      const {
+        createRecordRepository,
+      } = require("@/infrastructure/factories/repositoryFactory");
+
+      expect(() => createRecordRepository()).toThrow(
+        "Record repository not available in Mirage mode"
+      );
+    });
+
+    it("should return PrismaRecordRepository when provider is prisma with DATABASE_URL", () => {
+      process.env.DATABASE_PROVIDER = "prisma";
+      process.env.DATABASE_URL = "postgresql://localhost:5432/test";
+
+      const {
+        createRecordRepository,
+      } = require("@/infrastructure/factories/repositoryFactory");
+      const repository = createRecordRepository();
+
+      expect(repository.constructor.name).toBe("PrismaRecordRepository");
+    });
+  });
 });

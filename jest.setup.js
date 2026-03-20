@@ -28,20 +28,35 @@ global.Response = jest.fn();
 global.Headers = jest.fn();
 
 // Mock NextRequest and NextResponse
-jest.mock('next/server', () => ({
-  NextRequest: jest.fn().mockImplementation((url, init) => ({
-    url,
-    ...init,
-    json: jest.fn().mockResolvedValue(init?.body ? JSON.parse(init.body) : {}),
-    headers: new Map()
-  })),
-  NextResponse: {
-    json: jest.fn().mockImplementation((data) => ({
-      status: 200,
-      json: jest.fn().mockResolvedValue(data)
-    }))
-  }
-}));
+jest.mock('next/server', () => {
+  const NextResponseMock = jest.fn().mockImplementation((body, init) => ({
+    status: init?.status || 200,
+    headers: {
+      get: jest.fn((name) => init?.headers?.[name]),
+      set: jest.fn(),
+    },
+    text: async () => typeof body === 'string' ? body : JSON.stringify(body),
+    json: async () => typeof body === 'string' ? JSON.parse(body) : body,
+  }));
+  NextResponseMock.json = jest.fn().mockImplementation((data, init) => ({
+    status: init?.status || 200,
+    headers: {
+      get: jest.fn((name) => init?.headers?.[name]),
+      set: jest.fn(),
+    },
+    json: async () => data,
+    text: async () => JSON.stringify(data),
+  }));
+  return {
+    NextRequest: jest.fn().mockImplementation((url, init) => ({
+      url,
+      ...init,
+      json: jest.fn().mockResolvedValue(init?.body ? JSON.parse(init.body) : {}),
+      headers: new Map()
+    })),
+    NextResponse: NextResponseMock,
+  };
+});
 
 // Mock fetch API with proper default responses
 global.fetch = jest.fn(() =>

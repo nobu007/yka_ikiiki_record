@@ -10,14 +10,66 @@ import {
 import { StatsData } from "@/schemas/api";
 import { CHART_TITLES } from "@/lib/constants/messages";
 
+/**
+ * Maximum number of students to display in the table.
+ */
 const MAX_STUDENTS_IN_TABLE = 10;
+
+/**
+ * Modulo value for alternating row background colors.
+ */
 const ALTERNATING_ROW_MODULO = 2;
+
+/**
+ * Number of recent data points to use for trend calculation.
+ */
 const RECENT_TREND_POINTS = 3;
 
+/**
+ * Props for DataVisualization component.
+ */
 interface DataVisualizationProps {
+  /** Statistics data containing all visualization datasets */
   data: StatsData;
 }
 
+/**
+ * Comprehensive data visualization dashboard for emotion statistics.
+ *
+ * This component renders a complete dashboard with multiple chart types and
+ * statistical displays. It organizes data into a responsive grid layout with
+ * overview statistics, trend charts, distribution charts, and student-specific data.
+ *
+ * **Visualization Sections:**
+ * 1. **Overview Statistics**: Total records and average emotion score
+ * 2. **Monthly Trends**: Emotion patterns over time by month
+ * 3. **Day of Week Analysis**: Patterns by day of week
+ * 4. **Emotion Distribution**: Breakdown by emotion category
+ * 5. **Time of Day Analysis**: Patterns throughout the day
+ * 6. **Student Statistics**: Individual student data with trend indicators
+ * 7. **Recent Trends**: Line chart showing recent emotion changes
+ *
+ * **Features:**
+ * - Responsive grid layout (1 column mobile, 2 columns desktop)
+ * - Trend arrows (↗️ ↘️ →) showing direction of change
+ * - Limited student table to top 10 for performance
+ * - Memoized computations for performance optimization
+ * - Color-coded statistics cards for visual hierarchy
+ *
+ * @example
+ * ```tsx
+ * import { useStats } from '@/presentation/hooks/useStats';
+ *
+ * function DashboardPage() {
+ *   const { stats, isLoading, error } = useStats();
+ *
+ *   if (isLoading) return <LoadingSpinner />;
+ *   if (error) return <ErrorMessage />;
+ *
+ *   return <DataVisualization data={stats} />;
+ * }
+ * ```
+ */
 export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
   const formatTrendArrow = useCallback((trendline: number[]) => {
     if (trendline.length < 2) return "";

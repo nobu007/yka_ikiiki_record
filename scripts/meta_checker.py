@@ -381,17 +381,50 @@ This audit checks compliance with SYSTEM_CONSTITUTION.md requirements:
         return "\n".join(recommendations)
 
     def save_judgment_metrics(self):
-        """Append metrics to judgment_metrics.csv."""
+        """Append metrics to judgment_metrics.csv with validation."""
         metrics_file = self.data_dir / "judgment_metrics.csv"
+
+        # Validate metrics before writing
+        expected_columns = 8
+        timestamp = self.metrics['timestamp']
+
+        # Ensure timestamp has ISO format with microseconds
+        if '.' not in timestamp:
+            timestamp = datetime.now().isoformat(timespec='microseconds')
+        elif len(timestamp.split('.')[-1]) < 6:
+            timestamp = datetime.now().isoformat(timespec='microseconds')
+
+        # Build metrics line
+        metrics_line = f"{timestamp},{self.metrics['judgment_score']},{self.metrics['clean_architecture_violations']},{self.metrics['test_coverage_statements']},{self.metrics['test_coverage_branches']},{self.metrics['typescript_any_types']},{self.metrics['eslint_warnings']},{self.metrics['test_pass_rate']}"
+
+        # Validate column count
+        if len(metrics_line.split(',')) != expected_columns:
+            raise ValueError(f"Metrics line has {len(metrics_line.split(','))} columns, expected {expected_columns}: {metrics_line}")
 
         # Check if file exists, write header if not
         if not metrics_file.exists():
             with open(metrics_file, 'w') as f:
                 f.write("timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n")
 
-        # Append metrics
+        # Validate existing file integrity
+        if metrics_file.exists():
+            with open(metrics_file, 'r') as f:
+                lines = f.readlines()
+
+            # Check header
+            if lines and len(lines[0].split(',')) != expected_columns:
+                raise ValueError(f"CSV header has {len(lines[0].split(','))} columns, expected {expected_columns}")
+
+            # Check data rows (skip header)
+            for i, line in enumerate(lines[1:], start=2):
+                if line.strip():
+                    cols = line.split(',')
+                    if len(cols) != expected_columns:
+                        raise ValueError(f"Line {i} has {len(cols)} columns, expected {expected_columns}: {line.strip()}")
+
+        # Append validated metrics
         with open(metrics_file, 'a') as f:
-            f.write(f"{self.metrics['timestamp']},{self.metrics['judgment_score']},{self.metrics['clean_architecture_violations']},{self.metrics['test_coverage_statements']},{self.metrics['test_coverage_branches']},{self.metrics['typescript_any_types']},{self.metrics['eslint_warnings']},{self.metrics['test_pass_rate']}\n")
+            f.write(metrics_line + "\n")
 
     def run_audit(self):
         """Run complete audit and generate reports."""

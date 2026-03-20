@@ -23,7 +23,7 @@ export const ERROR_MESSAGES = {
   PERMISSION: "この操作を実行する権限がありません",
   NETWORK_ERROR: "ネットワークエラーが発生しました",
   DEFAULT_GENERATION: "データ生成に失敗しました",
-  DATA_TRANSFORMATION: "Data transformation failed",
+  DATA_TRANSFORMATION: "データ変換に失敗しました",
   API_ERROR: (status: number, statusText: string) =>
     `APIエラー: ${status} ${statusText}`,
 } as const;

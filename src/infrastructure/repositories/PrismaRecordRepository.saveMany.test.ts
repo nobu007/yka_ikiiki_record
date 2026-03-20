@@ -1,7 +1,7 @@
 import { setupTest } from "./PrismaRecordRepository.setup";
 import { Record } from "@/domain/entities/Record";
 
-describe("PrismaRecordRepository - save", () => {
+describe("PrismaRecordRepository - saveMany", () => {
   let repository: ReturnType<typeof setupTest>["repository"];
   let prisma: ReturnType<typeof setupTest>["prisma"];
 
@@ -15,151 +15,7 @@ describe("PrismaRecordRepository - save", () => {
     jest.clearAllMocks();
   });
 
-  describe("save", () => {
-    it("should create a new record without id", async () => {
-      const record: Record = {
-        emotion: 4.5,
-        date: new Date("2024-01-15T10:30:00"),
-        student: "学生1",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      const savedPrismaRecord = {
-        id: 1,
-        ...record,
-        comment: null,
-        createdAt: record.createdAt,
-        updatedAt: record.updatedAt,
-      };
-
-      (prisma.record.upsert as jest.Mock).mockResolvedValue(savedPrismaRecord);
-
-      const saved = await repository.save(record);
-
-      expect(saved.id).toBeDefined();
-      expect(saved.emotion).toBe(record.emotion);
-      expect(saved.student).toBe(record.student);
-      expect(saved.date).toEqual(record.date);
-      expect(prisma.record.upsert).toHaveBeenCalledWith({
-        where: { id: 0 },
-        create: {
-          emotion: record.emotion,
-          date: record.date,
-          student: record.student,
-          comment: null,
-        },
-        update: {
-          emotion: record.emotion,
-          date: record.date,
-          student: record.student,
-          comment: null,
-        },
-      });
-    });
-
-    it("should create a new record with comment", async () => {
-      const record: Record = {
-        emotion: 4.0,
-        date: new Date("2024-01-15T10:30:00"),
-        student: "学生2",
-        comment: "今日は充実した一日でした",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      const savedPrismaRecord = {
-        id: 2,
-        emotion: record.emotion,
-        date: record.date,
-        student: record.student,
-        comment: record.comment,
-        createdAt: record.createdAt,
-        updatedAt: record.updatedAt,
-      };
-
-      (prisma.record.upsert as jest.Mock).mockResolvedValue(savedPrismaRecord);
-
-      const saved = await repository.save(record);
-
-      expect(saved.comment).toBe(record.comment);
-    });
-
-    it("should update an existing record with id", async () => {
-      const existingRecord = {
-        id: 1,
-        emotion: 3.0,
-        date: new Date("2024-01-15T10:30:00"),
-        student: "学生3",
-        comment: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      const updatedRecord: Record = {
-        id: 1,
-        emotion: 4.5,
-        date: new Date("2024-01-16T11:00:00"),
-        student: "学生3",
-        comment: "更新されたコメント",
-        createdAt: existingRecord.createdAt,
-        updatedAt: new Date(),
-      };
-
-      const savedPrismaRecord = {
-        ...updatedRecord,
-        comment: updatedRecord.comment || null,
-      };
-
-      (prisma.record.upsert as jest.Mock).mockResolvedValue(savedPrismaRecord);
-
-      const saved = await repository.save(updatedRecord);
-
-      expect(saved.id).toBe(1);
-      expect(saved.emotion).toBe(4.5);
-      expect(saved.comment).toBe("更新されたコメント");
-      expect(prisma.record.upsert).toHaveBeenCalledWith({
-        where: { id: 1 },
-        create: expect.objectContaining({
-          emotion: 4.5,
-        }),
-        update: expect.objectContaining({
-          emotion: 4.5,
-          comment: "更新されたコメント",
-        }),
-      });
-    });
-
-    it("should handle undefined comment when saving", async () => {
-      const record: Record = {
-        emotion: 3.5,
-        date: new Date("2024-01-15T10:30:00"),
-        student: "学生4",
-        // Omit comment property entirely instead of setting to undefined
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      const savedPrismaRecord = {
-        id: 4,
-        ...record,
-        comment: null,
-      };
-
-      (prisma.record.upsert as jest.Mock).mockResolvedValue(savedPrismaRecord);
-
-      const saved = await repository.save(record);
-
-      expect(saved.comment).toBeUndefined();
-      expect(prisma.record.upsert).toHaveBeenCalledWith({
-        where: { id: 0 },
-        create: expect.objectContaining({ comment: null }),
-        update: expect.objectContaining({ comment: null }),
-      });
-    });
-  });
-
-  describe("saveMany", () => {
+  describe("saveMany - bulk operations", () => {
     it("should save multiple records", async () => {
       const records: Record[] = [
         {
@@ -246,7 +102,24 @@ describe("PrismaRecordRepository - save", () => {
 
       expect(saved).toHaveLength(2);
     });
+  });
+});
 
+describe("PrismaRecordRepository - saveMany validation", () => {
+  let repository: ReturnType<typeof setupTest>["repository"];
+  let prisma: ReturnType<typeof setupTest>["prisma"];
+
+  beforeAll(() => {
+    const setup = setupTest();
+    repository = setup.repository;
+    prisma = setup.prisma;
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("saveMany - error handling", () => {
     it("should throw error when saving invalid record", async () => {
       const invalidRecord = {
         emotion: 10,

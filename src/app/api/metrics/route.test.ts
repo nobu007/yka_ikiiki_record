@@ -1,8 +1,18 @@
 import { GET } from "./route";
+import { promises as fs } from "fs";
+import path from "path";
+
+const METRICS_FILE_PATH = path.join(process.cwd(), "data", "judgment_metrics.csv");
 
 describe("GET /api/metrics", () => {
+  const originalReadFile = fs.readFile;
+
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    fs.readFile = originalReadFile;
   });
 
   it("should return metrics with 200 status", async () => {
@@ -78,5 +88,66 @@ describe("GET /api/metrics", () => {
     expect(data.system.memory.heapUsed).toBeLessThanOrEqual(data.system.memory.heapTotal);
     expect(data.system.memory.usagePercentage).toBeGreaterThanOrEqual(0);
     expect(data.system.memory.usagePercentage).toBeLessThanOrEqual(100);
+  });
+
+  describe("error handling - malformed CSV", () => {
+    it("should return default metrics when CSV file has less than 2 lines", async () => {
+      fs.readFile = jest.fn().mockResolvedValue("timestamp,judgment_score\n");
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.judgment.score).toBe(0);
+      expect(data.judgment.cleanArchitectureViolations).toBe(0);
+      expect(data.judgment.testCoverage.statements).toBe(0);
+    });
+
+    it("should return default metrics when CSV last line is empty", async () => {
+      fs.readFile = jest.fn().mockResolvedValue("timestamp,judgment_score\n100,0\n");
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.judgment.score).toBe(0);
+    });
+
+    it("should return default metrics when CSV has less than 8 values", async () => {
+      fs.readFile = jest
+        .fn()
+        .mockResolvedValue("timestamp,judgment_score\n2026-03-20T18:49:03,100");
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.judgment.score).toBe(0);
+    });
+
+    it("should return default metrics when CSV has missing required fields", async () => {
+      fs.readFile = jest
+        .fn()
+        .mockResolvedValue(
+          "timestamp,judgment_score,violations,statements,branches,any_types\n2026-03-20T18:49:03,100,0,99.15,96.87,0"
+        );
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.judgment.score).toBe(0);
+    });
+
+    it("should return default metrics when file read fails", async () => {
+      fs.readFile = jest.fn().mockRejectedValue(new Error("File not found"));
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.judgment.score).toBe(0);
+      expect(data.judgment.cleanArchitectureViolations).toBe(0);
+    });
   });
 });

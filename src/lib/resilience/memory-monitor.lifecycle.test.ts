@@ -10,7 +10,7 @@ jest.mock("@/lib/error-handler", () => ({
   },
 }));
 
-describe("MemoryMonitor", () => {
+describe("MemoryMonitor - Lifecycle Management", () => {
   let monitor: MemoryMonitor;
 
   beforeEach(() => {
@@ -173,119 +173,6 @@ describe("MemoryMonitor", () => {
         monitor.destroy();
         monitor.destroy();
       }).not.toThrow();
-    });
-  });
-
-  describe("Monitoring behavior", () => {
-    beforeEach(() => {
-      jest.useFakeTimers();
-    });
-
-    afterEach(() => {
-      jest.useRealTimers();
-    });
-
-    it("should log memory metrics periodically", () => {
-      const logSpy = jest.spyOn(globalLogger, "debug");
-
-      monitor.startMonitoring();
-
-      jest.advanceTimersByTime(100);
-
-      expect(logSpy).toHaveBeenCalledWith(
-        "MEMORY",
-        "METRICS",
-        expect.objectContaining({
-          heapUsed: expect.any(Number),
-          heapTotal: expect.any(Number),
-        }),
-      );
-
-      monitor.stopMonitoring();
-    });
-
-    it("should not log before interval elapses", () => {
-      const logSpy = jest.spyOn(globalLogger, "debug");
-
-      monitor.startMonitoring();
-
-      jest.advanceTimersByTime(50);
-
-      expect(logSpy).not.toHaveBeenCalled();
-
-      monitor.stopMonitoring();
-    });
-
-    it("should continue logging after multiple intervals", () => {
-      const logSpy = jest.spyOn(globalLogger, "debug");
-
-      monitor.startMonitoring();
-
-      jest.advanceTimersByTime(100);
-      jest.advanceTimersByTime(100);
-
-      expect(logSpy).toHaveBeenCalledTimes(2);
-
-      monitor.stopMonitoring();
-    });
-
-    it("should stop logging after stopMonitoring", () => {
-      const logSpy = jest.spyOn(globalLogger, "debug");
-
-      monitor.startMonitoring();
-
-      jest.advanceTimersByTime(100);
-
-      monitor.stopMonitoring();
-
-      jest.advanceTimersByTime(100);
-
-      expect(logSpy).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe("Memory overflow handling", () => {
-    beforeEach(() => {
-      jest.useFakeTimers();
-    });
-
-    afterEach(() => {
-      jest.useRealTimers();
-    });
-
-    it("should log fatal error on overflow", () => {
-      const fatalSpy = jest.spyOn(globalLogger, "fatal");
-      const smallMonitor = new MemoryMonitor(1, 100);
-
-      smallMonitor.startMonitoring();
-
-      jest.advanceTimersByTime(100);
-
-      expect(fatalSpy).toHaveBeenCalledWith(
-        "MEMORY",
-        "OVERFLOW",
-        expect.objectContaining({
-          heapUsed: expect.any(Number),
-          heapTotal: expect.any(Number),
-        }),
-      );
-
-      smallMonitor.stopMonitoring();
-    });
-
-    it("should attempt garbage collection if available", () => {
-      const gcMock = jest.fn();
-      (global as { gc?: () => void }).gc = gcMock;
-
-      const smallMonitor = new MemoryMonitor(1, 100);
-      smallMonitor.startMonitoring();
-
-      jest.advanceTimersByTime(100);
-
-      expect(gcMock).toHaveBeenCalled();
-
-      delete (global as { gc?: () => void }).gc;
-      smallMonitor.stopMonitoring();
     });
   });
 

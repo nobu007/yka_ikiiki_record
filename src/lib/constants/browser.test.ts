@@ -1,7 +1,7 @@
 import { WINDOW_EVENTS } from "./browser";
 
 jest.mock("./browser", () => ({
-  ...jest.requireActual("./browser"),
+  ...jest.requireActual<typeof import("./browser")>("./browser"),
   reloadPage: jest.fn(),
 }));
 

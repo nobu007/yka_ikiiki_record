@@ -69,7 +69,7 @@ function convertToCSV(records: Record[]): string {
 }
 
 function formatDate(date: Date | string): string {
-  if (typeof date === 'string') {
+  if (typeof date === "string") {
     return date;
   }
   const isoString = date.toISOString();

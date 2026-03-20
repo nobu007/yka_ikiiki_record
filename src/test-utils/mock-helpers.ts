@@ -36,7 +36,8 @@ export function getFirstMockCallArg<T>(mock: jest.Mock): T | null {
   if (!firstCall || firstCall.length === 0) {
     return null;
   }
-  return firstCall[0] as T;
+  const arg = firstCall[0];
+  return isNotNullOrUndefined<T>(arg) ? arg : null;
 }
 
 /**

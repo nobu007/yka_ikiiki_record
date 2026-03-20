@@ -5,6 +5,7 @@ import {
   normalizeError,
   getUserFriendlyMessage,
   ERROR_CODES,
+  ErrorCodeType,
 } from "./error-handler";
 import { ERROR_MESSAGES } from "@/lib/constants/messages";
 

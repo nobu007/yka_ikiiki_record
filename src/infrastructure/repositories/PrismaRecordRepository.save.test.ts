@@ -246,5 +246,77 @@ describe("PrismaRecordRepository - save", () => {
 
       expect(saved).toHaveLength(2);
     });
+
+    it("should throw error when saving invalid record", async () => {
+      const invalidRecord = {
+        emotion: 10,
+        date: "invalid-date" as unknown as Date,
+        student: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await expect(repository.save(invalidRecord)).rejects.toThrow(
+        "Cannot save invalid record",
+      );
+    });
+
+    it("should throw error with validation details when saving invalid record", async () => {
+      const invalidRecord = {
+        emotion: -1,
+        date: new Date("2024-01-15"),
+        student: "学生1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await expect(repository.save(invalidRecord)).rejects.toThrow();
+    });
+
+    it("should throw error when saving multiple invalid records", async () => {
+      const invalidRecords: Record[] = [
+        {
+          emotion: 10,
+          date: new Date("2024-01-15"),
+          student: "学生1",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          emotion: -1,
+          date: new Date("2024-01-16"),
+          student: "学生2",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      await expect(repository.saveMany(invalidRecords)).rejects.toThrow(
+        "Cannot save invalid records",
+      );
+    });
+
+    it("should include error count in validation error message", async () => {
+      const records: Record[] = [
+        {
+          emotion: 4.0,
+          date: new Date("2024-01-15"),
+          student: "学生1",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          emotion: 10,
+          date: new Date("2024-01-16"),
+          student: "学生2",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      await expect(repository.saveMany(records)).rejects.toThrow(
+        "1 of 2 records failed validation",
+      );
+    });
   });
 });

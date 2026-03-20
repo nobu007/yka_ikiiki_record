@@ -8,6 +8,23 @@ export type ApiResponse<T> = {
   error?: string;
 };
 
+/**
+ * Creates a successful JSON response with optional schema validation.
+ *
+ * @template T - The type of data being returned
+ * @param {T & { success?: boolean }} data - The response data to validate and return
+ * @param {z.ZodSchema<T>} [schema] - Optional Zod schema for runtime validation
+ * @returns {NextResponse} JSON response with success: true
+ *
+ * @example
+ * ```ts
+ * // Without validation
+ * return createSuccessResponse({ data: myData });
+ *
+ * // With Zod validation
+ * return createSuccessResponse(responseData, StatsResponseSchema);
+ * ```
+ */
 export function createSuccessResponse<T>(
   data: T & { success?: boolean },
   schema?: z.ZodSchema<T>,
@@ -35,6 +52,22 @@ export function createSuccessResponse<T>(
   }
 }
 
+/**
+ * Creates an error response with the specified status code.
+ *
+ * @param {string} message - Error message describing what went wrong
+ * @param {number} [status=500] - HTTP status code (defaults to 500 Internal Server Error)
+ * @returns {NextResponse} JSON response with success: false and error message
+ *
+ * @example
+ * ```ts
+ * // Default 500 error
+ * return createErrorResponse("Database connection failed");
+ *
+ * // Custom status code
+ * return createErrorResponse("Resource not found", 404);
+ * ```
+ */
 export function createErrorResponse(message: string, status = 500) {
   const response = {
     success: false,

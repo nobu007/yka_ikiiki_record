@@ -11,7 +11,7 @@ jest.mock("@/lib/constants/browser", () => ({
 let consoleErrorSpy: jest.SpiedFunction<typeof console.error>;
 
 beforeAll(() => {
-  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 });
 
 afterAll(() => {

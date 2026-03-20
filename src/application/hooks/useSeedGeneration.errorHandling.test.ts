@@ -110,7 +110,9 @@ describe("useSeedGeneration error handling", () => {
 
       expect(result.current.isGenerating).toBe(false);
       expect(result.current.error).toBeInstanceOf(AppError);
-      expect(result.current.error?.message).toContain("Custom validation failed");
+      expect(result.current.error?.message).toContain(
+        "Custom validation failed",
+      );
     });
   });
 
@@ -197,7 +199,9 @@ describe("useSeedGeneration error handling", () => {
 
       expect(result.current.isGenerating).toBe(false);
       expect(result.current.error).toBeInstanceOf(AppError);
-      expect(result.current.error?.message).toContain("データ生成に失敗しました");
+      expect(result.current.error?.message).toContain(
+        "データ生成に失敗しました",
+      );
     });
   });
 });

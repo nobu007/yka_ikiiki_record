@@ -30,7 +30,11 @@ interface MetricsResponse {
   };
 }
 
-const METRICS_FILE_PATH = path.join(process.cwd(), "data", "judgment_metrics.csv");
+const METRICS_FILE_PATH = path.join(
+  process.cwd(),
+  "data",
+  "judgment_metrics.csv",
+);
 
 function parseMetricsLine(line: string): MetricsResponse["judgment"] | null {
   const values = line.split(",");
@@ -118,7 +122,10 @@ export async function GET(): Promise<NextResponse> {
         system: {
           uptime: process.uptime(),
           memory: {
-            usagePercentage: (process.memoryUsage().heapUsed / process.memoryUsage().heapTotal) * 100,
+            usagePercentage:
+              (process.memoryUsage().heapUsed /
+                process.memoryUsage().heapTotal) *
+              100,
             heapUsed: process.memoryUsage().heapUsed,
             heapTotal: process.memoryUsage().heapTotal,
           },

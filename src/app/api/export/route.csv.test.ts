@@ -12,18 +12,20 @@ describe("GET /api/export - CSV formatting", () => {
     mockRepository.findAll.mockResolvedValue([]);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     const lines = text.split("\n");
-    expect(lines[0]).toBe("ID,Emotion,Date,Student,Comment,CreatedAt,UpdatedAt");
+    expect(lines[0]).toBe(
+      "ID,Emotion,Date,Student,Comment,CreatedAt,UpdatedAt",
+    );
   });
 
   test("properly formats dates in ISO format", async () => {
     mockRepository.findAll.mockResolvedValue(mockRecords);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(text).toMatch(/\d{4}-\d{2}-\d{2}/);
@@ -44,7 +46,7 @@ describe("GET /api/export - CSV formatting", () => {
     mockRepository.findAll.mockResolvedValue(recordsWithCommas);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(text).toContain('"Doe, John"');
@@ -66,7 +68,7 @@ describe("GET /api/export - CSV formatting", () => {
     mockRepository.findAll.mockResolvedValue(recordsWithQuotes);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(text).toContain('"Alice ""The Great"""');
@@ -88,7 +90,7 @@ describe("GET /api/export - CSV formatting", () => {
     mockRepository.findAll.mockResolvedValue(recordsWithNewlines);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(text).toContain('"Line 1\nLine 2"');
@@ -109,7 +111,7 @@ describe("GET /api/export - CSV formatting", () => {
     mockRepository.findAll.mockResolvedValue(recordsWithEmptyComment);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(text).toContain("1,4,2026-03-20,Alice,,2026-03-20,2026-03-20");
@@ -130,7 +132,7 @@ describe("GET /api/export - CSV formatting", () => {
     mockRepository.findAll.mockResolvedValue(recordsWithoutId);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(text).toContain(",4,2026-03-20,Alice");
@@ -151,7 +153,7 @@ describe("GET /api/export - CSV formatting", () => {
     mockRepository.findAll.mockResolvedValue(recordsWithoutTimestamps);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(text).toMatch(/,4,2026-03-20,Alice,Test(,|)/);

@@ -116,7 +116,10 @@ describe("error-handler: normalizeError & getUserFriendlyMessage", () => {
     });
 
     test("returns original message for error codes not in messageMap", () => {
-      const customError = new AppError("Custom code message", "CUSTOM_CODE" as ErrorCodeType);
+      const customError = new AppError(
+        "Custom code message",
+        "CUSTOM_CODE" as ErrorCodeType,
+      );
       const message = getUserFriendlyMessage(customError);
 
       expect(message).toBe("Custom code message");

@@ -25,7 +25,9 @@ describe("LoopDetector", () => {
       expect(defaultDetector).toBeInstanceOf(LoopDetector);
 
       for (let i = 0; i < 500; i++) {
-        expect(() => defaultDetector.checkIteration("default-test")).not.toThrow();
+        expect(() =>
+          defaultDetector.checkIteration("default-test"),
+        ).not.toThrow();
       }
 
       defaultDetector.destroy();
@@ -37,7 +39,9 @@ describe("LoopDetector", () => {
       expect(customDetector).toBeInstanceOf(LoopDetector);
 
       for (let i = 0; i < 50; i++) {
-        expect(() => customDetector.checkIteration("custom-test")).not.toThrow();
+        expect(() =>
+          customDetector.checkIteration("custom-test"),
+        ).not.toThrow();
       }
 
       customDetector.destroy();

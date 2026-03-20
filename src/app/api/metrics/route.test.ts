@@ -82,16 +82,20 @@ describe("GET /api/metrics", () => {
 
     expect(data.system.memory.heapUsed).toBeGreaterThan(0);
     expect(data.system.memory.heapTotal).toBeGreaterThan(0);
-    expect(data.system.memory.heapUsed).toBeLessThanOrEqual(data.system.memory.heapTotal);
+    expect(data.system.memory.heapUsed).toBeLessThanOrEqual(
+      data.system.memory.heapTotal,
+    );
     expect(data.system.memory.usagePercentage).toBeGreaterThanOrEqual(0);
     expect(data.system.memory.usagePercentage).toBeLessThanOrEqual(100);
   });
 
   describe("parseMetricsLine edge cases", () => {
     it("should handle parseMetricsLine with valid CSV data", async () => {
-      fs.readFile = jest.fn().mockResolvedValue(
-        "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T18:49:03,100,0,99.15,96.87,0,0,100.0"
-      );
+      fs.readFile = jest
+        .fn()
+        .mockResolvedValue(
+          "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T18:49:03,100,0,99.15,96.87,0,0,100.0",
+        );
 
       const response = await GET();
       const data = await response.json();
@@ -107,9 +111,11 @@ describe("GET /api/metrics", () => {
     });
 
     it("should handle parseMetricsLine with all zero values", async () => {
-      fs.readFile = jest.fn().mockResolvedValue(
-        "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T00:00:00,0,0,0,0,0,0,0"
-      );
+      fs.readFile = jest
+        .fn()
+        .mockResolvedValue(
+          "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T00:00:00,0,0,0,0,0,0,0",
+        );
 
       const response = await GET();
       const data = await response.json();
@@ -122,9 +128,11 @@ describe("GET /api/metrics", () => {
     });
 
     it("should handle parseMetricsLine with decimal values", async () => {
-      fs.readFile = jest.fn().mockResolvedValue(
-        "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T18:49:03,95.5,2,88.75,92.3,1,3,98.5"
-      );
+      fs.readFile = jest
+        .fn()
+        .mockResolvedValue(
+          "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T18:49:03,95.5,2,88.75,92.3,1,3,98.5",
+        );
 
       const response = await GET();
       const data = await response.json();
@@ -154,7 +162,9 @@ describe("GET /api/metrics", () => {
     });
 
     it("should return default metrics when CSV last line is empty", async () => {
-      fs.readFile = jest.fn().mockResolvedValue("timestamp,judgment_score\n100,0\n");
+      fs.readFile = jest
+        .fn()
+        .mockResolvedValue("timestamp,judgment_score\n100,0\n");
 
       const response = await GET();
       const data = await response.json();
@@ -164,9 +174,11 @@ describe("GET /api/metrics", () => {
     });
 
     it("should return default metrics when CSV has valid data", async () => {
-      fs.readFile = jest.fn().mockResolvedValue(
-        "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T18:49:03,100,0,99.15,96.87,0,0,100.0"
-      );
+      fs.readFile = jest
+        .fn()
+        .mockResolvedValue(
+          "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T18:49:03,100,0,99.15,96.87,0,0,100.0",
+        );
 
       const response = await GET();
       const data = await response.json();
@@ -191,7 +203,7 @@ describe("GET /api/metrics", () => {
       fs.readFile = jest
         .fn()
         .mockResolvedValue(
-          "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types\n2026-03-20T18:49:03,100,0,99.15,96.87,0"
+          "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types\n2026-03-20T18:49:03,100,0,99.15,96.87,0",
         );
 
       const response = await GET();
@@ -205,7 +217,7 @@ describe("GET /api/metrics", () => {
       fs.readFile = jest
         .fn()
         .mockResolvedValue(
-          "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T18:49:03,100,0,99.15,96.87,0,,100.0"
+          "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T18:49:03,100,0,99.15,96.87,0,,100.0",
         );
 
       const response = await GET();

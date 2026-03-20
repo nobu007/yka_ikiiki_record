@@ -1,1 +1,5 @@
-export { createStatsRepository, createRecordRepository, createStatsService } from "./repositoryFactory";
+export {
+  createStatsRepository,
+  createRecordRepository,
+  createStatsService,
+} from "./repositoryFactory";

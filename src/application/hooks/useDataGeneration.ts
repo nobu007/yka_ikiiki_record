@@ -40,7 +40,9 @@ export interface UseDataGenerationResult {
   /** Remove an event effect by index */
   removeEvent: (index: number) => void;
   /** Update class characteristics (partial update) */
-  updateClassCharacteristics: (characteristics: Partial<ClassCharacteristics>) => void;
+  updateClassCharacteristics: (
+    characteristics: Partial<ClassCharacteristics>,
+  ) => void;
   /** Reset configuration to defaults */
   resetConfig: () => void;
   /** Execute data generation with current configuration */

@@ -1,9 +1,6 @@
 import "./route.test.setup";
 import { GET } from "./route";
-import {
-  createMockRequest,
-  mockRepository,
-} from "./route.test.setup";
+import { createMockRequest, mockRepository } from "./route.test.setup";
 import type { Record } from "@/schemas/api";
 
 describe("GET /api/export - large dataset handling", () => {
@@ -20,7 +17,7 @@ describe("GET /api/export - large dataset handling", () => {
     mockRepository.findAll.mockResolvedValue(largeDataset);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(response.status).toBe(200);

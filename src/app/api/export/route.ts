@@ -17,7 +17,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     async () => {
       const searchParams = req.nextUrl.searchParams;
       const queryParams = Object.fromEntries(searchParams.entries());
-      const { startDate, endDate, student } = ExportQuerySchema.parse(queryParams);
+      const { startDate, endDate, student } =
+        ExportQuerySchema.parse(queryParams);
 
       const repository = createRecordRepository();
       let records;
@@ -46,7 +47,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     {
       operationName: API_OPERATIONS.EXPORT_RECORDS,
       timeoutMs: DEFAULT_TIMEOUTS.api,
-    }
+    },
   );
 }
 
@@ -55,7 +56,15 @@ function convertToCSV(records: Record[]): string {
     return "ID,Emotion,Date,Student,Comment,CreatedAt,UpdatedAt\n";
   }
 
-  const headers = ["ID", "Emotion", "Date", "Student", "Comment", "CreatedAt", "UpdatedAt"];
+  const headers = [
+    "ID",
+    "Emotion",
+    "Date",
+    "Student",
+    "Comment",
+    "CreatedAt",
+    "UpdatedAt",
+  ];
   const rows = records.map((record) => [
     record.id?.toString() || "",
     record.emotion.toString(),

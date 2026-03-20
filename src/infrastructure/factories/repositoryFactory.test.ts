@@ -112,7 +112,7 @@ describe("repositoryFactory", () => {
       } = require("@/infrastructure/factories/repositoryFactory");
 
       expect(() => createRecordRepository()).toThrow(
-        "Record repository not available in Mirage mode"
+        "Record repository not available in Mirage mode",
       );
     });
 
@@ -124,7 +124,7 @@ describe("repositoryFactory", () => {
       } = require("@/infrastructure/factories/repositoryFactory");
 
       expect(() => createRecordRepository()).toThrow(
-        "Record repository not available in Mirage mode"
+        "Record repository not available in Mirage mode",
       );
     });
 

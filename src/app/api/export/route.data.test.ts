@@ -1,9 +1,6 @@
 import "./route.test.setup";
 import { GET } from "./route";
-import {
-  createMockRequest,
-  mockRepository,
-} from "./route.test.setup";
+import { createMockRequest, mockRepository } from "./route.test.setup";
 import type { Record } from "@/schemas/api";
 
 describe("GET /api/export - data integrity", () => {
@@ -31,7 +28,7 @@ describe("GET /api/export - data integrity", () => {
     mockRepository.findAll.mockResolvedValue(recordsWithEdgeEmotions);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(text).toContain("1,1,2026-03-20,Alice,Lowest");
@@ -53,7 +50,7 @@ describe("GET /api/export - data integrity", () => {
     mockRepository.findAll.mockResolvedValue(recordsWithSpecialChars);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(text).toContain("José García");
@@ -75,7 +72,7 @@ describe("GET /api/export - data integrity", () => {
     mockRepository.findAll.mockResolvedValue(recordsWithStringDates as never);
 
     const request = createMockRequest("http://localhost:3000/api/export");
-    const response = await GET(request as never) as Response;
+    const response = (await GET(request as never)) as Response;
     const text = await response.text();
 
     expect(text).toContain("2026-03-20");

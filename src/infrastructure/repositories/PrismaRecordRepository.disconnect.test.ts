@@ -27,7 +27,8 @@ describe("PrismaRecordRepository.disconnect", () => {
   let prisma: TestPrismaClient;
 
   beforeEach(() => {
-    prisma = new (require("@prisma/client").PrismaClient)() as unknown as TestPrismaClient;
+    prisma =
+      new (require("@prisma/client").PrismaClient)() as unknown as TestPrismaClient;
     jest.clearAllMocks();
   });
 
@@ -83,7 +84,9 @@ describe("PrismaRecordRepository.disconnect", () => {
         new Error("Connection already closed"),
       );
 
-      await expect(repository.disconnect()).rejects.toThrow("Connection already closed");
+      await expect(repository.disconnect()).rejects.toThrow(
+        "Connection already closed",
+      );
     });
   });
 });

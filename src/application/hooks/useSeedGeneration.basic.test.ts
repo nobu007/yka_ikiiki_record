@@ -1,6 +1,9 @@
 import { renderHook, act } from "@testing-library/react";
 import { useSeedGeneration } from "./useSeedGeneration";
-import { createMockConfig, clearAllMocks } from "./useSeedGeneration.test.setup";
+import {
+  createMockConfig,
+  clearAllMocks,
+} from "./useSeedGeneration.test.setup";
 
 jest.mock("@/lib/api/validation", () => ({
   validateDataSafe: (...args: unknown[]) =>

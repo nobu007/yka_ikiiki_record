@@ -11,11 +11,7 @@
  */
 
 // Math utilities
-export {
-  clamp,
-  average,
-  calculateAverage,
-} from "./statsCalculator/math";
+export { clamp, average, calculateAverage } from "./statsCalculator/math";
 
 // Generation and emotion calculation
 export {

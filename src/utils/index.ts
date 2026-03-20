@@ -15,4 +15,4 @@ export {
   calculateStudentStats,
   calculateTrendline,
   calculateEmotionTrend,
-} from './statsCalculator';
+} from "./statsCalculator";

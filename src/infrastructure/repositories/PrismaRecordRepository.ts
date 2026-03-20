@@ -9,8 +9,10 @@ import { ValidationError } from "@/lib/error-handler";
 
 export class PrismaRecordRepository implements IRecordRepository {
   private prisma: PrismaClient;
+  private shouldDisconnect: boolean;
 
   constructor(prisma?: PrismaClient) {
+    this.shouldDisconnect = !prisma;
     this.prisma = prisma || new PrismaClient();
   }
 
@@ -164,6 +166,12 @@ export class PrismaRecordRepository implements IRecordRepository {
 
   async count(): Promise<number> {
     return withDatabaseTimeout(this.prisma.record.count());
+  }
+
+  async disconnect(): Promise<void> {
+    if (this.shouldDisconnect) {
+      await this.prisma.$disconnect();
+    }
   }
 
   private toDomain(prismaRecord: {

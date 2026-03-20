@@ -8,13 +8,14 @@ jest.mock("@/lib/constants/browser", () => ({
   reloadPage: jest.fn(),
 }));
 
-const originalConsoleError = console.error;
+let consoleErrorSpy: jest.SpiedFunction<typeof console.error>;
+
 beforeAll(() => {
-  console.error = jest.fn();
+  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 
 afterAll(() => {
-  console.error = originalConsoleError;
+  consoleErrorSpy.mockRestore();
 });
 
 describe("ErrorBoundary", () => {
@@ -91,7 +92,7 @@ describe("ErrorBoundary", () => {
       </ErrorBoundary>,
     );
 
-    expect(console.error).toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
   describe("development mode", () => {

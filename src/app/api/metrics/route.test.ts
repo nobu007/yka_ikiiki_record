@@ -110,6 +110,18 @@ describe("GET /api/metrics", () => {
       expect(data.judgment.score).toBe(0);
     });
 
+    it("should return default metrics when CSV has valid data", async () => {
+      fs.readFile = jest.fn().mockResolvedValue(
+        "timestamp,judgment_score,violations,statements,branches,any_types,functions,lines\n2026-03-20T18:49:03,100,0,99.15,96.87,0,95.2,99.2"
+      );
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.judgment.score).toBe(100);
+    });
+
     it("should return default metrics when CSV has less than 8 values", async () => {
       fs.readFile = jest
         .fn()
@@ -127,6 +139,20 @@ describe("GET /api/metrics", () => {
         .fn()
         .mockResolvedValue(
           "timestamp,judgment_score,violations,statements,branches,any_types\n2026-03-20T18:49:03,100,0,99.15,96.87,0"
+        );
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.judgment.score).toBe(0);
+    });
+
+    it("should return default metrics when CSV has empty string for functions field", async () => {
+      fs.readFile = jest
+        .fn()
+        .mockResolvedValue(
+          "timestamp,judgment_score,violations,statements,branches,any_types,functions,lines\n2026-03-20T18:49:03,100,0,99.15,96.87,0,,95.2"
         );
 
       const response = await GET();

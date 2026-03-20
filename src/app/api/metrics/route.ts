@@ -41,11 +41,7 @@ async function getLatestMetrics(): Promise<MetricsResponse["judgment"] | null> {
       return null;
     }
 
-    const latestLine = lines[lines.length - 1];
-    if (!latestLine) {
-      return null;
-    }
-
+    const latestLine = lines[lines.length - 1]!;
     const values = latestLine.split(",");
 
     if (values.length < 8) {

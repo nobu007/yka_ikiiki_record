@@ -4,15 +4,69 @@ import { ReactNode, memo } from "react";
 import { ACCESSIBILITY_MESSAGES } from "@/lib/constants/messages";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 
+/**
+ * Props for ChartWrapper component.
+ */
 interface ChartWrapperProps {
+  /** Optional title displayed above the chart */
   title?: string;
+  /** Height of the chart container in pixels (default: from UI_CONSTANTS) */
   height?: number;
+  /** Whether the chart is currently loading data */
   isLoading?: boolean;
+  /** Error object if chart data failed to load */
   error?: Error | null;
+  /** Chart component to render */
   children: ReactNode;
+  /** Whether to use dark theme for heading color */
   isDark?: boolean;
 }
 
+/**
+ * A wrapper component for charts that provides consistent layout, loading states, error handling, and accessibility.
+ *
+ * This component handles three states:
+ * 1. **Loading**: Displays a spinner while data is being fetched
+ * 2. **Error**: Displays an error message with accessibility attributes
+ * 3. **Success**: Renders the chart with optional title and proper ARIA labels
+ *
+ * The component is memoized for performance and includes comprehensive accessibility support
+ * including proper ARIA roles, labels, and semantic HTML.
+ *
+ * @example
+ * ```tsx
+ * <ChartWrapper
+ *   title="Monthly Emotion Trends"
+ *   height={400}
+ *   isLoading={false}
+ *   error={null}
+ * >
+ *   <EmotionChart data={data} />
+ * </ChartWrapper>
+ * ```
+ *
+ * @example
+ * ```tsx
+ * // With loading state
+ * <ChartWrapper
+ *   title="Student Statistics"
+ *   isLoading={true}
+ * >
+ *   <StudentChart data={[]} />
+ * </ChartWrapper>
+ * ```
+ *
+ * @example
+ * ```tsx
+ * // With error state
+ * <ChartWrapper
+ *   title="Daily Distribution"
+ *   error={new Error("Failed to load data")}
+ * >
+ *   <DayChart data={[]} />
+ * </ChartWrapper>
+ * ```
+ */
 export const ChartWrapper = memo<ChartWrapperProps>(
   ({
     title,

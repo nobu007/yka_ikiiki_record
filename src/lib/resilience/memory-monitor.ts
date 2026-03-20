@@ -1,5 +1,6 @@
 import { globalLogger } from "./structured-logger";
 import { MEMORY_MONITOR_CONSTANTS } from "@/lib/constants";
+import { globalCircuitBreaker } from "./circuit-breaker";
 
 export class MemoryMonitor {
   private readonly memoryLimit: number;
@@ -56,8 +57,10 @@ export class MemoryMonitor {
   }
 
   private handleMemoryOverflow(usage: NodeJS.MemoryUsage): void {
-    if (global.gc) {
-      global.gc();
+    const gcTriggered = typeof global.gc === "function";
+
+    if (gcTriggered) {
+      (global.gc as () => void)();
     }
 
     globalLogger.fatal("MEMORY", "OVERFLOW", {
@@ -65,7 +68,12 @@ export class MemoryMonitor {
       heapTotal: usage.heapTotal,
       external: usage.external,
       arrayBuffers: usage.arrayBuffers,
+      gcTriggered,
+      memoryLimit: this.memoryLimit,
+      usagePercentage: this.getUsagePercentage(),
     });
+
+    globalCircuitBreaker.reset();
   }
 
   private logMemoryMetrics(usage: NodeJS.MemoryUsage): void {

@@ -4,7 +4,7 @@ import DynamicBarChart from "@/components/charts/DynamicBarChart";
 import { ComponentCard } from "@/components/common/ComponentCard";
 import { useState, useCallback } from "react";
 import { getButtonClasses, UI_CONSTANTS } from "@/lib/constants/ui";
-import { normalizeError } from "@/lib/error-handler";
+import { normalizeError, type AppError } from "@/lib/error-handler";
 
 const demoData = [
   { name: "Jan", value: 168 },
@@ -23,7 +23,7 @@ const demoData = [
 
 export default function BarChartContent() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<AppError | null>(null);
 
   const handleRefresh = useCallback(async () => {
     setIsLoading(true);

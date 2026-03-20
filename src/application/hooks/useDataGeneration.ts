@@ -7,7 +7,7 @@ import {
   ClassCharacteristics,
 } from "@/domain/entities/DataGeneration";
 import { GENERATION_CONSTRAINTS } from "@/lib/constants";
-import { normalizeError } from "@/lib/error-handler";
+import { normalizeError, type AppError } from "@/lib/error-handler";
 
 interface UseDataGenerationProps {
   onGenerate: (_config: DataGenerationConfig) => Promise<void>;
@@ -16,7 +16,7 @@ interface UseDataGenerationProps {
 export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
   const [config, setConfig] = useState<DataGenerationConfig>(DEFAULT_CONFIG);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<AppError | null>(null);
 
   const updateStudentCount = useCallback((count: number) => {
     setConfig((prev) => ({

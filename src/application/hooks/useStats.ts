@@ -8,6 +8,7 @@ import {
   ValidationError,
   AppError,
   ERROR_CODES,
+  normalizeError,
 } from "@/lib/error-handler";
 import { ERROR_MESSAGES } from "@/lib/constants/messages";
 import { API_ENDPOINTS } from "@/lib/constants/api";
@@ -43,7 +44,7 @@ const fetcher = async (url: string): Promise<StatsResponse> => {
 };
 
 export function useStats() {
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<AppError | null>(null);
 
   const {
     data: stats,
@@ -52,9 +53,7 @@ export function useStats() {
     mutate,
   } = useSWR<StatsResponse>(API_ENDPOINTS.STATS, fetcher, {
     onError: (err) => {
-      setError(
-        err instanceof Error ? err : new Error(ERROR_MESSAGES.UNKNOWN),
-      );
+      setError(normalizeError(err));
     },
   });
 

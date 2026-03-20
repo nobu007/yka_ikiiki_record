@@ -5,8 +5,9 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import ChartWrapper from "./ChartWrapper";
 import { CHART_COLORS } from "@/lib/config";
-import { ERROR_MESSAGES, ACCESSIBILITY_MESSAGES, CHART_TITLES } from "@/lib/constants/messages";
+import { ACCESSIBILITY_MESSAGES, CHART_TITLES } from "@/lib/constants/messages";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
+import { normalizeError, type AppError } from "@/lib/error-handler";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -40,7 +41,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
   isDark = false,
 }: DynamicBarChartProps) {
   const [mounted, setMounted] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<AppError | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -55,11 +56,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
         }))
         .filter((item) => !isNaN(item.value));
     } catch (error) {
-      setError(
-        error instanceof Error
-          ? error
-          : new Error(ERROR_MESSAGES.DATA_TRANSFORMATION),
-      );
+      setError(normalizeError(error));
       return [];
     }
   }, [data]);

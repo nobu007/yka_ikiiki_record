@@ -96,6 +96,84 @@ describe("MemoryMonitor", () => {
 
       expect(() => monitor.stopMonitoring()).not.toThrow();
     });
+
+    it("should log when monitoring starts", () => {
+      const infoSpy = jest.spyOn(globalLogger, "info");
+
+      monitor.startMonitoring();
+
+      expect(infoSpy).toHaveBeenCalledWith(
+        "MEMORY_MONITOR",
+        "STARTED",
+        expect.objectContaining({
+          checkInterval: 100,
+          memoryLimit: 1024 * 1024,
+        }),
+      );
+    });
+
+    it("should log when monitoring stops", () => {
+      const infoSpy = jest.spyOn(globalLogger, "info");
+
+      monitor.startMonitoring();
+      monitor.stopMonitoring();
+
+      expect(infoSpy).toHaveBeenCalledWith(
+        "MEMORY_MONITOR",
+        "STOPPED",
+        expect.objectContaining({
+          reason: "manual_stop",
+        }),
+      );
+    });
+  });
+
+  describe("destroy", () => {
+    it("should call stopMonitoring and log cleanup", () => {
+      const infoSpy = jest.spyOn(globalLogger, "info");
+
+      monitor.startMonitoring();
+      monitor.destroy();
+
+      expect(infoSpy).toHaveBeenCalledWith(
+        "MEMORY_MONITOR",
+        "STOPPED",
+        expect.objectContaining({
+          reason: "manual_stop",
+        }),
+      );
+
+      expect(infoSpy).toHaveBeenCalledWith(
+        "MEMORY_MONITOR",
+        "DESTROYED",
+        expect.objectContaining({
+          reason: "cleanup",
+        }),
+      );
+    });
+
+    it("should handle destroy when not monitoring", () => {
+      const infoSpy = jest.spyOn(globalLogger, "info");
+
+      expect(() => monitor.destroy()).not.toThrow();
+
+      expect(infoSpy).toHaveBeenCalledWith(
+        "MEMORY_MONITOR",
+        "DESTROYED",
+        expect.objectContaining({
+          reason: "cleanup",
+        }),
+      );
+    });
+
+    it("should handle multiple destroy calls gracefully", () => {
+      monitor.startMonitoring();
+
+      expect(() => {
+        monitor.destroy();
+        monitor.destroy();
+      }).not.toThrow();
+    });
   });
 
   describe("Monitoring behavior", () => {

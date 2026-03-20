@@ -29,13 +29,30 @@ export class MemoryMonitor {
         this.handleMemoryOverflow(memoryUsage);
       }
     }, this.checkInterval);
+
+    globalLogger.info("MEMORY_MONITOR", "STARTED", {
+      checkInterval: this.checkInterval,
+      memoryLimit: this.memoryLimit,
+    });
   }
 
   stopMonitoring(): void {
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = null;
+
+      globalLogger.info("MEMORY_MONITOR", "STOPPED", {
+        reason: "manual_stop",
+      });
     }
+  }
+
+  destroy(): void {
+    this.stopMonitoring();
+
+    globalLogger.info("MEMORY_MONITOR", "DESTROYED", {
+      reason: "cleanup",
+    });
   }
 
   private handleMemoryOverflow(usage: NodeJS.MemoryUsage): void {

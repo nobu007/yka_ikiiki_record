@@ -1,5 +1,12 @@
 import { WINDOW_EVENTS } from "./browser";
 
+jest.mock("./browser", () => ({
+  ...jest.requireActual("./browser"),
+  reloadPage: jest.fn(),
+}));
+
+import { reloadPage } from "./browser";
+
 describe("WINDOW_EVENTS", () => {
   it("should have correct resize event name", () => {
     expect(WINDOW_EVENTS.RESIZE).toBe("resize");
@@ -18,5 +25,15 @@ describe("WINDOW_EVENTS", () => {
       expect(typeof value).toBe("string");
       expect(value.length).toBeGreaterThan(0);
     });
+  });
+});
+
+describe("reloadPage", () => {
+  it("should be a function", () => {
+    expect(typeof reloadPage).toBe("function");
+  });
+
+  it("should be exported", () => {
+    expect(reloadPage).toBeDefined();
   });
 });

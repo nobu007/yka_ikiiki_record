@@ -4,6 +4,7 @@ import DynamicBarChart from "@/components/charts/DynamicBarChart";
 import { ComponentCard } from "@/components/common/ComponentCard";
 import { useState, useCallback } from "react";
 import { getButtonClasses, UI_CONSTANTS } from "@/lib/constants/ui";
+import { normalizeError } from "@/lib/error-handler";
 
 const demoData = [
   { name: "Jan", value: 168 },
@@ -29,8 +30,8 @@ export default function BarChartContent() {
     setError(null);
     try {
       await new Promise((resolve) => setTimeout(resolve, UI_CONSTANTS.FEEDBACK.DELAY_MS));
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error(String(err)));
+    } catch (error) {
+      setError(normalizeError(error));
     } finally {
       setIsLoading(false);
     }

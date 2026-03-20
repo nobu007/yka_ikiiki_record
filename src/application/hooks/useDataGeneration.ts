@@ -7,7 +7,7 @@ import {
   ClassCharacteristics,
 } from "@/domain/entities/DataGeneration";
 import { GENERATION_CONSTRAINTS } from "@/lib/constants";
-import { ERROR_MESSAGES } from "@/lib/constants/messages";
+import { normalizeError } from "@/lib/error-handler";
 
 interface UseDataGenerationProps {
   onGenerate: (_config: DataGenerationConfig) => Promise<void>;
@@ -92,8 +92,8 @@ export function useDataGeneration({ onGenerate }: UseDataGenerationProps) {
 
     try {
       await onGenerate(config);
-    } catch (e) {
-      setError(e instanceof Error ? e : new Error(ERROR_MESSAGES.GENERATION));
+    } catch (error) {
+      setError(normalizeError(error));
     } finally {
       setIsGenerating(false);
     }

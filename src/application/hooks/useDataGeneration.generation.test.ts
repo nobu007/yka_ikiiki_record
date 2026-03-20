@@ -112,7 +112,7 @@ describe("useDataGeneration - Data Generation", () => {
 
       await waitFor(() => {
         expect(result.current.error).toBeInstanceOf(Error);
-        expect(result.current.error?.message).toBe("データ生成に失敗しました");
+        expect(result.current.error?.message).toBe("String error");
       });
     });
 
@@ -126,7 +126,7 @@ describe("useDataGeneration - Data Generation", () => {
 
       await waitFor(() => {
         expect(result.current.error).toBeInstanceOf(Error);
-        expect(result.current.error?.message).toBe("データ生成に失敗しました");
+        expect(result.current.error?.message).toBe("予期せぬエラーが発生しました");
       });
     });
   });

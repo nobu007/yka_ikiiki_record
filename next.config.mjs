@@ -10,15 +10,6 @@ const nextConfig = {
       "@": path.resolve(__dirname, "src"),
     },
   },
-  transpilePackages: [
-    "@fullcalendar/core",
-    "@fullcalendar/react",
-    "@fullcalendar/daygrid",
-    "@fullcalendar/timegrid",
-    "@fullcalendar/interaction",
-    "@react-jvectormap/core",
-    "@react-jvectormap/world",
-  ],
   images: {
     unoptimized: true,
   }

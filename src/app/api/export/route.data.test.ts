@@ -59,4 +59,27 @@ describe("GET /api/export - data integrity", () => {
     expect(text).toContain("José García");
     expect(text).toContain("日本語テスト");
   });
+
+  test("handles records with string dates instead of Date objects", async () => {
+    const recordsWithStringDates = [
+      {
+        id: 1,
+        emotion: 3,
+        date: "2026-03-20" as unknown as Date,
+        student: "Charlie",
+        comment: "String date test",
+        createdAt: new Date("2026-03-20T10:00:00Z"),
+        updatedAt: new Date("2026-03-20T10:00:00Z"),
+      },
+    ];
+    mockRepository.findAll.mockResolvedValue(recordsWithStringDates as never);
+
+    const request = createMockRequest("http://localhost:3000/api/export");
+    const response = await GET(request as never) as Response;
+    const text = await response.text();
+
+    expect(text).toContain("2026-03-20");
+    expect(text).toContain("Charlie");
+    expect(text).toContain("String date test");
+  });
 });

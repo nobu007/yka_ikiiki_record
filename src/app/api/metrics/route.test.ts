@@ -87,6 +87,59 @@ describe("GET /api/metrics", () => {
     expect(data.system.memory.usagePercentage).toBeLessThanOrEqual(100);
   });
 
+  describe("parseMetricsLine edge cases", () => {
+    it("should handle parseMetricsLine with valid CSV data", async () => {
+      fs.readFile = jest.fn().mockResolvedValue(
+        "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T18:49:03,100,0,99.15,96.87,0,0,100.0"
+      );
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.judgment.score).toBe(100);
+      expect(data.judgment.cleanArchitectureViolations).toBe(0);
+      expect(data.judgment.testCoverage.statements).toBe(99.15);
+      expect(data.judgment.testCoverage.branches).toBe(96.87);
+      expect(data.judgment.anyTypes).toBe(0);
+      expect(data.judgment.eslintWarnings).toBe(0);
+      expect(data.judgment.testPassRate).toBe(100.0);
+    });
+
+    it("should handle parseMetricsLine with all zero values", async () => {
+      fs.readFile = jest.fn().mockResolvedValue(
+        "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T00:00:00,0,0,0,0,0,0,0"
+      );
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.judgment.score).toBe(0);
+      expect(data.judgment.cleanArchitectureViolations).toBe(0);
+      expect(data.judgment.testCoverage.statements).toBe(0);
+      expect(data.judgment.anyTypes).toBe(0);
+    });
+
+    it("should handle parseMetricsLine with decimal values", async () => {
+      fs.readFile = jest.fn().mockResolvedValue(
+        "timestamp,judgment_score,clean_architecture_violations,test_coverage_statements,test_coverage_branches,typescript_any_types,eslint_warnings,test_pass_rate\n2026-03-20T18:49:03,95.5,2,88.75,92.3,1,3,98.5"
+      );
+
+      const response = await GET();
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.judgment.score).toBe(95.5);
+      expect(data.judgment.cleanArchitectureViolations).toBe(2);
+      expect(data.judgment.testCoverage.statements).toBe(88.75);
+      expect(data.judgment.testCoverage.branches).toBe(92.3);
+      expect(data.judgment.anyTypes).toBe(1);
+      expect(data.judgment.eslintWarnings).toBe(3);
+      expect(data.judgment.testPassRate).toBe(98.5);
+    });
+  });
+
   describe("error handling - malformed CSV", () => {
     it("should return default metrics when CSV file has less than 2 lines", async () => {
       fs.readFile = jest.fn().mockResolvedValue("timestamp,judgment_score\n");

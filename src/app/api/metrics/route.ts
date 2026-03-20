@@ -128,7 +128,7 @@ export async function GET(): Promise<NextResponse> {
       return NextResponse.json(response);
     },
     {
-      operationName: API_OPERATIONS.GET_STATS || "GET_METRICS",
+      operationName: API_OPERATIONS.GET_METRICS,
       timeoutMs: DEFAULT_TIMEOUTS.api,
     },
   );

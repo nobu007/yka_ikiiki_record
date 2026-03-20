@@ -158,6 +158,7 @@ docs/03_Reports/
 *_change_plan.md
 .processing_state
 current_agent.txt
+chain_checkpoints/
 
 # wandb
 **/wandb/*

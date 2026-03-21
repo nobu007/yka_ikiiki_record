@@ -966,6 +966,146 @@ canonical_terms:
       - source: "src/infrastructure/services/dataService.ts"
         quote: "class DataService"
 
+  SeasonalEffect:
+    id: "TERM-090"
+    layer: "domain"
+    status: "stable"
+    definition: "季節変動を表すデータ構造。春・夏・秋・冬の感情スコアへの影響度を定義"
+    synonyms: []
+    boundaries:
+      includes: ["季節", "感情への影響度"]
+      excludes: []
+    related_terms: ["DataGenerationConfig", "EmotionGenerator"]
+    evidence:
+      - source: "src/domain/entities/DataGeneration.ts"
+        quote: "export type SeasonalEffect = { spring: number; summer: number; autumn: number; winter: number; }"
+
+  EventEffect:
+    id: "TERM-091"
+    layer: "domain"
+    status: "stable"
+    definition: "クラスイベントの影響を表すデータ構造。イベント名と感情スコアへの影響度を含む"
+    synonyms: ["ClassEvent"]
+    boundaries:
+      includes: ["イベント名", "影響度"]
+      excludes: []
+    related_terms: ["DataGenerationConfig", "EmotionGenerator"]
+    evidence:
+      - source: "src/domain/entities/DataGeneration.ts"
+        quote: "export type EventEffect = { name: string; impact: number; }"
+
+  ClassCharacteristics:
+    id: "TERM-092"
+    layer: "domain"
+    status: "stable"
+    definition: "クラスの特性を表すデータ構造。基準感情値、変動の大きさ、クラスの結束度を含む"
+    synonyms: []
+    boundaries:
+      includes: ["基準感情値", "変動性", "結束度"]
+      excludes: []
+    related_terms: ["DataGenerationConfig", "EmotionGenerator"]
+    evidence:
+      - source: "src/domain/entities/DataGeneration.ts"
+        quote: "export type ClassCharacteristics = { baselineEmotion: number; volatility: number; cohesion: number; }"
+
+  EmotionRanges:
+    id: "TERM-093"
+    layer: "domain"
+    status: "stable"
+    definition: "感情スコアの有効範囲を定義する定数。最小値、最大値、デフォルト値を含む"
+    synonyms: []
+    boundaries:
+      includes: ["最小スコア", "最大スコア", "デフォルト値"]
+      excludes: []
+    related_terms: ["DataGenerationConfig"]
+    evidence:
+      - source: "src/domain/entities/DataGeneration.ts"
+        quote: "export type EmotionRanges = typeof EMOTION_CONSTANTS"
+
+  GenerationBounds:
+    id: "TERM-094"
+    layer: "domain"
+    status: "stable"
+    definition: "データ生成の境界値を定義する定数。学生数、期間の最大・最小値を含む"
+    synonyms: []
+    boundaries:
+      includes: ["学生数の範囲", "期間の範囲"]
+      excludes: []
+    related_terms: ["DataGenerationConfig"]
+    evidence:
+      - source: "src/domain/entities/DataGeneration.ts"
+        quote: "export type GenerationBounds = typeof DATA_GENERATION_BOUNDS"
+
+  GridShape:
+    id: "TERM-095"
+    layer: "aux"
+    status: "stable"
+    definition: "グリッド形状を表すSVGコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["SVG描画"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/components/common/GridShape.tsx"
+        quote: "export function GridShape()"
+
+  Button:
+    id: "TERM-096"
+    layer: "aux"
+    status: "stable"
+    definition: "汎用ボタンUIコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["ボタンUI", "クリックハンドラ"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/components/ui/index.tsx"
+        quote: "export const Button"
+
+  ApiResponse:
+    id: "TERM-097"
+    layer: "domain"
+    status: "stable"
+    definition: "標準化されたAPIレスポンス形式。成功・エラー、データ、メタデータを含む"
+    synonyms: []
+    boundaries:
+      includes: ["成功フラグ", "レスポンスデータ", "エラーメッセージ"]
+      excludes: []
+    related_terms: ["APIRouteHandler"]
+    evidence:
+      - source: "src/lib/api/response.ts"
+        quote: "export type ApiResponse<T>"
+
+  TimeoutConfig:
+    id: "TERM-098"
+    layer: "domain"
+    status: "stable"
+    definition: "タイムアウト設定を表すインターフェース。ミリ秒単位のタイムアウト時間"
+    synonyms: []
+    boundaries:
+      includes: ["タイムアウト時間"]
+      excludes: []
+    related_terms: ["APITimeout", "TimeoutError"]
+    evidence:
+      - source: "src/lib/resilience/timeout.ts"
+        quote: "export interface TimeoutConfig"
+
+  LogEntry:
+    id: "TERM-099"
+    layer: "domain"
+    status: "stable"
+    definition: "構造化ログエントリ。タイムスタンプ、レベル、メッセージ、コンテキスト、相関IDを含む"
+    synonyms: []
+    boundaries:
+      includes: ["タイムスタンプ", "ログレベル", "メッセージ", "相関ID"]
+      excludes: []
+    related_terms: ["StructuredLogger"]
+    evidence:
+      - source: "src/lib/resilience/structured-logger.ts"
+        quote: "export interface LogEntry"
+
 
 
 

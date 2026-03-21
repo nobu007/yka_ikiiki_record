@@ -455,3 +455,64 @@ mappings:
       - "src/infrastructure/services/dataService.ts::const dataService"
     db: []
     api: []
+
+  SeasonalEffect:
+    code_symbols:
+      - "src/domain/entities/DataGeneration.ts::type SeasonalEffect"
+    db: []
+    api: []
+
+  EventEffect:
+    code_symbols:
+      - "src/domain/entities/DataGeneration.ts::type EventEffect"
+      - "src/domain/entities/DataGeneration.ts::type ClassEvent"
+    db: []
+    api: []
+
+  ClassCharacteristics:
+    code_symbols:
+      - "src/domain/entities/DataGeneration.ts::type ClassCharacteristics"
+    db: []
+    api: []
+
+  EmotionRanges:
+    code_symbols:
+      - "src/domain/entities/DataGeneration.ts::type EmotionRanges"
+    db: []
+    api: []
+
+  GenerationBounds:
+    code_symbols:
+      - "src/domain/entities/DataGeneration.ts::type GenerationBounds"
+    db: []
+    api: []
+
+  GridShape:
+    code_symbols:
+      - "src/components/common/GridShape.tsx::function GridShape"
+    db: []
+    api: []
+
+  Button:
+    code_symbols:
+      - "src/components/ui/index.tsx::const Button"
+    db: []
+    api: []
+
+  ApiResponse:
+    code_symbols:
+      - "src/lib/api/response.ts::type ApiResponse"
+    db: []
+    api: []
+
+  TimeoutConfig:
+    code_symbols:
+      - "src/lib/resilience/timeout.ts::interface TimeoutConfig"
+    db: []
+    api: []
+
+  LogEntry:
+    code_symbols:
+      - "src/lib/resilience/structured-logger.ts::interface LogEntry"
+    db: []
+    api: []

@@ -170,7 +170,7 @@ export class PrismaRecordRepository implements IRecordRepository {
 
   async disconnect(): Promise<void> {
     if (this.shouldDisconnect) {
-      await this.prisma.$disconnect();
+      await withDatabaseTimeout(this.prisma.$disconnect());
     }
   }
 

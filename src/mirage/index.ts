@@ -1,7 +1,6 @@
 import { makeServer } from "./server";
 
 declare global {
-  // eslint-disable-next-line no-var
   var mirageServer: ReturnType<typeof makeServer> | undefined;
 }
 

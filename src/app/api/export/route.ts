@@ -4,7 +4,7 @@ import { withResilientHandler } from "@/lib/api/error-handler";
 import { createRecordRepository } from "@/infrastructure/factories/repositoryFactory";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { API_OPERATIONS } from "@/lib/constants/api";
-import type { Record } from "@/schemas/api";
+import type { Record as RecordType } from "@/schemas/api";
 import * as XLSX from "xlsx";
 
 const ExportQuerySchema = z.object({
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
       if (format === "xlsx") {
         const excel = convertToExcel(records);
-        return new NextResponse(excel, {
+        return new NextResponse(Buffer.from(excel), {
           status: 200,
           headers: {
             "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   );
 }
 
-function convertToCSV(records: Record[]): string {
+function convertToCSV(records: RecordType[]): string {
   if (records.length === 0) {
     return "ID,Emotion,Date,Student,Comment,CreatedAt,UpdatedAt\n";
   }
@@ -113,7 +113,7 @@ function escapeCSV(value: string): string {
   return value;
 }
 
-function convertToExcel(records: Record[]): Uint8Array {
+function convertToExcel(records: RecordType[]): Uint8Array {
   const headers = [
     "ID",
     "Emotion",

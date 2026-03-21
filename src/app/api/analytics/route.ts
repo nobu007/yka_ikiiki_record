@@ -4,7 +4,7 @@ import { withResilientHandler } from "@/lib/api/error-handler";
 import { createRecordRepository } from "@/infrastructure/factories/repositoryFactory";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { API_OPERATIONS } from "@/lib/constants/api";
-import type { Record } from "@/schemas/api";
+import type { Record as RecordType } from "@/schemas/api";
 
 const AnalyticsQuerySchema = z.object({
   student: z.string().optional(),
@@ -71,7 +71,7 @@ interface AnalyticsData {
 }
 
 function calculateAnalytics(
-  records: Record[],
+  records: RecordType[],
   granularity: "day" | "week" | "month",
 ): AnalyticsData {
   if (records.length === 0) {
@@ -97,7 +97,7 @@ function calculateAnalytics(
     .map(([period, recs]) => ({
       period,
       avgEmotion:
-        recs.reduce((sum, r) => sum + r.emotion, 0) / recs.length,
+        (recs as RecordType[]).reduce((sum: number, r: RecordType) => sum + r.emotion, 0) / recs.length,
       count: recs.length,
     }))
     .sort((a, b) => a.period.localeCompare(b.period));
@@ -130,10 +130,10 @@ function calculateAnalytics(
 }
 
 function groupByPeriod(
-  records: Record[],
+  records: RecordType[],
   granularity: "day" | "week" | "month",
-): Record<string, Record[]> {
-  const grouped: Record<string, Record[]> = {};
+): Record<string, RecordType[]> {
+  const grouped: Record<string, RecordType[]> = {};
 
   for (const record of records) {
     const date = new Date(record.date);
@@ -152,7 +152,7 @@ function groupByPeriod(
     if (!grouped[key]) {
       grouped[key] = [];
     }
-    grouped[key].push(record);
+    grouped[key]!.push(record);
   }
 
   return grouped;

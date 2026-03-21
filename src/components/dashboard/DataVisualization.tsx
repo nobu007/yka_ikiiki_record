@@ -73,10 +73,8 @@ interface DataVisualizationProps {
 export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
   const formatTrendArrow = useCallback((trendline: number[]) => {
     if (trendline.length < 2) return "";
-    const lastIndex = trendline.length - 1;
-    const prevIndex = trendline.length - 2;
-    const last = trendline[lastIndex];
-    const prev = trendline[prevIndex];
+    const last = trendline[trendline.length - 1];
+    const prev = trendline[trendline.length - 2];
     if (last === undefined || prev === undefined) return "";
     return last > prev ? "↗️" : last < prev ? "↘️" : "→";
   }, []);

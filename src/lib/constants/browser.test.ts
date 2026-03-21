@@ -30,7 +30,7 @@ describe("reloadPage", () => {
     expect(reloadPage).toBeDefined();
   });
 
-  it("should not throw when called", () => {
+  it("should execute without throwing errors", () => {
     expect(() => reloadPage()).not.toThrow();
   });
 

@@ -20,26 +20,11 @@ mappings:
     db: []
     api: []
 
-  MonthlyStats:
+  StatsSubTypes:
     code_symbols:
       - "src/domain/entities/Stats.ts::interface MonthlyStats"
-    db: []
-    api: []
-
-  StudentStats:
-    code_symbols:
       - "src/domain/entities/Stats.ts::interface StudentStats"
-    db: []
-    api: []
-
-  DayOfWeekStats:
-    code_symbols:
       - "src/domain/entities/Stats.ts::interface DayOfWeekStats"
-    db: []
-    api: []
-
-  TimeOfDayStats:
-    code_symbols:
       - "src/domain/entities/Stats.ts::interface TimeOfDayStats"
     db: []
     api: []
@@ -67,11 +52,11 @@ mappings:
   DataGenerationConfig:
     code_symbols:
       - "src/domain/entities/DataGeneration.ts::interface DataGenerationConfig"
-    db: []
-    api: []
-
-  EmotionDistributionPattern:
-    code_symbols:
+      - "src/domain/entities/DataGeneration.ts::type SeasonalEffect"
+      - "src/domain/entities/DataGeneration.ts::type EventEffect"
+      - "src/domain/entities/DataGeneration.ts::type ClassCharacteristics"
+      - "src/domain/entities/DataGeneration.ts::type EmotionRanges"
+      - "src/domain/entities/DataGeneration.ts::type GenerationBounds"
       - "src/domain/entities/DataGeneration.ts::type EmotionDistributionPattern"
     db: []
     api: []
@@ -119,6 +104,7 @@ mappings:
     code_symbols:
       - "src/lib/resilience/circuit-breaker.ts::class CircuitBreaker"
       - "src/lib/resilience/circuit-breaker.ts::interface CircuitBreakerConfig"
+      - "src/lib/resilience/circuit-breaker.ts::type CircuitState"
     db: []
     api: []
 
@@ -126,6 +112,7 @@ mappings:
     code_symbols:
       - "src/lib/resilience/structured-logger.ts::class StructuredLogger"
       - "src/lib/resilience/structured-logger.ts::interface LogEntry"
+      - "src/lib/resilience/structured-logger.ts::type LogLevel"
     db: []
     api: []
 
@@ -138,6 +125,7 @@ mappings:
   AppError:
     code_symbols:
       - "src/lib/error-handler.ts::class AppError"
+      - "src/lib/error-handler.ts::type ErrorCodeType"
     db: []
     api: []
 
@@ -154,7 +142,9 @@ mappings:
   PrismaStatsRepository:
     code_symbols:
       - "src/infrastructure/repositories/PrismaStatsRepository.ts::class PrismaStatsRepository"
-    db: []
+      - "src/infrastructure/repositories/PrismaSeedRepository.ts::class PrismaSeedRepository"
+    db:
+      - "prisma/schema.prisma::model Stats"
     api:
       - "GET /api/stats"
 
@@ -169,6 +159,12 @@ mappings:
     code_symbols:
       - "src/components/charts/EmotionChart.tsx::interface EmotionChartProps"
       - "src/components/charts/EmotionChart.tsx::interface ChartData"
+      - "src/components/charts/EmotionTrendChart.tsx"
+      - "src/components/charts/StudentEmotionChart.tsx"
+      - "src/components/charts/MonthlyEmotionChart.tsx"
+      - "src/components/charts/DayOfWeekChart.tsx"
+      - "src/components/charts/TimeOfDayChart.tsx"
+      - "src/components/charts/EmotionDistributionChart.tsx"
     db: []
     api: []
 
@@ -204,38 +200,20 @@ mappings:
     db: []
     api: []
 
-  useStats:
+  ReactHooks:
     code_symbols:
       - "src/application/hooks/useStats.ts::function useStats"
+      - "src/application/hooks/useDataGeneration.ts::function useDataGeneration"
+      - "src/application/hooks/useSeedGeneration.ts::function useSeedGeneration"
+      - "src/hooks/useAsync.ts::function useAsync"
+      - "src/hooks/useNotification.ts::function useNotification"
+      - "src/hooks/useApp.ts::function useDashboard"
+      - "src/hooks/useAsync.ts::interface AsyncState"
+      - "src/hooks/useNotification.ts::interface NotificationState"
     db: []
     api:
       - "GET /api/stats"
-
-  useDataGeneration:
-    code_symbols:
-      - "src/application/hooks/useDataGeneration.ts::function useDataGeneration"
-    db: []
-    api:
       - "POST /api/seed"
-
-  useSeedGeneration:
-    code_symbols:
-      - "src/application/hooks/useSeedGeneration.ts::function useSeedGeneration"
-    db: []
-    api:
-      - "POST /api/seed"
-
-  useAsync:
-    code_symbols:
-      - "src/hooks/useAsync.ts::function useAsync"
-    db: []
-    api: []
-
-  useNotification:
-    code_symbols:
-      - "src/hooks/useNotification.ts::function useNotification"
-    db: []
-    api: []
 
   StatsCalculator:
     code_symbols:
@@ -274,6 +252,7 @@ mappings:
     code_symbols:
       - "src/lib/api/error-handler.ts::function withResilientHandler"
       - "src/lib/api/error-handler.ts::function handleApiError"
+      - "src/lib/resilience/timeout.ts::function withApiTimeout"
     db: []
     api: []
 
@@ -281,6 +260,7 @@ mappings:
     code_symbols:
       - "src/lib/api/validation.ts::function validateData"
       - "src/lib/api/validation.ts::function validateDataSafe"
+      - "src/schemas/api.ts"
     db: []
     api: []
 
@@ -288,6 +268,12 @@ mappings:
     code_symbols:
       - "src/lib/api/response.ts::function createSuccessResponse"
       - "src/lib/api/response.ts::function createErrorResponse"
+      - "src/lib/api/response.ts::type ApiResponse"
+      - "src/lib/api/error-handler.ts::interface JsonReadable"
+      - "src/schemas/api.ts::type SeedRequest"
+      - "src/schemas/api.ts::type SeedResponse"
+      - "src/schemas/api.ts::type StatsResponse"
+      - "src/schemas/api.ts::type StatsData"
     db: []
     api: []
 
@@ -325,18 +311,27 @@ mappings:
       - "src/app/layout.tsx::function RootLayout"
       - "src/app/page.tsx::function HomePage"
       - "src/app/not-found.tsx::function NotFound"
+      - "src/app/(dashboard)/dashboard/components/stats/StatsDisplay.tsx::function StatsDisplay"
+      - "src/app/(dashboard)/dashboard/components/stats/DataGenerationPanel.tsx::function DataGenerationPanel"
+      - "src/app/(dashboard)/dashboard/components/stats/GenerationControls.tsx::function GenerationControls"
+      - "src/app/(dashboard)/dashboard/components/stats/EventManager.tsx::function EventManager"
+      - "src/app/(dashboard)/dashboard/components/stats/ClassCharacteristicsEditor.tsx::function ClassCharacteristicsEditor"
+      - "src/components/dashboard/DataVisualization.tsx::function DataVisualization"
+      - "src/components/dashboard/DataSection.tsx::function DataSection"
+      - "src/components/dashboard/InstructionsSection.tsx::function InstructionsSection"
     db: []
     api: []
 
-  Notification:
+  UIComponents:
     code_symbols:
       - "src/components/common/Notification.tsx::function Notification"
-    db: []
-    api: []
-
-  LoadingSpinner:
-    code_symbols:
       - "src/components/common/LoadingSpinner.tsx::function LoadingSpinner"
+      - "src/components/common/ErrorBoundary.tsx::class ErrorBoundary"
+      - "src/components/common/PageBreadCrumb.tsx::function PageBreadCrumb"
+      - "src/components/common/UsageInstructions.tsx::function UsageInstructions"
+      - "src/components/common/GridShape.tsx::function GridShape"
+      - "src/components/ui/index.tsx::const Button"
+      - "src/components/common/Icons.tsx"
     db: []
     api: []
 
@@ -346,108 +341,12 @@ mappings:
     db: []
     api: []
 
-  UIConstants:
-    code_symbols:
-      - "src/lib/constants/ui.ts"
-    db: []
-    api: []
-
-  PageBreadCrumb:
-    code_symbols:
-      - "src/components/common/PageBreadCrumb.tsx::function PageBreadCrumb"
-    db: []
-    api: []
-
-  UsageInstructions:
-    code_symbols:
-      - "src/components/common/UsageInstructions.tsx::function UsageInstructions"
-    db: []
-    api: []
-
-  DataVisualization:
-    code_symbols:
-      - "src/components/dashboard/DataVisualization.tsx::function DataVisualization"
-    db: []
-    api: []
-
-  DataSection:
-    code_symbols:
-      - "src/components/dashboard/DataSection.tsx::function DataSection"
-    db: []
-    api: []
-
-  InstructionsSection:
-    code_symbols:
-      - "src/components/dashboard/InstructionsSection.tsx::function InstructionsSection"
-    db: []
-    api: []
-
-  APITimeout:
-    code_symbols:
-      - "src/lib/resilience/timeout.ts::function withApiTimeout"
-    db: []
-    api: []
-
-  Icons:
-    code_symbols:
-      - "src/components/common/Icons.tsx"
-    db: []
-    api: []
-
-  PrismaSeedRepository:
-    code_symbols:
-      - "src/infrastructure/repositories/PrismaSeedRepository.ts::class PrismaSeedRepository"
-    db: []
-    api: []
-
-  StatsDisplay:
-    code_symbols:
-      - "src/app/(dashboard)/dashboard/components/stats/StatsDisplay.tsx::function StatsDisplay"
-    db: []
-    api: []
-
-  DataGenerationPanel:
-    code_symbols:
-      - "src/app/(dashboard)/dashboard/components/stats/DataGenerationPanel.tsx::function DataGenerationPanel"
-    db: []
-    api: []
-
-  GenerationControls:
-    code_symbols:
-      - "src/app/(dashboard)/dashboard/components/stats/GenerationControls.tsx::function GenerationControls"
-    db: []
-    api: []
-
-  EventManager:
-    code_symbols:
-      - "src/app/(dashboard)/dashboard/components/stats/EventManager.tsx::function EventManager"
-    db: []
-    api: []
-
-  ClassCharacteristicsEditor:
-    code_symbols:
-      - "src/app/(dashboard)/dashboard/components/stats/ClassCharacteristicsEditor.tsx::function ClassCharacteristicsEditor"
-    db: []
-    api: []
-
-  ThemeContext:
+  UIContexts:
     code_symbols:
       - "src/context/ThemeContext.tsx::const ThemeContext"
-    db: []
-    api: []
-
-  SidebarContext:
-    code_symbols:
       - "src/context/SidebarContext.tsx::const SidebarContext"
     db: []
     api: []
-
-  useDashboard:
-    code_symbols:
-      - "src/hooks/useApp.ts::function useDashboard"
-    db: []
-    api:
-      - "POST /api/seed"
 
   DataService:
     code_symbols:
@@ -456,243 +355,29 @@ mappings:
     db: []
     api: []
 
-  SeasonalEffect:
+  ApplicationConstants:
     code_symbols:
-      - "src/domain/entities/DataGeneration.ts::type SeasonalEffect"
-    db: []
-    api: []
-
-  EventEffect:
-    code_symbols:
-      - "src/domain/entities/DataGeneration.ts::type EventEffect"
-      - "src/domain/entities/DataGeneration.ts::type ClassEvent"
-    db: []
-    api: []
-
-  ClassCharacteristics:
-    code_symbols:
-      - "src/domain/entities/DataGeneration.ts::type ClassCharacteristics"
-    db: []
-    api: []
-
-  EmotionRanges:
-    code_symbols:
-      - "src/domain/entities/DataGeneration.ts::type EmotionRanges"
-    db: []
-    api: []
-
-  GenerationBounds:
-    code_symbols:
-      - "src/domain/entities/DataGeneration.ts::type GenerationBounds"
-    db: []
-    api: []
-
-  GridShape:
-    code_symbols:
-      - "src/components/common/GridShape.tsx::function GridShape"
-    db: []
-    api: []
-
-  Button:
-    code_symbols:
-      - "src/components/ui/index.tsx::const Button"
-    db: []
-    api: []
-
-  ApiResponse:
-    code_symbols:
-      - "src/lib/api/response.ts::type ApiResponse"
-    db: []
-    api: []
-
-  TimeoutConfig:
-    code_symbols:
+      - "src/lib/constants/api.ts::const API_ENDPOINTS"
+      - "src/lib/constants/api.ts::const HTTP_STATUS"
+      - "src/lib/constants/api.ts::const API_ERROR_MESSAGES"
+      - "src/lib/constants/messages.ts"
+      - "src/lib/constants/browser.ts::const WINDOW_EVENTS"
+      - "src/lib/constants/browser.ts::function reloadPage"
+      - "src/lib/constants/storage.ts"
+      - "src/lib/constants/ui.ts::const THEME, BREAKPOINTS"
+      - "src/lib/constants/resilience.ts"
       - "src/lib/resilience/timeout.ts::interface TimeoutConfig"
     db: []
     api: []
 
-  LogEntry:
-    code_symbols:
-      - "src/lib/resilience/structured-logger.ts::interface LogEntry"
-    db: []
-    api: []
-
-  CircuitBreakerConfig:
-    code_symbols:
-      - "src/lib/resilience/circuit-breaker.ts::interface CircuitBreakerConfig"
-    db: []
-    api: []
-
-  CircuitState:
-    code_symbols:
-      - "src/lib/resilience/circuit-breaker.ts::type CircuitState"
-    db: []
-    api: []
-
-  LogLevel:
-    code_symbols:
-      - "src/lib/resilience/structured-logger.ts::type LogLevel"
-    db: []
-    api: []
-
-  ErrorCodeType:
-    code_symbols:
-      - "src/lib/error-handler.ts::type ErrorCodeType"
-    db: []
-    api: []
-
-  ZodSchema:
-    code_symbols:
-      - "src/schemas/api.ts"
-    db: []
-    api: []
-
-  APIEndpoint:
-    code_symbols:
-      - "src/lib/constants/api.ts::const API_ENDPOINTS"
-    db: []
-    api: []
-
-  HttpStatus:
-    code_symbols:
-      - "src/lib/constants/api.ts::const HTTP_STATUS"
-    db: []
-    api: []
-
-  ApiErrorMessage:
-    code_symbols:
-      - "src/lib/constants/api.ts::const API_ERROR_MESSAGES"
-    db: []
-    api: []
-
-  UIMessage:
-    code_symbols:
-      - "src/lib/constants/messages.ts"
-    db: []
-    api: []
-
-  ChartTitle:
-    code_symbols:
-      - "src/lib/constants/messages.ts::const CHART_TITLES"
-    db: []
-    api: []
-
-  AccessibilityMessage:
-    code_symbols:
-      - "src/lib/constants/messages.ts::const ACCESSIBILITY_MESSAGES"
-    db: []
-    api: []
-
-  WindowEvent:
-    code_symbols:
-      - "src/lib/constants/browser.ts::const WINDOW_EVENTS"
-    db: []
-    api: []
-
-  reloadPage:
-    code_symbols:
-      - "src/lib/constants/browser.ts::function reloadPage"
-    db: []
-    api: []
-
-  StorageConstant:
-    code_symbols:
-      - "src/lib/constants/storage.ts"
-    db: []
-    api: []
-
-  UIConstant:
-    code_symbols:
-      - "src/lib/constants/ui.ts::const THEME, BREAKPOINTS"
-    db: []
-    api: []
-
-  ResilienceConstant:
-    code_symbols:
-      - "src/lib/constants/resilience.ts"
-    db: []
-    api: []
-
-  AsyncState:
-    code_symbols:
-      - "src/hooks/useAsync.ts::interface AsyncState"
-    db: []
-    api: []
-
-  NotificationState:
-    code_symbols:
-      - "src/hooks/useNotification.ts::interface NotificationState"
-    db: []
-    api: []
-
-  MockFetchResponse:
+  TestUtilities:
     code_symbols:
       - "src/test-utils/api-helpers.ts::type MockFetchResponse"
-    db: []
-    api: []
-
-  setupMockFetch:
-    code_symbols:
       - "src/test-utils/api-helpers.ts::function setupMockFetch"
-    db: []
-    api: []
-
-  isNotNullOrUndefined:
-    code_symbols:
       - "src/test-utils/mock-helpers.ts::function isNotNullOrUndefined"
-    db: []
-    api: []
-
-  getFirstMockCallArg:
-    code_symbols:
       - "src/test-utils/mock-helpers.ts::function getFirstMockCallArg"
-    db: []
-    api: []
-
-  expectClasses:
-    code_symbols:
       - "src/test-utils/component-helpers.ts::function expectClasses"
-    db: []
-    api: []
-
-  mockProcessEnv:
-    code_symbols:
       - "src/test-utils/component-helpers.ts::function mockProcessEnv"
-    db: []
-    api: []
-
-  IntegrationTest:
-    code_symbols:
       - "src/integration/"
-    db: []
-    api: []
-
-  JsonReadable:
-    code_symbols:
-      - "src/lib/api/error-handler.ts::interface JsonReadable"
-    db: []
-    api: []
-
-  SeedRequest:
-    code_symbols:
-      - "src/schemas/api.ts::type SeedRequest"
-    db: []
-    api: []
-
-  SeedResponse:
-    code_symbols:
-      - "src/schemas/api.ts::type SeedResponse"
-    db: []
-    api: []
-
-  StatsResponse:
-    code_symbols:
-      - "src/schemas/api.ts::type StatsResponse"
-    db: []
-    api: []
-
-  StatsData:
-    code_symbols:
-      - "src/schemas/api.ts::type StatsData"
     db: []
     api: []

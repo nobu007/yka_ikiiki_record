@@ -1,21 +1,21 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T05:00:00.000Z",
-  "run_index": 44,
-  "phase": "quality_improvement",
+  "last_updated": "2026-03-22T05:15:00.000Z",
+  "run_index": 45,
+  "phase": "maintenance",
   "terms": {
-    "total": 106,
-    "core": 7,
-    "domain": 47,
-    "aux": 52,
+    "total": 48,
+    "core": 9,
+    "domain": 17,
+    "aux": 22,
     "draft": 0,
-    "stable": 106
+    "stable": 48
   },
   "mappings": {
-    "total": 106,
-    "with_code_symbols": 106,
+    "total": 48,
+    "with_code_symbols": 48,
     "with_db": 2,
-    "with_api": 13,
+    "with_api": 5,
     "unmapped": 0
   },
   "invariants": {
@@ -34,6 +34,12 @@
   "test_results": {
     "test_suites": 177,
     "tests_passed": 1312,
-    "timestamp": "2026-03-22T05:00:00.000Z"
+    "timestamp": "2026-03-22T05:15:00.000Z"
+  },
+  "consolidation_summary": {
+    "previous_terms": 129,
+    "current_terms": 48,
+    "terms_removed": 81,
+    "consolidation_ratio": "62.8%"
   }
 }

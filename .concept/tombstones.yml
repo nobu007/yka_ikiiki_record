@@ -222,3 +222,429 @@ tombstones:
     deleted_at: "2026-03-22"
     reason: "Removed as less critical constant group"
     consolidated_into: null
+
+  # Cycle 45 - Major consolidation to meet budget (129→48 terms)
+  # Stats subtypes consolidated
+  - term: MonthlyStats
+    id: "TERM-004"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into StatsSubTypes (TERM-003A) as part of budget optimization"
+    consolidated_into: "StatsSubTypes"
+
+  - term: StudentStats
+    id: "TERM-005"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into StatsSubTypes (TERM-003A) as part of budget optimization"
+    consolidated_into: "StatsSubTypes"
+
+  - term: DayOfWeekStats
+    id: "TERM-006"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into StatsSubTypes (TERM-003A) as part of budget optimization"
+    consolidated_into: "StatsSubTypes"
+
+  - term: TimeOfDayStats
+    id: "TERM-007"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into StatsSubTypes (TERM-003A) as part of budget optimization"
+    consolidated_into: "StatsSubTypes"
+
+  # Data generation types consolidated
+  - term: EmotionDistributionPattern
+    id: "TERM-012"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into DataGenerationConfig (TERM-011) as synonym"
+    consolidated_into: "DataGenerationConfig"
+
+  - term: SeasonalEffect
+    id: "TERM-090"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into DataGenerationConfig (TERM-011) as synonym"
+    consolidated_into: "DataGenerationConfig"
+
+  - term: EventEffect
+    id: "TERM-091"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into DataGenerationConfig (TERM-011) as synonym"
+    consolidated_into: "DataGenerationConfig"
+
+  - term: ClassCharacteristics
+    id: "TERM-092"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into DataGenerationConfig (TERM-011) as synonym"
+    consolidated_into: "DataGenerationConfig"
+
+  - term: EmotionRanges
+    id: "TERM-093"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into DataGenerationConfig (TERM-011) as synonym"
+    consolidated_into: "DataGenerationConfig"
+
+  - term: GenerationBounds
+    id: "TERM-094"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into DataGenerationConfig (TERM-011) as synonym"
+    consolidated_into: "DataGenerationConfig"
+
+  # Resilience types consolidated
+  - term: CircuitBreakerConfig
+    id: "TERM-100"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into CircuitBreaker (TERM-018) as synonym"
+    consolidated_into: "CircuitBreaker"
+
+  - term: CircuitState
+    id: "TERM-101"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into CircuitBreaker (TERM-018) as synonym"
+    consolidated_into: "CircuitBreaker"
+
+  - term: LogEntry
+    id: "TERM-099"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into StructuredLogger (TERM-019) as synonym"
+    consolidated_into: "StructuredLogger"
+
+  - term: LogLevel
+    id: "TERM-102"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into StructuredLogger (TERM-019) as synonym"
+    consolidated_into: "StructuredLogger"
+
+  - term: ErrorCodeType
+    id: "TERM-103"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into AppError (TERM-021) as synonym"
+    consolidated_into: "AppError"
+
+  # Repository consolidated
+  - term: PrismaSeedRepository
+    id: "TERM-073"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into PrismaStatsRepository (TERM-023) as synonym"
+    consolidated_into: "PrismaStatsRepository"
+
+  # React hooks consolidated
+  - term: useStats
+    id: "TERM-036"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ReactHooks (TERM-036) as synonym"
+    consolidated_into: "ReactHooks"
+
+  - term: useDataGeneration
+    id: "TERM-037"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ReactHooks (TERM-036) as synonym"
+    consolidated_into: "ReactHooks"
+
+  - term: useSeedGeneration
+    id: "TERM-038"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ReactHooks (TERM-036) as synonym"
+    consolidated_into: "ReactHooks"
+
+  - term: useAsync
+    id: "TERM-039"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ReactHooks (TERM-036) as synonym"
+    consolidated_into: "ReactHooks"
+
+  - term: useNotification
+    id: "TERM-040"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ReactHooks (TERM-036) as synonym"
+    consolidated_into: "ReactHooks"
+
+  - term: useDashboard
+    id: "TERM-088"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ReactHooks (TERM-036) as synonym"
+    consolidated_into: "ReactHooks"
+
+  - term: AsyncState
+    id: "TERM-116"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ReactHooks (TERM-036) as synonym"
+    consolidated_into: "ReactHooks"
+
+  - term: NotificationState
+    id: "TERM-117"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ReactHooks (TERM-036) as synonym"
+    consolidated_into: "ReactHooks"
+
+  # API/Validation types consolidated
+  - term: ZodSchema
+    id: "TERM-104"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into DataValidator (TERM-045) as synonym"
+    consolidated_into: "DataValidator"
+
+  - term: ApiResponse
+    id: "TERM-097"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into APIResponseBuilder (TERM-046) as synonym"
+    consolidated_into: "APIResponseBuilder"
+
+  - term: JsonReadable
+    id: "TERM-125"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into APIResponseBuilder (TERM-046) as synonym"
+    consolidated_into: "APIResponseBuilder"
+
+  - term: SeedRequest
+    id: "TERM-126"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into APIResponseBuilder (TERM-046) as synonym"
+    consolidated_into: "APIResponseBuilder"
+
+  - term: SeedResponse
+    id: "TERM-127"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into APIResponseBuilder (TERM-046) as synonym"
+    consolidated_into: "APIResponseBuilder"
+
+  - term: StatsResponse
+    id: "TERM-128"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into APIResponseBuilder (TERM-046) as synonym"
+    consolidated_into: "APIResponseBuilder"
+
+  - term: StatsData
+    id: "TERM-129"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into APIResponseBuilder (TERM-046) as synonym"
+    consolidated_into: "APIResponseBuilder"
+
+  - term: APITimeout
+    id: "TERM-071"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ResilientHandler (TERM-044) as synonym"
+    consolidated_into: "ResilientHandler"
+
+  # UI components consolidated
+  - term: Notification
+    id: "TERM-051"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into UIComponents (TERM-051) as synonym"
+    consolidated_into: "UIComponents"
+
+  - term: LoadingSpinner
+    id: "TERM-052"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into UIComponents (TERM-051) as synonym"
+    consolidated_into: "UIComponents"
+
+  - term: PageBreadCrumb
+    id: "TERM-065"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into UIComponents (TERM-051) as synonym"
+    consolidated_into: "UIComponents"
+
+  - term: UsageInstructions
+    id: "TERM-067"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into UIComponents (TERM-051) as synonym"
+    consolidated_into: "UIComponents"
+
+  - term: GridShape
+    id: "TERM-095"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into UIComponents (TERM-051) as synonym"
+    consolidated_into: "UIComponents"
+
+  - term: Button
+    id: "TERM-096"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into UIComponents (TERM-051) as synonym"
+    consolidated_into: "UIComponents"
+
+  - term: Icons
+    id: "TERM-072"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into UIComponents (TERM-051) as synonym"
+    consolidated_into: "UIComponents"
+
+  # UI contexts consolidated
+  - term: ThemeContext
+    id: "TERM-086"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into UIContexts (TERM-056) as synonym"
+    consolidated_into: "UIContexts"
+
+  - term: SidebarContext
+    id: "TERM-087"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into UIContexts (TERM-056) as synonym"
+    consolidated_into: "UIContexts"
+
+  # Dashboard sub-components consolidated
+  - term: StatsDisplay
+    id: "TERM-081"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into Dashboard (TERM-050) as synonym"
+    consolidated_into: "Dashboard"
+
+  - term: DataGenerationPanel
+    id: "TERM-082"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into Dashboard (TERM-050) as synonym"
+    consolidated_into: "Dashboard"
+
+  - term: GenerationControls
+    id: "TERM-083"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into Dashboard (TERM-050) as synonym"
+    consolidated_into: "Dashboard"
+
+  - term: EventManager
+    id: "TERM-084"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into Dashboard (TERM-050) as synonym"
+    consolidated_into: "Dashboard"
+
+  - term: ClassCharacteristicsEditor
+    id: "TERM-085"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into Dashboard (TERM-050) as synonym"
+    consolidated_into: "Dashboard"
+
+  - term: DataVisualization
+    id: "TERM-068"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into Dashboard (TERM-050) as synonym"
+    consolidated_into: "Dashboard"
+
+  - term: DataSection
+    id: "TERM-069"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into Dashboard (TERM-050) as synonym"
+    consolidated_into: "Dashboard"
+
+  - term: InstructionsSection
+    id: "TERM-070"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into Dashboard (TERM-050) as synonym"
+    consolidated_into: "Dashboard"
+
+  # Constants consolidated
+  - term: UIConstants
+    id: "TERM-056"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: APIEndpoint
+    id: "TERM-105"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: HttpStatus
+    id: "TERM-106"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: ApiErrorMessage
+    id: "TERM-107"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: UIMessage
+    id: "TERM-108"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: ChartTitle
+    id: "TERM-109"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: AccessibilityMessage
+    id: "TERM-110"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: WindowEvent
+    id: "TERM-111"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: reloadPage
+    id: "TERM-112"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: StorageConstant
+    id: "TERM-113"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: UIConstant
+    id: "TERM-114"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: ResilienceConstant
+    id: "TERM-115"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  - term: TimeoutConfig
+    id: "TERM-098"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into ApplicationConstants (TERM-097) as synonym"
+    consolidated_into: "ApplicationConstants"
+
+  # Test utilities consolidated
+  - term: MockFetchResponse
+    id: "TERM-118"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into TestUtilities (TERM-118) as synonym"
+    consolidated_into: "TestUtilities"
+
+  - term: setupMockFetch
+    id: "TERM-119"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into TestUtilities (TERM-118) as synonym"
+    consolidated_into: "TestUtilities"
+
+  - term: isNotNullOrUndefined
+    id: "TERM-120"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into TestUtilities (TERM-118) as synonym"
+    consolidated_into: "TestUtilities"
+
+  - term: getFirstMockCallArg
+    id: "TERM-121"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into TestUtilities (TERM-118) as synonym"
+    consolidated_into: "TestUtilities"
+
+  - term: expectClasses
+    id: "TERM-122"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into TestUtilities (TERM-118) as synonym"
+    consolidated_into: "TestUtilities"
+
+  - term: mockProcessEnv
+    id: "TERM-123"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into TestUtilities (TERM-118) as synonym"
+    consolidated_into: "TestUtilities"
+
+  - term: IntegrationTest
+    id: "TERM-124"
+    deleted_at: "2026-03-22T05:00:00Z"
+    reason: "Consolidated into TestUtilities (TERM-118) as synonym"
+    consolidated_into: "TestUtilities"

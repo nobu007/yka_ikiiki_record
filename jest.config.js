@@ -38,8 +38,11 @@ module.exports = {
       testEnvironment: 'jsdom',
       testMatch: [
         '<rootDir>/src/**/*.test.ts?(x)',
-        '!<rootDir>/src/infrastructure/repositories/**/*.test.ts',
-        '!<rootDir>/src/lib/resilience/**/*.test.ts',
+      ],
+      testPathIgnorePatterns: [
+        '/node_modules/',
+        '<rootDir>/src/infrastructure/repositories/',
+        '<rootDir>/src/lib/resilience/',
       ],
       setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
       moduleNameMapper: {

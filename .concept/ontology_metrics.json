@@ -1,19 +1,19 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T04:55:00.000Z",
-  "run_index": 43,
+  "last_updated": "2026-03-22T05:00:00.000Z",
+  "run_index": 44,
   "phase": "quality_improvement",
   "terms": {
-    "total": 77,
+    "total": 106,
     "core": 7,
-    "domain": 29,
-    "aux": 41,
+    "domain": 47,
+    "aux": 52,
     "draft": 0,
-    "stable": 77
+    "stable": 106
   },
   "mappings": {
-    "total": 77,
-    "with_code_symbols": 77,
+    "total": 106,
+    "with_code_symbols": 106,
     "with_db": 2,
     "with_api": 13,
     "unmapped": 0
@@ -24,7 +24,7 @@
     "soft": 24
   },
   "quality_metrics": {
-    "ontology_coverage": "67%",
+    "ontology_coverage": "82%",
     "mapping_saturation": "100%",
     "draft_ratio": "0%",
     "unmapped_ratio": "0%",
@@ -34,6 +34,6 @@
   "test_results": {
     "test_suites": 177,
     "tests_passed": 1312,
-    "timestamp": "2026-03-22T04:55:00.000Z"
+    "timestamp": "2026-03-22T05:00:00.000Z"
   }
 }

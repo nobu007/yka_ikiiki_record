@@ -516,3 +516,183 @@ mappings:
       - "src/lib/resilience/structured-logger.ts::interface LogEntry"
     db: []
     api: []
+
+  CircuitBreakerConfig:
+    code_symbols:
+      - "src/lib/resilience/circuit-breaker.ts::interface CircuitBreakerConfig"
+    db: []
+    api: []
+
+  CircuitState:
+    code_symbols:
+      - "src/lib/resilience/circuit-breaker.ts::type CircuitState"
+    db: []
+    api: []
+
+  LogLevel:
+    code_symbols:
+      - "src/lib/resilience/structured-logger.ts::type LogLevel"
+    db: []
+    api: []
+
+  ErrorCodeType:
+    code_symbols:
+      - "src/lib/error-handler.ts::type ErrorCodeType"
+    db: []
+    api: []
+
+  ZodSchema:
+    code_symbols:
+      - "src/schemas/api.ts"
+    db: []
+    api: []
+
+  APIEndpoint:
+    code_symbols:
+      - "src/lib/constants/api.ts::const API_ENDPOINTS"
+    db: []
+    api: []
+
+  HttpStatus:
+    code_symbols:
+      - "src/lib/constants/api.ts::const HTTP_STATUS"
+    db: []
+    api: []
+
+  ApiErrorMessage:
+    code_symbols:
+      - "src/lib/constants/api.ts::const API_ERROR_MESSAGES"
+    db: []
+    api: []
+
+  UIMessage:
+    code_symbols:
+      - "src/lib/constants/messages.ts"
+    db: []
+    api: []
+
+  ChartTitle:
+    code_symbols:
+      - "src/lib/constants/messages.ts::const CHART_TITLES"
+    db: []
+    api: []
+
+  AccessibilityMessage:
+    code_symbols:
+      - "src/lib/constants/messages.ts::const ACCESSIBILITY_MESSAGES"
+    db: []
+    api: []
+
+  WindowEvent:
+    code_symbols:
+      - "src/lib/constants/browser.ts::const WINDOW_EVENTS"
+    db: []
+    api: []
+
+  reloadPage:
+    code_symbols:
+      - "src/lib/constants/browser.ts::function reloadPage"
+    db: []
+    api: []
+
+  StorageConstant:
+    code_symbols:
+      - "src/lib/constants/storage.ts"
+    db: []
+    api: []
+
+  UIConstant:
+    code_symbols:
+      - "src/lib/constants/ui.ts::const THEME, BREAKPOINTS"
+    db: []
+    api: []
+
+  ResilienceConstant:
+    code_symbols:
+      - "src/lib/constants/resilience.ts"
+    db: []
+    api: []
+
+  AsyncState:
+    code_symbols:
+      - "src/hooks/useAsync.ts::interface AsyncState"
+    db: []
+    api: []
+
+  NotificationState:
+    code_symbols:
+      - "src/hooks/useNotification.ts::interface NotificationState"
+    db: []
+    api: []
+
+  MockFetchResponse:
+    code_symbols:
+      - "src/test-utils/api-helpers.ts::type MockFetchResponse"
+    db: []
+    api: []
+
+  setupMockFetch:
+    code_symbols:
+      - "src/test-utils/api-helpers.ts::function setupMockFetch"
+    db: []
+    api: []
+
+  isNotNullOrUndefined:
+    code_symbols:
+      - "src/test-utils/mock-helpers.ts::function isNotNullOrUndefined"
+    db: []
+    api: []
+
+  getFirstMockCallArg:
+    code_symbols:
+      - "src/test-utils/mock-helpers.ts::function getFirstMockCallArg"
+    db: []
+    api: []
+
+  expectClasses:
+    code_symbols:
+      - "src/test-utils/component-helpers.ts::function expectClasses"
+    db: []
+    api: []
+
+  mockProcessEnv:
+    code_symbols:
+      - "src/test-utils/component-helpers.ts::function mockProcessEnv"
+    db: []
+    api: []
+
+  IntegrationTest:
+    code_symbols:
+      - "src/integration/"
+    db: []
+    api: []
+
+  JsonReadable:
+    code_symbols:
+      - "src/lib/api/error-handler.ts::interface JsonReadable"
+    db: []
+    api: []
+
+  SeedRequest:
+    code_symbols:
+      - "src/schemas/api.ts::type SeedRequest"
+    db: []
+    api: []
+
+  SeedResponse:
+    code_symbols:
+      - "src/schemas/api.ts::type SeedResponse"
+    db: []
+    api: []
+
+  StatsResponse:
+    code_symbols:
+      - "src/schemas/api.ts::type StatsResponse"
+    db: []
+    api: []
+
+  StatsData:
+    code_symbols:
+      - "src/schemas/api.ts::type StatsData"
+    db: []
+    api: []

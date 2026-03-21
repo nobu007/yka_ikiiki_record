@@ -1106,6 +1106,426 @@ canonical_terms:
       - source: "src/lib/resilience/structured-logger.ts"
         quote: "export interface LogEntry"
 
+  CircuitBreakerConfig:
+    id: "TERM-100"
+    layer: "domain"
+    status: "stable"
+    definition: "サーキットブレーカーの設定。失敗しきい値、リセットタイムアウト、監視間隔を含む"
+    synonyms: []
+    boundaries:
+      includes: ["失敗しきい値", "リセットタイムアウト", "監視間隔"]
+      excludes: []
+    related_terms: ["CircuitBreaker"]
+    evidence:
+      - source: "src/lib/resilience/circuit-breaker.ts"
+        quote: "export interface CircuitBreakerConfig"
+
+  CircuitState:
+    id: "TERM-101"
+    layer: "domain"
+    status: "stable"
+    definition: "サーキットブレーカーの状態。CLOSED（正常）, OPEN（遮断）, HALF_OPEN（試行）の3状態"
+    synonyms: []
+    boundaries:
+      includes: ["CLOSED", "OPEN", "HALF_OPEN"]
+      excludes: []
+    related_terms: ["CircuitBreaker"]
+    evidence:
+      - source: "src/lib/resilience/circuit-breaker.ts"
+        quote: "export type CircuitState = 'CLOSED' | 'OPEN' | 'HALF_OPEN'"
+
+  LogLevel:
+    id: "TERM-102"
+    layer: "aux"
+    status: "stable"
+    definition: "ログレベルの種類。DEBUG, INFO, WARN, ERRORの4レベル"
+    synonyms: []
+    boundaries:
+      includes: ["DEBUG", "INFO", "WARN", "ERROR"]
+      excludes: []
+    related_terms: ["StructuredLogger", "LogEntry"]
+    evidence:
+      - source: "src/lib/resilience/structured-logger.ts"
+        quote: "export type LogLevel = (typeof LOG_LEVELS)[keyof typeof LOG_LEVELS]"
+
+  ErrorCodeType:
+    id: "TERM-103"
+    layer: "domain"
+    status: "stable"
+    definition: "アプリケーションエラーコードの型。検証、ネットワーク、タイムアウト、サーキットブレーカー、無限ループエラーコードを含む"
+    synonyms: []
+    boundaries:
+      includes: ["検証エラーコード", "ネットワークエラーコード", "タイムアウトエラーコード"]
+      excludes: []
+    related_terms: ["AppError"]
+    evidence:
+      - source: "src/lib/error-handler.ts"
+        quote: "export type ErrorCodeType = (typeof ERROR_CODES)[keyof typeof ERROR_CODES]"
+
+  ZodSchema:
+    id: "TERM-104"
+    layer: "domain"
+    status: "stable"
+    definition: "Zodライブラリを使用したAPIスキーマ定義。Record、DataGenerationConfig、EventEffect、ClassCharacteristicsのバリデーションスキーマを含む"
+    synonyms: ["ValidationSchema"]
+    boundaries:
+      includes: ["RecordSchema", "DataGenerationConfigSchema", "EventEffectSchema"]
+      excludes: ["実装ロジック"]
+    related_terms: ["DataValidator", "Record", "DataGenerationConfig"]
+    evidence:
+      - source: "src/schemas/api.ts"
+        quote: "export const RecordSchema = z.object({...})"
+
+  APIEndpoint:
+    id: "TERM-105"
+    layer: "domain"
+    status: "stable"
+    definition: "APIエンドポイントのパス定数。SEED, STATS, EXPORT, HEALTH, METRICS, ANALYTICSエンドポイントを含む"
+    synonyms: ["APIRoute"]
+    boundaries:
+      includes: ["/api/seed", "/api/stats", "/api/export", "/api/health"]
+      excludes: []
+    related_terms: ["APIRouteHandler"]
+    evidence:
+      - source: "src/lib/constants/api.ts"
+        quote: "export const API_ENDPOINTS = { SEED: '/api/seed', STATS: '/api/stats', ... }"
+
+  HttpStatus:
+    id: "TERM-106"
+    layer: "aux"
+    status: "stable"
+    definition: "HTTPステータスコード定数。OK(200), CREATED(201), BAD_REQUEST(400), UNAUTHORIZED(401), FORBIDDEN(403), NOT_FOUND(404), INTERNAL_SERVER_ERROR(500)を含む"
+    synonyms: ["HTTPStatusCodes"]
+    boundaries:
+      includes: ["200", "201", "400", "401", "403", "404", "500"]
+      excludes: []
+    related_terms: ["APIRouteHandler", "ApiResponse"]
+    evidence:
+      - source: "src/lib/constants/api.ts"
+        quote: "export const HTTP_STATUS = { OK: 200, CREATED: 201, BAD_REQUEST: 400, ... }"
+
+  ApiErrorMessage:
+    id: "TERM-107"
+    layer: "aux"
+    status: "stable"
+    definition: "APIエラーメッセージ定数。検証、認証、サーバー、データ関連のエラーメッセージを含む"
+    synonyms: []
+    boundaries:
+      includes: ["検証エラーメッセージ", "認証エラーメッセージ", "サーバーエラーメッセージ"]
+      excludes: []
+    related_terms: ["APIRouteHandler"]
+    evidence:
+      - source: "src/lib/constants/api.ts"
+        quote: "export const API_ERROR_MESSAGES = { VALIDATION: {...}, AUTH: {...}, SERVER: {...} }"
+
+  UIMessage:
+    id: "TERM-108"
+    layer: "aux"
+    status: "stable"
+    definition: "UIメッセージ定数群。成功、ローディング、エラーメッセージ、ダッシュボード、ランディング、機能説明、チャートタイトルを含む"
+    synonyms: []
+    boundaries:
+      includes: ["成功メッセージ", "エラーメッセージ", "UIテキスト", "チャートタイトル"]
+      excludes: []
+    related_terms: ["Dashboard"]
+    evidence:
+      - source: "src/lib/constants/messages.ts"
+        quote: "export const SUCCESS_MESSAGES, LOADING_MESSAGES, ERROR_MESSAGES, UI_TEXT"
+
+  ChartTitle:
+    id: "TERM-109"
+    layer: "aux"
+    status: "stable"
+    definition: "チャートタイトル定数。データ概要、総記録数、平均感情スコア、月別・曜日別・時間帯別平均感情スコア、感情分布等のタイトルを含む"
+    synonyms: []
+    boundaries:
+      includes: ["データ概要", "総記録数", "平均感情スコア", "月別統計"]
+      excludes: []
+    related_terms: ["EmotionChart", "Stats"]
+    evidence:
+      - source: "src/lib/constants/messages.ts"
+        quote: "export const CHART_TITLES = { DATA_OVERVIEW: 'データ概要', TOTAL_RECORDS: '総記録数', ... }"
+
+  AccessibilityMessage:
+    id: "TERM-110"
+    layer: "aux"
+    status: "stable"
+    definition: "アクセシビリティ用メッセージ定数。グリッド、チャートのローディング、エラー、通知、データなし状態のARIAラベルを含む"
+    synonyms: ["ARIALabel"]
+    boundaries:
+      includes: ["ARIAラベル", "アクセシビリティメッセージ"]
+      excludes: []
+    related_terms: ["EmotionChart", "ChartWrapper"]
+    evidence:
+      - source: "src/lib/constants/messages.ts"
+        quote: "export const ACCESSIBILITY_MESSAGES = { GRID_SHAPE_ALT: 'grid', CHART_LOADING: 'グラフローディング中', ... }"
+
+  WindowEvent:
+    id: "TERM-111"
+    layer: "aux"
+    status: "stable"
+    definition: "ブラウザWindowイベント定数。リサイズイベント等のイベント名定数を含む"
+    synonyms: []
+    boundaries:
+      includes: ["resizeイベント"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/lib/constants/browser.ts"
+        quote: "export const WINDOW_EVENTS = { RESIZE: 'resize' }"
+
+  reloadPage:
+    id: "TERM-112"
+    layer: "aux"
+    status: "stable"
+    definition: "ページをリロードするユーティリティ関数。window.location.reload()のラッパー"
+    synonyms: []
+    boundaries:
+      includes: ["ページリロード"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/lib/constants/browser.ts"
+        quote: "export const reloadPage = (): void => { window.location.reload(); }"
+
+  StorageConstant:
+    id: "TERM-113"
+    layer: "aux"
+    status: "stable"
+    definition: "ストレージ関連定数。ローカルストレージキー、ストレージ制限、セッションストレージキーを含む"
+    synonyms: []
+    boundaries:
+      includes: ["ローカルストレージキー", "セッションストレージキー"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/lib/constants/storage.ts"
+        quote: "export const STORAGE_KEYS, STORAGE_LIMITS"
+
+  UIConstant:
+    id: "TERM-114"
+    layer: "aux"
+    status: "stable"
+    definition: "UI関連定数。テーマ設定、ブレークポイント、カラー、サイズを含む"
+    synonyms: []
+    boundaries:
+      includes: ["テーマ設定", "ブレークポイント"]
+      excludes: []
+    related_terms: ["ThemeContext"]
+    evidence:
+      - source: "src/lib/constants/ui.ts"
+        quote: "export const THEME, BREAKPOINTS"
+
+  ResilienceConstant:
+    id: "TERM-115"
+    layer: "domain"
+    status: "stable"
+    definition: "レジリエンス機能関連定数。タイムアウト、リトライ、サーキットブレーカーのデフォルト値を含む"
+    synonyms: []
+    boundaries:
+      includes: ["タイムアウト値", "リトライ回数"]
+      excludes: []
+    related_terms: ["CircuitBreaker", "APITimeout"]
+    evidence:
+      - source: "src/lib/constants/resilience.ts"
+        quote: "export const TIMEOUT_DEFAULT, RETRY_DEFAULT, CIRCUIT_BREAKER_DEFAULT"
+
+  AsyncState:
+    id: "TERM-116"
+    layer: "domain"
+    status: "stable"
+    definition: "非同期操作の状態を表すインターフェース。ローディング状態、データ、エラーを含む"
+    synonyms: []
+    boundaries:
+      includes: ["ローディング状態", "データ", "エラー"]
+      excludes: []
+    related_terms: ["useAsync"]
+    evidence:
+      - source: "src/hooks/useAsync.ts"
+        quote: "export interface AsyncState<T> { isLoading: boolean; data: T | null; error: Error | null; }"
+
+  NotificationState:
+    id: "TERM-117"
+    layer: "domain"
+    status: "stable"
+    definition: "通知の状態を表すインターフェース。メッセージ、タイプ、表示状態を含む"
+    synonyms: []
+    boundaries:
+      includes: ["メッセージ", "タイプ", "表示状態"]
+      excludes: []
+    related_terms: ["useNotification", "Notification"]
+    evidence:
+      - source: "src/hooks/useNotification.ts"
+        quote: "export interface NotificationState { message: string; type: 'success' | 'error'; visible: boolean; }"
+
+  MockFetchResponse:
+    id: "TERM-118"
+    layer: "aux"
+    status: "stable"
+    definition: "モックフェッチレスポンス型。okステータス、ステータスコード、データを含むテスト用型"
+    synonyms: []
+    boundaries:
+      includes: ["ok", "status", "data"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/test-utils/api-helpers.ts"
+        quote: "export type MockFetchResponse = { ok: boolean; status: number; data: unknown; }"
+
+  setupMockFetch:
+    id: "TERM-119"
+    layer: "aux"
+    status: "stable"
+    definition: "フェッチAPIをモックに置き換えるテストユーティリティ"
+    synonyms: []
+    boundaries:
+      includes: ["フェッチモック"]
+      excludes: []
+    related_terms: ["MockFetchResponse"]
+    evidence:
+      - source: "src/test-utils/api-helpers.ts"
+        quote: "export function setupMockFetch(): jest.MockedFunction<typeof fetch>"
+
+  isNotNullOrUndefined:
+    id: "TERM-120"
+    layer: "aux"
+    status: "stable"
+    definition: "値がnullまたはundefinedでないことを判定する型ガード関数"
+    synonyms: []
+    boundaries:
+      includes: ["nullチェック", "undefinedチェック", "型ガード"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/test-utils/mock-helpers.ts"
+        quote: "export function isNotNullOrUndefined<T>(value: T | null | undefined): value is T"
+
+  getFirstMockCallArg:
+    id: "TERM-121"
+    layer: "aux"
+    status: "stable"
+    definition: "Jestモックの最初の呼び出し引数を取得するテストユーティリティ"
+    synonyms: []
+    boundaries:
+      includes: ["モック呼び出し取得"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/test-utils/mock-helpers.ts"
+        quote: "export function getFirstMockCallArg<T>(mock: jest.Mock): T | null"
+
+  expectClasses:
+    id: "TERM-122"
+    layer: "aux"
+    status: "stable"
+    definition: "React要素が特定のCSSクラスを持つことをアサートするテストユーティリティ"
+    synonyms: []
+    boundaries:
+      includes: ["CSSクラスアサーション"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/test-utils/component-helpers.ts"
+        quote: "export function expectClasses(element: ReactTestInstance, classNames: string[]): void"
+
+  mockProcessEnv:
+    id: "TERM-123"
+    layer: "aux"
+    status: "stable"
+    definition: "process.envをモックするテストユーティリティ。NODE_ENV等の環境変数を設定"
+    synonyms: []
+    boundaries:
+      includes: ["環境変数モック"]
+      excludes: []
+    related_terms: ["EnvConfig"]
+    evidence:
+      - source: "src/test-utils/component-helpers.ts"
+        quote: "export function mockProcessEnv(envValue: 'development' | 'production'): { restore: () => void }"
+
+  IntegrationTest:
+    id: "TERM-124"
+    layer: "aux"
+    status: "stable"
+    definition: "統合テスト。ダッシュボードの統合テスト、振る舞いテスト、フローテストを含む"
+    synonyms: []
+    boundaries:
+      includes: ["統合テスト", "E2Eテスト"]
+      excludes: ["ユニットテスト"]
+    related_terms: ["Dashboard"]
+    evidence:
+      - source: "src/integration/dashboard.integration.behavior.test.tsx"
+        quote: "describe('Dashboard Integration Tests'"
+
+  JsonReadable:
+    id: "TERM-125"
+    layer: "domain"
+    status: "stable"
+    definition: "JSON読み取り可能なリクエストオブジェクトの型。NextRequest等のJSONメソッドを持つオブジェクト"
+    synonyms: []
+    boundaries:
+      includes: ["json()メソッド"]
+      excludes: []
+    related_terms: ["APIRouteHandler", "DataValidator"]
+    evidence:
+      - source: "src/lib/api/error-handler.ts"
+        quote: "export interface JsonReadable { json(): Promise<unknown>; }"
+
+  SeedRequest:
+    id: "TERM-126"
+    layer: "domain"
+    status: "stable"
+    definition: "シードデータ生成リクエスト型。データ生成設定を含む"
+    synonyms: []
+    boundaries:
+      includes: ["データ生成設定"]
+      excludes: []
+    related_terms: ["DataGenerationConfig", "APIRouteHandler"]
+    evidence:
+      - source: "src/schemas/api.ts"
+        quote: "export type SeedRequest = z.infer<typeof SeedRequestSchema>"
+
+  SeedResponse:
+    id: "TERM-127"
+    layer: "domain"
+    status: "stable"
+    definition: "シードデータ生成レスポンス型。成功フラグ、統計データを含む"
+    synonyms: []
+    boundaries:
+      includes: ["成功フラグ", "統計データ"]
+      excludes: []
+    related_terms: ["Stats", "APIRouteHandler"]
+    evidence:
+      - source: "src/schemas/api.ts"
+        quote: "export type SeedResponse = z.infer<typeof SeedResponseSchema>"
+
+  StatsResponse:
+    id: "TERM-128"
+    layer: "domain"
+    status: "stable"
+    definition: "統計データレスポンス型。成功フラグ、統計データを含む"
+    synonyms: []
+    boundaries:
+      includes: ["成功フラグ", "統計データ"]
+      excludes: []
+    related_terms: ["Stats", "APIRouteHandler"]
+    evidence:
+      - source: "src/schemas/api.ts"
+        quote: "export type StatsResponse = z.infer<typeof StatsResponseSchema>"
+
+  StatsData:
+    id: "TERM-129"
+    layer: "domain"
+    status: "stable"
+    definition: "統計データ型。Stats型のエイリアス"
+    synonyms: []
+    boundaries:
+      includes: ["統計データ"]
+      excludes: []
+    related_terms: ["Stats"]
+    evidence:
+      - source: "src/schemas/api.ts"
+        quote: "export type StatsData = z.infer<typeof StatsDataSchema>"
+
 
 
 

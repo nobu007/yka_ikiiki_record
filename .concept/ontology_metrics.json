@@ -1,30 +1,30 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T05:15:00.000Z",
-  "run_index": 45,
+  "last_updated": "2026-03-21T20:08:36.345368+00:00",
+  "run_index": 47,
   "phase": "maintenance",
   "terms": {
-    "total": 48,
-    "core": 9,
-    "domain": 17,
-    "aux": 22,
+    "total": 43,
+    "core": 7,
+    "domain": 18,
+    "aux": 18,
     "draft": 0,
-    "stable": 48
+    "stable": 43
   },
   "mappings": {
-    "total": 48,
-    "with_code_symbols": 48,
-    "with_db": 2,
-    "with_api": 5,
+    "total": 43,
+    "with_code_symbols": 43,
+    "with_db": 3,
+    "with_api": 6,
     "unmapped": 0
   },
   "invariants": {
     "total": 89,
-    "hard": 65,
-    "soft": 24
+    "hard": 50,
+    "soft": 7
   },
   "quality_metrics": {
-    "ontology_coverage": "82%",
+    "ontology_coverage": "85%",
     "mapping_saturation": "100%",
     "draft_ratio": "0%",
     "unmapped_ratio": "0%",
@@ -34,12 +34,12 @@
   "test_results": {
     "test_suites": 177,
     "tests_passed": 1312,
-    "timestamp": "2026-03-22T05:15:00.000Z"
+    "timestamp": "2026-03-21T20:08:36.345441+00:00"
   },
   "consolidation_summary": {
     "previous_terms": 129,
-    "current_terms": 48,
-    "terms_removed": 81,
-    "consolidation_ratio": "62.8%"
+    "current_terms": 43,
+    "terms_removed": 86,
+    "consolidation_ratio": "66.7%"
   }
 }

@@ -83,24 +83,34 @@ mappings:
     api: []
 
   CleanArchitecture:
-    code_symbols: []
+    code_symbols:
+      - "README.md:16-20"
+      - "SYSTEM_CONSTITUTION.md"
     db: []
     api: []
 
   DomainLayer:
     code_symbols:
       - "src/domain/"
+      - "src/domain/entities/"
+      - "src/domain/services/"
+      - "src/domain/repositories/"
     db: []
     api: []
 
   InfrastructureLayer:
     code_symbols:
       - "src/infrastructure/"
+      - "src/infrastructure/storage/"
+      - "src/infrastructure/repositories/"
+      - "src/infrastructure/factories/"
       - "src/app/api/"
     db: []
     api: []
 
   SingleResponsibilityPrinciple:
-    code_symbols: []
+    code_symbols:
+      - ".concept/invariants.yml:9-16"
+      - "SYSTEM_CONSTITUTION.md"
     db: []
     api: []

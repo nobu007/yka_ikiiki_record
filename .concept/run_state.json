@@ -1,7 +1,7 @@
 {
-  "run_index": 36,
-  "last_run_id": "2026-03-22-036",
+  "run_index": 37,
+  "last_run_id": "2026-03-22-037",
   "last_run_date": "2026-03-22",
-  "phase": "quality_improvement",
-  "last_phase": "maintenance"
+  "phase": "maintenance",
+  "last_phase": "quality_improvement"
 }

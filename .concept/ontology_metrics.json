@@ -1,19 +1,19 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T04:40:00Z",
-  "run_index": 36,
-  "phase": "quality_improvement",
+  "last_updated": "2026-03-22T04:45:00Z",
+  "run_index": 37,
+  "phase": "maintenance",
   "terms": {
-    "total": 66,
+    "total": 60,
     "core": 7,
-    "domain": 22,
-    "aux": 37,
+    "domain": 20,
+    "aux": 33,
     "draft": 0,
-    "stable": 66
+    "stable": 60
   },
   "mappings": {
-    "total": 66,
-    "with_code_symbols": 66,
+    "total": 60,
+    "with_code_symbols": 60,
     "with_db": 2,
     "with_api": 13,
     "unmapped": 0
@@ -34,6 +34,6 @@
   "test_results": {
     "test_suites": 177,
     "tests_passed": 1312,
-    "timestamp": "2026-03-22T04:40:00Z"
+    "timestamp": "2026-03-22T04:45:00Z"
   }
 }

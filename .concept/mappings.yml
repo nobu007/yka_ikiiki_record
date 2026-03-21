@@ -318,6 +318,13 @@ mappings:
   Dashboard:
     code_symbols:
       - "src/components/Dashboard.tsx::function Dashboard"
+      - "src/app/(dashboard)/dashboard/page.tsx::function DashboardPage"
+      - "src/app/(dashboard)/layout.tsx::function DashboardLayout"
+      - "src/app/(chart)/bar-chart/page.tsx::function BarChartPage"
+      - "src/app/(chart)/bar-chart/components/BarChartContent.tsx::function BarChartContent"
+      - "src/app/layout.tsx::function RootLayout"
+      - "src/app/page.tsx::function HomePage"
+      - "src/app/not-found.tsx::function NotFound"
     db: []
     api: []
 
@@ -456,46 +463,5 @@ mappings:
   SidebarContext:
     code_symbols:
       - "src/context/SidebarContext.tsx::const SidebarContext"
-    db: []
-    api: []
-
-    code_symbols:
-      - "src/app/(dashboard)/dashboard/page.tsx::function DashboardPage"
-    db: []
-    api: []
-
-  BarChartPage:
-    code_symbols:
-      - "src/app/(chart)/bar-chart/page.tsx::function BarChartPage"
-    db: []
-    api: []
-
-  BarChartContent:
-    code_symbols:
-      - "src/app/(chart)/bar-chart/components/BarChartContent.tsx::function BarChartContent"
-    db: []
-    api: []
-
-  DashboardLayout:
-    code_symbols:
-      - "src/app/(dashboard)/layout.tsx::function DashboardLayout"
-    db: []
-    api: []
-
-  RootLayout:
-    code_symbols:
-      - "src/app/layout.tsx::function RootLayout"
-    db: []
-    api: []
-
-  HomePage:
-    code_symbols:
-      - "src/app/page.tsx::function HomePage"
-    db: []
-    api: []
-
-  NotFoundPage:
-    code_symbols:
-      - "src/app/not-found.tsx::function NotFound"
     db: []
     api: []

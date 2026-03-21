@@ -44,8 +44,7 @@ function parseMetricsLine(line: string): MetricsResponse["judgment"] | null {
   }
 
   const [
-    // @ts-expect-error - timestampStr is intentionally unused (first CSV column)
-    timestampStr,
+    _timestampStr,
     scoreStr,
     violationsStr,
     statementsStr,

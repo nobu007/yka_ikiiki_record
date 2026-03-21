@@ -38,7 +38,7 @@ interface DynamicBarChartProps {
 
 const DynamicBarChart = memo(function DynamicBarChart({
   data,
-  height = 300,
+  height = UI_CONSTANTS.CHART.HEIGHT.DEFAULT,
   title,
   isDark = false,
 }: DynamicBarChartProps) {

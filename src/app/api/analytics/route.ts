@@ -93,11 +93,11 @@ function calculateAnalytics(
   }
 
   const grouped = groupByPeriod(records, granularity);
-  const trend = Object.entries(grouped)
+  const trend = Array.from(grouped.entries())
     .map(([period, recs]) => ({
       period,
       avgEmotion:
-        (recs as RecordType[]).reduce((sum: number, r: RecordType) => sum + r.emotion, 0) / recs.length,
+        recs.reduce((sum: number, r: RecordType) => sum + r.emotion, 0) / recs.length,
       count: recs.length,
     }))
     .sort((a, b) => a.period.localeCompare(b.period));
@@ -132,27 +132,31 @@ function calculateAnalytics(
 function groupByPeriod(
   records: RecordType[],
   granularity: "day" | "week" | "month",
-): Record<string, RecordType[]> {
-  const grouped: Record<string, RecordType[]> = {};
+): Map<string, RecordType[]> {
+  const grouped = new Map<string, RecordType[]>();
 
   for (const record of records) {
     const date = new Date(record.date);
     let key: string;
 
     if (granularity === "day") {
-      key = date.toISOString().split("T")[0] ?? "";
+      const isoString = date.toISOString().split("T")[0];
+      key = isoString ?? date.toISOString().slice(0, 10);
     } else if (granularity === "week") {
       const weekStart = new Date(date);
       weekStart.setDate(date.getDate() - date.getDay());
-      key = weekStart.toISOString().split("T")[0] ?? "";
+      const isoString = weekStart.toISOString().split("T")[0];
+      key = isoString ?? weekStart.toISOString().slice(0, 10);
     } else {
       key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
     }
 
-    if (!grouped[key]) {
-      grouped[key] = [];
+    const existing = grouped.get(key);
+    if (existing) {
+      existing.push(record);
+    } else {
+      grouped.set(key, [record]);
     }
-    grouped[key]!.push(record);
   }
 
   return grouped;

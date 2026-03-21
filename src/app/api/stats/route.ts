@@ -7,7 +7,7 @@ import { createError } from "@/lib/api/error-handler";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { API_OPERATIONS } from "@/lib/constants/api";
 
-export async function GET(_req: NextRequest): Promise<NextResponse> {
+export async function GET(req: NextRequest): Promise<NextResponse> { // eslint-disable-line @typescript-eslint/no-unused-vars
   return withResilientHandler(
     async () => {
       const statsService = createStatsService();

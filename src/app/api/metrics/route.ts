@@ -44,7 +44,7 @@ function parseMetricsLine(line: string): MetricsResponse["judgment"] | null {
   }
 
   const [
-    _timestampStr,
+    timestampStr, // eslint-disable-line @typescript-eslint/no-unused-vars
     scoreStr,
     violationsStr,
     statementsStr,

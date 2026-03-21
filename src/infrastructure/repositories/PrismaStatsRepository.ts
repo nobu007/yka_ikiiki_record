@@ -40,7 +40,7 @@ export class PrismaStatsRepository implements StatsRepository {
           emotionDistribution: calculateEmotionDistribution(emotionData),
           timeOfDayStats: calculateTimeOfDayStats(emotionData),
         };
-      })()
+      })(),
     );
   }
 
@@ -49,7 +49,7 @@ export class PrismaStatsRepository implements StatsRepository {
       (async () => {
         const records = this.convertStatsToRecords(stats);
         await this.recordRepository.saveMany(records);
-      })()
+      })(),
     );
   }
 
@@ -59,7 +59,7 @@ export class PrismaStatsRepository implements StatsRepository {
         const { generateSeedData } =
           await import("@/infrastructure/repositories/PrismaSeedRepository");
         await generateSeedData();
-      })()
+      })(),
     );
   }
 

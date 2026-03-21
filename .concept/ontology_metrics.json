@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T03:40:00Z",
+  "last_updated": "2026-03-22T03:48:00Z",
   "terms": {
     "total": 61,
     "core": 9,
@@ -28,5 +28,10 @@
     "unmapped_ratio": "0%",
     "evidence_coverage": "100%",
     "invariant_extraction_rate": "55%"
+  },
+  "test_results": {
+    "test_suites": 177,
+    "tests_passed": 1312,
+    "timestamp": "2026-03-22T03:48:00Z"
   }
 }

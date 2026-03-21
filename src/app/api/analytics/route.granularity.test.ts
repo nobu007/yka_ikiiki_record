@@ -104,8 +104,8 @@ describe("GET /api/analytics - Granularity options", () => {
     const response = (await GET(request as never)) as Response;
     const data = await response.json();
 
-    const dayEntry = data.trend.find((t: { period: string }) =>
-      t.period === "2026-03-20"
+    const dayEntry = data.trend.find(
+      (t: { period: string }) => t.period === "2026-03-20",
     );
     expect(dayEntry).toBeDefined();
     expect(dayEntry.avgEmotion).toBe(4.5);

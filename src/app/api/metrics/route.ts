@@ -54,8 +54,15 @@ function parseMetricsLine(line: string): MetricsResponse["judgment"] | null {
     testPassRateStr,
   ] = values;
 
-  if (!scoreStr || !violationsStr || !statementsStr || !branchesStr ||
-      !anyTypesStr || !eslintWarningsStr || !testPassRateStr) {
+  if (
+    !scoreStr ||
+    !violationsStr ||
+    !statementsStr ||
+    !branchesStr ||
+    !anyTypesStr ||
+    !eslintWarningsStr ||
+    !testPassRateStr
+  ) {
     return null;
   }
 
@@ -67,10 +74,15 @@ function parseMetricsLine(line: string): MetricsResponse["judgment"] | null {
   const eslintWarnings = parseInt(eslintWarningsStr, 10);
   const testPassRate = parseFloat(testPassRateStr);
 
-  if (isNaN(score) || isNaN(cleanArchitectureViolations) ||
-      isNaN(statements) || isNaN(branches) ||
-      isNaN(anyTypes) || isNaN(eslintWarnings) ||
-      isNaN(testPassRate)) {
+  if (
+    isNaN(score) ||
+    isNaN(cleanArchitectureViolations) ||
+    isNaN(statements) ||
+    isNaN(branches) ||
+    isNaN(anyTypes) ||
+    isNaN(eslintWarnings) ||
+    isNaN(testPassRate)
+  ) {
     return null;
   }
 

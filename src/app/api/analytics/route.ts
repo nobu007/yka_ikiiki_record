@@ -97,14 +97,14 @@ function calculateAnalytics(
     .map(([period, recs]) => ({
       period,
       avgEmotion:
-        recs.reduce((sum: number, r: RecordType) => sum + r.emotion, 0) / recs.length,
+        recs.reduce((sum: number, r: RecordType) => sum + r.emotion, 0) /
+        recs.length,
       count: recs.length,
     }))
     .sort((a, b) => a.period.localeCompare(b.period));
 
   const emotions = records.map((r) => r.emotion);
-  const overallAvg =
-    emotions.reduce((sum, e) => sum + e, 0) / emotions.length;
+  const overallAvg = emotions.reduce((sum, e) => sum + e, 0) / emotions.length;
   const minEmotion = Math.min(...emotions);
   const maxEmotion = Math.max(...emotions);
 
@@ -173,10 +173,10 @@ function calculateTrendDirection(
   const firstHalf = trend.slice(0, midPoint);
   const secondHalf = trend.slice(midPoint);
 
-  const firstHalfAvg = firstHalf.reduce((sum, t) => sum + t.avgEmotion, 0) /
-    firstHalf.length;
-  const secondHalfAvg = secondHalf.reduce((sum, t) => sum + t.avgEmotion, 0) /
-    secondHalf.length;
+  const firstHalfAvg =
+    firstHalf.reduce((sum, t) => sum + t.avgEmotion, 0) / firstHalf.length;
+  const secondHalfAvg =
+    secondHalf.reduce((sum, t) => sum + t.avgEmotion, 0) / secondHalf.length;
 
   const diff = secondHalfAvg - firstHalfAvg;
 

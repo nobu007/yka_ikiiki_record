@@ -43,7 +43,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         return new NextResponse(Buffer.from(excel), {
           status: 200,
           headers: {
-            "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "Content-Type":
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "Content-Disposition": `attachment; filename="records-${timestamp}.xlsx"`,
           },
         });
@@ -134,9 +135,12 @@ function convertToExcel(records: RecordType[]): Uint8Array {
     UpdatedAt: record.updatedAt ? formatDate(record.updatedAt) : "",
   }));
 
-  const worksheet = XLSX.utils.json_to_sheet([headers.map((h) => ({ [h]: h })), ...rows], {
-    skipHeader: true,
-  });
+  const worksheet = XLSX.utils.json_to_sheet(
+    [headers.map((h) => ({ [h]: h })), ...rows],
+    {
+      skipHeader: true,
+    },
+  );
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Records");

@@ -80,8 +80,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
   );
 
   const rotateLabels = useMemo(
-    () =>
-      validData.length > UI_CONSTANTS.CHART_CONFIG.LABEL_ROTATION_THRESHOLD,
+    () => validData.length > UI_CONSTANTS.CHART_CONFIG.LABEL_ROTATION_THRESHOLD,
     [validData.length],
   );
 
@@ -162,14 +161,7 @@ const DynamicBarChart = memo(function DynamicBarChart({
         },
       },
     }),
-    [
-      height,
-      isDark,
-      mounted,
-      categories,
-      dataLabelsEnabled,
-      rotateLabels,
-    ],
+    [height, isDark, mounted, categories, dataLabelsEnabled, rotateLabels],
   );
 
   const series = useMemo(

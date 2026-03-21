@@ -4,6 +4,15 @@ import { average } from "./math";
 import type { EmotionData } from "./generation";
 
 /**
+ * Calculates the average of emotion values from an array of EmotionData.
+ *
+ * @param emotions - Array of emotion data objects.
+ * @returns The average emotion value, or 0 if array is empty.
+ */
+const averageEmotion = (emotions: EmotionData[]): number =>
+  average(emotions.map((e) => e.emotion));
+
+/**
  * Filters emotion data by hour range.
  *
  * @param emotions - Array of emotion data with optional hour field.
@@ -116,7 +125,7 @@ export const calculateDayOfWeekStats = (emotions: EmotionData[]) =>
     );
     return {
       day,
-      avgEmotion: average(dayEmotions.map((e) => e.emotion)),
+      avgEmotion: averageEmotion(dayEmotions),
       count: dayEmotions.length,
     };
   });
@@ -162,9 +171,9 @@ export const calculateTimeOfDayStats = (emotions: EmotionData[]) => {
   ];
 
   return {
-    morning: average(morningEmotions.map((e) => e.emotion)),
-    afternoon: average(afternoonEmotions.map((e) => e.emotion)),
-    evening: average(eveningEmotions.map((e) => e.emotion)),
+    morning: averageEmotion(morningEmotions),
+    afternoon: averageEmotion(afternoonEmotions),
+    evening: averageEmotion(eveningEmotions),
   };
 };
 

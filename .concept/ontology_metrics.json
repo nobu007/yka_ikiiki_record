@@ -1,25 +1,25 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T04:00:00Z",
+  "last_updated": "2026-03-22T04:02:00Z",
   "terms": {
-    "total": 61,
-    "core": 9,
-    "domain": 25,
-    "aux": 27,
+    "total": 66,
+    "core": 7,
+    "domain": 22,
+    "aux": 37,
     "draft": 0,
-    "stable": 61
+    "stable": 66
   },
   "mappings": {
-    "total": 61,
-    "with_code_symbols": 61,
+    "total": 66,
+    "with_code_symbols": 66,
     "with_db": 2,
     "with_api": 13,
     "unmapped": 0
   },
   "invariants": {
-    "total": 20,
-    "hard": 18,
-    "soft": 2
+    "total": 19,
+    "hard": 10,
+    "soft": 9
   },
   "quality_metrics": {
     "ontology_coverage": "87%",
@@ -32,6 +32,6 @@
   "test_results": {
     "test_suites": 177,
     "tests_passed": 1312,
-    "timestamp": "2026-03-22T03:51:00Z"
+    "timestamp": "2026-03-22T04:02:00Z"
   }
 }

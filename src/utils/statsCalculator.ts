@@ -8,6 +8,7 @@
  * - math.ts: Basic mathematical utilities (clamp, average)
  * - generation.ts: Random generation and emotion calculation
  * - analytics.ts: Statistical analysis and data aggregation
+ * - trend.ts: Trend calculation and analysis
  */
 
 // Math utilities
@@ -31,6 +32,10 @@ export {
   calculateTimeOfDayStats,
   calculateEmotionDistribution,
   calculateStudentStats,
+} from "./statsCalculator/analytics";
+
+// Trend calculation
+export {
   calculateTrendline,
   calculateEmotionTrend,
-} from "./statsCalculator/analytics";
+} from "./statsCalculator/trend";

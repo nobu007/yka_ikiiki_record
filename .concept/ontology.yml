@@ -1,0 +1,240 @@
+version: "0.3"
+
+canonical_terms:
+  Record:
+    id: "TERM-001"
+    layer: "core"
+    status: "stable"
+    definition: "学生の感情記録を表すドメインエンティティ。日時、学生ID、感情スコア、コメントを含む"
+    synonyms: ["EmotionRecord", "StudentRecord"]
+    boundaries:
+      includes: ["日時", "学生ID", "感情スコア(0-100)", "オプションのコメント"]
+      excludes: ["集計統計", "複数学生のデータ"]
+    related_terms: ["Stats", "StatsOverview"]
+    evidence:
+      - source: "src/domain/entities/Record.ts"
+        quote: "export type Record = RecordType"
+
+  Stats:
+    id: "TERM-002"
+    layer: "core"
+    status: "stable"
+    definition: "感情記録の集計統計を表すドメインエンティティ。全体概要、月次、学生別、曜日別、時間帯別、感情分布を含む"
+    synonyms: ["Statistics", "AggregatedStats"]
+    boundaries:
+      includes: ["全体統計", "月次統計", "学生別統計", "曜日別統計", "時間帯別統計", "感情分布"]
+      excludes: ["個別の生データ記録"]
+    related_terms: ["Record", "StatsOverview"]
+    evidence:
+      - source: "src/domain/entities/Stats.ts"
+        quote: "export interface Stats { overview: StatsOverview; monthlyStats: MonthlyStats[]; ... }"
+
+  StatsOverview:
+    id: "TERM-003"
+    layer: "domain"
+    status: "stable"
+    definition: "全記録の概要統計。総記録数と平均感情スコアを含む"
+    synonyms: ["Overview"]
+    boundaries:
+      includes: ["総記録数", "平均感情スコア"]
+      excludes: ["詳細な内訳"]
+    related_terms: ["Stats"]
+    evidence:
+      - source: "src/domain/entities/Stats.ts"
+        quote: "export interface StatsOverview { count: number; avgEmotion: number; }"
+
+  MonthlyStats:
+    id: "TERM-004"
+    layer: "domain"
+    status: "stable"
+    definition: "月別の感情統計。月ごとの記録数と平均感情スコア"
+    synonyms: []
+    boundaries:
+      includes: ["月", "記録数", "平均感情スコア"]
+      excludes: []
+    related_terms: ["Stats"]
+    evidence:
+      - source: "src/domain/entities/Stats.ts"
+        quote: "export interface MonthlyStats { month: string; count: number; avgEmotion: number; }"
+
+  StudentStats:
+    id: "TERM-005"
+    layer: "domain"
+    status: "stable"
+    definition: "学生別の感情統計。学生ごとの記録数、平均感情スコア、トレンドライン"
+    synonyms: []
+    boundaries:
+      includes: ["学生ID", "記録数", "平均感情スコア", "トレンドライン"]
+      excludes: []
+    related_terms: ["Stats"]
+    evidence:
+      - source: "src/domain/entities/Stats.ts"
+        quote: "export interface StudentStats { student: string; recordCount: number; avgEmotion: number; trendline: number[]; }"
+
+  DayOfWeekStats:
+    id: "TERM-006"
+    layer: "domain"
+    status: "stable"
+    definition: "曜日別の感情統計"
+    synonyms: []
+    boundaries:
+      includes: ["曜日", "平均感情スコア", "記録数"]
+      excludes: []
+    related_terms: ["Stats"]
+    evidence:
+      - source: "src/domain/entities/Stats.ts"
+        quote: "export interface DayOfWeekStats { day: string; avgEmotion: number; count: number; }"
+
+  TimeOfDayStats:
+    id: "TERM-007"
+    layer: "domain"
+    status: "stable"
+    definition: "時間帯別の感情統計。朝・昼・夜の平均感情スコア"
+    synonyms: []
+    boundaries:
+      includes: ["朝の平均", "昼の平均", "夜の平均"]
+      excludes: []
+    related_terms: ["Stats"]
+    evidence:
+      - source: "src/domain/entities/Stats.ts"
+        quote: "export interface TimeOfDayStats { morning: number; afternoon: number; evening: number; }"
+
+  StatsService:
+    id: "TERM-008"
+    layer: "domain"
+    status: "stable"
+    definition: "統計データの取得とシードデータ生成を行うドメインサービス"
+    synonyms: []
+    boundaries:
+      includes: ["統計取得", "シードデータ生成"]
+      excludes: ["データ永続化の詳細"]
+    related_terms: ["Stats", "StatsRepository", "DataGenerationConfig"]
+    evidence:
+      - source: "src/domain/services/StatsService.ts"
+        quote: "export class StatsService { constructor(private readonly repository: StatsRepository) {} ... }"
+
+  StatsRepository:
+    id: "TERM-009"
+    layer: "domain"
+    status: "stable"
+    definition: "統計データの永続化と取得を行うリポジトリのインターフェース"
+    synonyms: []
+    boundaries:
+      includes: ["統計の保存", "統計の取得"]
+      excludes: ["ビジネスロジック"]
+    related_terms: ["Stats", "StatsService"]
+    evidence:
+      - source: "src/domain/repositories/StatsRepository.ts"
+        quote: "export interface StatsRepository { saveStats(stats: Stats): Promise<void>; getStats(): Promise<Stats>; }"
+
+  IRecordRepository:
+    id: "TERM-010"
+    layer: "domain"
+    status: "stable"
+    definition: "個別の感情記録の永続化と取得を行うリポジトリのインターフェース"
+    synonyms: []
+    boundaries:
+      includes: ["記録の保存", "記録の取得", "記録の検索", "記録の削除"]
+      excludes: ["集計ロジック"]
+    related_terms: ["Record"]
+    evidence:
+      - source: "src/domain/repositories/IRecordRepository.ts"
+        quote: "export interface IRecordRepository { save(record: Record): Promise<Record>; findById(id: number): Promise<Record | null>; ... }"
+
+  DataGenerationConfig:
+    id: "TERM-011"
+    layer: "domain"
+    status: "stable"
+    definition: "テストデータ生成の設定。学生数、期間、パターンなどを指定"
+    synonyms: ["GenerationConfig"]
+    boundaries:
+      includes: ["学生数", "期間日数", "感情パターン", "季節効果の有無"]
+      excludes: ["生成されたデータそのもの"]
+    related_terms: ["StatsService", "EmotionDistributionPattern"]
+    evidence:
+      - source: "src/domain/entities/DataGeneration.ts"
+        quote: "export interface DataGenerationConfig { studentCount: number; periodDays: number; pattern: EmotionDistributionPattern; ... }"
+
+  EmotionDistributionPattern:
+    id: "TERM-012"
+    layer: "domain"
+    status: "stable"
+    definition: "感情データの生成パターン。normal, bimodal, stress, happy"
+    synonyms: []
+    boundaries:
+      includes: ["normal", "bimodal", "stress", "happy"]
+      excludes: []
+    related_terms: ["DataGenerationConfig"]
+    evidence:
+      - source: "src/domain/entities/DataGeneration.ts"
+        quote: "export type EmotionDistributionPattern = 'normal' | 'bimodal' | 'stress' | 'happy';"
+
+  EmotionGenerator:
+    id: "TERM-013"
+    layer: "domain"
+    status: "stable"
+    definition: "感情スコアを生成するドメインサービス。パターン、季節効果、クラスイベントを考慮"
+    synonyms: []
+    boundaries:
+      includes: ["感情スコア生成ロジック", "季節効果適用", "イベント効果適用"]
+      excludes: ["データ永続化"]
+    related_terms: ["DataGenerationConfig", "EmotionDistributionPattern"]
+    evidence:
+      - source: "src/domain/services/EmotionGenerator.ts"
+        quote: "export function generateEmotion(...): number"
+
+  CleanArchitecture:
+    id: "TERM-014"
+    layer: "core"
+    status: "stable"
+    definition: "ドメイン、アプリケーション、インフラストラクチャ、プレゼンテーションの4層に分離されたアーキテクチャ"
+    synonyms: ["OnionArchitecture", "HexagonalArchitecture"]
+    boundaries:
+      includes: ["ドメイン層", "アプリケーション層", "インフラストラクチャ層", "プレゼンテーション層"]
+      excludes: ["レイヤーをまたぐ依存（内側から外側のみ許可）"]
+    related_terms: ["DomainLayer", "InfrastructureLayer"]
+    evidence:
+      - source: "README.md"
+        quote: "src/├── domain/ # Domain layer├── application/ # Application layer├── infrastructure/ # Infrastructure layer└── presentation/ # Presentation layer"
+
+  DomainLayer:
+    id: "TERM-015"
+    layer: "core"
+    status: "stable"
+    definition: "ビジネスロジックとドメインエンティティを含む最も内側のレイヤー。外部依存を持たない"
+    synonyms: ["CoreLayer"]
+    boundaries:
+      includes: ["エンティティ", "ドメインサービス", "リポジトリインターフェース"]
+      excludes: ["外部ライブラリへの直接依存", "UI/フレームワークのコード"]
+    related_terms: ["CleanArchitecture", "StatsService", "Record"]
+    evidence:
+      - source: "src/domain/"
+        quote: "src/domain/├── entities/ # Domain entities├── repositories/ # Repository interfaces└── services/ # Domain services"
+
+  InfrastructureLayer:
+    id: "TERM-016"
+    layer: "aux"
+    status: "stable"
+    definition: "データベース、外部API、フレームワークとの統合を担当するレイヤー"
+    synonyms: []
+    boundaries:
+      includes: ["Prismaリポジトリ実装", "MirageJSモック", "Next.js APIルート"]
+      excludes: ["ドメインロジック"]
+    related_terms: ["CleanArchitecture", "PrismaRecordRepository", "MirageJS"]
+    evidence:
+      - source: "src/infrastructure/"
+        quote: "src/infrastructure/├── api/ # API clients└── storage/ # Data storage"
+
+  SingleResponsibilityPrinciple:
+    id: "TERM-017"
+    layer: "core"
+    status: "stable"
+    definition: "全てのファイルは300行以下で単一の責務を持つという不変条件"
+    synonyms: ["SRP"]
+    boundaries:
+      includes: ["全ソースファイル", "全テストファイル"]
+      excludes: []
+    related_terms: ["Invariant"]
+    evidence:
+      - source: ".concept/invariants.yml"
+        quote: "INV-ARCH-001: 100% of files must be under 300 lines"

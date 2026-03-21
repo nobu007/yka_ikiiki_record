@@ -1,0 +1,106 @@
+mappings:
+  Record:
+    code_symbols:
+      - "src/domain/entities/Record.ts"
+      - "src/schemas/api.ts"
+    db:
+      - "prisma/schema.prisma::model Record"
+    api: []
+
+  Stats:
+    code_symbols:
+      - "src/domain/entities/Stats.ts"
+    db: []
+    api:
+      - "GET /api/stats"
+
+  StatsOverview:
+    code_symbols:
+      - "src/domain/entities/Stats.ts::interface StatsOverview"
+    db: []
+    api: []
+
+  MonthlyStats:
+    code_symbols:
+      - "src/domain/entities/Stats.ts::interface MonthlyStats"
+    db: []
+    api: []
+
+  StudentStats:
+    code_symbols:
+      - "src/domain/entities/Stats.ts::interface StudentStats"
+    db: []
+    api: []
+
+  DayOfWeekStats:
+    code_symbols:
+      - "src/domain/entities/Stats.ts::interface DayOfWeekStats"
+    db: []
+    api: []
+
+  TimeOfDayStats:
+    code_symbols:
+      - "src/domain/entities/Stats.ts::interface TimeOfDayStats"
+    db: []
+    api: []
+
+  StatsService:
+    code_symbols:
+      - "src/domain/services/StatsService.ts::class StatsService"
+    db: []
+    api: []
+
+  StatsRepository:
+    code_symbols:
+      - "src/domain/repositories/StatsRepository.ts::interface StatsRepository"
+    db: []
+    api: []
+
+  IRecordRepository:
+    code_symbols:
+      - "src/domain/repositories/IRecordRepository.ts::interface IRecordRepository"
+    db: []
+    api:
+      - "POST /api/seed"
+      - "GET /api/export"
+
+  DataGenerationConfig:
+    code_symbols:
+      - "src/domain/entities/DataGeneration.ts::interface DataGenerationConfig"
+    db: []
+    api: []
+
+  EmotionDistributionPattern:
+    code_symbols:
+      - "src/domain/entities/DataGeneration.ts::type EmotionDistributionPattern"
+    db: []
+    api: []
+
+  EmotionGenerator:
+    code_symbols:
+      - "src/domain/services/EmotionGenerator.ts::function generateEmotion"
+    db: []
+    api: []
+
+  CleanArchitecture:
+    code_symbols: []
+    db: []
+    api: []
+
+  DomainLayer:
+    code_symbols:
+      - "src/domain/"
+    db: []
+    api: []
+
+  InfrastructureLayer:
+    code_symbols:
+      - "src/infrastructure/"
+      - "src/app/api/"
+    db: []
+    api: []
+
+  SingleResponsibilityPrinciple:
+    code_symbols: []
+    db: []
+    api: []

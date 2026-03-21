@@ -1,0 +1,9 @@
+version: "1.0"
+commands:
+  lint: "eslint --fix ."
+  test: "jest"
+  build: "next build"
+budget:
+  max_cycles: 5
+  max_files: 25
+mode: "commit"

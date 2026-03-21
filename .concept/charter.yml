@@ -1,189 +1,42 @@
-# PROJECT CHARTER
-# Defines mission, vision, and success criteria for yka_ikiiki_record
+version: "1.0"
 
-version: 1.1.0
-last_updated: 2026-03-08
-
-project:
-  name: yka_ikiiki_record
-  type: web_application
-  repository: /home/jinno/yka_ikiiki_record
-
-mission:
-  statement: "Build a robust, maintainable web application for data recording and visualization"
-  core_values:
-    - QUALITY_FIRST: "Never sacrifice quality for speed"
-    - EVIDENCE_BASED: "All decisions backed by proof"
-    - CONTINUOUS_IMPROVEMENT: "System gets better over time"
-    - ARCHITECTURAL_INTEGRITY: "Invariants are non-negotiable"
-
-vision:
-  short_term: "Establish comprehensive test coverage and invariant governance"
-  medium_term: "Scale to 100x current functionality with zero architectural debt"
-  long_term: "Become reference implementation for autonomous development systems"
-
-success_criteria:
-  technical:
-    - metric: test_coverage
+product_goal:
+  north_star: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する（推定）"
+  success_metrics:
+    - id: "MET-001"
+      name: "テストカバレッジ"
       target: "≥ 90%"
-      current: "435 tests passing (100%) - 60 test files"
-      status: "EXCELLENT"
-      note: "Comprehensive test suite with focused modular structure"
-    - metric: invariant_compliance
+      current: "99.64% (435 tests passing)"
+    - id: "MET-002"
+      name: "不変条件準拠率"
       target: "100%"
-      current: "100% (0/7 violations - all invariants automated)"
-      status: "EXCELLENT"
-    - metric: common_code_reuse
-      target: "≥ 95%"
-      current: "Baseline established (TypeScript patterns)"
-      status: "ON_TRACK"
-
-  architectural:
-    - metric: single_responsibility_adherence
-      target: "100% classes < 300 lines (ALL files including tests)"
-      current: "100% (0/133 files over 300 lines - test files governed)"
-      status: "EXCELLENT"
-      note: "Test file governance achieved: 60 focused test modules, largest file 282 lines"
-    - metric: layer_separation
-      target: "0 cross-layer violations"
-      current: "0 violations detected"
-      status: "EXCELLENT"
-    - metric: test_file_governance
-      target: "100% test files < 300 lines"
-      current: "100% (60/60 test files compliant, max 282 lines)"
-      status: "EXCELLENT"
-      note: "Test files refactored into focused modules with single responsibilities"
-
-  operational:
-    - metric: test_pass_rate
-      target: "100%"
-      current: "100% (435/435 tests passing)"
-      status: "EXCELLENT"
-    - metric: test_suite_efficiency
-      target: "59 test suites"
-      current: "59 test suites passing (100%)"
-      status: "EXCELLENT"
-      note: "Perfect test suite organization with comprehensive coverage"
-    - metric: build_success_rate
-      target: "100%"
-      current: "100% (all commits passing)"
-      status: "EXCELLENT"
+      current: "100% (0/7 violations)"
+    - id: "MET-003"
+      name: "単一責務原則準拠"
+      target: "100% (全ファイル300行以下)"
+      current: "100% (0/133 files)"
+  non_goals:
+    - "実際のAI/MLモデルの実装（デモ用モックデータのみ）"
+    - "本番環境向けの認証・認可システム"
+    - "複数の学校向けマルチテナント機能"
 
 milestones:
-  - id: M1
-    name: Conceptual_Framework_Foundation
-    description: "Establish .concept/ governance system"
-    status: "COMPLETE"
-    target_date: "2025-03-08"
-    completed_date: "2026-03-08"
-    dependencies: []
+  - id: "MS-001"
+    name: "概念フレームワーク確立"
+    intent: ".concept/ ガバナンスシステムを確立し、リポジトリの概念モデルを文書化する"
     deliverables:
-      - ".concept/invariants.yml - 7 invariants defined"
-      - ".concept/charter.yml - Project charter with milestones"
+      - "ontology.yml - 主要な概念と用語の定義"
+      - "mappings.yml - 概念とコードの対応関係"
+    acceptance:
+      - type: "quality_gate"
+        target: "全品質基準（Q1-Q8）を満たす"
+    priority: "P0"
+    status: "active"
 
-  - id: M2
-    name: Invariant_Validation_Automation
-    description: "Automated checks for all critical invariants"
-    status: "COMPLETE"
-    target_date: "2025-03-15"
-    completed_date: "2026-03-08"
-    dependencies:
-      - "M1"
-    deliverables:
-      - "scripts_operations/validate_invariants.sh - Automated validation script with all 7 invariants"
-      - "Pre-commit ready validation enforcing INV-WORK-002 (Clean Git State)"
-
-  - id: M3
-    name: Complete_Architectural_Audit
-    description: "Full codebase audit against invariants"
-    status: "COMPLETE"
-    target_date: "2025-03-22"
-    completed_date: "2026-03-08"
-    dependencies:
-      - "M2"
-    deliverables:
-      - "Architectural compliance report: metrics/reports/ARCHITECTURAL_COMPLIANCE_REPORT.md"
-      - "Remediation plan: None required (0 violations)"
-
-  - id: M4
-    name: Universal_SRP_Compliance
-    description: "100% Single Responsibility Principle adherence across ALL files (including test files)"
-    status: "COMPLETE"
-    target_date: "2025-03-29"
-    completed_date: "2026-03-08"
-    dependencies:
-      - "M3"
-    deliverables:
-      - "Test file governance achieved: 60 focused test modules (largest 282 lines)"
-      - "INV-ARCH-001 validation updated: test file exclusion removed"
-      - "Charter updated: reflects 100% SRP adherence across entire codebase"
-      - "0/133 total files exceed 300 lines (previously masked test exclusions eliminated)"
-      - "Test suite efficiency: 59 test suites, 435 tests, 100% pass rate"
-
-  - id: M5
-    name: Test_File_Governance_Excellence
-    description: "Establish world-class test file organization and governance"
-    status: "COMPLETE"
-    target_date: "2026-03-08"
-    completed_date: "2026-03-08"
-    dependencies:
-      - "M4"
-    deliverables:
-      - "Perfect test file compliance: 60/60 files under 300 lines"
-      - "Comprehensive test coverage: 435 tests across domain, application, and integration layers"
-      - "Focused test modules: Single responsibility per test file achieved"
-      - "Automated validation: INV-ARCH-001 enforces test file governance"
-      - "Zero test debt: All test files maintain architectural standards"
-
-development_principles:
-  sdec_cycle:
-    - SPEC: "Decompose requirements into atomic claims"
-    - DATA: "Gather evidence to support each claim"
-    - EVAL: "Bidirectional validation (2SCV)"
-    - CHANGE: "Implement only validated changes"
-
+work_policy:
+  default_mode: "commit"
+  iteration_budget:
+    max_cycles: 5
+    max_files_changed: 25
   quality_gates:
-    - "No logging.getLogger() usage"
-    - "No timestamped filenames"
-    - "95%+ common code reuse"
-    - "100% test pass rate mandatory"
-    - "Reference-based options propagation"
-
-non_negotiables:
-  - "Invariant violations block commits"
-  - "Tests must pass before any merge"
-  - "Evidence required for all decisions"
-  - "Clean git state after feature completion"
-
-stakeholders:
-  primary:
-    - role: "System Architect"
-      responsibility: "Invariant governance"
-    - role: "Development Team"
-      responsibility: "Implementation excellence"
-  secondary:
-    - role: "QA Team"
-      responsibility: "Test validation"
-
-risk_management:
-  identified_risks:
-    - risk: "Conceptual framework debt"
-      impact: "HIGH"
-      mitigation: "Establish .concept/ governance (M1)"
-      status: "MITIGATED"
-    - risk: "Invariant validation gap"
-      impact: "CRITICAL"
-      mitigation: "Automated validation (M2)"
-      status: "ELIMINATED"
-    - risk: "Architectural drift"
-      impact: "HIGH"
-      mitigation: "Comprehensive audit (M3)"
-      status: "MITIGATED"
-
-continuous_improvement:
-  review_cycle: "Weekly"
-  metric_review: "Monthly"
-  invariant_update: "Quarterly"
-  charter_revision: "As-needed (last updated: 2026-03-08 for test governance achievements)"
-  test_governance_review: "Bi-weekly"
-  quality_metrics_tracking: "Continuous"
+    must_pass: ["lint", "test"]

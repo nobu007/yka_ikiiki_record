@@ -1,0 +1,10 @@
+version: "1.0"
+budget:
+  terms_max: 80
+  draft_ratio_max: 0.30
+  unmapped_ratio_max: 0.20
+current_usage:
+  terms_count: 17
+  draft_count: 0
+  unmapped_count: 3
+status: "HEALTHY"

@@ -98,7 +98,7 @@ describe("InstructionsSection", () => {
       const { container } = render(<InstructionsSection />);
 
       const section = container.querySelector(
-        ".bg-gradient-to-br.from-blue-50.to-indigo-50"
+        ".bg-gradient-to-br.from-blue-50.to-indigo-50",
       );
       expect(section).toBeInTheDocument();
     });

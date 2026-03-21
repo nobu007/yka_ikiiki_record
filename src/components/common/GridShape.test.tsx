@@ -20,7 +20,9 @@ describe("GridShape", () => {
     it("should position second image at bottom-left rotated", () => {
       const { container } = render(<GridShape />);
 
-      const secondWrapper = container.querySelector(".bottom-0.left-0.rotate-180");
+      const secondWrapper = container.querySelector(
+        ".bottom-0.left-0.rotate-180",
+      );
       expect(secondWrapper).toBeInTheDocument();
     });
 
@@ -72,7 +74,7 @@ describe("GridShape", () => {
       rerender(<GridShape />);
 
       expect(initialRender.container.innerHTML).toEqual(
-        render(<GridShape />).container.innerHTML
+        render(<GridShape />).container.innerHTML,
       );
     });
   });

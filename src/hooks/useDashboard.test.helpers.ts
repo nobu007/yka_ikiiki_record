@@ -64,14 +64,6 @@ export const executeHandleGenerate = async (
   });
 };
 
-export const _waitForGenerationComplete = async (
-  result: ReturnType<typeof renderDashboardHook>["result"],
-) => {
-  await waitFor(() => {
-    expect(result.current.isGenerating).toBe(false);
-  });
-};
-
 export const expectDefaultState = (
   result: ReturnType<typeof renderDashboardHook>["result"],
 ) => {

@@ -663,7 +663,7 @@ invariants:
     name: Analytics_Trend_Direction_Enum
     category: api
     severity: CRITICAL
-    description: Analytics summary trendDirection must be one of: up, down, stable
+    description: "Analytics summary trendDirection must be one of: up, down, stable"
     constraint: "summary.trendDirection in ['up', 'down', 'stable']"
     validation: "analytics/route.basic.test.ts verifies trend direction enum"
     rationale: "Prevents invalid trend direction values in UI"
@@ -699,7 +699,7 @@ invariants:
     name: Export_CSV_Headers
     category: api
     severity: CRITICAL
-    description: CSV export must include headers: ID,Emotion,Date,Student,Comment,CreatedAt,UpdatedAt
+    description: "CSV export must include headers: ID,Emotion,Date,Student,Comment,CreatedAt,UpdatedAt"
     constraint: "First CSV line is 'ID,Emotion,Date,Student,Comment,CreatedAt,UpdatedAt'"
     validation: "export/route.csv.test.ts verifies header format"
     rationale: "Ensures consistent CSV import/export format"

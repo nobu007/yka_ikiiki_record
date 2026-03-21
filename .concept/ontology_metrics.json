@@ -1,30 +1,30 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T05:25:00Z",
-  "run_index": 41,
+  "last_updated": "2026-03-21T19:55:32.360Z",
+  "run_index": 42,
   "phase": "maintenance",
   "terms": {
-    "total": 60,
+    "total": 66,
     "core": 7,
     "domain": 20,
     "aux": 33,
     "draft": 0,
-    "stable": 60
+    "stable": 66
   },
   "mappings": {
-    "total": 60,
-    "with_code_symbols": 60,
+    "total": 66,
+    "with_code_symbols": 66,
     "with_db": 2,
     "with_api": 13,
     "unmapped": 0
   },
   "invariants": {
-    "total": 88,
-    "hard": 64,
+    "total": 89,
+    "hard": 65,
     "soft": 24
   },
   "quality_metrics": {
-    "ontology_coverage": "80%",
+    "ontology_coverage": "56%",
     "mapping_saturation": "100%",
     "draft_ratio": "0%",
     "unmapped_ratio": "0%",
@@ -34,6 +34,6 @@
   "test_results": {
     "test_suites": 177,
     "tests_passed": 1312,
-    "timestamp": "2026-03-22T05:25:00Z"
+    "timestamp": "2026-03-21T19:55:32.361Z"
   }
 }

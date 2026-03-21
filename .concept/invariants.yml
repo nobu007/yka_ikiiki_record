@@ -175,6 +175,141 @@ invariants:
     rationale: "Provides predictable behavior for empty datasets"
     related_terms: ["StatsCalculator"]
 
+  - id: INV-UTIL-003
+    name: Clamp_Function_Range_Enforcement
+    category: utility
+    severity: HIGH
+    description: Clamp function must enforce value boundaries
+    constraint: "clamp(value, min, max) returns value when within range, min when below, max when above"
+    validation: "statsCalculator.basic.test.ts verifies clamp behavior with edge cases"
+    rationale: "Ensures predictable value range enforcement"
+    related_terms: ["StatsCalculator"]
+
+  # LOGGING INVARIANTS
+  - id: INV-LOG-001
+    name: Structured_Logging_Required_Fields
+    category: logging
+    severity: HIGH
+    description: All log entries must contain required structured fields
+    constraint: "Log entries must have: level, category, operation, timestamp, correlationId, metadata, visibility"
+    validation: "structured-logger.test.ts verifies all required fields are present"
+    rationale: "Ensures log entries are queryable and traceable"
+    related_terms: ["StructuredLogger"]
+
+  - id: INV-LOG-002
+    name: Log_Level_Visibility_Mapping
+    category: logging
+    severity: MEDIUM
+    description: Log levels must map to appropriate visibility settings
+    constraint: "DEBUG level maps to DEBUG visibility; INFO/WARN/ERROR/FATAL map to INTERNAL"
+    validation: "structured-logger.test.ts verifies visibility mapping for convenience methods"
+    rationale: "Prevents sensitive information leakage in debug logs"
+    related_terms: ["StructuredLogger"]
+
+  - id: INV-LOG-003
+    name: Log_Correlation_ID_Tracking
+    category: logging
+    severity: HIGH
+    description: All log entries must have unique correlation IDs for request tracing
+    constraint: "Every log entry must include a correlationId field"
+    validation: "structured-logger.correlation.test.ts verifies correlation ID generation"
+    rationale: "Enables distributed tracing and debugging"
+    related_terms: ["StructuredLogger"]
+
+  - id: INV-LOG-004
+    name: Log_Size_Management
+    category: logging
+    severity: MEDIUM
+    description: Logger must enforce maximum log size limits
+    constraint: "Logger must enforce max_logs limit and implement FIFO eviction"
+    validation: "structured-logger.sizemanagement.test.ts verifies size limits"
+    rationale: "Prevents memory leaks from unbounded log growth"
+    related_terms: ["StructuredLogger"]
+
+  # TIMEOUT INVARIANTS
+  - id: INV-TIME-001
+    name: Timeout_Wrapper_Standard_Durations
+    category: timeout
+    severity: HIGH
+    description: Timeout wrappers must use predefined standard durations for different operation types
+    constraint: "API=10s, Database=5s, Command=30s, File=15s, E2E=60s"
+    validation: "timeout.test.ts verifies DEFAULT_TIMEOUTS values"
+    rationale: "Provides consistent timeout behavior across operations"
+    related_terms: ["APITimeout", "TimeoutError"]
+
+  - id: INV-TIME-002
+    name: Timeout_Error_Propagation
+    category: timeout
+    severity: HIGH
+    description: Timeout wrappers must preserve operation errors when they occur before timeout
+    constraint: "Operation errors must be propagated, not replaced by TimeoutError"
+    validation: "timeout.test.ts verifies error propagation before timeout"
+    rationale: "Prevents masking actual operation failures with timeout errors"
+    related_terms: ["TimeoutError", "APITimeout"]
+
+  # LOOP DETECTION INVARIANTS
+  - id: INV-LOOP-001
+    name: Loop_Detection_Maximum_Iterations
+    category: loop_detection
+    severity: CRITICAL
+    description: Loop detectors must enforce maximum iteration limits
+    constraint: "Default max iterations = 1000; custom limits allowed but must be enforced"
+    validation: "loop-detector.test.ts verifies InfiniteLoopError thrown on exceeded iterations"
+    rationale: "Prevents infinite loops from hanging the application"
+    related_terms: ["LoopDetector", "InfiniteLoopError"]
+
+  - id: INV-LOOP-002
+    name: Loop_Detection_Per_Operation_Tracking
+    category: loop_detection
+    severity: HIGH
+    description: Loop detectors must track iteration counts independently for each operation ID
+    constraint: "Each operation ID has independent iteration counter"
+    validation: "loop-detector.test.ts verifies different operation IDs don't interfere"
+    rationale: "Prevents false positives from multiple concurrent loops"
+    related_terms: ["LoopDetector"]
+
+  - id: INV-LOOP-003
+    name: Loop_Detection_Time_Window_Reset
+    category: loop_detection
+    severity: MEDIUM
+    description: Loop detectors must reset counters after time window expires
+    constraint: "Counters reset after time window (default 30000ms)"
+    validation: "loop-detector.test.ts verifies counter reset after timeout"
+    rationale: "Allows legitimate long-running operations to complete"
+    related_terms: ["LoopDetector"]
+
+  # MEMORY MONITORING INVARIANTS
+  - id: INV-MEM-001
+    name: Memory_Monitor_Lifecycle_Management
+    category: memory
+    severity: HIGH
+    description: Memory monitors must support proper start/stop/destroy lifecycle
+    constraint: "Multiple start calls must be idempotent; destroy must cleanup resources"
+    validation: "memory-monitor.lifecycle.test.ts verifies lifecycle methods"
+    rationale: "Prevents resource leaks and duplicate monitoring"
+    related_terms: ["MemoryMonitor"]
+
+  - id: INV-MEM-002
+    name: Memory_Monitor_Usage_Calculation
+    category: memory
+    severity: MEDIUM
+    description: Memory monitors must provide accurate heap usage metrics
+    constraint: "Must return heapUsed, heapTotal, external, arrayBuffers, rss"
+    validation: "memory-monitor.lifecycle.test.ts verifies usage object structure"
+    rationale: "Enables accurate memory tracking and alerting"
+    related_terms: ["MemoryMonitor"]
+
+  # GLOBAL SINGLETONS INVARIANTS
+  - id: INV-SINGLETON-001
+    name: Global_Resilience_Instances
+    category: resilience
+    severity: MEDIUM
+    description: Core resilience utilities must provide global singleton instances
+    constraint: "globalCircuitBreaker, globalLogger, globalLoopDetector, globalMemoryMonitor must be available"
+    validation: "Resilience test suites verify global instances exist"
+    rationale: "Provides shared resilience state across application"
+    related_terms: ["CircuitBreaker", "StructuredLogger", "LoopDetector", "MemoryMonitor"]
+
   # WORKFLOW INVARIANTS
   - id: INV-WORK-001
     name: SDEC_Cycle_Mandatory

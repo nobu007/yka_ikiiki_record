@@ -44,7 +44,8 @@ function parseMetricsLine(line: string): MetricsResponse["judgment"] | null {
   }
 
   const [
-    timestampStr, // eslint-disable-line @typescript-eslint/no-unused-vars
+    // @ts-expect-error - timestampStr is intentionally unused (first CSV column)
+    timestampStr,
     scoreStr,
     violationsStr,
     statementsStr,

@@ -7,7 +7,8 @@ import { createError } from "@/lib/api/error-handler";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { API_OPERATIONS } from "@/lib/constants/api";
 
-export async function GET(req: NextRequest): Promise<NextResponse> { // eslint-disable-line @typescript-eslint/no-unused-vars
+// @ts-expect-error - req is intentionally unused (API route signature)
+export async function GET(req: NextRequest): Promise<NextResponse> {
   return withResilientHandler(
     async () => {
       const statsService = createStatsService();

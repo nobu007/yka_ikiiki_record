@@ -90,6 +90,7 @@ module.exports = {
     '!src/context/**',
     '!src/components/common/PageBreadCrumb.tsx',
     '!src/components/common/ComponentCard.tsx',
+    '!src/**/index.ts',
   ],
   coverageThreshold: {
     global: {

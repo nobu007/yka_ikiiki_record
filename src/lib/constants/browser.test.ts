@@ -1,11 +1,4 @@
-import { WINDOW_EVENTS } from "./browser";
-
-jest.mock("./browser", () => ({
-  ...jest.requireActual<typeof import("./browser")>("./browser"),
-  reloadPage: jest.fn(),
-}));
-
-import { reloadPage } from "./browser";
+import { WINDOW_EVENTS, reloadPage } from "./browser";
 
 describe("WINDOW_EVENTS", () => {
   it("should have correct resize event name", () => {
@@ -37,17 +30,15 @@ describe("reloadPage", () => {
     expect(reloadPage).toBeDefined();
   });
 
-  it("should call window.location.reload", () => {
-    reloadPage();
-
-    expect(reloadPage).toHaveBeenCalledTimes(1);
+  it("should not throw when called", () => {
+    expect(() => reloadPage()).not.toThrow();
   });
 
   it("should be callable multiple times", () => {
-    reloadPage();
-    reloadPage();
-    reloadPage();
-
-    expect(reloadPage).toHaveBeenCalledTimes(3);
+    expect(() => {
+      reloadPage();
+      reloadPage();
+      reloadPage();
+    }).not.toThrow();
   });
 });

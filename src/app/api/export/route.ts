@@ -102,9 +102,7 @@ function formatDate(date: Date | string): string {
   if (typeof date === "string") {
     return date;
   }
-  const isoString = date.toISOString();
-  const parts = isoString.split("T");
-  return parts[0] ?? isoString;
+  return date.toISOString().split("T")[0] ?? date.toISOString();
 }
 
 function escapeCSV(value: string): string {

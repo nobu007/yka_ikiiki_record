@@ -178,36 +178,6 @@ mappings:
     db: []
     api: []
 
-  ValidationError:
-    code_symbols:
-      - "src/lib/error-handler.ts::class ValidationError"
-    db: []
-    api: []
-
-  NetworkError:
-    code_symbols:
-      - "src/lib/error-handler.ts::class NetworkError"
-    db: []
-    api: []
-
-  TimeoutError:
-    code_symbols:
-      - "src/lib/resilience/timeout.ts::class TimeoutError"
-    db: []
-    api: []
-
-  CircuitBreakerOpenError:
-    code_symbols:
-      - "src/lib/resilience/circuit-breaker.ts::class CircuitBreakerOpenError"
-    db: []
-    api: []
-
-  InfiniteLoopError:
-    code_symbols:
-      - "src/lib/resilience/loop-detector.ts::class InfiniteLoopError"
-    db: []
-    api: []
-
   LoopDetector:
     code_symbols:
       - "src/lib/resilience/loop-detector.ts::class LoopDetector"
@@ -399,51 +369,9 @@ mappings:
     db: []
     api: []
 
-  EmotionTrendChart:
-    code_symbols:
-      - "src/components/charts/EmotionTrendChart.tsx::function EmotionTrendChart"
-    db: []
-    api: []
-
-  StudentEmotionChart:
-    code_symbols:
-      - "src/components/charts/StudentEmotionChart.tsx::function StudentEmotionChart"
-    db: []
-    api: []
-
-  MonthlyEmotionChart:
-    code_symbols:
-      - "src/components/charts/MonthlyEmotionChart.tsx::function MonthlyEmotionChart"
-    db: []
-    api: []
-
-  DayOfWeekChart:
-    code_symbols:
-      - "src/components/charts/DayOfWeekChart.tsx::function DayOfWeekChart"
-    db: []
-    api: []
-
-  TimeOfDayChart:
-    code_symbols:
-      - "src/components/charts/TimeOfDayChart.tsx::function TimeOfDayChart"
-    db: []
-    api: []
-
-  EmotionDistributionChart:
-    code_symbols:
-      - "src/components/charts/EmotionDistributionChart.tsx::function EmotionDistributionChart"
-    db: []
-    api: []
-
   PageBreadCrumb:
     code_symbols:
       - "src/components/common/PageBreadCrumb.tsx::function PageBreadCrumb"
-    db: []
-    api: []
-
-  GridShape:
-    code_symbols:
-      - "src/components/common/GridShape.tsx::function GridShape"
     db: []
     api: []
 
@@ -489,48 +417,6 @@ mappings:
     db: []
     api: []
 
-  TrendCalculator:
-    code_symbols:
-      - "src/utils/statsCalculator/trend.ts"
-    db: []
-    api: []
-
-  MathUtils:
-    code_symbols:
-      - "src/utils/statsCalculator/math.ts"
-    db: []
-    api: []
-
-  AnalyticsUtils:
-    code_symbols:
-      - "src/utils/statsCalculator/analytics.ts"
-    db: []
-    api: []
-
-  GenerationUtils:
-    code_symbols:
-      - "src/utils/statsCalculator/generation.ts"
-    db: []
-    api: []
-
-  ComponentCard:
-    code_symbols:
-      - "src/components/common/ComponentCard.tsx::function ComponentCard"
-    db: []
-    api: []
-
-  BrowserConstants:
-    code_symbols:
-      - "src/lib/constants/browser.ts"
-    db: []
-    api: []
-
-  RequestBodyParser:
-    code_symbols:
-      - "src/lib/api/error-handler.ts::function parseRequestBody"
-    db: []
-    api: []
-
   StatsDisplay:
     code_symbols:
       - "src/app/(dashboard)/dashboard/components/stats/StatsDisplay.tsx::function StatsDisplay"
@@ -573,13 +459,6 @@ mappings:
     db: []
     api: []
 
-  LandingPage:
-    code_symbols:
-      - "src/app/landing/page.tsx::function LandingPage"
-    db: []
-    api: []
-
-  DashboardPage:
     code_symbols:
       - "src/app/(dashboard)/dashboard/page.tsx::function DashboardPage"
     db: []
@@ -620,38 +499,3 @@ mappings:
       - "src/app/not-found.tsx::function NotFound"
     db: []
     api: []
-
-  HealthCheckAPI:
-    code_symbols:
-      - "src/app/api/health/route.ts::function GET"
-    db: []
-    api:
-      - "GET /api/health"
-
-  MetricsAPI:
-    code_symbols:
-      - "src/app/api/metrics/route.ts::function GET"
-    db: []
-    api:
-      - "GET /api/metrics"
-
-  AnalyticsAPI:
-    code_symbols:
-      - "src/app/api/analytics/route.ts::function GET"
-    db: []
-    api:
-      - "GET /api/analytics"
-
-  ExportAPI:
-    code_symbols:
-      - "src/app/api/export/route.ts::function GET"
-    db: []
-    api:
-      - "GET /api/export"
-
-  SeedAPI:
-    code_symbols:
-      - "src/app/api/seed/route.ts::function POST"
-    db: []
-    api:
-      - "POST /api/seed"

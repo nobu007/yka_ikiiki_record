@@ -1,1 +1,224 @@
-tombstones: []
+tombstones:
+  # Consolidated into EmotionChart (TERM-025)
+  - term: EmotionTrendChart
+    id: "TERM-059"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into EmotionChart as a synonym"
+    consolidated_into: "EmotionChart"
+
+  - term: StudentEmotionChart
+    id: "TERM-060"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into EmotionChart as a synonym"
+    consolidated_into: "EmotionChart"
+
+  - term: MonthlyEmotionChart
+    id: "TERM-061"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into EmotionChart as a synonym"
+    consolidated_into: "EmotionChart"
+
+  - term: DayOfWeekChart
+    id: "TERM-062"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into EmotionChart as a synonym"
+    consolidated_into: "EmotionChart"
+
+  - term: TimeOfDayChart
+    id: "TERM-063"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into EmotionChart as a synonym"
+    consolidated_into: "EmotionChart"
+
+  - term: EmotionDistributionChart
+    id: "TERM-064"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into EmotionChart as a synonym"
+    consolidated_into: "EmotionChart"
+
+  # Consolidated into APIRouteHandler (TERM-043)
+  - term: HealthCheckAPI
+    id: "TERM-096"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into APIRouteHandler as a synonym"
+    consolidated_into: "APIRouteHandler"
+
+  - term: MetricsAPI
+    id: "TERM-097"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into APIRouteHandler as a synonym"
+    consolidated_into: "APIRouteHandler"
+
+  - term: AnalyticsAPI
+    id: "TERM-098"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into APIRouteHandler as a synonym"
+    consolidated_into: "APIRouteHandler"
+
+  - term: ExportAPI
+    id: "TERM-099"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into APIRouteHandler as a synonym"
+    consolidated_into: "APIRouteHandler"
+
+  - term: SeedAPI
+    id: "TERM-100"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into APIRouteHandler as a synonym"
+    consolidated_into: "APIRouteHandler"
+
+  # Consolidated into StatsCalculator (TERM-041)
+  - term: TrendCalculator
+    id: "TERM-074"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into StatsCalculator as a synonym"
+    consolidated_into: "StatsCalculator"
+
+  - term: MathUtils
+    id: "TERM-075"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into StatsCalculator as a synonym"
+    consolidated_into: "StatsCalculator"
+
+  - term: AnalyticsUtils
+    id: "TERM-076"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into StatsCalculator as a synonym"
+    consolidated_into: "StatsCalculator"
+
+  - term: GenerationUtils
+    id: "TERM-077"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into StatsCalculator as a synonym"
+    consolidated_into: "StatsCalculator"
+
+  # Consolidated into AppError (TERM-021)
+  - term: ValidationError
+    id: "TERM-027"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into AppError as a synonym"
+    consolidated_into: "AppError"
+
+  - term: NetworkError
+    id: "TERM-028"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into AppError as a synonym"
+    consolidated_into: "AppError"
+
+  - term: TimeoutError
+    id: "TERM-029"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into AppError as a synonym"
+    consolidated_into: "AppError"
+
+  - term: CircuitBreakerOpenError
+    id: "TERM-030"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into AppError as a synonym"
+    consolidated_into: "AppError"
+
+  - term: InfiniteLoopError
+    id: "TERM-031"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into AppError as a synonym"
+    consolidated_into: "AppError"
+
+  # Consolidated into Dashboard (TERM-050)
+  - term: LandingPage
+    id: "TERM-088"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into Dashboard as a synonym"
+    consolidated_into: "Dashboard"
+
+  - term: DashboardPage
+    id: "TERM-089"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into Dashboard as a synonym"
+    consolidated_into: "Dashboard"
+
+  - term: BarChartPage
+    id: "TERM-090"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into Dashboard as a synonym"
+    consolidated_into: "Dashboard"
+
+  - term: BarChartContent
+    id: "TERM-091"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into Dashboard as a synonym"
+    consolidated_into: "Dashboard"
+
+  - term: DashboardLayout
+    id: "TERM-092"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into Dashboard as a synonym"
+    consolidated_into: "Dashboard"
+
+  - term: RootLayout
+    id: "TERM-093"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into Dashboard as a synonym"
+    consolidated_into: "Dashboard"
+
+  - term: HomePage
+    id: "TERM-094"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into Dashboard as a synonym"
+    consolidated_into: "Dashboard"
+
+  - term: NotFoundPage
+    id: "TERM-095"
+    deleted_at: "2026-03-22"
+    reason: "Consolidated into Dashboard as a synonym"
+    consolidated_into: "Dashboard"
+
+  # Removed as less critical UI components
+  - term: ComponentCard
+    id: "TERM-078"
+    deleted_at: "2026-03-22"
+    reason: "Removed as less critical UI component"
+    consolidated_into: null
+
+  - term: GridShape
+    id: "TERM-066"
+    deleted_at: "2026-03-22"
+    reason: "Removed as decorative component"
+    consolidated_into: null
+
+  # Removed utility functions
+  - term: RequestBodyParser
+    id: "TERM-080"
+    deleted_at: "2026-03-22"
+    reason: "Removed as minor utility"
+    consolidated_into: "DataValidator"
+
+  # Removed constants (consolidated conceptually)
+  - term: APIConstants
+    id: "TERM-054"
+    deleted_at: "2026-03-22"
+    reason: "Removed as less critical constant group"
+    consolidated_into: null
+
+  - term: ResilienceConstants
+    id: "TERM-055"
+    deleted_at: "2026-03-22"
+    reason: "Removed as less critical constant group"
+    consolidated_into: null
+
+  - term: ErrorMessages
+    id: "TERM-057"
+    deleted_at: "2026-03-22"
+    reason: "Removed as less critical constant group"
+    consolidated_into: null
+
+  - term: StorageConstants
+    id: "TERM-058"
+    deleted_at: "2026-03-22"
+    reason: "Removed as less critical constant group"
+    consolidated_into: null
+
+  - term: BrowserConstants
+    id: "TERM-079"
+    deleted_at: "2026-03-22"
+    reason: "Removed as less critical constant group"
+    consolidated_into: null

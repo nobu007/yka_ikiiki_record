@@ -285,15 +285,19 @@ canonical_terms:
     id: "TERM-021"
     layer: "domain"
     status: "stable"
-    definition: "アプリケーションエラーの基底クラス。エラーコード、HTTPステータス、メタデータを含む"
-    synonyms: ["ApplicationError"]
+    definition: "アプリケーションエラーの基底クラス群。エラーコード、HTTPステータス、メタデータを含む。検証、ネットワーク、タイムアウト、サーキットブレーカー、無限ループエラーを含む"
+    synonyms: ["ApplicationError", "ValidationError", "NetworkError", "TimeoutError", "CircuitBreakerOpenError", "InfiniteLoopError"]
     boundaries:
-      includes: ["エラーコード", "HTTPステータス", "エラーメタデータ"]
+      includes: ["エラーコード", "HTTPステータス", "エラーメタデータ", "検証エラー", "ネットワークエラー", "タイムアウトエラー", "サーキットブレーカーエラー", "無限ループエラー"]
       excludes: ["特定の実装エラー"]
-    related_terms: ["ValidationError", "CircuitBreaker"]
+    related_terms: ["CircuitBreaker", "LoopDetector"]
     evidence:
       - source: "src/lib/error-handler.ts"
         quote: "export class AppError extends Error"
+      - source: "src/lib/error-handler.ts"
+        quote: "export class ValidationError, NetworkError extends AppError"
+      - source: "src/lib/resilience/"
+        quote: "TimeoutError, CircuitBreakerOpenError, InfiniteLoopError"
 
   PrismaRecordRepository:
     id: "TERM-022"
@@ -341,15 +345,17 @@ canonical_terms:
     id: "TERM-025"
     layer: "aux"
     status: "stable"
-    definition: "複数のチャートタイプ（line, bar, area, pie, donut）をサポートする柔軟な感情統計チャートコンポーネント"
-    synonyms: []
+    definition: "感情統計を可視化するチャートコンポーネント群。ライン、バー、トレンド、学生別、月次、曜日別、時間帯別、分布チャートを含む"
+    synonyms: ["EmotionTrendChart", "StudentEmotionChart", "MonthlyEmotionChart", "DayOfWeekChart", "TimeOfDayChart", "EmotionDistributionChart"]
     boundaries:
-      includes: ["複数チャートタイプ", "レスポンシブデザイン", "動的インポート"]
+      includes: ["複数チャートタイプ", "レスポンシブデザイン", "動的インポート", "トレンド表示", "学生別表示", "月次表示", "曜日別表示", "時間帯別表示", "分布表示"]
       excludes: ["データ変換ロジック"]
-    related_terms: ["DynamicBarChart", "ChartData"]
+    related_terms: ["DynamicBarChart", "ChartData", "StudentStats", "MonthlyStats", "DayOfWeekStats", "TimeOfDayStats"]
     evidence:
       - source: "src/components/charts/EmotionChart.tsx"
         quote: "export interface EmotionChartProps { type?: 'line' | 'bar' | 'area' | 'pie' | 'donut'; }"
+      - source: "src/components/charts/"
+        quote: "EmotionTrendChart, StudentEmotionChart, MonthlyEmotionChart, DayOfWeekChart, TimeOfDayChart, EmotionDistributionChart"
 
   ChartWrapper:
     id: "TERM-026"
@@ -365,75 +371,10 @@ canonical_terms:
       - source: "src/components/charts/ChartWrapper.tsx"
         quote: "interface ChartWrapperProps { children: ReactNode; isLoading?: boolean; }"
 
-  ValidationError:
-    id: "TERM-027"
-    layer: "domain"
-    status: "stable"
-    definition: "データ検証エラーを表すAppErrorのサブクラス。Zodスキーマ検証失敗などに使用"
-    synonyms: []
-    boundaries:
-      includes: ["検証エラー", "バリデーション失敗"]
-      excludes: ["ネットワークエラー"]
-    related_terms: ["AppError"]
-    evidence:
-      - source: "src/lib/error-handler.ts"
-        quote: "export class ValidationError extends AppError"
 
-  NetworkError:
-    id: "TERM-028"
-    layer: "domain"
-    status: "stable"
-    definition: "ネットワークリクエスト失敗を表すAppErrorのサブクラス。HTTPステータスコードを含む"
-    synonyms: []
-    boundaries:
-      includes: ["HTTPエラー", "APIリクエスト失敗"]
-      excludes: ["検証エラー"]
-    related_terms: ["AppError"]
-    evidence:
-      - source: "src/lib/error-handler.ts"
-        quote: "export class NetworkError extends AppError"
 
-  TimeoutError:
-    id: "TERM-029"
-    layer: "domain"
-    status: "stable"
-    definition: "操作タイムアウトを表すAppErrorのサブクラス。API呼び出しやDB操作のタイムアウトに使用"
-    synonyms: []
-    boundaries:
-      includes: ["タイムアウトエラー", "時間超過"]
-      excludes: []
-    related_terms: ["AppError", "CircuitBreaker"]
-    evidence:
-      - source: "src/lib/resilience/timeout.ts"
-        quote: "export class TimeoutError extends AppError"
 
-  CircuitBreakerOpenError:
-    id: "TERM-030"
-    layer: "domain"
-    status: "stable"
-    definition: "サーキットブレーカーがOPEN状態のときにスローされるエラー"
-    synonyms: []
-    boundaries:
-      includes: ["サーキットブレーカーエラー"]
-      excludes: []
-    related_terms: ["CircuitBreaker", "AppError"]
-    evidence:
-      - source: "src/lib/resilience/circuit-breaker.ts"
-        quote: "export class CircuitBreakerOpenError extends AppError"
 
-  InfiniteLoopError:
-    id: "TERM-031"
-    layer: "domain"
-    status: "stable"
-    definition: "無限ループ検出時にスローされるエラー。LoopDetectorで使用"
-    synonyms: []
-    boundaries:
-      includes: ["無限ループ検出"]
-      excludes: []
-    related_terms: ["LoopDetector", "AppError"]
-    evidence:
-      - source: "src/lib/resilience/loop-detector.ts"
-        quote: "export class InfiniteLoopError extends AppError"
 
   LoopDetector:
     id: "TERM-032"
@@ -565,15 +506,23 @@ canonical_terms:
     id: "TERM-041"
     layer: "domain"
     status: "stable"
-    definition: "感情データの統計計算を行うユーティリティ。平均、分散、トレンド計算"
-    synonyms: []
+    definition: "感情データの統計計算を行うユーティリティ群。平均、分散、標準偏差、トレンド、集計、フィルタリング、データ生成を含む"
+    synonyms: ["TrendCalculator", "MathUtils", "AnalyticsUtils", "GenerationUtils"]
     boundaries:
-      includes: ["統計計算", "感情分析"]
+      includes: ["統計計算", "感情分析", "トレンド計算", "移動平均", "データ集計", "フィルタリング", "データ生成"]
       excludes: ["データ永続化"]
     related_terms: ["Stats"]
     evidence:
       - source: "src/utils/statsCalculator.ts"
         quote: "export function calculateStats(data: EmotionData[]): Stats"
+      - source: "src/utils/statsCalculator/trend.ts"
+        quote: "export function calculateTrendline()"
+      - source: "src/utils/statsCalculator/math.ts"
+        quote: "export function calculateAverage, calculateVariance"
+      - source: "src/utils/statsCalculator/analytics.ts"
+        quote: "export function groupByMonth, groupByStudent"
+      - source: "src/utils/statsCalculator/generation.ts"
+        quote: "export function generateEmotionData"
 
   MirageServer:
     id: "TERM-042"
@@ -593,15 +542,17 @@ canonical_terms:
     id: "TERM-043"
     layer: "aux"
     status: "stable"
-    definition: "Next.js APIルートハンドラー。HTTPリクエストを受け取りレスポンスを返す"
-    synonyms: ["APIEndpoint"]
+    definition: "Next.js APIルートハンドラー群。HTTPリクエストを受け取りレスポンスを返す。ヘルスチェック、メトリクス、分析、エクスポート、シード生成APIを含む"
+    synonyms: ["APIEndpoint", "HealthCheckAPI", "MetricsAPI", "AnalyticsAPI", "ExportAPI", "SeedAPI"]
     boundaries:
-      includes: ["HTTPリクエスト処理", "レスポンス生成"]
+      includes: ["HTTPリクエスト処理", "レスポンス生成", "ヘルスチェック", "メトリクス取得", "分析データ取得", "データエクスポート", "シードデータ生成"]
       excludes: ["ドメインロジック"]
-    related_terms: ["Stats", "Record"]
+    related_terms: ["Stats", "Record", "ResilientHandler"]
     evidence:
       - source: "src/app/api/stats/route.ts"
         quote: "export async function GET(_req: NextRequest): Promise<NextResponse>"
+      - source: "src/app/api/"
+        quote: "health, metrics, analytics, export, seed routes"
 
   ResilientHandler:
     id: "TERM-044"
@@ -691,15 +642,17 @@ canonical_terms:
     id: "TERM-050"
     layer: "aux"
     status: "stable"
-    definition: "メインのダッシュボードUIコンポーネント。統計データの可視化と操作を提供"
-    synonyms: []
+    definition: "メインのダッシュボードUIコンポーネント群。統計データの可視化と操作、ランディング、ダッシュボード、バーチャートページを含む"
+    synonyms: ["DashboardPage", "LandingPage", "BarChartPage"]
     boundaries:
-      includes: ["データ表示", "チャート", "データ生成コントロール"]
+      includes: ["データ表示", "チャート", "データ生成コントロール", "ランディングページ", "ダッシュボードページ", "バーチャートページ"]
       excludes: []
-    related_terms: ["Stats", "EmotionChart"]
+    related_terms: ["Stats", "EmotionChart", "DynamicBarChart"]
     evidence:
       - source: "src/components/Dashboard.tsx"
         quote: "export default function Dashboard()"
+      - source: "src/app/"
+        quote: "landing, dashboard, bar-chart pages"
 
   Notification:
     id: "TERM-051"
@@ -743,33 +696,7 @@ canonical_terms:
       - source: "src/lib/prisma.ts"
         quote: "export const prisma = new PrismaClient()"
 
-  APIConstants:
-    id: "TERM-054"
-    layer: "domain"
-    status: "stable"
-    definition: "API関連の定数定義。エンドポイント、操作名、タイムアウト値"
-    synonyms: []
-    boundaries:
-      includes: ["APIエンドポイント", "操作名"]
-      excludes: []
-    related_terms: []
-    evidence:
-      - source: "src/lib/constants/api.ts"
-        quote: "export const API_ENDPOINTS, API_OPERATIONS"
 
-  ResilienceConstants:
-    id: "TERM-055"
-    layer: "domain"
-    status: "stable"
-    definition: "レジリンス関連の定数。タイムアウト値、リトライ回数"
-    synonyms: []
-    boundaries:
-      includes: ["タイムアウト設定", "リトライ設定"]
-      excludes: []
-    related_terms: ["CircuitBreaker", "TimeoutError"]
-    evidence:
-      - source: "src/lib/constants/resilience.ts"
-        quote: "export const DEFAULT_TIMEOUTS, RETRY_CONFIG"
 
   UIConstants:
     id: "TERM-056"
@@ -785,117 +712,13 @@ canonical_terms:
       - source: "src/lib/constants/ui.ts"
         quote: "export const THEME, BREAKPOINTS"
 
-  ErrorMessages:
-    id: "TERM-057"
-    layer: "domain"
-    status: "stable"
-    definition: "エラーメッセージの定数定義"
-    synonyms: []
-    boundaries:
-      includes: ["エラーメッセージ"]
-      excludes: []
-    related_terms: ["AppError"]
-    evidence:
-      - source: "src/lib/constants/messages.ts"
-        quote: "export const ERROR_MESSAGES"
 
-  StorageConstants:
-    id: "TERM-058"
-    layer: "aux"
-    status: "stable"
-    definition: "ストレージ関連の定数。キー名、容量制限"
-    synonyms: []
-    boundaries:
-      includes: ["ストレージキー", "容量制限"]
-      excludes: []
-    related_terms: []
-    evidence:
-      - source: "src/lib/constants/storage.ts"
-        quote: "export const STORAGE_KEYS, STORAGE_LIMITS"
 
-  EmotionTrendChart:
-    id: "TERM-059"
-    layer: "aux"
-    status: "stable"
-    definition: "感情のトレンドを表示するラインチャートコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["トレンド表示"]
-      excludes: []
-    related_terms: ["EmotionChart", "StudentStats"]
-    evidence:
-      - source: "src/components/charts/EmotionTrendChart.tsx"
-        quote: "export function EmotionTrendChart()"
 
-  StudentEmotionChart:
-    id: "TERM-060"
-    layer: "aux"
-    status: "stable"
-    definition: "学生別の感情スコアを表示するチャートコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["学生別表示"]
-      excludes: []
-    related_terms: ["EmotionChart", "StudentStats"]
-    evidence:
-      - source: "src/components/charts/StudentEmotionChart.tsx"
-        quote: "export function StudentEmotionChart()"
 
-  MonthlyEmotionChart:
-    id: "TERM-061"
-    layer: "aux"
-    status: "stable"
-    definition: "月別の感情統計を表示するチャートコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["月次表示"]
-      excludes: []
-    related_terms: ["EmotionChart", "MonthlyStats"]
-    evidence:
-      - source: "src/components/charts/MonthlyEmotionChart.tsx"
-        quote: "export function MonthlyEmotionChart()"
 
-  DayOfWeekChart:
-    id: "TERM-062"
-    layer: "aux"
-    status: "stable"
-    definition: "曜日別の感情統計を表示するチャートコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["曜日別表示"]
-      excludes: []
-    related_terms: ["EmotionChart", "DayOfWeekStats"]
-    evidence:
-      - source: "src/components/charts/DayOfWeekChart.tsx"
-        quote: "export function DayOfWeekChart()"
 
-  TimeOfDayChart:
-    id: "TERM-063"
-    layer: "aux"
-    status: "stable"
-    definition: "時間帯別の感情統計を表示するチャートコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["時間帯別表示"]
-      excludes: []
-    related_terms: ["EmotionChart", "TimeOfDayStats"]
-    evidence:
-      - source: "src/components/charts/TimeOfDayChart.tsx"
-        quote: "export function TimeOfDayChart()"
 
-  EmotionDistributionChart:
-    id: "TERM-064"
-    layer: "aux"
-    status: "stable"
-    definition: "感情分布を表示するチャートコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["分布表示"]
-      excludes: []
-    related_terms: ["EmotionChart"]
-    evidence:
-      - source: "src/components/charts/EmotionDistributionChart.tsx"
-        quote: "export function EmotionDistributionChart()"
 
   PageBreadCrumb:
     id: "TERM-065"
@@ -911,19 +734,6 @@ canonical_terms:
       - source: "src/components/common/PageBreadCrumb.tsx"
         quote: "export function PageBreadCrumb()"
 
-  GridShape:
-    id: "TERM-066"
-    layer: "aux"
-    status: "stable"
-    definition: "装飾用のグリッド図形コンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["装飾"]
-      excludes: []
-    related_terms: []
-    evidence:
-      - source: "src/components/common/GridShape.tsx"
-        quote: "export function GridShape()"
 
   UsageInstructions:
     id: "TERM-067"
@@ -1023,103 +833,12 @@ canonical_terms:
       - source: "src/infrastructure/repositories/PrismaSeedRepository.ts"
         quote: "export class PrismaSeedRepository"
 
-  TrendCalculator:
-    id: "TERM-074"
-    layer: "domain"
-    status: "stable"
-    definition: "トレンドラインを計算するユーティリティ"
-    synonyms: []
-    boundaries:
-      includes: ["トレンド計算", "移動平均"]
-      excludes: []
-    related_terms: ["StatsCalculator"]
-    evidence:
-      - source: "src/utils/statsCalculator/trend.ts"
-        quote: "export function calculateTrendline()"
 
-  MathUtils:
-    id: "TERM-075"
-    layer: "domain"
-    status: "stable"
-    definition: "数学的計算ユーティリティ。平均、分散、標準偏差"
-    synonyms: []
-    boundaries:
-      includes: ["統計計算"]
-      excludes: []
-    related_terms: ["StatsCalculator"]
-    evidence:
-      - source: "src/utils/statsCalculator/math.ts"
-        quote: "export function calculateAverage, calculateVariance"
 
-  AnalyticsUtils:
-    id: "TERM-076"
-    layer: "domain"
-    status: "stable"
-    definition: "分析用ユーティリティ。データ集計、フィルタリング"
-    synonyms: []
-    boundaries:
-      includes: ["データ分析"]
-      excludes: []
-    related_terms: ["StatsCalculator"]
-    evidence:
-      - source: "src/utils/statsCalculator/analytics.ts"
-        quote: "export function groupByMonth, groupByStudent"
 
-  GenerationUtils:
-    id: "TERM-077"
-    layer: "domain"
-    status: "stable"
-    definition: "テストデータ生成ユーティリティ"
-    synonyms: []
-    boundaries:
-      includes: ["データ生成"]
-      excludes: []
-    related_terms: ["EmotionGenerator"]
-    evidence:
-      - source: "src/utils/statsCalculator/generation.ts"
-        quote: "export function generateEmotionData"
 
-  ComponentCard:
-    id: "TERM-078"
-    layer: "aux"
-    status: "stable"
-    definition: "コンポーネントをラップするカードUIコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["カード表示"]
-      excludes: []
-    related_terms: []
-    evidence:
-      - source: "src/components/common/ComponentCard.tsx"
-        quote: "export function ComponentCard()"
 
-  BrowserConstants:
-    id: "TERM-079"
-    layer: "aux"
-    status: "stable"
-    definition: "ブラウザ関連の定数。localStorageキーなど"
-    synonyms: []
-    boundaries:
-      includes: ["ブラウザAPI"]
-      excludes: []
-    related_terms: []
-    evidence:
-      - source: "src/lib/constants/browser.ts"
-        quote: "export const BROWSER_CONSTANTS"
 
-  RequestBodyParser:
-    id: "TERM-080"
-    layer: "domain"
-    status: "stable"
-    definition: "リクエストボディをパースするユーティリティ"
-    synonyms: []
-    boundaries:
-      includes: ["JSONパース"]
-      excludes: []
-    related_terms: ["DataValidator"]
-    evidence:
-      - source: "src/lib/api/error-handler.ts"
-        quote: "export function parseRequestBody()"
 
   StatsDisplay:
     id: "TERM-081"
@@ -1219,184 +938,15 @@ canonical_terms:
       - source: "src/context/SidebarContext.tsx"
         quote: "export const SidebarContext"
 
-  LandingPage:
-    id: "TERM-088"
-    layer: "aux"
-    status: "stable"
-    definition: "ランディングページコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["ランディングページ"]
-      excludes: []
-    related_terms: []
-    evidence:
-      - source: "src/app/landing/page.tsx"
-        quote: "export default function LandingPage()"
 
-  DashboardPage:
-    id: "TERM-089"
-    layer: "aux"
-    status: "stable"
-    definition: "ダッシュボードページコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["ダッシュボードページ"]
-      excludes: []
-    related_terms: ["Dashboard"]
-    evidence:
-      - source: "src/app/(dashboard)/dashboard/page.tsx"
-        quote: "export default function DashboardPage()"
 
-  BarChartPage:
-    id: "TERM-090"
-    layer: "aux"
-    status: "stable"
-    definition: "バーチャートページコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["バーチャート"]
-      excludes: []
-    related_terms: ["DynamicBarChart"]
-    evidence:
-      - source: "src/app/(chart)/bar-chart/page.tsx"
-        quote: "export default function BarChartPage()"
 
-  BarChartContent:
-    id: "TERM-091"
-    layer: "aux"
-    status: "stable"
-    definition: "バーチャートコンテンツコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["チャートコンテンツ"]
-      excludes: []
-    related_terms: ["DynamicBarChart"]
-    evidence:
-      - source: "src/app/(chart)/bar-chart/components/BarChartContent.tsx"
-        quote: "export function BarChartContent()"
 
-  DashboardLayout:
-    id: "TERM-092"
-    layer: "aux"
-    status: "stable"
-    definition: "ダッシュボードレイアウトコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["レイアウト"]
-      excludes: []
-    related_terms: []
-    evidence:
-      - source: "src/app/(dashboard)/layout.tsx"
-        quote: "export default function DashboardLayout()"
 
-  RootLayout:
-    id: "TERM-093"
-    layer: "aux"
-    status: "stable"
-    definition: "ルートレイアウトコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["ルートレイアウト"]
-      excludes: []
-    related_terms: []
-    evidence:
-      - source: "src/app/layout.tsx"
-        quote: "export default function RootLayout()"
 
-  HomePage:
-    id: "TERM-094"
-    layer: "aux"
-    status: "stable"
-    definition: "ホームページコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["ホームページ"]
-      excludes: []
-    related_terms: []
-    evidence:
-      - source: "src/app/page.tsx"
-        quote: "export default function HomePage()"
 
-  NotFoundPage:
-    id: "TERM-095"
-    layer: "aux"
-    status: "stable"
-    definition: "404 Not Foundページコンポーネント"
-    synonyms: []
-    boundaries:
-      includes: ["404ページ"]
-      excludes: []
-    related_terms: []
-    evidence:
-      - source: "src/app/not-found.tsx"
-        quote: "export default function NotFound()"
 
-  HealthCheckAPI:
-    id: "TERM-096"
-    layer: "aux"
-    status: "stable"
-    definition: "ヘルスチェックAPIエンドポイント"
-    synonyms: []
-    boundaries:
-      includes: ["ヘルスチェック"]
-      excludes: []
-    related_terms: ["APIRouteHandler"]
-    evidence:
-      - source: "src/app/api/health/route.ts"
-        quote: "export async function GET()"
 
-  MetricsAPI:
-    id: "TERM-097"
-    layer: "aux"
-    status: "stable"
-    definition: "メトリクス取得APIエンドポイント"
-    synonyms: []
-    boundaries:
-      includes: ["メトリクス"]
-      excludes: []
-    related_terms: ["APIRouteHandler"]
-    evidence:
-      - source: "src/app/api/metrics/route.ts"
-        quote: "export async function GET()"
 
-  AnalyticsAPI:
-    id: "TERM-098"
-    layer: "aux"
-    status: "stable"
-    definition: "分析データ取得APIエンドポイント"
-    synonyms: []
-    boundaries:
-      includes: ["分析"]
-      excludes: []
-    related_terms: ["APIRouteHandler"]
-    evidence:
-      - source: "src/app/api/analytics/route.ts"
-        quote: "export async function GET()"
 
-  ExportAPI:
-    id: "TERM-099"
-    layer: "aux"
-    status: "stable"
-    definition: "データエクスポートAPIエンドポイント"
-    synonyms: []
-    boundaries:
-      includes: ["エクスポート"]
-      excludes: []
-    related_terms: ["APIRouteHandler"]
-    evidence:
-      - source: "src/app/api/export/route.ts"
-        quote: "export async function GET()"
 
-  SeedAPI:
-    id: "TERM-100"
-    layer: "aux"
-    status: "stable"
-    definition: "シードデータ生成APIエンドポイント"
-    synonyms: []
-    boundaries:
-      includes: ["シード生成"]
-      excludes: []
-    related_terms: ["APIRouteHandler"]
-    evidence:
-      - source: "src/app/api/seed/route.ts"
-        quote: "export async function POST()"

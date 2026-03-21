@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T03:00:00Z",
+  "last_updated": "2026-03-22T03:05:00Z",
   "terms": {
     "total": 59,
     "core": 9,
@@ -17,9 +17,9 @@
     "unmapped": 0
   },
   "invariants": {
-    "total": 7,
-    "hard": 7,
-    "soft": 0
+    "total": 16,
+    "hard": 14,
+    "soft": 2
   },
   "quality_metrics": {
     "ontology_coverage": "85%",
@@ -27,6 +27,6 @@
     "draft_ratio": "0%",
     "unmapped_ratio": "0%",
     "evidence_coverage": "100%",
-    "invariant_extraction_rate": "5%"
+    "invariant_extraction_rate": "55%"
   }
 }

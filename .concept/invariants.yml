@@ -35,13 +35,14 @@ invariants:
 
   # CODE QUALITY INVARIANTS
   - id: INV-QUAL-001
-    name: No_Logger_Getter
+    name: TypeScript_Strict_Mode
     category: quality
     severity: CRITICAL
-    description: logging.getLogger() is forbidden (causes handler conflicts)
-    constraint: "Must use logging.Logger(module_name) instead"
-    validation: "grep -r 'logging.getLogger' src/ | wc -l = 0"
-    rationale: "Prevents duplicate handler hell"
+    description: All TypeScript code must comply with strict type checking
+    constraint: "No 'any' types without explicit justification, no implicit any"
+    validation: "TypeScript compilation with strict mode must pass"
+    rationale: "Maintains type safety across the codebase"
+    related_terms: ["CleanArchitecture", "DomainLayer"]
 
   - id: INV-QUAL-002
     name: Fixed_Filename_Policy
@@ -80,6 +81,100 @@ invariants:
     validation: "Test audit for file state transitions"
     rationale: "Prevents 'works once' failures"
 
+  # DOMAIN INVARIANTS
+  - id: INV-DOM-001
+    name: Emotion_Value_Range
+    category: domain
+    severity: CRITICAL
+    description: Emotion scores must always be within valid range
+    constraint: "Emotion values must be between 1.0 and 5.0 inclusive"
+    validation: "All Record entities and generated stats enforce 1.0-5.0 range"
+    rationale: "Emotion scores are normalized to 1-5 scale for consistency"
+    related_terms: ["Record", "Stats", "EmotionGenerator"]
+
+  - id: INV-DOM-002
+    name: Stats_Structure_Completeness
+    category: domain
+    severity: CRITICAL
+    description: Stats entity must contain all required subsections
+    constraint: "Stats must have overview, monthlyStats, studentStats, dayOfWeekStats, emotionDistribution, timeOfDayStats"
+    validation: "StatsRepository and StatsService ensure complete structure"
+    rationale: "Dashboard and UI depend on complete stats structure"
+    related_terms: ["Stats", "StatsRepository", "StatsService"]
+
+  - id: INV-DOM-003
+    name: Record_Optional_Fields
+    category: domain
+    severity: HIGH
+    description: Record entity must allow optional comment and metadata
+    constraint: "id, comment, createdAt, updatedAt are optional; emotion, date, student are required"
+    validation: "Record.test.ts verifies creation with and without optional fields"
+    rationale: "Supports flexible record creation and persistence lifecycle"
+    related_terms: ["Record"]
+
+  # RESILIENCE INVARIANTS
+  - id: INV-RES-001
+    name: CircuitBreaker_State_Transitions
+    category: resilience
+    severity: CRITICAL
+    description: CircuitBreaker must transition through CLOSED → OPEN → HALF_OPEN → CLOSED
+    constraint: "State changes only on failure threshold or timeout expiration"
+    validation: "CircuitBreaker.test.ts verifies state transitions and reset behavior"
+    rationale: "Prevents cascading failures in distributed systems"
+    related_terms: ["CircuitBreaker", "AppError"]
+
+  - id: INV-RES-002
+    name: CircuitBreaker_Failure_Counting
+    category: resilience
+    severity: HIGH
+    description: CircuitBreaker must accurately track failures and reset on success
+    constraint: "Failure count resets to 0 on successful operation or manual reset"
+    validation: "CircuitBreaker tracks failureCount and resets appropriately"
+    rationale: "Accurate failure tracking enables correct circuit state management"
+    related_terms: ["CircuitBreaker"]
+
+  # REPOSITORY INVARIANTS
+  - id: INV-REP-001
+    name: Repository_Interface_Contract
+    category: repository
+    severity: CRITICAL
+    description: Repository implementations must fulfill complete interface contract
+    constraint: "All repository methods must be async and return proper types"
+    validation: "StatsRepository.contract.test.ts enforces interface compliance"
+    rationale: "Ensures swappable repository implementations (Prisma, Mock)"
+    related_terms: ["StatsRepository", "IRecordRepository", "PrismaRecordRepository", "MockStatsRepository"]
+
+  - id: INV-REP-002
+    name: Repository_Data_Isolation
+    category: repository
+    severity: HIGH
+    description: Repository operations must not leak data between requests
+    constraint: "Each repository call must be independent and isolated"
+    validation: "Repository tests verify no state leakage between operations"
+    rationale: "Prevents data corruption in concurrent scenarios"
+    related_terms: ["StatsRepository", "IRecordRepository"]
+
+  # UTILITY INVARIANTS
+  - id: INV-UTIL-001
+    name: Math_Function_Boundary_Conditions
+    category: utility
+    severity: HIGH
+    description: Math utilities must handle edge cases (empty arrays, equal bounds, out-of-range)"
+    constraint: "clamp, average, and other math functions handle edge cases gracefully"
+    validation: "statsCalculator.basic.test.ts verifies boundary conditions"
+    rationale: "Prevents NaN and undefined errors in calculations"
+    related_terms: ["StatsCalculator"]
+
+  - id: INV-UTIL-002
+    name: Average_Empty_Array_Handling
+    category: utility
+    severity: MEDIUM
+    description: Average function must return 0 for empty arrays
+    constraint: "average([]) === 0, not NaN or undefined"
+    validation: "statsCalculator.basic.test.ts verifies empty array behavior"
+    rationale: "Provides predictable behavior for empty datasets"
+    related_terms: ["StatsCalculator"]
+
   # WORKFLOW INVARIANTS
   - id: INV-WORK-001
     name: SDEC_Cycle_Mandatory
@@ -112,16 +207,15 @@ violation_handling:
 
 monitoring:
   automated_checks:
-    - name: logger_getter_check
-      command: "grep -r 'logging.getLogger' src/ --include='*.py' | wc -l"
+    - name: typescript_strict_check
+      command: "npx tsc --noEmit --strict 2>&1 | grep -c 'error TS'"
       threshold: 0
+      note: "INV-QUAL-001: TypeScript strict mode compliance"
     - name: date_filename_check
       command: "find . -name '*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*' | wc -l"
       threshold: 0
-    - name: common_reuse_check
-      command: "grep -r 'CLIProcessor\\|RateLimitAwareCLIProcessor' src/ --include='*.py' | wc -l"
-      threshold: 10  # Baseline expectation
+      note: "INV-QUAL-002: No timestamped filenames"
     - name: inv_arch_001_srp_check
-      command: "find src -name '*.tsx' -o -name '*.ts' | xargs wc -l | awk 'NR>1 && $1>300 && !/total/ {count++} END {print count+0}'"
+      command: "find src -name '*.tsx' -o -name '*.ts' | xargs wc -l | sort -rn | head -1 | awk '{print ($1 > 300) ? 1 : 0}'"
       threshold: 0
       note: "INV-ARCH-001: ALL files including test files must be < 300 lines"

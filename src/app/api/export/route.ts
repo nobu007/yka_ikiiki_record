@@ -5,11 +5,13 @@ import { createRecordRepository } from "@/infrastructure/factories/repositoryFac
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { API_OPERATIONS } from "@/lib/constants/api";
 import type { Record } from "@/schemas/api";
+import * as XLSX from "xlsx";
 
 const ExportQuerySchema = z.object({
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   student: z.string().optional(),
+  format: z.enum(["csv", "xlsx"]).default("csv"),
 });
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
@@ -17,7 +19,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     async () => {
       const searchParams = req.nextUrl.searchParams;
       const queryParams = Object.fromEntries(searchParams.entries());
-      const { startDate, endDate, student } =
+      const { startDate, endDate, student, format } =
         ExportQuerySchema.parse(queryParams);
 
       const repository = createRecordRepository();
@@ -34,13 +36,25 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         records = await repository.findAll();
       }
 
-      const csv = convertToCSV(records);
+      const timestamp = Date.now();
 
+      if (format === "xlsx") {
+        const excel = convertToExcel(records);
+        return new NextResponse(excel, {
+          status: 200,
+          headers: {
+            "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "Content-Disposition": `attachment; filename="records-${timestamp}.xlsx"`,
+          },
+        });
+      }
+
+      const csv = convertToCSV(records);
       return new NextResponse(csv, {
         status: 200,
         headers: {
           "Content-Type": "text/csv; charset=utf-8",
-          "Content-Disposition": `attachment; filename="records-${Date.now()}.csv"`,
+          "Content-Disposition": `attachment; filename="records-${timestamp}.csv"`,
         },
       });
     },
@@ -97,4 +111,36 @@ function escapeCSV(value: string): string {
     return `"${value.replace(/"/g, '""')}"`;
   }
   return value;
+}
+
+function convertToExcel(records: Record[]): Uint8Array {
+  const headers = [
+    "ID",
+    "Emotion",
+    "Date",
+    "Student",
+    "Comment",
+    "CreatedAt",
+    "UpdatedAt",
+  ];
+
+  const rows = records.map((record) => ({
+    ID: record.id?.toString() || "",
+    Emotion: record.emotion,
+    Date: formatDate(record.date),
+    Student: record.student,
+    Comment: record.comment || "",
+    CreatedAt: record.createdAt ? formatDate(record.createdAt) : "",
+    UpdatedAt: record.updatedAt ? formatDate(record.updatedAt) : "",
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet([headers.map((h) => ({ [h]: h })), ...rows], {
+    skipHeader: true,
+  });
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Records");
+
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  return new Uint8Array(excelBuffer);
 }

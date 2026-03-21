@@ -364,3 +364,1039 @@ canonical_terms:
     evidence:
       - source: "src/components/charts/ChartWrapper.tsx"
         quote: "interface ChartWrapperProps { children: ReactNode; isLoading?: boolean; }"
+
+  ValidationError:
+    id: "TERM-027"
+    layer: "domain"
+    status: "stable"
+    definition: "データ検証エラーを表すAppErrorのサブクラス。Zodスキーマ検証失敗などに使用"
+    synonyms: []
+    boundaries:
+      includes: ["検証エラー", "バリデーション失敗"]
+      excludes: ["ネットワークエラー"]
+    related_terms: ["AppError"]
+    evidence:
+      - source: "src/lib/error-handler.ts"
+        quote: "export class ValidationError extends AppError"
+
+  NetworkError:
+    id: "TERM-028"
+    layer: "domain"
+    status: "stable"
+    definition: "ネットワークリクエスト失敗を表すAppErrorのサブクラス。HTTPステータスコードを含む"
+    synonyms: []
+    boundaries:
+      includes: ["HTTPエラー", "APIリクエスト失敗"]
+      excludes: ["検証エラー"]
+    related_terms: ["AppError"]
+    evidence:
+      - source: "src/lib/error-handler.ts"
+        quote: "export class NetworkError extends AppError"
+
+  TimeoutError:
+    id: "TERM-029"
+    layer: "domain"
+    status: "stable"
+    definition: "操作タイムアウトを表すAppErrorのサブクラス。API呼び出しやDB操作のタイムアウトに使用"
+    synonyms: []
+    boundaries:
+      includes: ["タイムアウトエラー", "時間超過"]
+      excludes: []
+    related_terms: ["AppError", "CircuitBreaker"]
+    evidence:
+      - source: "src/lib/resilience/timeout.ts"
+        quote: "export class TimeoutError extends AppError"
+
+  CircuitBreakerOpenError:
+    id: "TERM-030"
+    layer: "domain"
+    status: "stable"
+    definition: "サーキットブレーカーがOPEN状態のときにスローされるエラー"
+    synonyms: []
+    boundaries:
+      includes: ["サーキットブレーカーエラー"]
+      excludes: []
+    related_terms: ["CircuitBreaker", "AppError"]
+    evidence:
+      - source: "src/lib/resilience/circuit-breaker.ts"
+        quote: "export class CircuitBreakerOpenError extends AppError"
+
+  InfiniteLoopError:
+    id: "TERM-031"
+    layer: "domain"
+    status: "stable"
+    definition: "無限ループ検出時にスローされるエラー。LoopDetectorで使用"
+    synonyms: []
+    boundaries:
+      includes: ["無限ループ検出"]
+      excludes: []
+    related_terms: ["LoopDetector", "AppError"]
+    evidence:
+      - source: "src/lib/resilience/loop-detector.ts"
+        quote: "export class InfiniteLoopError extends AppError"
+
+  LoopDetector:
+    id: "TERM-032"
+    layer: "domain"
+    status: "stable"
+    definition: "無限ループを検出するユーティリティ。最大反復回数を監視"
+    synonyms: []
+    boundaries:
+      includes: ["ループ検出", "反復回数カウント"]
+      excludes: []
+    related_terms: ["InfiniteLoopError"]
+    evidence:
+      - source: "src/lib/resilience/loop-detector.ts"
+        quote: "export class LoopDetector"
+
+  ErrorBoundary:
+    id: "TERM-033"
+    layer: "aux"
+    status: "stable"
+    definition: "Reactエラー境界コンポーネント。子コンポーネントで発生したエラーをキャッチしてフォールバックUIを表示"
+    synonyms: []
+    boundaries:
+      includes: ["エラーキャッチ", "フォールバックUI"]
+      excludes: []
+    related_terms: ["AppError"]
+    evidence:
+      - source: "src/components/common/ErrorBoundary.tsx"
+        quote: "export class ErrorBoundary extends Component<Props, State>"
+
+  MockStatsRepository:
+    id: "TERM-034"
+    layer: "aux"
+    status: "stable"
+    definition: "StatsRepositoryのモック実装。MirageJSを使用した開発・テスト用"
+    synonyms: []
+    boundaries:
+      includes: ["モックデータ", "インメモリストレージ"]
+      excludes: ["永続化"]
+    related_terms: ["StatsRepository"]
+    evidence:
+      - source: "src/infrastructure/storage/MockStatsRepository.ts"
+        quote: "export class MockStatsRepository implements StatsRepository"
+
+  RepositoryFactory:
+    id: "TERM-035"
+    layer: "aux"
+    status: "stable"
+    definition: "リポジトリインスタンスを作成するファクトリー関数群。環境に応じて適切な実装を選択"
+    synonyms: []
+    boundaries:
+      includes: ["リポジトリ作成", "環境判定"]
+      excludes: []
+    related_terms: ["StatsRepository", "IRecordRepository"]
+    evidence:
+      - source: "src/infrastructure/factories/repositoryFactory.ts"
+        quote: "export function createStatsRepository(): StatsRepository"
+
+  useStats:
+    id: "TERM-036"
+    layer: "aux"
+    status: "stable"
+    definition: "統計データを取得するReactフック。SWRを使用したデータフェッチとキャッシュ"
+    synonyms: []
+    boundaries:
+      includes: ["データフェッチ", "ステート管理"]
+      excludes: []
+    related_terms: ["Stats"]
+    evidence:
+      - source: "src/application/hooks/useStats.ts"
+        quote: "export function useStats(): UseStatsResult"
+
+  useDataGeneration:
+    id: "TERM-037"
+    layer: "aux"
+    status: "stable"
+    definition: "テストデータ生成を行うReactフック。データ生成設定を受け取り生成を実行"
+    synonyms: []
+    boundaries:
+      includes: ["データ生成トリガー", "進捗管理"]
+      excludes: []
+    related_terms: ["DataGenerationConfig"]
+    evidence:
+      - source: "src/application/hooks/useDataGeneration.ts"
+        quote: "export function useDataGeneration({ onGenerate }: UseDataGenerationProps)"
+
+  useSeedGeneration:
+    id: "TERM-038"
+    layer: "aux"
+    status: "stable"
+    definition: "シードデータ生成を行うReactフック。データベースの初期化とテストデータ投入"
+    synonyms: []
+    boundaries:
+      includes: ["シードデータ", "データベース初期化"]
+      excludes: []
+    related_terms: ["StatsService"]
+    evidence:
+      - source: "src/application/hooks/useSeedGeneration.ts"
+        quote: "export function useSeedGeneration()"
+
+  useAsync:
+    id: "TERM-039"
+    layer: "aux"
+    status: "stable"
+    definition: "非同期操作の状態を管理する汎用Reactフック。ローディング、エラー、データ状態を扱う"
+    synonyms: []
+    boundaries:
+      includes: ["非同期ステート管理"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/hooks/useAsync.ts"
+        quote: "export function useAsync<T = unknown>()"
+
+  useNotification:
+    id: "TERM-040"
+    layer: "aux"
+    status: "stable"
+    definition: "通知メッセージを表示するReactフック。成功・エラー通知の管理"
+    synonyms: []
+    boundaries:
+      includes: ["通知表示", "メッセージキュー"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/hooks/useNotification.ts"
+        quote: "export function useNotification(): UseNotificationResult"
+
+  StatsCalculator:
+    id: "TERM-041"
+    layer: "domain"
+    status: "stable"
+    definition: "感情データの統計計算を行うユーティリティ。平均、分散、トレンド計算"
+    synonyms: []
+    boundaries:
+      includes: ["統計計算", "感情分析"]
+      excludes: ["データ永続化"]
+    related_terms: ["Stats"]
+    evidence:
+      - source: "src/utils/statsCalculator.ts"
+        quote: "export function calculateStats(data: EmotionData[]): Stats"
+
+  MirageServer:
+    id: "TERM-042"
+    layer: "aux"
+    status: "stable"
+    definition: "MirageJSモックサーバー。開発環境でのAPIモックを提供"
+    synonyms: []
+    boundaries:
+      includes: ["モックAPI", "開発サーバー"]
+      excludes: ["本番API"]
+    related_terms: ["MockStatsRepository"]
+    evidence:
+      - source: "src/mirage/server.ts"
+        quote: "export function makeServer({ environment = 'development' } = {})"
+
+  APIRouteHandler:
+    id: "TERM-043"
+    layer: "aux"
+    status: "stable"
+    definition: "Next.js APIルートハンドラー。HTTPリクエストを受け取りレスポンスを返す"
+    synonyms: ["APIEndpoint"]
+    boundaries:
+      includes: ["HTTPリクエスト処理", "レスポンス生成"]
+      excludes: ["ドメインロジック"]
+    related_terms: ["Stats", "Record"]
+    evidence:
+      - source: "src/app/api/stats/route.ts"
+        quote: "export async function GET(_req: NextRequest): Promise<NextResponse>"
+
+  ResilientHandler:
+    id: "TERM-044"
+    layer: "domain"
+    status: "stable"
+    definition: "レジリエンス機能を適用したAPIハンドラー。タイムアウト、サーキットブレーカー、エラーハンドリングを含む"
+    synonyms: []
+    boundaries:
+      includes: ["エラーハンドリング", "タイムアウト", "リトライ"]
+      excludes: []
+    related_terms: ["CircuitBreaker", "AppError"]
+    evidence:
+      - source: "src/lib/api/error-handler.ts"
+        quote: "export function withResilientHandler<T extends NextResponse>"
+
+  DataValidator:
+    id: "TERM-045"
+    layer: "domain"
+    status: "stable"
+    definition: "Zodスキーマを使用したデータ検証ユーティリティ"
+    synonyms: []
+    boundaries:
+      includes: ["スキーマ検証", "型安全"]
+      excludes: []
+    related_terms: ["ValidationError"]
+    evidence:
+      - source: "src/lib/api/validation.ts"
+        quote: "export function validateData<T>(data: unknown, schema: z.ZodSchema<T>): T"
+
+  APIResponseBuilder:
+    id: "TERM-046"
+    layer: "domain"
+    status: "stable"
+    definition: "標準化されたAPIレスポンスを作成するユーティリティ"
+    synonyms: []
+    boundaries:
+      includes: ["成功レスポンス", "エラーレスポンス"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/lib/api/response.ts"
+        quote: "export function createSuccessResponse<T>(data: T, schema?: z.ZodSchema<T>)"
+
+  EnvConfig:
+    id: "TERM-047"
+    layer: "domain"
+    status: "stable"
+    definition: "環境変数の設定と取得を管理するユーティリティ"
+    synonyms: []
+    boundaries:
+      includes: ["環境変数", "設定検証"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/lib/config/env.ts"
+        quote: "export function getEnv(): Env"
+
+  ApplicationLayer:
+    id: "TERM-048"
+    layer: "core"
+    status: "stable"
+    definition: "ドメイン層とインフラストラクチャ層を仲介するアプリケーション層。ユースケースとフックを含む"
+    synonyms: []
+    boundaries:
+      includes: ["Reactフック", "ユースケース調整"]
+      excludes: ["ドメインロジック", "インフラ詳細"]
+    related_terms: ["CleanArchitecture", "useStats"]
+    evidence:
+      - source: "src/application/"
+        quote: "src/application/├── hooks/ # Application hooks"
+
+  PresentationLayer:
+    id: "TERM-049"
+    layer: "core"
+    status: "stable"
+    definition: "UIコンポーネントとプレゼンテーションロジックを含むプレゼンテーション層"
+    synonyms: ["UILayer"]
+    boundaries:
+      includes: ["Reactコンポーネント", "ページ"]
+      excludes: ["ビジネスロジック"]
+    related_terms: ["CleanArchitecture", "EmotionChart"]
+    evidence:
+      - source: "src/presentation/"
+        quote: "src/presentation/├── hooks/ # Presentation hooks"
+
+  Dashboard:
+    id: "TERM-050"
+    layer: "aux"
+    status: "stable"
+    definition: "メインのダッシュボードUIコンポーネント。統計データの可視化と操作を提供"
+    synonyms: []
+    boundaries:
+      includes: ["データ表示", "チャート", "データ生成コントロール"]
+      excludes: []
+    related_terms: ["Stats", "EmotionChart"]
+    evidence:
+      - source: "src/components/Dashboard.tsx"
+        quote: "export default function Dashboard()"
+
+  Notification:
+    id: "TERM-051"
+    layer: "aux"
+    status: "stable"
+    definition: "通知メッセージを表示するUIコンポーネント"
+    synonyms: ["Toast"]
+    boundaries:
+      includes: ["成功通知", "エラー通知"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/components/common/Notification.tsx"
+        quote: "export function Notification()"
+
+  LoadingSpinner:
+    id: "TERM-052"
+    layer: "aux"
+    status: "stable"
+    definition: "ローディング状態を表示するスピナーコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["ローディング表示"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/components/common/LoadingSpinner.tsx"
+        quote: "export function LoadingSpinner()"
+
+  PrismaClient:
+    id: "TERM-053"
+    layer: "aux"
+    status: "stable"
+    definition: "Prisma ORMクライアントのシングルトンインスタンス"
+    synonyms: []
+    boundaries:
+      includes: ["データベースクライアント"]
+      excludes: []
+    related_terms: ["PrismaRecordRepository"]
+    evidence:
+      - source: "src/lib/prisma.ts"
+        quote: "export const prisma = new PrismaClient()"
+
+  APIConstants:
+    id: "TERM-054"
+    layer: "domain"
+    status: "stable"
+    definition: "API関連の定数定義。エンドポイント、操作名、タイムアウト値"
+    synonyms: []
+    boundaries:
+      includes: ["APIエンドポイント", "操作名"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/lib/constants/api.ts"
+        quote: "export const API_ENDPOINTS, API_OPERATIONS"
+
+  ResilienceConstants:
+    id: "TERM-055"
+    layer: "domain"
+    status: "stable"
+    definition: "レジリンス関連の定数。タイムアウト値、リトライ回数"
+    synonyms: []
+    boundaries:
+      includes: ["タイムアウト設定", "リトライ設定"]
+      excludes: []
+    related_terms: ["CircuitBreaker", "TimeoutError"]
+    evidence:
+      - source: "src/lib/constants/resilience.ts"
+        quote: "export const DEFAULT_TIMEOUTS, RETRY_CONFIG"
+
+  UIConstants:
+    id: "TERM-056"
+    layer: "aux"
+    status: "stable"
+    definition: "UI関連の定数。色、サイズ、ブレークポイント"
+    synonyms: []
+    boundaries:
+      includes: ["テーマ設定", "ブレークポイント"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/lib/constants/ui.ts"
+        quote: "export const THEME, BREAKPOINTS"
+
+  ErrorMessages:
+    id: "TERM-057"
+    layer: "domain"
+    status: "stable"
+    definition: "エラーメッセージの定数定義"
+    synonyms: []
+    boundaries:
+      includes: ["エラーメッセージ"]
+      excludes: []
+    related_terms: ["AppError"]
+    evidence:
+      - source: "src/lib/constants/messages.ts"
+        quote: "export const ERROR_MESSAGES"
+
+  StorageConstants:
+    id: "TERM-058"
+    layer: "aux"
+    status: "stable"
+    definition: "ストレージ関連の定数。キー名、容量制限"
+    synonyms: []
+    boundaries:
+      includes: ["ストレージキー", "容量制限"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/lib/constants/storage.ts"
+        quote: "export const STORAGE_KEYS, STORAGE_LIMITS"
+
+  EmotionTrendChart:
+    id: "TERM-059"
+    layer: "aux"
+    status: "stable"
+    definition: "感情のトレンドを表示するラインチャートコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["トレンド表示"]
+      excludes: []
+    related_terms: ["EmotionChart", "StudentStats"]
+    evidence:
+      - source: "src/components/charts/EmotionTrendChart.tsx"
+        quote: "export function EmotionTrendChart()"
+
+  StudentEmotionChart:
+    id: "TERM-060"
+    layer: "aux"
+    status: "stable"
+    definition: "学生別の感情スコアを表示するチャートコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["学生別表示"]
+      excludes: []
+    related_terms: ["EmotionChart", "StudentStats"]
+    evidence:
+      - source: "src/components/charts/StudentEmotionChart.tsx"
+        quote: "export function StudentEmotionChart()"
+
+  MonthlyEmotionChart:
+    id: "TERM-061"
+    layer: "aux"
+    status: "stable"
+    definition: "月別の感情統計を表示するチャートコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["月次表示"]
+      excludes: []
+    related_terms: ["EmotionChart", "MonthlyStats"]
+    evidence:
+      - source: "src/components/charts/MonthlyEmotionChart.tsx"
+        quote: "export function MonthlyEmotionChart()"
+
+  DayOfWeekChart:
+    id: "TERM-062"
+    layer: "aux"
+    status: "stable"
+    definition: "曜日別の感情統計を表示するチャートコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["曜日別表示"]
+      excludes: []
+    related_terms: ["EmotionChart", "DayOfWeekStats"]
+    evidence:
+      - source: "src/components/charts/DayOfWeekChart.tsx"
+        quote: "export function DayOfWeekChart()"
+
+  TimeOfDayChart:
+    id: "TERM-063"
+    layer: "aux"
+    status: "stable"
+    definition: "時間帯別の感情統計を表示するチャートコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["時間帯別表示"]
+      excludes: []
+    related_terms: ["EmotionChart", "TimeOfDayStats"]
+    evidence:
+      - source: "src/components/charts/TimeOfDayChart.tsx"
+        quote: "export function TimeOfDayChart()"
+
+  EmotionDistributionChart:
+    id: "TERM-064"
+    layer: "aux"
+    status: "stable"
+    definition: "感情分布を表示するチャートコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["分布表示"]
+      excludes: []
+    related_terms: ["EmotionChart"]
+    evidence:
+      - source: "src/components/charts/EmotionDistributionChart.tsx"
+        quote: "export function EmotionDistributionChart()"
+
+  PageBreadCrumb:
+    id: "TERM-065"
+    layer: "aux"
+    status: "stable"
+    definition: "パンくずリストを表示するナビゲーションコンポーネント"
+    synonyms: ["Breadcrumb"]
+    boundaries:
+      includes: ["ナビゲーション"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/components/common/PageBreadCrumb.tsx"
+        quote: "export function PageBreadCrumb()"
+
+  GridShape:
+    id: "TERM-066"
+    layer: "aux"
+    status: "stable"
+    definition: "装飾用のグリッド図形コンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["装飾"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/components/common/GridShape.tsx"
+        quote: "export function GridShape()"
+
+  UsageInstructions:
+    id: "TERM-067"
+    layer: "aux"
+    status: "stable"
+    definition: "使用方法を説明するインストラクションコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["説明表示"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/components/common/UsageInstructions.tsx"
+        quote: "export function UsageInstructions()"
+
+  DataVisualization:
+    id: "TERM-068"
+    layer: "aux"
+    status: "stable"
+    definition: "データ可視化セクションのコンテナコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["チャート表示", "データセクション"]
+      excludes: []
+    related_terms: ["EmotionChart"]
+    evidence:
+      - source: "src/components/dashboard/DataVisualization.tsx"
+        quote: "export function DataVisualization()"
+
+  DataSection:
+    id: "TERM-069"
+    layer: "aux"
+    status: "stable"
+    definition: "データ操作セクションのコンテナコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["データ操作", "生成コントロール"]
+      excludes: []
+    related_terms: ["useDataGeneration"]
+    evidence:
+      - source: "src/components/dashboard/DataSection.tsx"
+        quote: "export function DataSection()"
+
+  InstructionsSection:
+    id: "TERM-070"
+    layer: "aux"
+    status: "stable"
+    definition: "インストラクションセクションのコンテナコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["説明セクション"]
+      excludes: []
+    related_terms: ["UsageInstructions"]
+    evidence:
+      - source: "src/components/dashboard/InstructionsSection.tsx"
+        quote: "export function InstructionsSection()"
+
+  APITimeout:
+    id: "TERM-071"
+    layer: "domain"
+    status: "stable"
+    definition: "APIリクエストのタイムアウト処理ユーティリティ"
+    synonyms: []
+    boundaries:
+      includes: ["タイムアウトラッパー"]
+      excludes: []
+    related_terms: ["TimeoutError"]
+    evidence:
+      - source: "src/lib/resilience/timeout.ts"
+        quote: "export function withApiTimeout()"
+
+  Icons:
+    id: "TERM-072"
+    layer: "aux"
+    status: "stable"
+    definition: "Lucide Reactアイコンのエクスポート"
+    synonyms: []
+    boundaries:
+      includes: ["アイコン"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/components/common/Icons.tsx"
+        quote: "export * Icons"
+
+  PrismaSeedRepository:
+    id: "TERM-073"
+    layer: "aux"
+    status: "stable"
+    definition: "シードデータ生成用のPrismaリポジトリ"
+    synonyms: []
+    boundaries:
+      includes: ["シードデータ", "Prisma操作"]
+      excludes: []
+    related_terms: ["PrismaStatsRepository"]
+    evidence:
+      - source: "src/infrastructure/repositories/PrismaSeedRepository.ts"
+        quote: "export class PrismaSeedRepository"
+
+  TrendCalculator:
+    id: "TERM-074"
+    layer: "domain"
+    status: "stable"
+    definition: "トレンドラインを計算するユーティリティ"
+    synonyms: []
+    boundaries:
+      includes: ["トレンド計算", "移動平均"]
+      excludes: []
+    related_terms: ["StatsCalculator"]
+    evidence:
+      - source: "src/utils/statsCalculator/trend.ts"
+        quote: "export function calculateTrendline()"
+
+  MathUtils:
+    id: "TERM-075"
+    layer: "domain"
+    status: "stable"
+    definition: "数学的計算ユーティリティ。平均、分散、標準偏差"
+    synonyms: []
+    boundaries:
+      includes: ["統計計算"]
+      excludes: []
+    related_terms: ["StatsCalculator"]
+    evidence:
+      - source: "src/utils/statsCalculator/math.ts"
+        quote: "export function calculateAverage, calculateVariance"
+
+  AnalyticsUtils:
+    id: "TERM-076"
+    layer: "domain"
+    status: "stable"
+    definition: "分析用ユーティリティ。データ集計、フィルタリング"
+    synonyms: []
+    boundaries:
+      includes: ["データ分析"]
+      excludes: []
+    related_terms: ["StatsCalculator"]
+    evidence:
+      - source: "src/utils/statsCalculator/analytics.ts"
+        quote: "export function groupByMonth, groupByStudent"
+
+  GenerationUtils:
+    id: "TERM-077"
+    layer: "domain"
+    status: "stable"
+    definition: "テストデータ生成ユーティリティ"
+    synonyms: []
+    boundaries:
+      includes: ["データ生成"]
+      excludes: []
+    related_terms: ["EmotionGenerator"]
+    evidence:
+      - source: "src/utils/statsCalculator/generation.ts"
+        quote: "export function generateEmotionData"
+
+  ComponentCard:
+    id: "TERM-078"
+    layer: "aux"
+    status: "stable"
+    definition: "コンポーネントをラップするカードUIコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["カード表示"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/components/common/ComponentCard.tsx"
+        quote: "export function ComponentCard()"
+
+  BrowserConstants:
+    id: "TERM-079"
+    layer: "aux"
+    status: "stable"
+    definition: "ブラウザ関連の定数。localStorageキーなど"
+    synonyms: []
+    boundaries:
+      includes: ["ブラウザAPI"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/lib/constants/browser.ts"
+        quote: "export const BROWSER_CONSTANTS"
+
+  RequestBodyParser:
+    id: "TERM-080"
+    layer: "domain"
+    status: "stable"
+    definition: "リクエストボディをパースするユーティリティ"
+    synonyms: []
+    boundaries:
+      includes: ["JSONパース"]
+      excludes: []
+    related_terms: ["DataValidator"]
+    evidence:
+      - source: "src/lib/api/error-handler.ts"
+        quote: "export function parseRequestBody()"
+
+  StatsDisplay:
+    id: "TERM-081"
+    layer: "aux"
+    status: "stable"
+    definition: "統計データを表示するUIコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["統計表示"]
+      excludes: []
+    related_terms: ["Stats"]
+    evidence:
+      - source: "src/app/(dashboard)/dashboard/components/stats/StatsDisplay.tsx"
+        quote: "export function StatsDisplay()"
+
+  DataGenerationPanel:
+    id: "TERM-082"
+    layer: "aux"
+    status: "stable"
+    definition: "データ生成パネルUIコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["生成UI"]
+      excludes: []
+    related_terms: ["useDataGeneration"]
+    evidence:
+      - source: "src/app/(dashboard)/dashboard/components/stats/DataGenerationPanel.tsx"
+        quote: "export function DataGenerationPanel()"
+
+  GenerationControls:
+    id: "TERM-083"
+    layer: "aux"
+    status: "stable"
+    definition: "データ生成コントロールUIコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["生成コントロール"]
+      excludes: []
+    related_terms: ["DataGenerationConfig"]
+    evidence:
+      - source: "src/app/(dashboard)/dashboard/components/stats/GenerationControls.tsx"
+        quote: "export function GenerationControls()"
+
+  EventManager:
+    id: "TERM-084"
+    layer: "aux"
+    status: "stable"
+    definition: "クラスイベント管理UIコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["イベント管理"]
+      excludes: []
+    related_terms: ["DataGenerationConfig"]
+    evidence:
+      - source: "src/app/(dashboard)/dashboard/components/stats/EventManager.tsx"
+        quote: "export function EventManager()"
+
+  ClassCharacteristicsEditor:
+    id: "TERM-085"
+    layer: "aux"
+    status: "stable"
+    definition: "クラス特性編集UIコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["特性編集"]
+      excludes: []
+    related_terms: ["DataGenerationConfig"]
+    evidence:
+      - source: "src/app/(dashboard)/dashboard/components/stats/ClassCharacteristicsEditor.tsx"
+        quote: "export function ClassCharacteristicsEditor()"
+
+  ThemeContext:
+    id: "TERM-086"
+    layer: "aux"
+    status: "stable"
+    definition: "テーマ切り替えを管理するReactコンテキスト"
+    synonyms: []
+    boundaries:
+      includes: ["テーマ管理"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/context/ThemeContext.tsx"
+        quote: "export const ThemeContext"
+
+  SidebarContext:
+    id: "TERM-087"
+    layer: "aux"
+    status: "stable"
+    definition: "サイドバー状態を管理するReactコンテキスト"
+    synonyms: []
+    boundaries:
+      includes: ["サイドバー状態"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/context/SidebarContext.tsx"
+        quote: "export const SidebarContext"
+
+  LandingPage:
+    id: "TERM-088"
+    layer: "aux"
+    status: "stable"
+    definition: "ランディングページコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["ランディングページ"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/app/landing/page.tsx"
+        quote: "export default function LandingPage()"
+
+  DashboardPage:
+    id: "TERM-089"
+    layer: "aux"
+    status: "stable"
+    definition: "ダッシュボードページコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["ダッシュボードページ"]
+      excludes: []
+    related_terms: ["Dashboard"]
+    evidence:
+      - source: "src/app/(dashboard)/dashboard/page.tsx"
+        quote: "export default function DashboardPage()"
+
+  BarChartPage:
+    id: "TERM-090"
+    layer: "aux"
+    status: "stable"
+    definition: "バーチャートページコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["バーチャート"]
+      excludes: []
+    related_terms: ["DynamicBarChart"]
+    evidence:
+      - source: "src/app/(chart)/bar-chart/page.tsx"
+        quote: "export default function BarChartPage()"
+
+  BarChartContent:
+    id: "TERM-091"
+    layer: "aux"
+    status: "stable"
+    definition: "バーチャートコンテンツコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["チャートコンテンツ"]
+      excludes: []
+    related_terms: ["DynamicBarChart"]
+    evidence:
+      - source: "src/app/(chart)/bar-chart/components/BarChartContent.tsx"
+        quote: "export function BarChartContent()"
+
+  DashboardLayout:
+    id: "TERM-092"
+    layer: "aux"
+    status: "stable"
+    definition: "ダッシュボードレイアウトコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["レイアウト"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/app/(dashboard)/layout.tsx"
+        quote: "export default function DashboardLayout()"
+
+  RootLayout:
+    id: "TERM-093"
+    layer: "aux"
+    status: "stable"
+    definition: "ルートレイアウトコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["ルートレイアウト"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/app/layout.tsx"
+        quote: "export default function RootLayout()"
+
+  HomePage:
+    id: "TERM-094"
+    layer: "aux"
+    status: "stable"
+    definition: "ホームページコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["ホームページ"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/app/page.tsx"
+        quote: "export default function HomePage()"
+
+  NotFoundPage:
+    id: "TERM-095"
+    layer: "aux"
+    status: "stable"
+    definition: "404 Not Foundページコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["404ページ"]
+      excludes: []
+    related_terms: []
+    evidence:
+      - source: "src/app/not-found.tsx"
+        quote: "export default function NotFound()"
+
+  HealthCheckAPI:
+    id: "TERM-096"
+    layer: "aux"
+    status: "stable"
+    definition: "ヘルスチェックAPIエンドポイント"
+    synonyms: []
+    boundaries:
+      includes: ["ヘルスチェック"]
+      excludes: []
+    related_terms: ["APIRouteHandler"]
+    evidence:
+      - source: "src/app/api/health/route.ts"
+        quote: "export async function GET()"
+
+  MetricsAPI:
+    id: "TERM-097"
+    layer: "aux"
+    status: "stable"
+    definition: "メトリクス取得APIエンドポイント"
+    synonyms: []
+    boundaries:
+      includes: ["メトリクス"]
+      excludes: []
+    related_terms: ["APIRouteHandler"]
+    evidence:
+      - source: "src/app/api/metrics/route.ts"
+        quote: "export async function GET()"
+
+  AnalyticsAPI:
+    id: "TERM-098"
+    layer: "aux"
+    status: "stable"
+    definition: "分析データ取得APIエンドポイント"
+    synonyms: []
+    boundaries:
+      includes: ["分析"]
+      excludes: []
+    related_terms: ["APIRouteHandler"]
+    evidence:
+      - source: "src/app/api/analytics/route.ts"
+        quote: "export async function GET()"
+
+  ExportAPI:
+    id: "TERM-099"
+    layer: "aux"
+    status: "stable"
+    definition: "データエクスポートAPIエンドポイント"
+    synonyms: []
+    boundaries:
+      includes: ["エクスポート"]
+      excludes: []
+    related_terms: ["APIRouteHandler"]
+    evidence:
+      - source: "src/app/api/export/route.ts"
+        quote: "export async function GET()"
+
+  SeedAPI:
+    id: "TERM-100"
+    layer: "aux"
+    status: "stable"
+    definition: "シードデータ生成APIエンドポイント"
+    synonyms: []
+    boundaries:
+      includes: ["シード生成"]
+      excludes: []
+    related_terms: ["APIRouteHandler"]
+    evidence:
+      - source: "src/app/api/seed/route.ts"
+        quote: "export async function POST()"

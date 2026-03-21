@@ -938,6 +938,34 @@ canonical_terms:
       - source: "src/context/SidebarContext.tsx"
         quote: "export const SidebarContext"
 
+  useDashboard:
+    id: "TERM-088"
+    layer: "aux"
+    status: "stable"
+    definition: "ダッシュボードのデータ生成操作を管理するReactフック。シードデータ生成のトリガー、生成状態、通知、エラーハンドリングを管理する"
+    synonyms: []
+    boundaries:
+      includes: ["データ生成トリガー", "状態管理", "通知統合"]
+      excludes: ["データ生成ロジック本体"]
+    related_terms: ["useDataGeneration", "useSeedGeneration", "Stats"]
+    evidence:
+      - source: "src/hooks/useApp.ts"
+        quote: "export function useDashboard()"
+
+  DataService:
+    id: "TERM-089"
+    layer: "aux"
+    status: "stable"
+    definition: "合成感情統計データを生成するサービス。テスト・デモ用のリアルisticな感情データを生成する。複数の分布パターン、季節効果、特殊イベントインパクトをサポート"
+    synonyms: []
+    boundaries:
+      includes: ["データ生成", "分布パターン", "季節効果", "イベント効果", "クラス特性"]
+      excludes: ["データ永続化"]
+    related_terms: ["StatsCalculator", "DataGenerationConfig", "EmotionGenerator"]
+    evidence:
+      - source: "src/infrastructure/services/dataService.ts"
+        quote: "class DataService"
+
 
 
 

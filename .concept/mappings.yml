@@ -441,3 +441,17 @@ mappings:
       - "src/context/SidebarContext.tsx::const SidebarContext"
     db: []
     api: []
+
+  useDashboard:
+    code_symbols:
+      - "src/hooks/useApp.ts::function useDashboard"
+    db: []
+    api:
+      - "POST /api/seed"
+
+  DataService:
+    code_symbols:
+      - "src/infrastructure/services/dataService.ts::class DataService"
+      - "src/infrastructure/services/dataService.ts::const dataService"
+    db: []
+    api: []

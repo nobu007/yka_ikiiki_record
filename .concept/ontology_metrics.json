@@ -1,8 +1,8 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T06:49:00.000000+00:00",
-  "run_index": 96,
-  "phase": "maintenance",
+  "last_updated": "2026-03-22T07:00:00.000000+00:00",
+  "run_index": 97,
+  "phase": "quality_improvement",
   "terms": {
     "total": 43,
     "core": 7,
@@ -19,9 +19,11 @@
     "unmapped": 0
   },
   "invariants": {
-    "total": 89,
-    "hard": 50,
-    "soft": 7
+    "total": 100,
+    "hard": 54,
+    "soft": 14,
+    "stable": 68,
+    "draft": 0
   },
   "quality_metrics": {
     "ontology_coverage": "57%",
@@ -29,12 +31,12 @@
     "draft_ratio": "0%",
     "unmapped_ratio": "0%",
     "evidence_coverage": "100%",
-    "invariant_extraction_rate": "18%"
+    "invariant_extraction_rate": "56.5%"
   },
   "test_results": {
     "test_suites": 177,
     "tests_passed": 1312,
-    "timestamp": "2026-03-22T06:49:00.000000+00:00"
+    "timestamp": "2026-03-22T07:00:00.000000+00:00"
   },
   "consolidation_summary": {
     "previous_terms": 129,

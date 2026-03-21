@@ -1025,6 +1025,142 @@ invariants:
     status: "stable"
     strength: "hard"
 
+  # GENERATION INVARIANTS (EMOTION PATTERN HANDLING)
+  - id: INV-GEN-003
+    name: EmotionGenerator_Distribution_Pattern_Support
+    category: generation
+    severity: HIGH
+    description: EmotionGenerator must support all distribution patterns
+    constraint: "Must handle: normal, bimodal, stress, happy patterns"
+    validation: "EmotionGenerator.test.ts verifies all patterns produce valid emotions"
+    rationale: "Ensures flexible emotion data generation for different scenarios"
+    related_terms: ["EmotionGenerator", "DataGenerationConfig"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-GEN-004
+    name: EmotionGenerator_Seasonal_Effects_Application
+    category: generation
+    severity: MEDIUM
+    description: EmotionGenerator must apply seasonal effects when enabled
+    constraint: "When seasonalEffects=true, must adjust emotion based on date"
+    validation: "EmotionGenerator.test.ts verifies seasonal effects produce different values"
+    rationale: "Enables realistic emotion variation throughout the year"
+    related_terms: ["EmotionGenerator", "DataGenerationConfig"]
+    status: "stable"
+    strength: "soft"
+
+  - id: INV-GEN-005
+    name: EmotionGenerator_Event_Effects_Application
+    category: generation
+    severity: MEDIUM
+    description: EmotionGenerator must apply event effects during event periods
+    constraint: "Must adjust emotion when date is within event start/end range"
+    validation: "EmotionGenerator.test.ts verifies event effects modify emotion values"
+    rationale: "Enables modeling of special events (tests, festivals, etc.)"
+    related_terms: ["EmotionGenerator", "DataGenerationConfig"]
+    status: "stable"
+    strength: "soft"
+
+  - id: INV-GEN-006
+    name: EmotionGenerator_Class_Characteristics_Respect
+    category: generation
+    severity: MEDIUM
+    description: EmotionGenerator must respect class characteristics (volatility, baseline)
+    constraint: "Must use classCharacteristics.volatility and baselineEmotion in generation"
+    validation: "EmotionGenerator.test.ts verifies different volatility produces different distributions"
+    rationale: "Enables modeling different class dynamics and personalities"
+    related_terms: ["EmotionGenerator", "DataGenerationConfig"]
+    status: "stable"
+    strength: "soft"
+
+  # CIRCUIT BREAKER INVARIANTS
+  - id: INV-CIRCUIT-003
+    name: CircuitBreaker_Failure_Count_Accuracy
+    category: resilience
+    severity: HIGH
+    description: CircuitBreaker must accurately track and reset failure count
+    constraint: "Failure count must increment on failure, reset on success or manual reset"
+    validation: "CircuitBreaker.test.ts verifies failure count tracking"
+    rationale: "Accurate failure counting is essential for circuit state transitions"
+    related_terms: ["CircuitBreaker"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-CIRCUIT-004
+    name: CircuitBreaker_Global_Singleton_Provision
+    category: resilience
+    severity: MEDIUM
+    description: CircuitBreaker must provide a global singleton instance
+    constraint: "globalCircuitBreaker must be a shared CircuitBreaker instance"
+    validation: "CircuitBreaker.test.ts verifies globalCircuitBreaker exists"
+    rationale: "Provides convenient access to shared circuit breaker state"
+    related_terms: ["CircuitBreaker"]
+    status: "stable"
+    strength: "soft"
+
+  # STRUCTURED LOGGING INVARIANTS
+  - id: INV-LOG-005
+    name: StructuredLogger_Required_Fields_Presence
+    category: logging
+    severity: HIGH
+    description: All log entries must contain all required fields
+    constraint: "Log entries must have: level, category, operation, timestamp, correlationId, metadata, visibility"
+    validation: "structured-logger.test.ts verifies all required fields are present"
+    rationale: "Ensures log entries are queryable and traceable"
+    related_terms: ["StructuredLogger"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-LOG-006
+    name: StructuredLogger_Convenience_Methods_Complete
+    category: logging
+    severity: MEDIUM
+    description: StructuredLogger must provide convenience methods for all log levels
+    constraint: "Must provide: debug(), info(), warn(), error(), fatal() methods"
+    validation: "structured-logger.test.ts verifies all convenience methods create correct log levels"
+    rationale: "Provides ergonomic API for common logging scenarios"
+    related_terms: ["StructuredLogger"]
+    status: "stable"
+    strength: "soft"
+
+  - id: INV-LOG-007
+    name: StructuredLogger_Global_Singleton_Provision
+    category: logging
+    severity: MEDIUM
+    description: StructuredLogger must provide a global singleton instance
+    constraint: "globalLogger must be a shared StructuredLogger instance"
+    validation: "structured-logger.test.ts verifies globalLogger exists"
+    rationale: "Provides convenient access to shared logger state"
+    related_terms: ["StructuredLogger"]
+    status: "stable"
+    strength: "soft"
+
+  # RECORD ENTITY INVARIANTS
+  - id: INV-REC-001
+    name: Record_Optional_Fields_Flexibility
+    category: domain
+    severity: HIGH
+    description: Record entity must allow optional fields (id, comment, timestamps)
+    constraint: "id, comment, createdAt, updatedAt must be optional; emotion, date, student required"
+    validation: "Record.test.ts verifies creation with and without optional fields"
+    rationale: "Supports flexible record creation and persistence lifecycle"
+    related_terms: ["Record"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-REC-002
+    name: Record_Emotion_Decimal_Support
+    category: domain
+    severity: MEDIUM
+    description: Record must support decimal emotion values
+    constraint: "Emotion field must accept decimal values (e.g., 3.7, 4.2)"
+    validation: "Record.test.ts verifies decimal emotion values are preserved"
+    rationale: "Enables granular emotion scoring rather than integer-only"
+    related_terms: ["Record"]
+    status: "stable"
+    strength: "soft"
+
 violation_handling:
   critical:
     action: "BLOCK_COMMIT"

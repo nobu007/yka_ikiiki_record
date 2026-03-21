@@ -54,32 +54,38 @@ function parseMetricsLine(line: string): MetricsResponse["judgment"] | null {
     testPassRateStr,
   ] = values;
 
-  const requiredValues = [
-    scoreStr,
-    violationsStr,
-    statementsStr,
-    branchesStr,
-    anyTypesStr,
-    eslintWarningsStr,
-    testPassRateStr,
-  ];
+  if (!scoreStr || !violationsStr || !statementsStr || !branchesStr ||
+      !anyTypesStr || !eslintWarningsStr || !testPassRateStr) {
+    return null;
+  }
 
-  if (requiredValues.some((v) => !v)) {
+  const score = parseFloat(scoreStr);
+  const cleanArchitectureViolations = parseInt(violationsStr, 10);
+  const statements = parseFloat(statementsStr);
+  const branches = parseFloat(branchesStr);
+  const anyTypes = parseInt(anyTypesStr, 10);
+  const eslintWarnings = parseInt(eslintWarningsStr, 10);
+  const testPassRate = parseFloat(testPassRateStr);
+
+  if (isNaN(score) || isNaN(cleanArchitectureViolations) ||
+      isNaN(statements) || isNaN(branches) ||
+      isNaN(anyTypes) || isNaN(eslintWarnings) ||
+      isNaN(testPassRate)) {
     return null;
   }
 
   return {
-    score: parseFloat(scoreStr!),
-    cleanArchitectureViolations: parseInt(violationsStr!, 10),
+    score,
+    cleanArchitectureViolations,
     testCoverage: {
-      statements: parseFloat(statementsStr!),
-      branches: parseFloat(branchesStr!),
+      statements,
+      branches,
       functions: 100,
       lines: 100,
     },
-    anyTypes: parseInt(anyTypesStr!, 10),
-    eslintWarnings: parseInt(eslintWarningsStr!, 10),
-    testPassRate: parseFloat(testPassRateStr!),
+    anyTypes,
+    eslintWarnings,
+    testPassRate,
   };
 }
 
@@ -92,7 +98,10 @@ async function getLatestMetrics(): Promise<MetricsResponse["judgment"] | null> {
       return null;
     }
 
-    const latestLine = lines[lines.length - 1]!;
+    const latestLine = lines.at(-1);
+    if (!latestLine) {
+      return null;
+    }
     return parseMetricsLine(latestLine);
   } catch {
     return null;

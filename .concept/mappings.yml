@@ -346,33 +346,9 @@ mappings:
     db: []
     api: []
 
-  APIConstants:
-    code_symbols:
-      - "src/lib/constants/api.ts"
-    db: []
-    api: []
-
-  ResilienceConstants:
-    code_symbols:
-      - "src/lib/constants/resilience.ts"
-    db: []
-    api: []
-
   UIConstants:
     code_symbols:
       - "src/lib/constants/ui.ts"
-    db: []
-    api: []
-
-  ErrorMessages:
-    code_symbols:
-      - "src/lib/constants/messages.ts"
-    db: []
-    api: []
-
-  StorageConstants:
-    code_symbols:
-      - "src/lib/constants/storage.ts"
     db: []
     api: []
 

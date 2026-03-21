@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T03:05:00Z",
+  "last_updated": "2026-03-22T03:10:00Z",
   "terms": {
     "total": 59,
     "core": 9,
@@ -17,8 +17,8 @@
     "unmapped": 0
   },
   "invariants": {
-    "total": 16,
-    "hard": 14,
+    "total": 20,
+    "hard": 18,
     "soft": 2
   },
   "quality_metrics": {

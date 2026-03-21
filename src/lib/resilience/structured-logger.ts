@@ -43,19 +43,29 @@ export class StructuredLogger {
     this.manageLogSize();
   }
 
+  private logWithLevel(
+    level: LogLevel,
+    category: string,
+    operation: string,
+    metadata: Record<string, unknown> = {},
+    visibility: LogVisibility = LOG_VISIBILITY.INTERNAL,
+  ): void {
+    this.log({
+      level,
+      category,
+      operation,
+      metadata,
+      visibility,
+    });
+  }
+
   debug(
     category: string,
     operation: string,
     metadata: Record<string, unknown> = {},
     visibility: LogVisibility = LOG_VISIBILITY.DEBUG,
   ): void {
-    this.log({
-      level: LOG_LEVELS.DEBUG,
-      category,
-      operation,
-      metadata,
-      visibility,
-    });
+    this.logWithLevel(LOG_LEVELS.DEBUG, category, operation, metadata, visibility);
   }
 
   info(
@@ -64,13 +74,7 @@ export class StructuredLogger {
     metadata: Record<string, unknown> = {},
     visibility: LogVisibility = LOG_VISIBILITY.INTERNAL,
   ): void {
-    this.log({
-      level: LOG_LEVELS.INFO,
-      category,
-      operation,
-      metadata,
-      visibility,
-    });
+    this.logWithLevel(LOG_LEVELS.INFO, category, operation, metadata, visibility);
   }
 
   warn(
@@ -79,13 +83,7 @@ export class StructuredLogger {
     metadata: Record<string, unknown> = {},
     visibility: LogVisibility = LOG_VISIBILITY.INTERNAL,
   ): void {
-    this.log({
-      level: LOG_LEVELS.WARN,
-      category,
-      operation,
-      metadata,
-      visibility,
-    });
+    this.logWithLevel(LOG_LEVELS.WARN, category, operation, metadata, visibility);
   }
 
   error(
@@ -94,13 +92,7 @@ export class StructuredLogger {
     metadata: Record<string, unknown> = {},
     visibility: LogVisibility = LOG_VISIBILITY.INTERNAL,
   ): void {
-    this.log({
-      level: LOG_LEVELS.ERROR,
-      category,
-      operation,
-      metadata,
-      visibility,
-    });
+    this.logWithLevel(LOG_LEVELS.ERROR, category, operation, metadata, visibility);
   }
 
   fatal(
@@ -109,13 +101,7 @@ export class StructuredLogger {
     metadata: Record<string, unknown> = {},
     visibility: LogVisibility = LOG_VISIBILITY.INTERNAL,
   ): void {
-    this.log({
-      level: LOG_LEVELS.FATAL,
-      category,
-      operation,
-      metadata,
-      visibility,
-    });
+    this.logWithLevel(LOG_LEVELS.FATAL, category, operation, metadata, visibility);
   }
 
   getLogs(filter: {

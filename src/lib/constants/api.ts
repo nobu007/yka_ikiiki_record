@@ -42,6 +42,7 @@ export const API_ENDPOINTS = {
   EXPORT: "/api/export",
   HEALTH: "/api/health",
   METRICS: "/api/metrics",
+  ANALYTICS: "/api/analytics",
 } as const;
 
 export const API_OPERATIONS = {
@@ -51,4 +52,5 @@ export const API_OPERATIONS = {
   POST_SEED: "POST /api/seed",
   EXPORT_RECORDS: "GET /api/export",
   GET_METRICS: "GET /api/metrics",
+  GET_ANALYTICS: "GET /api/analytics",
 } as const;

@@ -124,7 +124,13 @@ mappings:
 
   AppError:
     code_symbols:
+      - "src/lib/error-handler.ts::const ERROR_CODES"
       - "src/lib/error-handler.ts::class AppError"
+      - "src/lib/error-handler.ts::class ValidationError"
+      - "src/lib/error-handler.ts::class NetworkError"
+      - "src/lib/resilience/timeout.ts::class TimeoutError"
+      - "src/lib/resilience/circuit-breaker.ts::class CircuitBreakerOpenError"
+      - "src/lib/resilience/loop-detector.ts::class InfiniteLoopError"
       - "src/lib/error-handler.ts::type ErrorCodeType"
     db: []
     api: []
@@ -253,7 +259,15 @@ mappings:
     code_symbols:
       - "src/lib/api/error-handler.ts::function withResilientHandler"
       - "src/lib/api/error-handler.ts::function handleApiError"
+      - "src/lib/resilience/timeout.ts::class TimeoutError"
+      - "src/lib/resilience/timeout.ts::interface TimeoutConfig"
+      - "src/lib/resilience/timeout.ts::function withTimeout"
       - "src/lib/resilience/timeout.ts::function withApiTimeout"
+      - "src/lib/resilience/timeout.ts::function withDatabaseTimeout"
+      - "src/lib/resilience/timeout.ts::function withCommandTimeout"
+      - "src/lib/resilience/timeout.ts::function withFileTimeout"
+      - "src/lib/resilience/timeout.ts::function withE2ETimeout"
+      - "src/lib/resilience/timeout.ts::function withCustomTimeout"
     db: []
     api: []
 

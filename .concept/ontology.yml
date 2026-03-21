@@ -237,7 +237,13 @@ canonical_terms:
     related_terms: ["CircuitBreaker", "LoopDetector"]
     evidence:
       - source: "src/lib/error-handler.ts"
-        quote: "export class AppError extends Error, ErrorCodeType"
+        quote: "export const ERROR_CODES, export class AppError extends Error, export class ValidationError extends AppError, export class NetworkError extends AppError"
+      - source: "src/lib/resilience/timeout.ts"
+        quote: "export class TimeoutError extends AppError"
+      - source: "src/lib/resilience/circuit-breaker.ts"
+        quote: "export class CircuitBreakerOpenError extends AppError"
+      - source: "src/lib/resilience/loop-detector.ts"
+        quote: "export class InfiniteLoopError extends AppError"
 
   PrismaRecordRepository:
     id: "TERM-022"
@@ -427,15 +433,17 @@ canonical_terms:
     id: "TERM-044"
     layer: "domain"
     status: "stable"
-    definition: "レジリエンス機能を適用したAPIハンドラー。タイムアウト、サーキットブレーカー、エラーハンドリングを含む"
-    synonyms: ["APITimeout"]
+    definition: "レジリエンス機能を適用したAPIハンドラーとタイムアウトユーティリティ群。タイムアウト、サーキットブレーカー、エラーハンドリング、TimeoutError、TimeoutConfigを含む"
+    synonyms: ["APITimeout", "TimeoutWrapper", "TimeoutError"]
     boundaries:
-      includes: ["エラーハンドリング", "タイムアウト", "リトライ", "タイムアウトラッパー"]
+      includes: ["エラーハンドリング", "タイムアウトラッパー", "タイムアウト設定", "APIタイムアウト", "DBタイムアウト", "コマンドタイムアウト", "ファイルタイムアウト", "TimeoutErrorクラス"]
       excludes: []
-    related_terms: ["CircuitBreaker", "AppError"]
+    related_terms: ["CircuitBreaker", "AppError", "ApplicationConstants"]
     evidence:
       - source: "src/lib/api/error-handler.ts"
         quote: "export function withResilientHandler<T extends NextResponse>"
+      - source: "src/lib/resilience/timeout.ts"
+        quote: "export class TimeoutError, export interface TimeoutConfig, export const withTimeout, withApiTimeout, withDatabaseTimeout, withCommandTimeout, withFileTimeout, withE2ETimeout, withCustomTimeout"
 
   DataValidator:
     id: "TERM-045"

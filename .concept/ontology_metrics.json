@@ -1,19 +1,19 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T02:39:00Z",
+  "last_updated": "2026-03-22T02:43:00Z",
   "terms": {
-    "total": 17,
+    "total": 26,
     "core": 5,
-    "domain": 11,
-    "aux": 1,
+    "domain": 14,
+    "aux": 7,
     "draft": 0,
-    "stable": 17
+    "stable": 26
   },
   "mappings": {
-    "total": 17,
-    "with_code_symbols": 17,
-    "with_db": 1,
-    "with_api": 2,
+    "total": 26,
+    "with_code_symbols": 26,
+    "with_db": 2,
+    "with_api": 5,
     "unmapped": 0
   },
   "invariants": {
@@ -22,7 +22,7 @@
     "soft": 0
   },
   "quality_metrics": {
-    "ontology_coverage": "87%",
+    "ontology_coverage": "92%",
     "mapping_saturation": "100%",
     "draft_ratio": "0%",
     "unmapped_ratio": "0%"

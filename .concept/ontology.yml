@@ -238,3 +238,129 @@ canonical_terms:
     evidence:
       - source: ".concept/invariants.yml"
         quote: "INV-ARCH-001: 100% of files must be under 300 lines"
+
+  CircuitBreaker:
+    id: "TERM-018"
+    layer: "domain"
+    status: "stable"
+    definition: "カスケード失敗を防ぐためのサーキットブレーカーパターン実装。CLOSED/OPEN/HALF_OPENの状態遷移を管理"
+    synonyms: []
+    boundaries:
+      includes: ["失敗しきい値", "リセットタイムアウト", "状態遷移ロジック"]
+      excludes: ["個別のエラーハンドリング"]
+    related_terms: ["StructuredLogger", "AppError"]
+    evidence:
+      - source: "src/lib/resilience/circuit-breaker.ts"
+        quote: "export class CircuitBreaker { private state: CircuitState = 'CLOSED'; }"
+
+  StructuredLogger:
+    id: "TERM-019"
+    layer: "domain"
+    status: "stable"
+    definition: "構造化ログを管理するロガー。ログレベル、相関ID、サイズ管理、圧縮をサポート"
+    synonyms: ["Logger"]
+    boundaries:
+      includes: ["ログエントリ", "ログレベル", "相関ID", "ログサイズ管理"]
+      excludes: ["永続化"]
+    related_terms: ["CircuitBreaker", "MemoryMonitor"]
+    evidence:
+      - source: "src/lib/resilience/structured-logger.ts"
+        quote: "export class StructuredLogger { private logs: LogEntry[]; }"
+
+  MemoryMonitor:
+    id: "TERM-020"
+    layer: "domain"
+    status: "stable"
+    definition: "ヒープメモリ使用量を監視し、制限を超えた場合に警告を発するモニター"
+    synonyms: []
+    boundaries:
+      includes: ["メモリ監視", "間隔チェック", "オーバーフロー検知"]
+      excludes: ["自動メモリ解放"]
+    related_terms: ["StructuredLogger"]
+    evidence:
+      - source: "src/lib/resilience/memory-monitor.ts"
+        quote: "export class MemoryMonitor { private readonly memoryLimit: number; }"
+
+  AppError:
+    id: "TERM-021"
+    layer: "domain"
+    status: "stable"
+    definition: "アプリケーションエラーの基底クラス。エラーコード、HTTPステータス、メタデータを含む"
+    synonyms: ["ApplicationError"]
+    boundaries:
+      includes: ["エラーコード", "HTTPステータス", "エラーメタデータ"]
+      excludes: ["特定の実装エラー"]
+    related_terms: ["ValidationError", "CircuitBreaker"]
+    evidence:
+      - source: "src/lib/error-handler.ts"
+        quote: "export class AppError extends Error"
+
+  PrismaRecordRepository:
+    id: "TERM-022"
+    layer: "aux"
+    status: "stable"
+    definition: "IRecordRepositoryのPrisma実装。データベース操作のタイムアウトとエラーハンドリングを含む"
+    synonyms: []
+    boundaries:
+      includes: ["Prismaクライアント", "CRUD操作", "バリデーション"]
+      excludes: ["ドメインロジック"]
+    related_terms: ["IRecordRepository", "Record"]
+    evidence:
+      - source: "src/infrastructure/repositories/PrismaRecordRepository.ts"
+        quote: "export class PrismaRecordRepository implements IRecordRepository"
+
+  PrismaStatsRepository:
+    id: "TERM-023"
+    layer: "aux"
+    status: "stable"
+    definition: "StatsRepositoryのPrisma実装。統計データの保存・取得・シードデータ生成を行う"
+    synonyms: []
+    boundaries:
+      includes: ["統計の永続化", "シードデータ生成", "Prisma操作"]
+      excludes: ["集計ロジック"]
+    related_terms: ["StatsRepository", "Stats"]
+    evidence:
+      - source: "src/infrastructure/repositories/PrismaStatsRepository.ts"
+        quote: "export class PrismaStatsRepository implements StatsRepository"
+
+  DynamicBarChart:
+    id: "TERM-024"
+    layer: "aux"
+    status: "stable"
+    definition: "ApexChartsを使用した動的バーチャートコンポーネント。エラーハンドリング、ローディング状態、アクセシビリティをサポート"
+    synonyms: ["BarChart"]
+    boundaries:
+      includes: ["チャート描画", "データフィルタリング", "エラー境界"]
+      excludes: ["データ取得ロジック"]
+    related_terms: ["EmotionChart", "ChartData"]
+    evidence:
+      - source: "src/components/charts/DynamicBarChart.tsx"
+        quote: "const DynamicBarChart = memo(function DynamicBarChart({ data, height, title, isDark })"
+
+  EmotionChart:
+    id: "TERM-025"
+    layer: "aux"
+    status: "stable"
+    definition: "複数のチャートタイプ（line, bar, area, pie, donut）をサポートする柔軟な感情統計チャートコンポーネント"
+    synonyms: []
+    boundaries:
+      includes: ["複数チャートタイプ", "レスポンシブデザイン", "動的インポート"]
+      excludes: ["データ変換ロジック"]
+    related_terms: ["DynamicBarChart", "ChartData"]
+    evidence:
+      - source: "src/components/charts/EmotionChart.tsx"
+        quote: "export interface EmotionChartProps { type?: 'line' | 'bar' | 'area' | 'pie' | 'donut'; }"
+
+  ChartWrapper:
+    id: "TERM-026"
+    layer: "aux"
+    status: "stable"
+    definition: "チャートコンポーネントをラップし、ローディング状態、エラー処理、アクセシビリティを提供するコンテナ"
+    synonyms: []
+    boundaries:
+      includes: ["ローディング表示", "エラー表示", "ARIAラベル"]
+      excludes: ["チャート描画ロジック"]
+    related_terms: ["DynamicBarChart", "EmotionChart"]
+    evidence:
+      - source: "src/components/charts/ChartWrapper.tsx"
+        quote: "interface ChartWrapperProps { children: ReactNode; isLoading?: boolean; }"

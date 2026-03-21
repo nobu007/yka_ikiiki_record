@@ -114,3 +114,66 @@ mappings:
       - "SYSTEM_CONSTITUTION.md"
     db: []
     api: []
+
+  CircuitBreaker:
+    code_symbols:
+      - "src/lib/resilience/circuit-breaker.ts::class CircuitBreaker"
+      - "src/lib/resilience/circuit-breaker.ts::interface CircuitBreakerConfig"
+    db: []
+    api: []
+
+  StructuredLogger:
+    code_symbols:
+      - "src/lib/resilience/structured-logger.ts::class StructuredLogger"
+      - "src/lib/resilience/structured-logger.ts::interface LogEntry"
+    db: []
+    api: []
+
+  MemoryMonitor:
+    code_symbols:
+      - "src/lib/resilience/memory-monitor.ts::class MemoryMonitor"
+    db: []
+    api: []
+
+  AppError:
+    code_symbols:
+      - "src/lib/error-handler.ts::class AppError"
+    db: []
+    api: []
+
+  PrismaRecordRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/PrismaRecordRepository.ts::class PrismaRecordRepository"
+    db:
+      - "prisma/schema.prisma::model Record"
+    api:
+      - "GET /api/records/:id"
+      - "POST /api/records"
+      - "DELETE /api/records/:id"
+
+  PrismaStatsRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/PrismaStatsRepository.ts::class PrismaStatsRepository"
+    db: []
+    api:
+      - "GET /api/stats"
+
+  DynamicBarChart:
+    code_symbols:
+      - "src/components/charts/DynamicBarChart.tsx::interface DynamicBarChartProps"
+      - "src/components/charts/DynamicBarChart.tsx::interface ChartData"
+    db: []
+    api: []
+
+  EmotionChart:
+    code_symbols:
+      - "src/components/charts/EmotionChart.tsx::interface EmotionChartProps"
+      - "src/components/charts/EmotionChart.tsx::interface ChartData"
+    db: []
+    api: []
+
+  ChartWrapper:
+    code_symbols:
+      - "src/components/charts/ChartWrapper.tsx::interface ChartWrapperProps"
+    db: []
+    api: []

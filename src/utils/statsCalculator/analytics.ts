@@ -1,4 +1,4 @@
-import { EMOTION_RANGES, EMOTION_CALCULATION_PARAMS } from "@/lib/constants";
+import { EMOTION_RANGES } from "@/lib/constants";
 import { UI_CONFIG } from "@/lib/config";
 import { average } from "./math";
 import type { EmotionData } from "./generation";

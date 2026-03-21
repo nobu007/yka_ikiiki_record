@@ -54,37 +54,43 @@ function parseMetricsLine(line: string): MetricsResponse["judgment"] | null {
     testPassRateStr,
   ] = values;
 
-  if (
-    !scoreStr ||
-    !violationsStr ||
-    !statementsStr ||
-    !branchesStr ||
-    !anyTypesStr ||
-    !eslintWarningsStr ||
-    !testPassRateStr
-  ) {
+  const requiredFields = [
+    scoreStr,
+    violationsStr,
+    statementsStr,
+    branchesStr,
+    anyTypesStr,
+    eslintWarningsStr,
+    testPassRateStr,
+  ];
+
+  if (requiredFields.some((field) => !field)) {
     return null;
   }
 
-  const score = parseFloat(scoreStr);
-  const cleanArchitectureViolations = parseInt(violationsStr, 10);
-  const statements = parseFloat(statementsStr);
-  const branches = parseFloat(branchesStr);
-  const anyTypes = parseInt(anyTypesStr, 10);
-  const eslintWarnings = parseInt(eslintWarningsStr, 10);
-  const testPassRate = parseFloat(testPassRateStr);
+  const parseResult = {
+    score: parseFloat(scoreStr!),
+    cleanArchitectureViolations: parseInt(violationsStr!, 10),
+    statements: parseFloat(statementsStr!),
+    branches: parseFloat(branchesStr!),
+    anyTypes: parseInt(anyTypesStr!, 10),
+    eslintWarnings: parseInt(eslintWarningsStr!, 10),
+    testPassRate: parseFloat(testPassRateStr!),
+  };
 
-  if (
-    isNaN(score) ||
-    isNaN(cleanArchitectureViolations) ||
-    isNaN(statements) ||
-    isNaN(branches) ||
-    isNaN(anyTypes) ||
-    isNaN(eslintWarnings) ||
-    isNaN(testPassRate)
-  ) {
+  if (Object.values(parseResult).some((value) => isNaN(value))) {
     return null;
   }
+
+  const {
+    score,
+    cleanArchitectureViolations,
+    statements,
+    branches,
+    anyTypes,
+    eslintWarnings,
+    testPassRate,
+  } = parseResult;
 
   return {
     score,

@@ -840,6 +840,141 @@ invariants:
     status: "stable"
     strength: "hard"
 
+  # HOOK INVARIANTS (EXTRACTED FROM TESTS)
+  - id: INV-HOOK-001
+    name: useAsync_Initial_State
+    category: hook
+    severity: HIGH
+    description: useAsync hook must initialize with correct default state
+    constraint: "Initial state must be: isLoading=false, error=null, data=null"
+    validation: "useAsync.test.ts verifies initial state values"
+    rationale: "Ensures predictable hook initialization"
+    related_terms: ["useAsync"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-HOOK-002
+    name: useAsync_State_Transitions
+    category: hook
+    severity: HIGH
+    description: useAsync hook must properly transition through loading states
+    constraint: "isLoading must be true during execution, false after completion"
+    validation: "useAsync.test.ts verifies state transitions during async operations"
+    rationale: "Ensures accurate loading state tracking"
+    related_terms: ["useAsync"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-HOOK-003
+    name: useAsync_Error_Handling
+    category: hook
+    severity: HIGH
+    description: useAsync hook must capture and store errors from failed operations
+    constraint: "On error, data must be null and error must be set"
+    validation: "useAsync.test.ts verifies error state after rejection"
+    rationale: "Ensures errors are properly surfaced to UI"
+    related_terms: ["useAsync", "AppError"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-HOOK-004
+    name: useNotification_Initial_State
+    category: hook
+    severity: MEDIUM
+    description: useNotification hook must initialize with default notification state
+    constraint: "Initial state must be: show=false, message='', type='success'"
+    validation: "useNotification.test.ts verifies initial notification state"
+    rationale: "Ensures predictable notification initialization"
+    related_terms: ["useNotification"]
+    status: "stable"
+    strength: "soft"
+
+  - id: INV-HOOK-005
+    name: useNotification_Type_Support
+    category: hook
+    severity: MEDIUM
+    description: useNotification hook must support all notification types
+    constraint: "Must support: success, error, warning, info types"
+    validation: "useNotification.test.ts verifies all notification types"
+    rationale: "Ensures comprehensive notification coverage"
+    related_terms: ["useNotification"]
+    status: "stable"
+    strength: "soft"
+
+  # CHART COMPONENT INVARIANTS
+  - id: INV-CHART-001
+    name: DynamicBarChart_Error_Resilience
+    category: chart
+    severity: HIGH
+    description: Chart components must handle data transformation errors gracefully
+    constraint: "Chart must not crash when data properties throw during access"
+    validation: "DynamicBarChart.errorHandling.test.ts verifies error handling"
+    rationale: "Ensures UI stability with malformed data"
+    related_terms: ["DynamicBarChart", "EmotionChart"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-CHART-002
+    name: ChartWrapper_Null_Undefined_Handling
+    category: chart
+    severity: HIGH
+    description: Chart components must handle null and undefined data values
+    constraint: "Charts must filter out null/undefined without crashing"
+    validation: "DynamicBarChart.errorHandling.test.ts verifies null handling"
+    rationale: "Ensures robustness with incomplete data"
+    related_terms: ["DynamicBarChart", "ChartWrapper"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-CHART-003
+    name: ChartWrapper_Loading_State_Priority
+    category: chart
+    severity: MEDIUM
+    description: ChartWrapper must prioritize loading state over error state
+    constraint: "When both loading and error are true, show loading UI"
+    validation: "ChartWrapper.loading.test.ts verifies loading priority"
+    rationale: "Prevents flickering during data fetch"
+    related_terms: ["ChartWrapper"]
+    status: "stable"
+    strength: "soft"
+
+  - id: INV-CHART-004
+    name: ChartWrapper_Accessibility_Labels
+    category: chart
+    severity: MEDIUM
+    description: ChartWrapper must provide proper ARIA labels for error states
+    constraint: "Error state must have aria-label describing the error"
+    validation: "ChartWrapper.accessibility.test.ts verifies ARIA labels"
+    rationale: "Ensures screen reader compatibility"
+    related_terms: ["ChartWrapper"]
+    status: "stable"
+    strength: "soft"
+
+  # DATA GENERATION INVARIANTS
+  - id: INV-GEN-001
+    name: EmotionGenerator_Range_Validation
+    category: generation
+    severity: HIGH
+    description: Generated emotion values must always be within valid range
+    constraint: "EmotionGenerator must output values between 1.0 and 5.0"
+    validation: "EmotionGenerator.test.ts verifies range enforcement"
+    rationale: "Prevents invalid emotion data in generated datasets"
+    related_terms: ["EmotionGenerator", "DataGenerationConfig"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-GEN-002
+    name: DataGeneration_Defaults_Existence
+    category: generation
+    severity: MEDIUM
+    description: DataGenerationConfig must have sensible defaults
+    constraint: "All optional config fields must have default values"
+    validation: "DataGeneration.defaults.test.ts verifies default values"
+    rationale: "Ensures config can be used without explicit values"
+    related_terms: ["DataGenerationConfig"]
+    status: "stable"
+    strength: "soft"
+
   # BROWSER INVARIANTS (EXTRACTED FROM TESTS)
   - id: INV-BRW-001
     name: Browser_Reload_Idempotence
@@ -852,6 +987,43 @@ invariants:
     related_terms: []
     status: "stable"
     strength: "soft"
+
+  # SERVICE LAYER INVARIANTS
+  - id: INV-SVC-001
+    name: StatsService_Complete_Stats_Structure
+    category: service
+    severity: CRITICAL
+    description: StatsService must generate stats with all required subsections
+    constraint: "Generated stats must include: overview, monthlyStats, studentStats, dayOfWeekStats, emotionDistribution, timeOfDayStats"
+    validation: "StatsService.test.ts verifies all subsections exist"
+    rationale: "UI components depend on complete stats structure"
+    related_terms: ["StatsService", "Stats"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-SVC-002
+    name: StatsService_Default_Config_Fallback
+    category: service
+    severity: HIGH
+    description: StatsService must use default config when none provided
+    constraint: "generateSeedData() must work without config parameter"
+    validation: "StatsService.test.ts verifies default config usage"
+    rationale: "Ensures service can be called without configuration"
+    related_terms: ["StatsService", "DataGenerationConfig"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-SVC-003
+    name: StatsService_Emotion_Range_Validation
+    category: service
+    severity: HIGH
+    description: StatsService must ensure generated emotion values are in valid range
+    constraint: "Generated avgEmotion must be between 1.0 and 5.0"
+    validation: "StatsService.test.ts verifies emotion range constraints"
+    rationale: "Prevents invalid emotion data in seed data"
+    related_terms: ["StatsService", "EmotionGenerator"]
+    status: "stable"
+    strength: "hard"
 
 violation_handling:
   critical:

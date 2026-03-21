@@ -10,6 +10,7 @@ import {
   calculateAverage,
 } from "@/utils/statsCalculator";
 import { FALLBACK_VALUES } from "@/lib/constants";
+import { withDatabaseTimeout } from "@/lib/resilience/timeout";
 
 type EmotionData = {
   date: Date;
@@ -22,32 +23,44 @@ export class PrismaStatsRepository implements StatsRepository {
   constructor(private readonly recordRepository: IRecordRepository) {}
 
   async getStats(): Promise<Stats> {
-    const records = await this.recordRepository.findAll();
-    const emotionData = this.convertToEmotionData(records);
-    const emotions = emotionData.map((e) => e.emotion);
+    return await withDatabaseTimeout(
+      (async () => {
+        const records = await this.recordRepository.findAll();
+        const emotionData = this.convertToEmotionData(records);
+        const emotions = emotionData.map((e) => e.emotion);
 
-    return {
-      overview: {
-        count: emotions.length,
-        avgEmotion: calculateAverage(emotions),
-      },
-      monthlyStats: calculateMonthlyStats(emotionData),
-      studentStats: calculateStudentStats(emotionData),
-      dayOfWeekStats: calculateDayOfWeekStats(emotionData),
-      emotionDistribution: calculateEmotionDistribution(emotionData),
-      timeOfDayStats: calculateTimeOfDayStats(emotionData),
-    };
+        return {
+          overview: {
+            count: emotions.length,
+            avgEmotion: calculateAverage(emotions),
+          },
+          monthlyStats: calculateMonthlyStats(emotionData),
+          studentStats: calculateStudentStats(emotionData),
+          dayOfWeekStats: calculateDayOfWeekStats(emotionData),
+          emotionDistribution: calculateEmotionDistribution(emotionData),
+          timeOfDayStats: calculateTimeOfDayStats(emotionData),
+        };
+      })()
+    );
   }
 
   async saveStats(stats: Stats): Promise<void> {
-    const records = this.convertStatsToRecords(stats);
-    await this.recordRepository.saveMany(records);
+    await withDatabaseTimeout(
+      (async () => {
+        const records = this.convertStatsToRecords(stats);
+        await this.recordRepository.saveMany(records);
+      })()
+    );
   }
 
   async generateSeedData(): Promise<void> {
-    const { generateSeedData } =
-      await import("@/infrastructure/repositories/PrismaSeedRepository");
-    await generateSeedData();
+    await withDatabaseTimeout(
+      (async () => {
+        const { generateSeedData } =
+          await import("@/infrastructure/repositories/PrismaSeedRepository");
+        await generateSeedData();
+      })()
+    );
   }
 
   private convertToEmotionData(

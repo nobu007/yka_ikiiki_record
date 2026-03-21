@@ -221,6 +221,7 @@ mappings:
       - "src/utils/statsCalculator/math.ts"
       - "src/utils/statsCalculator/analytics.ts"
       - "src/utils/statsCalculator/generation.ts"
+      - "src/utils/statsCalculator/trend.ts"
     db: []
     api: []
 

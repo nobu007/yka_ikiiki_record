@@ -16,7 +16,7 @@ export const MEMORY_MONITOR_CONSTANTS = {
 export const TIMEOUT_CONSTANTS = {
   COMMAND: 30000,
   API: 10000,
-  DATABASE: 5000,
+  DATABASE: 10000,
   FILE: 15000,
   E2E: 60000,
 } as const;

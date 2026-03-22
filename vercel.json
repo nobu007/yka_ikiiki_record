@@ -1,7 +1,7 @@
 {
   "buildCommand": "npx next build",
   "devCommand": "npx next dev",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "installCommand": "pnpm install --no-frozen-lockfile",
   "framework": "nextjs",
   "regions": ["hnd1"],
   "env": {

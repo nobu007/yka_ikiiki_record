@@ -1,0 +1,369 @@
+generated: '2026-03-22T15:08:37.901304'
+specs:
+  ApiResponse:
+    name: ApiResponse
+    spec_file: ApiResponse/ApiResponse_spec.md
+  AppError:
+    name: AppError
+    spec_file: AppError/AppError_spec.md
+  AsyncState:
+    name: AsyncState
+    spec_file: AsyncState/AsyncState_spec.md
+  ChartData:
+    name: ChartData
+    spec_file: ChartData/ChartData_spec.md
+  CircuitBreaker:
+    name: CircuitBreaker
+    spec_file: CircuitBreaker/CircuitBreaker_spec.md
+  CircuitBreakerConfig:
+    name: CircuitBreakerConfig
+    spec_file: CircuitBreakerConfig/CircuitBreakerConfig_spec.md
+  CircuitBreakerOpenError:
+    name: CircuitBreakerOpenError
+    spec_file: CircuitBreakerOpenError/CircuitBreakerOpenError_spec.md
+  ClassCharacteristics:
+    name: ClassCharacteristics
+    spec_file: ClassCharacteristics/ClassCharacteristics_spec.md
+  ClassEvent:
+    name: ClassEvent
+    spec_file: ClassEvent/ClassEvent_spec.md
+  DataGenerationConfig:
+    name: DataGenerationConfig
+    spec_file: DataGenerationConfig/DataGenerationConfig_spec.md
+  DayOfWeekStats:
+    name: DayOfWeekStats
+    spec_file: DayOfWeekStats/DayOfWeekStats_spec.md
+  EmotionChartProps:
+    name: EmotionChartProps
+    spec_file: EmotionChartProps/EmotionChartProps_spec.md
+  EmotionDistributionPattern:
+    name: EmotionDistributionPattern
+    spec_file: EmotionDistributionPattern/EmotionDistributionPattern_spec.md
+  EmotionRanges:
+    name: EmotionRanges
+    spec_file: EmotionRanges/EmotionRanges_spec.md
+  Env:
+    name: Env
+    spec_file: Env/Env_spec.md
+  ErrorBoundary:
+    name: ErrorBoundary
+    spec_file: ErrorBoundary/ErrorBoundary_spec.md
+  ErrorCodeType:
+    name: ErrorCodeType
+    spec_file: ErrorCodeType/ErrorCodeType_spec.md
+  EventEffect:
+    name: EventEffect
+    spec_file: EventEffect/EventEffect_spec.md
+  GET:
+    name: GET
+    spec_file: GET/GET_spec.md
+  GenerationBounds:
+    name: GenerationBounds
+    spec_file: GenerationBounds/GenerationBounds_spec.md
+  GridShape:
+    name: GridShape
+    spec_file: GridShape/GridShape_spec.md
+  IRecordRepository:
+    name: IRecordRepository
+    spec_file: IRecordRepository/IRecordRepository_spec.md
+  InfiniteLoopError:
+    name: InfiniteLoopError
+    spec_file: InfiniteLoopError/InfiniteLoopError_spec.md
+  JsonReadable:
+    name: JsonReadable
+    spec_file: JsonReadable/JsonReadable_spec.md
+  LogEntry:
+    name: LogEntry
+    spec_file: LogEntry/LogEntry_spec.md
+  LogLevel:
+    name: LogLevel
+    spec_file: LogLevel/LogLevel_spec.md
+  LogVisibility:
+    name: LogVisibility
+    spec_file: LogVisibility/LogVisibility_spec.md
+  LoopDetector:
+    name: LoopDetector
+    spec_file: LoopDetector/LoopDetector_spec.md
+  MemoryMonitor:
+    name: MemoryMonitor
+    spec_file: MemoryMonitor/MemoryMonitor_spec.md
+  MockFetchResponse:
+    name: MockFetchResponse
+    spec_file: MockFetchResponse/MockFetchResponse_spec.md
+  MockStatsRepository:
+    name: MockStatsRepository
+    spec_file: MockStatsRepository/MockStatsRepository_spec.md
+  MonthlyStats:
+    name: MonthlyStats
+    spec_file: MonthlyStats/MonthlyStats_spec.md
+  NetworkError:
+    name: NetworkError
+    spec_file: NetworkError/NetworkError_spec.md
+  NotificationState:
+    name: NotificationState
+    spec_file: NotificationState/NotificationState_spec.md
+  POST:
+    name: POST
+    spec_file: POST/POST_spec.md
+  PrismaRecordRepository:
+    name: PrismaRecordRepository
+    spec_file: PrismaRecordRepository/PrismaRecordRepository_spec.md
+  PrismaStatsRepository:
+    name: PrismaStatsRepository
+    spec_file: PrismaStatsRepository/PrismaStatsRepository_spec.md
+  Record:
+    name: Record
+    spec_file: Record/Record_spec.md
+  SeasonalEffect:
+    name: SeasonalEffect
+    spec_file: SeasonalEffect/SeasonalEffect_spec.md
+  SeedRequest:
+    name: SeedRequest
+    spec_file: SeedRequest/SeedRequest_spec.md
+  SeedResponse:
+    name: SeedResponse
+    spec_file: SeedResponse/SeedResponse_spec.md
+  Stats:
+    name: Stats
+    spec_file: Stats/Stats_spec.md
+  StatsData:
+    name: StatsData
+    spec_file: StatsData/StatsData_spec.md
+  StatsOverview:
+    name: StatsOverview
+    spec_file: StatsOverview/StatsOverview_spec.md
+  StatsRepository:
+    name: StatsRepository
+    spec_file: StatsRepository/StatsRepository_spec.md
+  StatsResponse:
+    name: StatsResponse
+    spec_file: StatsResponse/StatsResponse_spec.md
+  StatsService:
+    name: StatsService
+    spec_file: StatsService/StatsService_spec.md
+  StructuredLogger:
+    name: StructuredLogger
+    spec_file: StructuredLogger/StructuredLogger_spec.md
+  StudentStats:
+    name: StudentStats
+    spec_file: StudentStats/StudentStats_spec.md
+  TimeOfDayStats:
+    name: TimeOfDayStats
+    spec_file: TimeOfDayStats/TimeOfDayStats_spec.md
+  TimeoutConfig:
+    name: TimeoutConfig
+    spec_file: TimeoutConfig/TimeoutConfig_spec.md
+  TimeoutError:
+    name: TimeoutError
+    spec_file: TimeoutError/TimeoutError_spec.md
+  UsageInstructions:
+    name: UsageInstructions
+    spec_file: UsageInstructions/UsageInstructions_spec.md
+  UseAsyncOptions:
+    name: UseAsyncOptions
+    spec_file: UseAsyncOptions/UseAsyncOptions_spec.md
+  UseAsyncResult:
+    name: UseAsyncResult
+    spec_file: UseAsyncResult/UseAsyncResult_spec.md
+  UseDataGenerationProps:
+    name: UseDataGenerationProps
+    spec_file: UseDataGenerationProps/UseDataGenerationProps_spec.md
+  UseDataGenerationResult:
+    name: UseDataGenerationResult
+    spec_file: UseDataGenerationResult/UseDataGenerationResult_spec.md
+  UseNotificationResult:
+    name: UseNotificationResult
+    spec_file: UseNotificationResult/UseNotificationResult_spec.md
+  UseStatsResult:
+    name: UseStatsResult
+    spec_file: UseStatsResult/UseStatsResult_spec.md
+  ValidationError:
+    name: ValidationError
+    spec_file: ValidationError/ValidationError_spec.md
+  average:
+    name: average
+    spec_file: average/average_spec.md
+  calculateDayOfWeekStats:
+    name: calculateDayOfWeekStats
+    spec_file: calculateDayOfWeekStats/calculateDayOfWeekStats_spec.md
+  calculateEmotionDistribution:
+    name: calculateEmotionDistribution
+    spec_file: calculateEmotionDistribution/calculateEmotionDistribution_spec.md
+  calculateEmotionTrend:
+    name: calculateEmotionTrend
+    spec_file: calculateEmotionTrend/calculateEmotionTrend_spec.md
+  calculateMonthlyStats:
+    name: calculateMonthlyStats
+    spec_file: calculateMonthlyStats/calculateMonthlyStats_spec.md
+  calculateSeasonalEffect:
+    name: calculateSeasonalEffect
+    spec_file: calculateSeasonalEffect/calculateSeasonalEffect_spec.md
+  calculateStudentStats:
+    name: calculateStudentStats
+    spec_file: calculateStudentStats/calculateStudentStats_spec.md
+  calculateTimeOfDayStats:
+    name: calculateTimeOfDayStats
+    spec_file: calculateTimeOfDayStats/calculateTimeOfDayStats_spec.md
+  calculateTrendline:
+    name: calculateTrendline
+    spec_file: calculateTrendline/calculateTrendline_spec.md
+  clamp:
+    name: clamp
+    spec_file: clamp/clamp_spec.md
+  clampEmotion:
+    name: clampEmotion
+    spec_file: clampEmotion/clampEmotion_spec.md
+  cleanupMockFetch:
+    name: cleanupMockFetch
+    spec_file: cleanupMockFetch/cleanupMockFetch_spec.md
+  createCircuitBreaker:
+    name: createCircuitBreaker
+    spec_file: createCircuitBreaker/createCircuitBreaker_spec.md
+  createEmptyStats:
+    name: createEmptyStats
+    spec_file: createEmptyStats/createEmptyStats_spec.md
+  createErrorResponse:
+    name: createErrorResponse
+    spec_file: createErrorResponse/createErrorResponse_spec.md
+  createMockResponse:
+    name: createMockResponse
+    spec_file: createMockResponse/createMockResponse_spec.md
+  createRecordRepository:
+    name: createRecordRepository
+    spec_file: createRecordRepository/createRecordRepository_spec.md
+  createStatsRepository:
+    name: createStatsRepository
+    spec_file: createStatsRepository/createStatsRepository_spec.md
+  createStatsService:
+    name: createStatsService
+    spec_file: createStatsService/createStatsService_spec.md
+  createSuccessResponse:
+    name: createSuccessResponse
+    spec_file: createSuccessResponse/createSuccessResponse_spec.md
+  ensureServer:
+    name: ensureServer
+    spec_file: ensureServer/ensureServer_spec.md
+  expectClasses:
+    name: expectClasses
+    spec_file: expectClasses/expectClasses_spec.md
+  generateBaseEmotion:
+    name: generateBaseEmotion
+    spec_file: generateBaseEmotion/generateBaseEmotion_spec.md
+  generateEmotion:
+    name: generateEmotion
+    spec_file: generateEmotion/generateEmotion_spec.md
+  generateNormalRandom:
+    name: generateNormalRandom
+    spec_file: generateNormalRandom/generateNormalRandom_spec.md
+  generateSeedData:
+    name: generateSeedData
+    spec_file: generateSeedData/generateSeedData_spec.md
+  getButtonClasses:
+    name: getButtonClasses
+    spec_file: getButtonClasses/getButtonClasses_spec.md
+  getEnv:
+    name: getEnv
+    spec_file: getEnv/getEnv_spec.md
+  getFirstMockCallArgs:
+    name: getFirstMockCallArgs
+    spec_file: getFirstMockCallArgs/getFirstMockCallArgs_spec.md
+  getMockCallCount:
+    name: getMockCallCount
+    spec_file: getMockCallCount/getMockCallCount_spec.md
+  getNotificationTimeout:
+    name: getNotificationTimeout
+    spec_file: getNotificationTimeout/getNotificationTimeout_spec.md
+  getRandomHour:
+    name: getRandomHour
+    spec_file: getRandomHour/getRandomHour_spec.md
+  getUserFriendlyMessage:
+    name: getUserFriendlyMessage
+    spec_file: getUserFriendlyMessage/getUserFriendlyMessage_spec.md
+  globalLoopDetector:
+    name: globalLoopDetector
+    spec_file: globalLoopDetector/globalLoopDetector_spec.md
+  handleApiError:
+    name: handleApiError
+    spec_file: handleApiError/handleApiError_spec.md
+  isAppError:
+    name: isAppError
+    spec_file: isAppError/isAppError_spec.md
+  isDevelopment:
+    name: isDevelopment
+    spec_file: isDevelopment/isDevelopment_spec.md
+  isNetworkError:
+    name: isNetworkError
+    spec_file: isNetworkError/isNetworkError_spec.md
+  isNotFoundError:
+    name: isNotFoundError
+    spec_file: isNotFoundError/isNotFoundError_spec.md
+  isPrismaProvider:
+    name: isPrismaProvider
+    spec_file: isPrismaProvider/isPrismaProvider_spec.md
+  isProduction:
+    name: isProduction
+    spec_file: isProduction/isProduction_spec.md
+  isServerError:
+    name: isServerError
+    spec_file: isServerError/isServerError_spec.md
+  isTest:
+    name: isTest
+    spec_file: isTest/isTest_spec.md
+  isTimeoutError:
+    name: isTimeoutError
+    spec_file: isTimeoutError/isTimeoutError_spec.md
+  isValidationError:
+    name: isValidationError
+    spec_file: isValidationError/isValidationError_spec.md
+  logError:
+    name: logError
+    spec_file: logError/logError_spec.md
+  makeServer:
+    name: makeServer
+    spec_file: makeServer/makeServer_spec.md
+  mockFetchError:
+    name: mockFetchError
+    spec_file: mockFetchError/mockFetchError_spec.md
+  mockFetchNetworkError:
+    name: mockFetchNetworkError
+    spec_file: mockFetchNetworkError/mockFetchNetworkError_spec.md
+  mockFetchSuccess:
+    name: mockFetchSuccess
+    spec_file: mockFetchSuccess/mockFetchSuccess_spec.md
+  mockProcessEnv:
+    name: mockProcessEnv
+    spec_file: mockProcessEnv/mockProcessEnv_spec.md
+  normalizeError:
+    name: normalizeError
+    spec_file: normalizeError/normalizeError_spec.md
+  parseRequestBody:
+    name: parseRequestBody
+    spec_file: parseRequestBody/parseRequestBody_spec.md
+  reloadPage:
+    name: reloadPage
+    spec_file: reloadPage/reloadPage_spec.md
+  setupMockFetch:
+    name: setupMockFetch
+    spec_file: setupMockFetch/setupMockFetch_spec.md
+  useDashboard:
+    name: useDashboard
+    spec_file: useDashboard/useDashboard_spec.md
+  useDataGeneration:
+    name: useDataGeneration
+    spec_file: useDataGeneration/useDataGeneration_spec.md
+  useNotification:
+    name: useNotification
+    spec_file: useNotification/useNotification_spec.md
+  useSeedGeneration:
+    name: useSeedGeneration
+    spec_file: useSeedGeneration/useSeedGeneration_spec.md
+  useSidebar:
+    name: useSidebar
+    spec_file: useSidebar/useSidebar_spec.md
+  useStats:
+    name: useStats
+    spec_file: useStats/useStats_spec.md
+  useTheme:
+    name: useTheme
+    spec_file: useTheme/useTheme_spec.md
+total_specs: 122

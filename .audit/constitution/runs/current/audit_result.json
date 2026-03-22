@@ -1,0 +1,227 @@
+{
+  "timestamp": "2026-03-22T15:04:53.541749",
+  "workdir": "/home/jinno/yka_ikiiki_record",
+  "bootstrapped": false,
+  "results": {
+    "C-003": {
+      "axis": "C-003",
+      "name": "コードベース整合性",
+      "score": 19,
+      "max_score": 25,
+      "pass": false,
+      "details": [
+        {
+          "id": "C-003-1",
+          "name": "技術スタック一致",
+          "score": 0,
+          "max": 6,
+          "evidence": "matched=0/1"
+        },
+        {
+          "id": "C-003-2",
+          "name": "責務外機能の検知",
+          "score": 8,
+          "max": 8,
+          "evidence": "violations=0"
+        },
+        {
+          "id": "C-003-3",
+          "name": "ディレクトリ構造整合",
+          "score": 5,
+          "max": 5
+        },
+        {
+          "id": "C-003-4",
+          "name": "セキュリティポリシー遵守",
+          "score": 6,
+          "max": 6,
+          "evidence": "security_section=True"
+        }
+      ],
+      "divergences": []
+    },
+    "C-004": {
+      "axis": "C-004",
+      "name": "概念-憲法整合性",
+      "score": 6,
+      "max_score": 20,
+      "pass": false,
+      "details": [
+        {
+          "id": "C-004-1",
+          "name": "north_star-Mission整合",
+          "score": 0,
+          "max": 7
+        },
+        {
+          "id": "C-004-2",
+          "name": "invariants-ルール対応",
+          "score": 2,
+          "max": 5
+        },
+        {
+          "id": "C-004-3",
+          "name": "ontology用語の憲法内出現",
+          "score": 2,
+          "max": 4
+        },
+        {
+          "id": "C-004-4",
+          "name": "non_goals-禁止事項一致",
+          "score": 2,
+          "max": 4
+        }
+      ],
+      "amendment_needed": [
+        {
+          "type": "template_not_customized",
+          "charter_north_star": "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する（推定）",
+          "constitution_mission": "Core Mission must remain exactly ONE. Amendments that split purpose are rejected\n4. **Evidence-Based Only**: Amendments must reference concrete code evidence (grep results, test outcomes, structural a",
+          "recommendation": "charter.ymlがテンプレートのまま。リポ固有のnorth_starに更新すること"
+        },
+        {
+          "type": "mission_drift",
+          "charter_north_star": "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する（推定）",
+          "constitution_mission": "Core Mission must remain exactly ONE. Amendments that split purpose are rejected\n4. **Evidence-Based Only**: Amendments must reference concrete code evidence (grep results, test outcomes, structural a",
+          "recommendation": "charter.ymlのnorth_starと憲法のCore Missionを統一すること"
+        }
+      ]
+    },
+    "C-001": {
+      "axis": "C-001",
+      "name": "存在確認",
+      "score": 10,
+      "max_score": 10,
+      "pass": true,
+      "details": [
+        {
+          "file": "SYSTEM_CONSTITUTION.md",
+          "status": "exists",
+          "points": 5
+        },
+        {
+          "file": "PURPOSE.md",
+          "status": "exists",
+          "points": 5
+        }
+      ]
+    },
+    "C-006": {
+      "axis": "C-006",
+      "name": "鮮度",
+      "score": 2,
+      "max_score": 10,
+      "pass": false,
+      "details": [
+        {
+          "id": "C-006-1",
+          "name": "最終更新日の妥当性",
+          "score": 0,
+          "max": 3,
+          "evidence": "last_updated=None"
+        },
+        {
+          "id": "C-006-2",
+          "name": "ステータス反映",
+          "score": 2,
+          "max": 4,
+          "evidence": "status=True, gap=False, actions=False"
+        },
+        {
+          "id": "C-006-3",
+          "name": "バージョン管理",
+          "score": 0,
+          "max": 3,
+          "evidence": "constitution=False, purpose=False"
+        }
+      ]
+    },
+    "C-005": {
+      "axis": "C-005",
+      "name": "目的-憲法一貫性",
+      "score": 1,
+      "max_score": 10,
+      "pass": false,
+      "details": [
+        {
+          "id": "C-005-1",
+          "name": "大目標-Mission整合",
+          "score": 0,
+          "max": 4
+        },
+        {
+          "id": "C-005-2",
+          "name": "不変原則の転記正確性",
+          "score": 0,
+          "max": 3
+        },
+        {
+          "id": "C-005-3",
+          "name": "優先順位の一貫性",
+          "score": 1,
+          "max": 3
+        }
+      ]
+    },
+    "C-002": {
+      "axis": "C-002",
+      "name": "単一機能明確度",
+      "score": 6,
+      "max_score": 25,
+      "pass": false,
+      "details": [
+        {
+          "id": "C-002-1",
+          "name": "Core Missionの明文化",
+          "score": 4,
+          "max": 8,
+          "evidence": "section=True, concise=False"
+        },
+        {
+          "id": "C-002-2",
+          "name": "責務の境界定義",
+          "score": 0,
+          "max": 6,
+          "evidence": "responsibilities=False, non_responsibilities=False"
+        },
+        {
+          "id": "C-002-3",
+          "name": "禁止事項の具体性",
+          "score": 0,
+          "max": 5,
+          "evidence": "count=0, has_reasons=False"
+        },
+        {
+          "id": "C-002-4",
+          "name": "他リポとの関係明示",
+          "score": 0,
+          "max": 3,
+          "evidence": "multi_repo_ref=False"
+        },
+        {
+          "id": "C-002-5",
+          "name": "non-goalsの定義",
+          "score": 2,
+          "max": 3,
+          "evidence": "charter=True, purpose=False"
+        }
+      ]
+    }
+  },
+  "verdict": {
+    "total_score": 44,
+    "max_score": 100,
+    "percentage": 44.0,
+    "overall_pass": false,
+    "c001_perfect": true,
+    "all_thresholds_met": false,
+    "failed_axes": [
+      "C-002",
+      "C-005",
+      "C-004",
+      "C-003",
+      "C-006"
+    ]
+  },
+  "amendments": []
+}

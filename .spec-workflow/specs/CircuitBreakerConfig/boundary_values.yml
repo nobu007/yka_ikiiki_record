@@ -1,0 +1,17 @@
+boundary_cases:
+- category: 正常系
+  expected: 正常動作
+  id: BV-001
+  input: 正常値
+- category: 最小境界
+  expected: 正常動作
+  id: BV-002
+  input: 最小値
+- category: 最大境界
+  expected: 正常動作
+  id: BV-003
+  input: 最大値
+- category: 空入力
+  expected: エラー
+  id: BV-004
+  input: 空/null

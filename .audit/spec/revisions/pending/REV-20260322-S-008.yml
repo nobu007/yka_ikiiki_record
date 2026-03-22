@@ -1,0 +1,11 @@
+axis: S-008
+axis_name: SPEC鮮度
+current_score: 0
+details:
+- note: No SPECs exist yet
+gap: 8
+id: REV-20260322-S-008
+priority: P1
+recommendation: SPECが古い可能性があります。コードの現状に合わせて更新してください。
+required_score: 8
+type: spec_stale

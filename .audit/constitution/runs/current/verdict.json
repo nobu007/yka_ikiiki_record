@@ -1,0 +1,15 @@
+{
+  "total_score": 44,
+  "max_score": 100,
+  "percentage": 44.0,
+  "overall_pass": false,
+  "c001_perfect": true,
+  "all_thresholds_met": false,
+  "failed_axes": [
+    "C-002",
+    "C-005",
+    "C-004",
+    "C-003",
+    "C-006"
+  ]
+}

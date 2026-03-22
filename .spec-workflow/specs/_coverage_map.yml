@@ -1,0 +1,420 @@
+app.api.analytics.route.GET:
+  generated: '2026-03-22T15:08:37.552662'
+  spec_file: GET/GET_spec.md
+app.api.export.route.GET:
+  generated: '2026-03-22T15:08:37.558898'
+  spec_file: GET/GET_spec.md
+app.api.health.route.GET:
+  generated: '2026-03-22T15:08:37.566466'
+  spec_file: GET/GET_spec.md
+app.api.metrics.route.GET:
+  generated: '2026-03-22T15:08:37.549120'
+  spec_file: GET/GET_spec.md
+app.api.seed.route.GET:
+  generated: '2026-03-22T15:08:37.573507'
+  spec_file: GET/GET_spec.md
+app.api.seed.route.POST:
+  generated: '2026-03-22T15:08:37.569943'
+  spec_file: POST/POST_spec.md
+app.api.stats.route.GET:
+  generated: '2026-03-22T15:08:37.562759'
+  spec_file: GET/GET_spec.md
+application.hooks.useDataGeneration.UseDataGenerationProps:
+  generated: '2026-03-22T15:08:37.590118'
+  spec_file: UseDataGenerationProps/UseDataGenerationProps_spec.md
+application.hooks.useDataGeneration.UseDataGenerationResult:
+  generated: '2026-03-22T15:08:37.593356'
+  spec_file: UseDataGenerationResult/UseDataGenerationResult_spec.md
+application.hooks.useDataGeneration.useDataGeneration:
+  generated: '2026-03-22T15:08:37.586909'
+  spec_file: useDataGeneration/useDataGeneration_spec.md
+application.hooks.useSeedGeneration.useSeedGeneration:
+  generated: '2026-03-22T15:08:37.583572'
+  spec_file: useSeedGeneration/useSeedGeneration_spec.md
+application.hooks.useStats.UseStatsResult:
+  generated: '2026-03-22T15:08:37.580209'
+  spec_file: UseStatsResult/UseStatsResult_spec.md
+application.hooks.useStats.useStats:
+  generated: '2026-03-22T15:08:37.576873'
+  spec_file: useStats/useStats_spec.md
+components.charts.DynamicBarChart.ChartData:
+  generated: '2026-03-22T15:08:37.845024'
+  spec_file: ChartData/ChartData_spec.md
+components.charts.EmotionChart.ChartData:
+  generated: '2026-03-22T15:08:37.848586'
+  spec_file: ChartData/ChartData_spec.md
+components.charts.EmotionChart.EmotionChartProps:
+  generated: '2026-03-22T15:08:37.851988'
+  spec_file: EmotionChartProps/EmotionChartProps_spec.md
+components.common.ErrorBoundary.ErrorBoundary:
+  generated: '2026-03-22T15:08:37.858702'
+  spec_file: ErrorBoundary/ErrorBoundary_spec.md
+components.common.GridShape.GridShape:
+  generated: '2026-03-22T15:08:37.855194'
+  spec_file: GridShape/GridShape_spec.md
+components.common.UsageInstructions.UsageInstructions:
+  generated: '2026-03-22T15:08:37.862165'
+  spec_file: UsageInstructions/UsageInstructions_spec.md
+context.SidebarContext.useSidebar:
+  generated: '2026-03-22T15:08:37.838630'
+  spec_file: useSidebar/useSidebar_spec.md
+context.ThemeContext.useTheme:
+  generated: '2026-03-22T15:08:37.841831'
+  spec_file: useTheme/useTheme_spec.md
+domain.entities.DataGeneration.ClassCharacteristics:
+  generated: '2026-03-22T15:08:37.815550'
+  spec_file: ClassCharacteristics/ClassCharacteristics_spec.md
+domain.entities.DataGeneration.ClassEvent:
+  generated: '2026-03-22T15:08:37.812044'
+  spec_file: ClassEvent/ClassEvent_spec.md
+domain.entities.DataGeneration.DataGenerationConfig:
+  generated: '2026-03-22T15:08:37.797989'
+  spec_file: DataGenerationConfig/DataGenerationConfig_spec.md
+domain.entities.DataGeneration.EmotionDistributionPattern:
+  generated: '2026-03-22T15:08:37.801721'
+  spec_file: EmotionDistributionPattern/EmotionDistributionPattern_spec.md
+domain.entities.DataGeneration.EmotionRanges:
+  generated: '2026-03-22T15:08:37.818896'
+  spec_file: EmotionRanges/EmotionRanges_spec.md
+domain.entities.DataGeneration.EventEffect:
+  generated: '2026-03-22T15:08:37.808582'
+  spec_file: EventEffect/EventEffect_spec.md
+domain.entities.DataGeneration.GenerationBounds:
+  generated: '2026-03-22T15:08:37.822113'
+  spec_file: GenerationBounds/GenerationBounds_spec.md
+domain.entities.DataGeneration.SeasonalEffect:
+  generated: '2026-03-22T15:08:37.805074'
+  spec_file: SeasonalEffect/SeasonalEffect_spec.md
+domain.entities.Record.Record:
+  generated: '2026-03-22T15:08:37.774585'
+  spec_file: Record/Record_spec.md
+domain.entities.Stats.DayOfWeekStats:
+  generated: '2026-03-22T15:08:37.787934'
+  spec_file: DayOfWeekStats/DayOfWeekStats_spec.md
+domain.entities.Stats.MonthlyStats:
+  generated: '2026-03-22T15:08:37.781296'
+  spec_file: MonthlyStats/MonthlyStats_spec.md
+domain.entities.Stats.Stats:
+  generated: '2026-03-22T15:08:37.794323'
+  spec_file: Stats/Stats_spec.md
+domain.entities.Stats.StatsOverview:
+  generated: '2026-03-22T15:08:37.777968'
+  spec_file: StatsOverview/StatsOverview_spec.md
+domain.entities.Stats.StudentStats:
+  generated: '2026-03-22T15:08:37.784641'
+  spec_file: StudentStats/StudentStats_spec.md
+domain.entities.Stats.TimeOfDayStats:
+  generated: '2026-03-22T15:08:37.791118'
+  spec_file: TimeOfDayStats/TimeOfDayStats_spec.md
+domain.repositories.IRecordRepository.IRecordRepository:
+  generated: '2026-03-22T15:08:37.835391'
+  spec_file: IRecordRepository/IRecordRepository_spec.md
+domain.repositories.StatsRepository.StatsRepository:
+  generated: '2026-03-22T15:08:37.831972'
+  spec_file: StatsRepository/StatsRepository_spec.md
+domain.services.EmotionGenerator.generateEmotion:
+  generated: '2026-03-22T15:08:37.828701'
+  spec_file: generateEmotion/generateEmotion_spec.md
+domain.services.StatsService.StatsService:
+  generated: '2026-03-22T15:08:37.825434'
+  spec_file: StatsService/StatsService_spec.md
+hooks.useApp.useDashboard:
+  generated: '2026-03-22T15:08:37.464095'
+  spec_file: useDashboard/useDashboard_spec.md
+hooks.useAsync.AsyncState:
+  generated: '2026-03-22T15:08:37.443984'
+  spec_file: AsyncState/AsyncState_spec.md
+hooks.useAsync.UseAsyncOptions:
+  generated: '2026-03-22T15:08:37.447271'
+  spec_file: UseAsyncOptions/UseAsyncOptions_spec.md
+hooks.useAsync.UseAsyncResult:
+  generated: '2026-03-22T15:08:37.450618'
+  spec_file: UseAsyncResult/UseAsyncResult_spec.md
+hooks.useNotification.NotificationState:
+  generated: '2026-03-22T15:08:37.457266'
+  spec_file: NotificationState/NotificationState_spec.md
+hooks.useNotification.UseNotificationResult:
+  generated: '2026-03-22T15:08:37.460790'
+  spec_file: UseNotificationResult/UseNotificationResult_spec.md
+hooks.useNotification.useNotification:
+  generated: '2026-03-22T15:08:37.453942'
+  spec_file: useNotification/useNotification_spec.md
+infrastructure.factories.repositoryFactory.createRecordRepository:
+  generated: '2026-03-22T15:08:37.607597'
+  spec_file: createRecordRepository/createRecordRepository_spec.md
+infrastructure.factories.repositoryFactory.createStatsRepository:
+  generated: '2026-03-22T15:08:37.604128'
+  spec_file: createStatsRepository/createStatsRepository_spec.md
+infrastructure.factories.repositoryFactory.createStatsService:
+  generated: '2026-03-22T15:08:37.610931'
+  spec_file: createStatsService/createStatsService_spec.md
+infrastructure.repositories.PrismaRecordRepository.PrismaRecordRepository:
+  generated: '2026-03-22T15:08:37.621241'
+  spec_file: PrismaRecordRepository/PrismaRecordRepository_spec.md
+infrastructure.repositories.PrismaSeedRepository.generateSeedData:
+  generated: '2026-03-22T15:08:37.617760'
+  spec_file: generateSeedData/generateSeedData_spec.md
+infrastructure.repositories.PrismaStatsRepository.PrismaStatsRepository:
+  generated: '2026-03-22T15:08:37.614389'
+  spec_file: PrismaStatsRepository/PrismaStatsRepository_spec.md
+infrastructure.services.dataService.DataGenerationConfig:
+  generated: '2026-03-22T15:08:37.600342'
+  spec_file: DataGenerationConfig/DataGenerationConfig_spec.md
+infrastructure.storage.MockStatsRepository.MockStatsRepository:
+  generated: '2026-03-22T15:08:37.596580'
+  spec_file: MockStatsRepository/MockStatsRepository_spec.md
+lib.api.error-handler.GET:
+  generated: '2026-03-22T15:08:37.685169'
+  spec_file: GET/GET_spec.md
+lib.api.error-handler.JsonReadable:
+  generated: '2026-03-22T15:08:37.691731'
+  spec_file: JsonReadable/JsonReadable_spec.md
+lib.api.error-handler.handleApiError:
+  generated: '2026-03-22T15:08:37.681538'
+  spec_file: handleApiError/handleApiError_spec.md
+lib.api.error-handler.parseRequestBody:
+  generated: '2026-03-22T15:08:37.688536'
+  spec_file: parseRequestBody/parseRequestBody_spec.md
+lib.api.response.ApiResponse:
+  generated: '2026-03-22T15:08:37.702486'
+  spec_file: ApiResponse/ApiResponse_spec.md
+lib.api.response.createErrorResponse:
+  generated: '2026-03-22T15:08:37.698855'
+  spec_file: createErrorResponse/createErrorResponse_spec.md
+lib.api.validation.POST:
+  generated: '2026-03-22T15:08:37.695228'
+  spec_file: POST/POST_spec.md
+lib.config.env.Env:
+  generated: '2026-03-22T15:08:37.721921'
+  spec_file: Env/Env_spec.md
+lib.config.env.getEnv:
+  generated: '2026-03-22T15:08:37.705744'
+  spec_file: getEnv/getEnv_spec.md
+lib.config.env.isDevelopment:
+  generated: '2026-03-22T15:08:37.712352'
+  spec_file: isDevelopment/isDevelopment_spec.md
+lib.config.env.isPrismaProvider:
+  generated: '2026-03-22T15:08:37.709117'
+  spec_file: isPrismaProvider/isPrismaProvider_spec.md
+lib.config.env.isProduction:
+  generated: '2026-03-22T15:08:37.715526'
+  spec_file: isProduction/isProduction_spec.md
+lib.config.env.isTest:
+  generated: '2026-03-22T15:08:37.718769'
+  spec_file: isTest/isTest_spec.md
+lib.constants.browser.reloadPage:
+  generated: '2026-03-22T15:08:37.631009'
+  spec_file: reloadPage/reloadPage_spec.md
+lib.constants.ui.getButtonClasses:
+  generated: '2026-03-22T15:08:37.624597'
+  spec_file: getButtonClasses/getButtonClasses_spec.md
+lib.constants.ui.getNotificationTimeout:
+  generated: '2026-03-22T15:08:37.627834'
+  spec_file: getNotificationTimeout/getNotificationTimeout_spec.md
+lib.error-handler.AppError:
+  generated: '2026-03-22T15:08:37.430725'
+  spec_file: AppError/AppError_spec.md
+lib.error-handler.ErrorCodeType:
+  generated: '2026-03-22T15:08:37.440776'
+  spec_file: ErrorCodeType/ErrorCodeType_spec.md
+lib.error-handler.NetworkError:
+  generated: '2026-03-22T15:08:37.437505'
+  spec_file: NetworkError/NetworkError_spec.md
+lib.error-handler.ValidationError:
+  generated: '2026-03-22T15:08:37.434077'
+  spec_file: ValidationError/ValidationError_spec.md
+lib.error-handler.getUserFriendlyMessage:
+  generated: '2026-03-22T15:08:37.403833'
+  spec_file: getUserFriendlyMessage/getUserFriendlyMessage_spec.md
+lib.error-handler.isAppError:
+  generated: '2026-03-22T15:08:37.410329'
+  spec_file: isAppError/isAppError_spec.md
+lib.error-handler.isNetworkError:
+  generated: '2026-03-22T15:08:37.417360'
+  spec_file: isNetworkError/isNetworkError_spec.md
+lib.error-handler.isNotFoundError:
+  generated: '2026-03-22T15:08:37.420713'
+  spec_file: isNotFoundError/isNotFoundError_spec.md
+lib.error-handler.isServerError:
+  generated: '2026-03-22T15:08:37.427421'
+  spec_file: isServerError/isServerError_spec.md
+lib.error-handler.isTimeoutError:
+  generated: '2026-03-22T15:08:37.424120'
+  spec_file: isTimeoutError/isTimeoutError_spec.md
+lib.error-handler.isValidationError:
+  generated: '2026-03-22T15:08:37.413822'
+  spec_file: isValidationError/isValidationError_spec.md
+lib.error-handler.logError:
+  generated: '2026-03-22T15:08:37.407052'
+  spec_file: logError/logError_spec.md
+lib.error-handler.normalizeError:
+  generated: '2026-03-22T15:08:37.400508'
+  spec_file: normalizeError/normalizeError_spec.md
+lib.resilience.circuit-breaker.CircuitBreaker:
+  generated: '2026-03-22T15:08:37.664657'
+  spec_file: CircuitBreaker/CircuitBreaker_spec.md
+lib.resilience.circuit-breaker.CircuitBreakerConfig:
+  generated: '2026-03-22T15:08:37.667983'
+  spec_file: CircuitBreakerConfig/CircuitBreakerConfig_spec.md
+lib.resilience.circuit-breaker.CircuitBreakerOpenError:
+  generated: '2026-03-22T15:08:37.661115'
+  spec_file: CircuitBreakerOpenError/CircuitBreakerOpenError_spec.md
+lib.resilience.circuit-breaker.createCircuitBreaker:
+  generated: '2026-03-22T15:08:37.657597'
+  spec_file: createCircuitBreaker/createCircuitBreaker_spec.md
+lib.resilience.loop-detector.InfiniteLoopError:
+  generated: '2026-03-22T15:08:37.674794'
+  spec_file: InfiniteLoopError/InfiniteLoopError_spec.md
+lib.resilience.loop-detector.LoopDetector:
+  generated: '2026-03-22T15:08:37.678191'
+  spec_file: LoopDetector/LoopDetector_spec.md
+lib.resilience.loop-detector.globalLoopDetector:
+  generated: '2026-03-22T15:08:37.671394'
+  spec_file: globalLoopDetector/globalLoopDetector_spec.md
+lib.resilience.memory-monitor.MemoryMonitor:
+  generated: '2026-03-22T15:08:37.647566'
+  spec_file: MemoryMonitor/MemoryMonitor_spec.md
+lib.resilience.structured-logger.LogEntry:
+  generated: '2026-03-22T15:08:37.637633'
+  spec_file: LogEntry/LogEntry_spec.md
+lib.resilience.structured-logger.LogLevel:
+  generated: '2026-03-22T15:08:37.640852'
+  spec_file: LogLevel/LogLevel_spec.md
+lib.resilience.structured-logger.LogVisibility:
+  generated: '2026-03-22T15:08:37.644031'
+  spec_file: LogVisibility/LogVisibility_spec.md
+lib.resilience.structured-logger.StructuredLogger:
+  generated: '2026-03-22T15:08:37.634349'
+  spec_file: StructuredLogger/StructuredLogger_spec.md
+lib.resilience.timeout.TimeoutConfig:
+  generated: '2026-03-22T15:08:37.654296'
+  spec_file: TimeoutConfig/TimeoutConfig_spec.md
+lib.resilience.timeout.TimeoutError:
+  generated: '2026-03-22T15:08:37.650942'
+  spec_file: TimeoutError/TimeoutError_spec.md
+mirage.index.ensureServer:
+  generated: '2026-03-22T15:08:37.393726'
+  spec_file: ensureServer/ensureServer_spec.md
+mirage.server.makeServer:
+  generated: '2026-03-22T15:08:37.396974'
+  spec_file: makeServer/makeServer_spec.md
+presentation.hooks.useStats.useStats:
+  generated: '2026-03-22T15:08:37.771025'
+  spec_file: useStats/useStats_spec.md
+schemas.api.ApiResponse:
+  generated: '2026-03-22T15:08:37.545936'
+  spec_file: ApiResponse/ApiResponse_spec.md
+schemas.api.ClassCharacteristics:
+  generated: '2026-03-22T15:08:37.526647'
+  spec_file: ClassCharacteristics/ClassCharacteristics_spec.md
+schemas.api.ClassEvent:
+  generated: '2026-03-22T15:08:37.523467'
+  spec_file: ClassEvent/ClassEvent_spec.md
+schemas.api.DataGenerationConfig:
+  generated: '2026-03-22T15:08:37.529850'
+  spec_file: DataGenerationConfig/DataGenerationConfig_spec.md
+schemas.api.EmotionDistributionPattern:
+  generated: '2026-03-22T15:08:37.516766'
+  spec_file: EmotionDistributionPattern/EmotionDistributionPattern_spec.md
+schemas.api.EventEffect:
+  generated: '2026-03-22T15:08:37.520086'
+  spec_file: EventEffect/EventEffect_spec.md
+schemas.api.Record:
+  generated: '2026-03-22T15:08:37.513566'
+  spec_file: Record/Record_spec.md
+schemas.api.SeedRequest:
+  generated: '2026-03-22T15:08:37.533026'
+  spec_file: SeedRequest/SeedRequest_spec.md
+schemas.api.SeedResponse:
+  generated: '2026-03-22T15:08:37.536358'
+  spec_file: SeedResponse/SeedResponse_spec.md
+schemas.api.StatsData:
+  generated: '2026-03-22T15:08:37.542759'
+  spec_file: StatsData/StatsData_spec.md
+schemas.api.StatsResponse:
+  generated: '2026-03-22T15:08:37.539570'
+  spec_file: StatsResponse/StatsResponse_spec.md
+test-utils.api-helpers.MockFetchResponse:
+  generated: '2026-03-22T15:08:37.493893'
+  spec_file: MockFetchResponse/MockFetchResponse_spec.md
+test-utils.api-helpers.cleanupMockFetch:
+  generated: '2026-03-22T15:08:37.490718'
+  spec_file: cleanupMockFetch/cleanupMockFetch_spec.md
+test-utils.api-helpers.createErrorResponse:
+  generated: '2026-03-22T15:08:37.477536'
+  spec_file: createErrorResponse/createErrorResponse_spec.md
+test-utils.api-helpers.createMockResponse:
+  generated: '2026-03-22T15:08:37.470842'
+  spec_file: createMockResponse/createMockResponse_spec.md
+test-utils.api-helpers.createSuccessResponse:
+  generated: '2026-03-22T15:08:37.474156'
+  spec_file: createSuccessResponse/createSuccessResponse_spec.md
+test-utils.api-helpers.mockFetchError:
+  generated: '2026-03-22T15:08:37.484193'
+  spec_file: mockFetchError/mockFetchError_spec.md
+test-utils.api-helpers.mockFetchNetworkError:
+  generated: '2026-03-22T15:08:37.487521'
+  spec_file: mockFetchNetworkError/mockFetchNetworkError_spec.md
+test-utils.api-helpers.mockFetchSuccess:
+  generated: '2026-03-22T15:08:37.480851'
+  spec_file: mockFetchSuccess/mockFetchSuccess_spec.md
+test-utils.api-helpers.setupMockFetch:
+  generated: '2026-03-22T15:08:37.467470'
+  spec_file: setupMockFetch/setupMockFetch_spec.md
+test-utils.component-helpers.expectClasses:
+  generated: '2026-03-22T15:08:37.506841'
+  spec_file: expectClasses/expectClasses_spec.md
+test-utils.component-helpers.mockProcessEnv:
+  generated: '2026-03-22T15:08:37.510371'
+  spec_file: mockProcessEnv/mockProcessEnv_spec.md
+test-utils.fixtures.createEmptyStats:
+  generated: '2026-03-22T15:08:37.497122'
+  spec_file: createEmptyStats/createEmptyStats_spec.md
+test-utils.mock-helpers.getFirstMockCallArgs:
+  generated: '2026-03-22T15:08:37.500327'
+  spec_file: getFirstMockCallArgs/getFirstMockCallArgs_spec.md
+test-utils.mock-helpers.getMockCallCount:
+  generated: '2026-03-22T15:08:37.503581'
+  spec_file: getMockCallCount/getMockCallCount_spec.md
+utils.statsCalculator.analytics.calculateDayOfWeekStats:
+  generated: '2026-03-22T15:08:37.757590'
+  spec_file: calculateDayOfWeekStats/calculateDayOfWeekStats_spec.md
+utils.statsCalculator.analytics.calculateEmotionDistribution:
+  generated: '2026-03-22T15:08:37.764077'
+  spec_file: calculateEmotionDistribution/calculateEmotionDistribution_spec.md
+utils.statsCalculator.analytics.calculateMonthlyStats:
+  generated: '2026-03-22T15:08:37.754387'
+  spec_file: calculateMonthlyStats/calculateMonthlyStats_spec.md
+utils.statsCalculator.analytics.calculateStudentStats:
+  generated: '2026-03-22T15:08:37.767438'
+  spec_file: calculateStudentStats/calculateStudentStats_spec.md
+utils.statsCalculator.analytics.calculateTimeOfDayStats:
+  generated: '2026-03-22T15:08:37.760777'
+  spec_file: calculateTimeOfDayStats/calculateTimeOfDayStats_spec.md
+utils.statsCalculator.generation.calculateSeasonalEffect:
+  generated: '2026-03-22T15:08:37.747884'
+  spec_file: calculateSeasonalEffect/calculateSeasonalEffect_spec.md
+utils.statsCalculator.generation.clampEmotion:
+  generated: '2026-03-22T15:08:37.741459'
+  spec_file: clampEmotion/clampEmotion_spec.md
+utils.statsCalculator.generation.generateBaseEmotion:
+  generated: '2026-03-22T15:08:37.744700'
+  spec_file: generateBaseEmotion/generateBaseEmotion_spec.md
+utils.statsCalculator.generation.generateNormalRandom:
+  generated: '2026-03-22T15:08:37.738080'
+  spec_file: generateNormalRandom/generateNormalRandom_spec.md
+utils.statsCalculator.generation.getRandomHour:
+  generated: '2026-03-22T15:08:37.751122'
+  spec_file: getRandomHour/getRandomHour_spec.md
+utils.statsCalculator.math.average:
+  generated: '2026-03-22T15:08:37.734747'
+  spec_file: average/average_spec.md
+utils.statsCalculator.math.clamp:
+  generated: '2026-03-22T15:08:37.731491'
+  spec_file: clamp/clamp_spec.md
+utils.statsCalculator.trend.calculateEmotionTrend:
+  generated: '2026-03-22T15:08:37.728304'
+  spec_file: calculateEmotionTrend/calculateEmotionTrend_spec.md
+utils.statsCalculator.trend.calculateTrendline:
+  generated: '2026-03-22T15:08:37.725107'
+  spec_file: calculateTrendline/calculateTrendline_spec.md

@@ -1,0 +1,13 @@
+error_scenarios:
+- expected: TypeError
+  id: ERR-001
+  input: 不正な型
+  scenario: 型不正
+- expected: TypeError
+  id: ERR-002
+  input: 'null'
+  scenario: None入力
+- expected: RangeError
+  id: ERR-003
+  input: 範囲外の値
+  scenario: 範囲外

@@ -1,0 +1,40 @@
+id: "AMD-20260322-C004"
+axis: "C-004"
+axis_name: "概念-憲法整合性"
+type: "concept_constitution_gap"
+priority: "P0"
+current_score: 8
+required_score: 16
+gap: 8
+target_file: ".concept/charter.yml"
+recommendation: |
+  charter.ymlのnorth_starがテンプレート値のまま放置されている。リポ固有の定義に更新すること。
+  
+  **重大な問題**: north_starに「（推定）」という文言が含まれており、テンプレートから更新されていないことが明らか。
+  
+  以下の改善を実施すること：
+  
+  1. charter.ymlのnorth_starから「（推定）」を削除し、リポ固有の明確なビジョンを記述
+  2. PURPOSE.mdの「北極星」セクションと整合させる
+  3. charter.ymlのnon_goalsをSYSTEM_CONSTITUTION.mdの禁止事項と整合させる
+details:
+  - id: "C-004-1"
+    name: "north_star-Mission整合"
+    score: 0
+    max: 7
+    issue: "charter.ymlのnorth_starに「（推定）」が含まれており、テンプレートのまま"
+    evidence: "north_star: '日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する（推定）'"
+  - id: "C-004-4"
+    name: "non_goals-禁止事項一致"
+    score: 0
+    max: 4
+    issue: "charter.ymlのnon_goalsが憲法の禁止事項に反映されていない"
+proposed_changes:
+  - file: ".concept/charter.yml"
+    section: "product_goal.north_star"
+    action: "update"
+    detail: "north_starから「（推定）」を削除し、リポ固有の明確なビジョンを記述。例: '日本の教育現場における「生徒の心の成長」と「学級文化」を可視化する革新的な教育インフラ'"
+  - file: ".concept/charter.yml"
+    section: "product_goal.non_goals"
+    action: "align"
+    detail: "non_goalsをSYSTEM_CONSTITUTION.mdの「Absolutely Forbidden」セクションと整合させる"

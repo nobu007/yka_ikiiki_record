@@ -1,0 +1,33 @@
+id: AMD-20260322-C-003
+axis: C-003
+axis_name: コードベース整合性
+current_score: 19
+required_score: 20
+max_score: 25
+gap: 1
+type: codebase_divergence
+details:
+- id: C-003-1
+  name: 技術スタック一致
+  score: 0
+  max: 6
+  evidence: matched=0/1
+- id: C-003-2
+  name: 責務外機能の検知
+  score: 8
+  max: 8
+  evidence: violations=0
+- id: C-003-3
+  name: ディレクトリ構造整合
+  score: 5
+  max: 5
+- id: C-003-4
+  name: セキュリティポリシー遵守
+  score: 6
+  max: 6
+  evidence: security_section=True
+divergences: []
+amendment_needed: []
+recommendation: コードベースが憲法の定義範囲を超えています。(A)憲法を拡張するか (B)コードを整理してください。
+target_file: SYSTEM_CONSTITUTION.md（実装範囲の再定義）
+priority: P1

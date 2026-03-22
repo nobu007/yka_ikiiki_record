@@ -1,0 +1,105 @@
+# SPEC: lib.resilience.loop-detector.LoopDetector
+
+**Version**: 1.0.0
+**Last Updated**: 2026-03-22
+**Source**: src/lib/resilience/loop-detector.ts:25
+**Type**: class
+
+---
+
+## 1. 概要
+
+classの実装
+
+## 2. 入力仕様
+
+| パラメータ | 型 | 必須 | 制約 | デフォルト値 | 説明 |
+|-----------|------|------|------|--------------|------|
+| Map |  | No | - | - | パラメータ |
+| Set |  | No | - | - | パラメータ |
+| InfiniteLoopError | default: 1000 | No | - | - | パラメータ |
+| reset | default: 30000 | No | - | - | パラメータ |
+| constructor | 
+    maxIterations: number = DEFAULT_MAX_ITERATIONS,
+    timeWindow: number = DEFAULT_TIME_WINDOW,
+   | No | - | - | パラメータ |
+| LoopDetector |  | No | - | - | パラメータ |
+| while | condition | No | - | - | パラメータ |
+| checkIteration | "my_operation" | No | - | - | パラメータ |
+| checkIteration | operationId: string | No | - | - | パラメータ |
+| get | operationId | No | - | - | パラメータ |
+| if | currentCount > this.maxIterations | No | - | - | パラメータ |
+| error | "LOOP_DETECTOR", "INFINITE_LOOP_DETECTED", {
+        operation: operationId,
+        iterationCount: currentCount,
+        maxIterations: this.maxIterations,
+        timestamp: Date.now( | No | - | - | パラメータ |
+| InfiniteLoopError | operationId | No | - | - | パラメータ |
+| set | operationId, currentCount + 1 | No | - | - | パラメータ |
+| setTimeout | ( | No | - | - | パラメータ |
+| delete | operationId | No | - | - | パラメータ |
+| delete | timeoutId | No | - | - | パラメータ |
+| add | timeoutId | No | - | - | パラメータ |
+| getCount | operationId: string | No | - | - | パラメータ |
+| get | operationId | No | - | - | パラメータ |
+| reset | operationId: string | No | - | - | パラメータ |
+| delete | operationId | No | - | - | パラメータ |
+| resetAll |  | No | - | - | パラメータ |
+| clear |  | No | - | - | パラメータ |
+| destroy |  | No | - | - | パラメータ |
+| for | const timeoutId of this.pendingTimeouts | No | - | - | パラメータ |
+| clearTimeout | timeoutId | No | - | - | パラメータ |
+| clear |  | No | - | - | パラメータ |
+| clear |  | No | - | - | パラメータ |
+
+## 3. 出力仕様
+
+| 戻り値 | 型 | 制約 | 説明 |
+|--------|------|------|------|
+| result | void | - | classの戻り値 |
+
+## 4. 前提条件（Preconditions）
+
+- 入力パラメータが適切に型チェックされていること
+
+## 5. 事後条件（Postconditions）
+
+- 戻り値が定義された型であること
+
+## 6. 不変条件（Invariants）
+
+- なし
+
+## 7. 境界値テストケース
+
+| ID | 入力 | 期待出力 | カテゴリ | 根拠 |
+|----|------|----------|----------|------|
+| BV-001 | 正常値 | 正常動作 | 正常系 | 標準入力 |
+| BV-002 | 最小値 | 正常動作 | 最小境界 | 型の下限 |
+| BV-003 | 最大値 | 正常動作 | 最大境界 | 型の上限 |
+| BV-004 | 空入力 | エラー | 空入力 | 空コレクション |
+
+## 8. エラーシナリオ
+
+| ID | シナリオ | 入力例 | 期待動作 | 例外型 |
+|----|----------|--------|----------|--------|
+| ERR-001 | 型不正 | 不正な型 | エラー発生 | TypeError |
+| ERR-002 | None入力 | null | エラー発生 | TypeError |
+| ERR-003 | 範囲外 | 範囲外の値 | エラー発生 | RangeError |
+
+## 9. 正常系テストケース
+
+| ID | 入力 | 期待出力 | 説明 |
+|----|------|----------|------|
+| TC-001 | 正常入力 | 正常出力 | 基本動作 |
+
+## 10. 回帰テスト要件
+
+- 変更時に確認すべき既存機能: このclassに依存する全コンポーネント
+- 影響範囲: src/lib/resilience/loop-detector.tsからimportされている箇所
+
+## 11. 既存テスト対応
+
+| テストファイル | テスト関数 | 対応ケース |
+|--------------|-----------|-----------|
+| (該当なし) | - | - |

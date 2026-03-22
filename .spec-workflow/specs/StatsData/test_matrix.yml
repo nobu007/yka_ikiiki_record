@@ -1,0 +1,9 @@
+coverage:
+  boundary: 0
+  error: 0
+  normal: 1
+test_cases:
+- expected: 正常出力
+  id: TC-001
+  input: 正常入力
+  type: 正常系

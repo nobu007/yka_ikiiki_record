@@ -46,3 +46,6 @@ next-env.d.ts
 
 # AI Hub chain checkpoints
 chain_checkpoints/
+
+# AI Hub audit results (auto-generated)
+.audit/

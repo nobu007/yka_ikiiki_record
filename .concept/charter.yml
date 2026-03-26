@@ -33,6 +33,23 @@ milestones:
     priority: "P0"
     status: "done"
 
+  - id: "MS-002"
+    name: "E2Eテスト自動化の強化"
+    intent: "本番デプロイの代替として、ローカルE2E統合テストを CI/CD パイプラインに統合する"
+    deliverables:
+      - "test-e2e-local.sh - ローカルE2E統合テストスクリプト"
+      - "package.json に test:e2e:local スクリプトを追加"
+      - "scripts/README.md - ドキュメント整備"
+    acceptance:
+      - type: "quality_gate"
+        target: "全E2Eテストが自動実行され、本番デプロイの妥当性を検証する"
+    constitution_links:
+      - "§7 TESTING MANDATES - E2E tests required"
+      - "§9 CI/CD REQUIREMENTS - Automated testing in pipeline"
+    priority: "P2"
+    status: "active"
+    progress_note: "T-001 completed (2026-03-26). Created test-e2e-local.sh script and integrated into npm scripts. Ready for validation."
+
 work_policy:
   default_mode: "commit"
   iteration_budget:

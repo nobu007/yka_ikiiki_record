@@ -1,0 +1,33 @@
+{
+  "last_updated": "2026-03-22T15:00:00Z",
+  "total_divergences_detected": 3,
+  "critical": 1,
+  "warning": 2,
+  "info": 0,
+  "entries": [
+    {
+      "timestamp": "2026-03-22T15:00:00Z",
+      "axis": "C-004",
+      "type": "template_not_customized",
+      "detail": "charter.ymlのnorth_starに「（推定）」が含まれており、テンプレートから更新されていない",
+      "severity": "critical",
+      "resolved": false
+    },
+    {
+      "timestamp": "2026-03-22T15:00:00Z",
+      "axis": "C-002",
+      "type": "inspecific_prohibitions",
+      "detail": "SYSTEM_CONSTITUTION.mdの禁止事項が2件のみ。5件以上を目指す",
+      "severity": "warning",
+      "resolved": false
+    },
+    {
+      "timestamp": "2026-03-22T15:00:00Z",
+      "axis": "C-006",
+      "type": "stale_documentation",
+      "detail": "両文書にバージョン情報とLast Updated日付がない",
+      "severity": "warning",
+      "resolved": false
+    }
+  ]
+}

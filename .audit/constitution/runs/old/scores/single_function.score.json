@@ -1,0 +1,14 @@
+{
+  "axis": "C-002",
+  "name": "単一機能明確度",
+  "score": 19,
+  "max_score": 25,
+  "pass": false,
+  "details": [
+    {"id": "C-002-1", "name": "Core Missionの明文化", "score": 8, "max": 8},
+    {"id": "C-002-2", "name": "責務の境界定義", "score": 3, "max": 6},
+    {"id": "C-002-3", "name": "禁止事項の具体性", "score": 3, "max": 5, "evidence": "count=2"},
+    {"id": "C-002-4", "name": "他リポとの関係明示", "score": 3, "max": 3},
+    {"id": "C-002-5", "name": "non-goalsの定義", "score": 2, "max": 3}
+  ]
+}

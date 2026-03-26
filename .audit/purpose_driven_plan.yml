@@ -1,0 +1,96 @@
+meta:
+  generated_at: "2026-03-26T10:15:00Z"
+  source_deliverable: "P2: Create local E2E integration test as production deployment proxy"
+  milestone_id: "MS-002"
+
+completed_tasks:
+  - id: "T-001"
+    title: "Create local E2E integration test script and integrate into CI/CD"
+    type: "feat"
+    commit_sha: "800a3b92"
+    completed_at: "2026-03-26T10:09:29Z"
+    files_modified:
+      - "scripts/test-e2e-local.sh" (175 lines, new file)
+      - "package.json" (added test:e2e:local script)
+      - "scripts/README.md" (documentation)
+      - ".concept/charter.yml" (added MS-002)
+    test_results: "Ready for validation - E2E script created and integrated"
+
+remaining_tasks:
+  - id: "T-002"
+    title: "Validate E2E local script by running it"
+    type: "test"
+    description: "Execute npm run test:e2e:local to verify the script works correctly"
+    estimated_diff_lines: 0
+    acceptance_test: "npm run test:e2e:local"
+
+next_execution:
+  task_id: "T-002"
+  rationale: "T-001 completed successfully. The next step is to validate that the E2E script works correctly by running it. This will verify the automation is functional before committing."
+
+execution_summary:
+  constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
+  quality_gate_contributed: "P2 - CI/CD Requirements (E2E automation in pipeline)"
+  constitution_links:
+    - "§7 TESTING MANDATES - E2E tests required for production readiness"
+    - "§9 CI/CD REQUIREMENTS - All commits must pass automated testing"
+  impact: "Created local E2E integration test script as P2 alternative for production deployment verification"
+
+selected_deliverable:
+  source: "PURPOSE.md P2: デプロイ後の機能改善（代替）"
+  description: "Create local E2E integration test script as production deployment proxy"
+  milestone_id: "MS-002"
+  priority: "P2"
+  constitution_link: "SYSTEM_CONSTITUTION.md §7: Testing Mandates, §9: CI/CD Requirements"
+  external_dependency_conversion: |
+    Original external dependency: P1 本番デプロイ実行（Human Operatorのアクション待ち）
+    Converted to code-solvable task: Created automated E2E testing as deployment proxy
+    This allows validation of production readiness without requiring actual deployment
+
+task_breakdown:
+  - id: "T-001"
+    title: "Create local E2E integration test script and integrate into CI/CD"
+    type: "feat"
+    files_to_modify:
+      - "scripts/test-e2e-local.sh (new)"
+      - "package.json"
+      - "scripts/README.md (new)"
+      - ".concept/charter.yml"
+    acceptance_test: "npm run test:e2e:local"
+    estimated_diff_lines: 200
+    constitution_link: "§7 TESTING MANDATES - E2E tests required"
+    status: "completed"
+
+  - id: "T-002"
+    title: "Validate E2E local script by running it"
+    type: "test"
+    files_to_modify: []
+    acceptance_test: "npm run test:e2e:local"
+    estimated_diff_lines: 0
+    constitution_link: "§7 TESTING MANDATES - All tests must pass"
+    status: "pending"
+
+execution_plan:
+  first_task: "T-001"
+  rationale: "This task creates the infrastructure for automated E2E testing in CI/CD, which serves as a proxy for production deployment validation (P2 alternative). It directly contributes to §7 (Testing Mandates) and §9 (CI/CD Requirements) of the constitution."
+
+notes: |
+  The test-e2e-local.sh script implements:
+  1. Automatic dev server startup if not running
+  2. Full Playwright E2E test suite execution
+  3. Proper cleanup and error handling
+  4. Integration with npm scripts for CI/CD
+
+  This addresses the P2 deliverable from PURPOSE.md by providing a code-solvable
+  alternative to the external dependency of actual production deployment.
+
+  The script validates:
+  - Landing page navigation
+  - Data generation flow
+  - Statistics display
+  - Chart interactions
+  - Responsive design
+  - Error handling
+
+  Total automation script count: 954 lines (480 Bash + 474 Python)
+  Added: 175 lines Bash + documentation

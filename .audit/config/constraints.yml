@@ -1,0 +1,62 @@
+technical_constraints:
+  - constraint: "Framework"
+    description: "Next.js App Router (imposed by framework)"
+    rationale: "File-based routing requires src/app/ directory structure"
+
+  - constraint: "Database"
+    description: "PostgreSQL with Prisma ORM"
+    rationale: "Type-safe database access required"
+
+  - constraint: "Language"
+    description: "TypeScript strict mode"
+    rationale: "Type supremacy is a fundamental principle"
+
+  - constraint: "Testing"
+    description: "100% test coverage required"
+    rationale: "Quality gate for production readiness"
+
+architectural_constraints:
+  - constraint: "Clean Architecture"
+    description: "Four-layer separation: Domain → Application → Infrastructure → Presentation"
+    enforcement: "Dependency direction checks via meta_checker.py"
+
+  - constraint: "Interface Segregation"
+    description: "Repository interfaces in domain, implementations in infrastructure"
+    enforcement: "Type-level checks"
+
+operational_constraints:
+  - constraint: "Zero Human Intervention"
+    description: "All code generation must be performed by AI agents"
+    rationale: "AI-first development charter"
+
+  - constraint: "Zero Readable Comments"
+    description: "No human-readable comments in production code"
+    rationale: "Comments for AI consumption only"
+
+resource_constraints:
+  - constraint: "Deployment Platform"
+    description: "Vercel (production)"
+    alternatives:
+      - "Local development with Mirage"
+
+  - constraint: "Database Provider"
+    description: "Vercel Postgres (recommended)"
+    alternatives:
+      - "Supabase"
+      - "Neon"
+
+quality_constraints:
+  - constraint: "JudgmentScore"
+    min_value: 90
+    current_value: 100
+    measurement_tool: "scripts/meta_checker.py"
+
+  - constraint: "Test Success Rate"
+    min_value: "100%"
+    current_value: "100% (1393/1393)"
+    measurement_tool: "npm test"
+
+  - constraint: "Type Coverage"
+    min_value: "100%"
+    current_value: "100% (0 any types)"
+    measurement_tool: "TypeScript compiler"

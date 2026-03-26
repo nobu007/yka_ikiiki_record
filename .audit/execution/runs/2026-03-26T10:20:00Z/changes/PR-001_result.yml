@@ -1,0 +1,65 @@
+pr_id: "PR-001"
+title: "Validate E2E Local Script"
+status: "validation_failed"
+applied_at: "2026-03-26T10:20:00Z"
+
+changes:
+  - note: "Validation-only task - no code changes applied"
+
+verification_result:
+  task: "Execute npm run test:e2e:local"
+  exit_code: 1
+  outcome: "failed"
+
+errors_detected:
+  - error_id: "ERR-001"
+    type: "playwright_url_configuration"
+    description: "Playwright tests using relative URLs (/dashboard) instead of full URLs"
+    evidence: "Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL"
+    affected_tests: "Multiple tests in playwright/chart-interactions.spec.ts"
+    root_cause: "Playwright baseURL not properly configured or tests not using absolute URLs"
+
+  - error_id: "ERR-002"
+    type: "cpu_instruction_compatibility"
+    description: "Rust threads panicking on bmi2 instructions"
+    evidence: "thread 'tokio-runtime-worker' panicked: CPU doesn't support the bmi2 instructions"
+    severity: "warning"
+    impact: "Does not affect test execution but indicates environment compatibility issue"
+
+interpretation:
+  summary: |
+    E2E test execution failed due to Playwright URL configuration issue.
+    The test script (test-e2e-local.sh) successfully starts the dev server
+    and launches Playwright, but the tests themselves are misconfigured.
+
+  findings:
+    - "Dev server startup: ✅ Working (PID 371753, http://localhost:3000)"
+    - "Test runner launch: ✅ Working (117 tests scheduled)"
+    - "Test execution: ❌ Failed (URL navigation errors)"
+
+  root_cause_analysis: |
+    The tests in playwright/chart-interactions.spec.ts use relative URLs
+    (page.goto('/dashboard')) which requires a proper baseURL configuration
+    in playwright.config.ts. This is likely a configuration issue that needs
+    to be fixed before E2E tests can run successfully.
+
+recommendation:
+  priority: "P1"
+  action: "Fix Playwright baseURL configuration"
+  steps:
+    - "Check playwright.config.ts for baseURL setting"
+    - "Ensure baseURL is set to 'http://localhost:3000'"
+    - "Alternatively, update tests to use absolute URLs"
+  blocking: "This blocks E2E validation completion"
+
+next_action:
+  option: "skip_e2e_validation"
+  rationale: |
+    The E2E tests have a pre-existing configuration issue that is unrelated
+    to the test-e2e-local.sh script implementation. The script itself works
+    correctly (starts dev server, runs tests). The issue is in test configuration.
+
+  alternative_actions:
+    - "Fix Playwright configuration (requires code change)"
+    - "Skip E2E validation and note the issue for future resolution"
+    - "Run unit tests instead to verify core functionality"

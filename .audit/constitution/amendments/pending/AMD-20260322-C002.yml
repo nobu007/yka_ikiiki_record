@@ -1,0 +1,36 @@
+id: "AMD-20260322-C002"
+axis: "C-002"
+axis_name: "単一機能明確度"
+type: "function_unclear"
+priority: "P0"
+current_score: 19
+required_score: 20
+gap: 1
+target_file: "SYSTEM_CONSTITUTION.md"
+recommendation: |
+  Core Missionは明確化されているが、責務境界と禁止事項の具体性が不足している。
+  以下の改善を実施すること：
+  
+  1. PURPOSE.mdに「このリポジトリの責務」と「責務に含めないもの」を明確に定義
+  2. SYSTEM_CONSTITUTION.mdの禁止事項を具体化（現在2件→5件以上を目指す）
+  3. 各禁止事項に具体的な理由を添付
+details:
+  - id: "C-002-2"
+    name: "責務の境界定義"
+    score: 3
+    max: 6
+    issue: "PURPOSE.mdに責務定義はあるが、'責務に含めないもの'の定義が不十分"
+  - id: "C-002-3"
+    name: "禁止事項の具体性"
+    score: 3
+    max: 5
+    issue: "禁止事項が2件のみ。5件以上を目指すこと"
+proposed_changes:
+  - file: "PURPOSE.md"
+    section: "このリポジトリの責務"
+    action: "update"
+    detail: "「このリポジトリの責務」セクションを拡張し、具体的な責務リストと「含めないもの」を明確に定義"
+  - file: "SYSTEM_CONSTITUTION.md"
+    section: "Absolutely Forbidden"
+    action: "expand"
+    detail: "禁止事項のリストを拡張（2件→5件以上）。各項目に具体的な理由を添付"

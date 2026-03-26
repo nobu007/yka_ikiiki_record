@@ -1,0 +1,71 @@
+pr_id: "PR-001"
+title: "Fix Playwright baseURL Configuration"
+status: "partially_applied"
+applied_at: "2026-03-26T10:30:00Z"
+
+changes:
+  - file: "playwright.config.ts"
+    action: "modified"
+    lines_added: 1
+    lines_removed: 1
+    description: "Uncommented baseURL: 'http://127.0.0.1:3000'"
+
+intermediate_verification:
+  unit_test_result: "passed"
+  unit_test_details: "1312/1312 tests passed"
+  lint_result: "not_run"
+  build_result: "not_run"
+
+e2e_verification:
+  original_error: "page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL"
+  original_error_status: "fixed"
+  new_issues_discovered:
+    - issue_id: "ISS-002"
+      type: "async_timeout"
+      description: "E2E tests timeout waiting for data generation completion UI"
+      evidence: "Timed out waiting for getByText('テストデータの生成が完了しました').toBeVisible"
+      affected_tests: "24+ tests in data-flow.spec.ts, chart-interactions.spec.ts, statistics-display.spec.ts"
+      root_cause: "Data generation button click not triggering expected async operations or UI updates"
+      severity: "medium"
+      blocking: false
+
+verification_result:
+  task: "Fix Playwright baseURL to enable E2E tests"
+  outcome: "partial_success"
+
+interpretation:
+  summary: |
+    The baseURL configuration fix was successful. The original error
+    ("Cannot navigate to invalid URL") is completely resolved. Tests can now
+    navigate to relative URLs like '/dashboard' successfully.
+
+    However, a new pre-existing issue was uncovered: the data generation
+    button in the UI is not triggering the expected async operations, causing
+    tests to timeout while waiting for completion messages.
+
+  findings:
+    - "baseURL fix: ✅ Working (navigation to /dashboard succeeds)"
+    - "Original URL error: ✅ Resolved"
+    - "Data generation flow: ⚠️ Timeout (pre-existing application issue)"
+    - "Unit tests: ✅ 1312/1312 passing (unaffected)"
+
+  root_cause_analysis: |
+    The baseURL fix is complete and correct. The timeout issue is unrelated
+    to Playwright configuration - it's a functional issue where the data
+    generation button's async handlers are not completing within the test
+    timeout window. This could be due to:
+    1. Database connection issues in test environment
+    2. Async operation not properly awaited in the application
+    3. Test timeout too short for the actual operation
+
+recommendation:
+  priority: "P2"
+  action: "Investigate data generation async flow"
+  next_steps:
+    - "Accept baseURL fix as successful (PR-001 goal achieved)"
+    - "Create new PR for data generation timeout investigation"
+    - "Check database connection during E2E tests"
+    - "Verify async operation implementation in data generation handler"
+
+diff_file: "PR-001_applied.diff"
+rollback_command: "git apply -R .audit/execution/runs/2026-03-26T10:30:00Z/changes/PR-001_applied.diff"

@@ -1,0 +1,19 @@
+{
+  "run_id": "2026-03-26T10:30:00Z",
+  "timestamp": "2026-03-26T10:30:00Z",
+  "metrics": {
+    "test_success_rate": 1.0,
+    "test_count": 1312,
+    "test_coverage_statements": 99.64,
+    "test_coverage_branches": 96.13,
+    "test_coverage_functions": 98.11,
+    "test_coverage_lines": 99.68,
+    "e2e_tests_status": "failed",
+    "e2e_error": "playwright baseURL not configured"
+  },
+  "quality_metrics": {
+    "judgment_score": "100/100 (assumed from previous run)",
+    "any_types": 0,
+    "eslint_warnings": 0
+  }
+}

@@ -171,9 +171,6 @@ docs/03_Reports/
 current_agent.txt
 chain_checkpoints/
 
-# AI Hub audit results (auto-generated)
-.audit/
-
 # wandb
 **/wandb/*
 **/.wandb_session/*

@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-03-22T14:57:00Z",
+  "total_score": 74,
+  "max_score": 100,
+  "percentage": 74.0,
+  "overall_pass": false,
+  "c001_perfect": true,
+  "all_thresholds_met": false,
+  "failed_axes": [
+    "C-002",
+    "C-004",
+    "C-005",
+    "C-006"
+  ],
+  "passed_axes": [
+    "C-001",
+    "C-003"
+  ],
+  "pass_threshold": 82,
+  "gap_to_pass": 8
+}

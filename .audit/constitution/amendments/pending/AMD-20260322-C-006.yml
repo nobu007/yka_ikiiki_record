@@ -1,0 +1,28 @@
+id: AMD-20260322-C-006
+axis: C-006
+axis_name: 鮮度
+current_score: 6
+required_score: 8
+gap: 2
+type: constitution_stale
+details:
+- id: C-006-1
+  name: 最終更新日の妥当性
+  score: 3
+  max: 3
+  evidence: last_updated=2026-03-11
+- id: C-006-2
+  name: ステータス反映
+  score: 3
+  max: 4
+  evidence: status=True, gap=False, actions=True
+- id: C-006-3
+  name: バージョン管理
+  score: 0
+  max: 3
+  evidence: constitution=False, purpose=False
+divergences: []
+amendment_needed: []
+recommendation: 憲法の更新日が古くなっています。現状を反映してVersion/Last Updatedを更新してください。
+target_file: PURPOSE.md / SYSTEM_CONSTITUTION.md（日付・ステータス更新）
+priority: P1

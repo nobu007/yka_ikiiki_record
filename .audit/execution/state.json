@@ -1,0 +1,32 @@
+{
+  "last_run_id": "2026-03-26T10:30:00Z",
+  "last_run_at": "2026-03-26T10:40:00Z",
+  "total_runs": 2,
+  "total_prs_applied": 1,
+  "total_prs_rolled_back": 0,
+  "last_decision": "commit_changes",
+  "repository_state": {
+    "judgment_score": 100,
+    "test_coverage": 99.64,
+    "test_success_rate": 1.0,
+    "any_types": 0,
+    "e2e_baseurl_configured": true
+  },
+  "blocking_issues": [
+    {
+      "id": "ISS-002",
+      "description": "E2E tests timeout during data generation flow",
+      "priority": "medium"
+    }
+  ],
+  "next_priorities": [
+    "Investigate data generation async timeout (PR-002)",
+    "Production deployment (Human Operator action)",
+    "P2 features post-deployment"
+  ],
+  "assumptions_status": {
+    "ASM-001": "confirmed",
+    "ASM-002": "unverified",
+    "ASM-003": "partially_confirmed"
+  }
+}

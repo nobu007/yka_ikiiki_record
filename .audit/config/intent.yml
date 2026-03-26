@@ -1,0 +1,81 @@
+mission:
+  statement: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
+  target_user:
+    - description: "日本の教育現場の教員"
+      confidence: 1.0
+      status: "confirmed"
+    - description: "生徒の成長と学級文化を可視化したい教育関係者"
+      confidence: 0.9
+      status: "confirmed"
+
+core_functions:
+  - id: "CF-001"
+    name: "1分間記録の作成"
+    description: "教員が生徒の良い行動を1分間で記録できる"
+    success_criteria:
+      - "記録フォームが表示される"
+      - "生徒名と行動内容を入力できる"
+      - "保存ボタンで記録が永続化される"
+    verification_method: "E2E test for data generation flow"
+
+  - id: "CF-002"
+    name: "統計の可視化"
+    description: "記録されたデータから統計を自動計算し、グラフで表示する"
+    success_criteria:
+      - "記録データから統計が計算される"
+      - "棒グラフと円グラフが表示される"
+      - "データのフィルタリングができる"
+    verification_method: "E2E test for statistics display"
+
+  - id: "CF-003"
+    name: "データの永続化"
+    description: "PostgreSQLで記録を保存し、再アクセス時に復元できる"
+    success_criteria:
+      - "データがデータベースに保存される"
+      - "ページ再読み込み時にデータが復元される"
+      - "複数の記録を管理できる"
+    verification_method: "E2E test for data persistence"
+
+quality_attributes:
+  - attribute: "test_coverage"
+    target: ">= 95%"
+    current: "99.18%"
+    status: "achieved"
+    measurement: "npm run test:coverage"
+
+  - attribute: "type_safety"
+    target: "100% (no any types)"
+    current: "100% (0 any types)"
+    status: "achieved"
+    measurement: "TypeScript strict mode compliance"
+
+  - attribute: "judgment_score"
+    target: ">= 90"
+    current: "100/100"
+    status: "achieved"
+    measurement: "python scripts/meta_checker.py"
+
+assumptions:
+  - id: "ASM-001"
+    statement: "Next.js App Router + TypeScript strict mode で型安全なフロントエンドが構築可能"
+    status: "confirmed"
+    confidence: 1.0
+    evidence: "1393/1393 tests passing, 0 any types, JudgmentScore 100/100"
+
+  - id: "ASM-002"
+    statement: "Vercel + PostgreSQL で本番環境デプロイが可能"
+    status: "unverified"
+    confidence: 0.8
+    evidence: "deploy-production.sh スクリプト実装済み、実デプロイ待ち"
+
+  - id: "ASM-003"
+    statement: "E2Eテストで本番相当の検証が可能"
+    status: "unverified"
+    confidence: 0.7
+    evidence: "test-e2e-local.sh 実装済み、検証待ち (T-002)"
+
+non_negotiables:
+  - "Clean Architectureの依存方向違反は0件"
+  - "any型の使用は0件"
+  - "既存テストは100%パス"
+  - "ESLint warningsは0件"

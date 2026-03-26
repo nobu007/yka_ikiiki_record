@@ -1,0 +1,30 @@
+{
+  "axis": "C-006",
+  "name": "鮮度",
+  "score": 6,
+  "max_score": 10,
+  "pass": false,
+  "details": [
+    {
+      "id": "C-006-1",
+      "name": "最終更新日の妥当性",
+      "score": 3,
+      "max": 3,
+      "evidence": "last_updated=2026-03-11"
+    },
+    {
+      "id": "C-006-2",
+      "name": "ステータス反映",
+      "score": 3,
+      "max": 4,
+      "evidence": "status=True, gap=False, actions=True"
+    },
+    {
+      "id": "C-006-3",
+      "name": "バージョン管理",
+      "score": 0,
+      "max": 3,
+      "evidence": "constitution=False, purpose=False"
+    }
+  ]
+}

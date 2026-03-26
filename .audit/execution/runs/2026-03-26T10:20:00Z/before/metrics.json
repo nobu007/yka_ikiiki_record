@@ -1,0 +1,58 @@
+{
+  "run_id": "2026-03-26T10:20:00Z",
+  "timestamp": "2026-03-26T10:20:00Z",
+  "metrics": {
+    "judgment_score": 100,
+    "test_success_rate": 1.0,
+    "test_total": 1393,
+    "test_coverage": {
+      "statements": 99.18,
+      "branches": 96.12,
+      "functions": 95.44,
+      "lines": 99.2
+    },
+    "type_safety": {
+      "any_types": 0,
+      "strict_mode": true
+    },
+    "lint_errors": 0,
+    "clean_architecture_violations": 0
+  },
+  "core_function_results": [
+    {
+      "id": "CF-001",
+      "name": "1分間記録の作成",
+      "passed": true,
+      "evidence": "Test suite covers data generation flow (195 test suites)"
+    },
+    {
+      "id": "CF-002",
+      "name": "統計の可視化",
+      "passed": true,
+      "evidence": "Chart components fully tested (BarChart, EmotionChart)"
+    },
+    {
+      "id": "CF-003",
+      "name": "データの永続化",
+      "passed": true,
+      "evidence": "Integration tests for data persistence passing"
+    }
+  ],
+  "quality_attributes": {
+    "test_coverage": {
+      "target": ">= 95%",
+      "current": 99.18,
+      "status": "achieved"
+    },
+    "type_safety": {
+      "target": "100% (no any types)",
+      "current": "100%",
+      "status": "achieved"
+    },
+    "judgment_score": {
+      "target": ">= 90",
+      "current": 100,
+      "status": "achieved"
+    }
+  }
+}

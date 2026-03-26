@@ -1,0 +1,15 @@
+run_id: "2026-03-26T10:30:00Z"
+scope:
+  prs_to_apply: ["PR-001"]
+  prs_deferred: []
+success_criteria:
+  - id: "SC-001"
+    from: "intent.yml#assumptions[2]"
+    target: "E2Eテストで本番相当の検証が可能"
+    verification: "npm run test:e2e:local passes"
+rollback_trigger:
+  - "Unit tests fail"
+  - "E2E tests still fail after fix"
+  - "Build errors"
+execution_type: "fix_and_validate"
+description: "Fix Playwright baseURL configuration to enable E2E tests"

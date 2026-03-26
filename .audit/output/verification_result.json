@@ -1,0 +1,31 @@
+{
+  "run_id": "2026-03-26T10:20:03.287122",
+  "timestamp": "2026-03-26T10:20:03.287154",
+  "core_function_results": [
+    {
+      "id": "CF-001",
+      "name": "1分間記録の作成",
+      "passed": false,
+      "evidence": "Test validation failed"
+    },
+    {
+      "id": "CF-002",
+      "name": "統計の可視化",
+      "passed": false,
+      "evidence": "Test validation failed"
+    },
+    {
+      "id": "CF-003",
+      "name": "データの永続化",
+      "passed": false,
+      "evidence": "Test validation failed"
+    }
+  ],
+  "quality_metrics": {
+    "judgment_score": {
+      "passed": false,
+      "value": "Score check failed"
+    }
+  },
+  "overall_status": "partial"
+}

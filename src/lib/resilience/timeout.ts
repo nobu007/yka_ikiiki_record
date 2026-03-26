@@ -20,7 +20,7 @@ export class TimeoutError extends AppError {
  *
  * @property command - CLI commands timeout in ms (default: 30000)
  * @property api - API calls timeout in ms (default: 10000)
- * @property database - Database operations timeout in ms (default: 5000)
+ * @property database - Database operations timeout in ms (default: 10000)
  * @property file - File operations timeout in ms (default: 15000)
  * @property e2e - E2E tests timeout in ms (default: 60000)
  */

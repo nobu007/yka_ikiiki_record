@@ -104,7 +104,7 @@ describe("Timeout", () => {
     it("should have correct timeout values", () => {
       expect(DEFAULT_TIMEOUTS.command).toBe(30000);
       expect(DEFAULT_TIMEOUTS.api).toBe(10000);
-      expect(DEFAULT_TIMEOUTS.database).toBe(5000);
+      expect(DEFAULT_TIMEOUTS.database).toBe(10000);
       expect(DEFAULT_TIMEOUTS.file).toBe(15000);
       expect(DEFAULT_TIMEOUTS.e2e).toBe(60000);
     });

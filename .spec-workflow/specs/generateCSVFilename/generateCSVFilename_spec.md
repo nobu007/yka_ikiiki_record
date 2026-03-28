@@ -33,6 +33,8 @@
 | format: "ISO" | 2024-03-29 形式 | ISO 8601準拠 |
 | format: "JP" | 日本語ロケールの日付形式 | 例: 2024/3/29 |
 | 同時に複数回呼び出し | 異なるタイムスタンプ（秒単位） | 一意性保証 |
+| toISOString().split()がundefinedを返す | フォールバックしてtoISOString()全体を使用 | 異常環境対応 |
+| toTimeString().split()がundefinedを返す | "00-00-00" フォールバック値を使用 | 異常環境対応 |
 
 ## 不変条件チェック
 - [x] INV-API-010: ファイル名はタイムスタンプを含み、一意性を保証
@@ -41,5 +43,7 @@
 ## 実装ノート
 - `formatDate` 内部関数が日付フォーマット処理を行う
 - 時刻の区切り文字はコロン（:）からハイフン（-）に変換（ファイルシステム互換性）
-- ISO形式は `toISOString().split("T")[0]` で実装
+- ISO形式は `toISOString().split("T")[0]` で実装。split結果がundefinedの場合はtoISOString()全体をフォールバックとして使用
 - JP形式は `toLocaleDateString("ja-JP")` で実装
+- 時刻部分は `toTimeString().split(" ")[0]` で実装。split結果がundefinedの場合は"00-00-00"をフォールバックとして使用
+- フォールバックは異常なJavaScript環境や日付操作ライブラリによる挙動変更に対する防御的プログラミング

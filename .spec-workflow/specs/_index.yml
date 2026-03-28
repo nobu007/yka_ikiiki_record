@@ -48,6 +48,9 @@ specs:
   EmotionDistributionPattern:
     name: EmotionDistributionPattern
     spec_file: EmotionDistributionPattern/EmotionDistributionPattern_spec.md
+  EmotionGenerator:
+    name: EmotionGenerator
+    spec_file: EmotionGenerator/EmotionGenerator_spec.md
   EmotionRanges:
     name: EmotionRanges
     spec_file: EmotionRanges/EmotionRanges_spec.md
@@ -390,4 +393,4 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 130
+total_specs: 131

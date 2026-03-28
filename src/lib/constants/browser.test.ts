@@ -30,11 +30,12 @@ describe("reloadPage", () => {
     expect(reloadPage).toBeDefined();
   });
 
-  it("should execute without throwing errors", () => {
-    expect(() => reloadPage()).not.toThrow();
+  it("should have correct signature (no parameters, returns void)", () => {
+    const result = reloadPage();
+    expect(result).toBeUndefined();
   });
 
-  it("should be callable multiple times", () => {
+  it("should be idempotent (can be called multiple times)", () => {
     expect(() => {
       reloadPage();
       reloadPage();

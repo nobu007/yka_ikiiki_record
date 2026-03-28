@@ -7,6 +7,7 @@ import {
   StudentEmotionChart,
   EmotionTrendChart,
 } from "@/components/charts";
+import { ExportButton } from "@/components/common";
 import { StatsData } from "@/schemas/api";
 import { CHART_TITLES } from "@/lib/constants/messages";
 
@@ -87,9 +88,15 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
     <div className="space-y-8">
       {/* Overview Statistics */}
       <section className="bg-white rounded-lg p-6 shadow-sm">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-          {CHART_TITLES.DATA_OVERVIEW}
-        </h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-gray-900">
+            {CHART_TITLES.DATA_OVERVIEW}
+          </h2>
+          <div className="flex gap-2">
+            <ExportButton format="csv" />
+            <ExportButton format="xlsx" />
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-blue-50 p-4 rounded-lg">
             <h3 className="text-sm font-medium text-blue-900 mb-1">

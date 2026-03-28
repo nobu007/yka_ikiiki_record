@@ -6,4 +6,6 @@ export {
   PlusIcon,
   ExclamationIcon,
   NotificationIcon,
+  DownloadIcon,
 } from "./Icons";
+export { ExportButton } from "./ExportButton";

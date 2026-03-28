@@ -185,3 +185,37 @@ export const NotificationIcon = memo<NotificationIconProps>(
   ),
 );
 NotificationIcon.displayName = "NotificationIcon";
+
+/**
+ * A download icon for exporting and downloading content.
+ *
+ * Displays a downward arrow with a horizontal bar, commonly used for:
+ * - Export buttons
+ * - Download actions
+ * - File download indicators
+ *
+ * @example
+ * ```tsx
+ * <DownloadIcon />
+ * <DownloadIcon className="h-4 w-4" />
+ * ```
+ */
+export const DownloadIcon = memo<IconProps>(
+  ({ className = "", ariaHidden = true }) => (
+    <svg
+      className={`h-4 w-4 mr-2 ${className}`}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      aria-hidden={ariaHidden}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+      />
+    </svg>
+  ),
+);
+DownloadIcon.displayName = "DownloadIcon";

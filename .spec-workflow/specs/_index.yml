@@ -33,6 +33,9 @@ specs:
   DataGenerationConfig:
     name: DataGenerationConfig
     spec_file: DataGenerationConfig/DataGenerationConfig_spec.md
+  DataVisualization:
+    name: DataVisualization
+    spec_file: DataVisualization/DataVisualization_spec.md
   DayOfWeekStats:
     name: DayOfWeekStats
     spec_file: DayOfWeekStats/DayOfWeekStats_spec.md
@@ -384,4 +387,4 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 128
+total_specs: 129

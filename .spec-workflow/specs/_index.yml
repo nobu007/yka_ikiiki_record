@@ -87,6 +87,9 @@ specs:
   LoopDetector:
     name: LoopDetector
     spec_file: LoopDetector/LoopDetector_spec.md
+  LoadingSpinner:
+    name: LoadingSpinner
+    spec_file: LoadingSpinner/LoadingSpinner_spec.md
   MemoryMonitor:
     name: MemoryMonitor
     spec_file: MemoryMonitor/MemoryMonitor_spec.md
@@ -378,4 +381,4 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 126
+total_specs: 127

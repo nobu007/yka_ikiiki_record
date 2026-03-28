@@ -12,6 +12,9 @@ specs:
   ChartData:
     name: ChartData
     spec_file: ChartData/ChartData_spec.md
+  ChartWrapper:
+    name: ChartWrapper
+    spec_file: ChartWrapper/ChartWrapper_spec.md
   CircuitBreaker:
     name: CircuitBreaker
     spec_file: CircuitBreaker/CircuitBreaker_spec.md
@@ -387,4 +390,4 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 129
+total_specs: 130

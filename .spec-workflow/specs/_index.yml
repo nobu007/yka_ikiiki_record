@@ -42,6 +42,9 @@ specs:
   DataVisualization:
     name: DataVisualization
     spec_file: DataVisualization/DataVisualization_spec.md
+  Dashboard:
+    name: Dashboard
+    spec_file: Dashboard/Dashboard_spec.md
   DayOfWeekStats:
     name: DayOfWeekStats
     spec_file: DayOfWeekStats/DayOfWeekStats_spec.md
@@ -399,4 +402,4 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 133
+total_specs: 134

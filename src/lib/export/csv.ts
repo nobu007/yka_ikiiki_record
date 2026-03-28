@@ -8,7 +8,7 @@ export interface CsvExportOptions {
 
 function formatDate(date: Date, format: "ISO" | "JP"): string {
   if (format === "ISO") {
-    return date.toISOString().split("T")[0];
+    return date.toISOString().split("T")[0] ?? date.toISOString();
   }
   return date.toLocaleDateString("ja-JP");
 }
@@ -96,6 +96,6 @@ export function generateCSVFilename(
 ): string {
   const now = new Date();
   const dateStr = formatDate(now, format);
-  const timeStr = now.toTimeString().split(" ")[0].replace(/:/g, "-");
+  const timeStr = (now.toTimeString().split(" ")[0] ?? "00-00-00").replace(/:/g, "-");
   return `${prefix}_${dateStr}_${timeStr}.csv`;
 }

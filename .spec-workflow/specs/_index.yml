@@ -123,6 +123,9 @@ specs:
   NotificationState:
     name: NotificationState
     spec_file: NotificationState/NotificationState_spec.md
+  Notification:
+    name: Notification
+    spec_file: Notification/Notification_spec.md
   POST:
     name: POST
     spec_file: POST/POST_spec.md
@@ -396,4 +399,4 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 132
+total_specs: 133

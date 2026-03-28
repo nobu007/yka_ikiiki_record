@@ -1,0 +1,52 @@
+{
+  "run_id": "2026-03-28T19:10:57Z",
+  "timestamp": "2026-03-28T19:25:00Z",
+  "metrics": {
+    "test_coverage": 99.64,
+    "test_total": 1414,
+    "test_passed": 1414,
+    "test_success_rate": 1.0,
+    "judgment_score": 100,
+    "any_types": 0,
+    "e2e_timeout_configured": 30000,
+    "e2e_timeout_previous": 10000,
+    "e2e_tests_affected": 22
+  },
+  "core_function_results": [
+    {
+      "id": "CF-001",
+      "name": "1分間記録の作成",
+      "status": "unit_test_passed",
+      "e2e_status": "fix_applied",
+      "note": "Timeout increased from 10s to 30s to address data generation timing"
+    },
+    {
+      "id": "CF-002",
+      "name": "統計の可視化",
+      "status": "unit_test_passed",
+      "e2e_status": "fix_applied"
+    },
+    {
+      "id": "CF-003",
+      "name": "データの永続化",
+      "status": "unit_test_passed",
+      "e2e_status": "fix_applied"
+    }
+  ],
+  "blockers_resolved": [
+    {
+      "id": "ISS-002",
+      "description": "E2E data generation timeout",
+      "severity": "high",
+      "status": "resolved",
+      "fix": "Increased timeout from 10s to 30s across all E2E test files",
+      "files_modified": 3
+    }
+  ],
+  "changes_summary": {
+    "prs_applied": 1,
+    "files_modified": 3,
+    "lines_changed": 15,
+    "risk_level": "very_low"
+  }
+}

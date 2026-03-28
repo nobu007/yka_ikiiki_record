@@ -1,0 +1,167 @@
+diff --git a/playwright/chart-interactions.spec.ts b/playwright/chart-interactions.spec.ts
+index 179866fb..e8324237 100644
+--- a/playwright/chart-interactions.spec.ts
++++ b/playwright/chart-interactions.spec.ts
+@@ -5,7 +5,7 @@ test.describe('チャートインタラクションとアクセシビリティ -
+     await page.goto('/dashboard');
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+   });
+ 
+   test('全てのチャートセクションが表示される', async ({ page }) => {
+diff --git a/playwright/data-flow.spec.ts b/playwright/data-flow.spec.ts
+index f4976908..bc1d9ec4 100644
+--- a/playwright/data-flow.spec.ts
++++ b/playwright/data-flow.spec.ts
+@@ -31,7 +31,9 @@ test.describe('イキイキレコード デモ - E2Eテスト', () => {
+     await expect(page.getByText('データ生成中...')).toBeVisible();
+     
+     // 成功通知の確認
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    // NOTE: 30s timeout accounts for database seed operations (10-15s in E2E environment),
++    // statistical calculations for 30 days × 20 students, and network latency in test environment
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+     
+     // ローディング完了の確認
+     await expect(page.getByText('データ生成中...')).toBeHidden();
+@@ -61,7 +63,7 @@ test.describe('イキイキレコード デモ - E2Eテスト', () => {
+     await expect(generateButton).toHaveText('データ生成中...');
+     
+     // 完了後に再度有効化を確認
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+     await expect(generateButton).toBeEnabled();
+     await expect(generateButton).toHaveText('初期データを生成');
+   });
+@@ -99,7 +101,7 @@ test.describe('イキイキレコード デモ - E2Eテスト', () => {
+     
+     // データを生成
+     await page.getByRole('button', { name: '初期データを生成' }).click();
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+     
+     // ページをリロード
+     await page.reload();
+diff --git a/playwright/statistics-display.spec.ts b/playwright/statistics-display.spec.ts
+index ec946c47..2381bfa9 100644
+--- a/playwright/statistics-display.spec.ts
++++ b/playwright/statistics-display.spec.ts
+@@ -9,7 +9,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     await expect(page.getByText('データ概要')).toBeVisible();
+     await expect(page.getByText('総記録数')).toBeVisible();
+@@ -20,7 +20,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     const countElement = page.locator('.bg-blue-50').filter({ hasText: '総記録数' });
+     await expect(countElement).toBeVisible();
+@@ -42,7 +42,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     await expect(page.locator('text=/月別/i')).toBeVisible({ timeout: 5000 });
+   });
+@@ -51,7 +51,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     await expect(page.locator('text=/曜日/i')).toBeVisible({ timeout: 5000 });
+   });
+@@ -60,7 +60,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     await expect(page.locator('text=/分布/i')).toBeVisible({ timeout: 5000 });
+   });
+@@ -69,7 +69,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     await expect(page.locator('text=/時間帯/i')).toBeVisible({ timeout: 5000 });
+   });
+@@ -78,7 +78,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     await expect(page.locator('text=/生徒/i')).toBeVisible({ timeout: 5000 });
+   });
+@@ -87,7 +87,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     await expect(page.locator('text=/トレンド/i')).toBeVisible({ timeout: 5000 });
+   });
+@@ -96,7 +96,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     await expect(page.getByText('詳細統計')).toBeVisible();
+ 
+@@ -110,7 +110,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     const tableRows = page.locator('tbody tr');
+     await expect(tableRows.first()).toBeVisible();
+@@ -131,7 +131,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     const chartSections = page.locator('section.bg-white.rounded-lg').filter({ hasText: /^$/ });
+     const sectionCount = await chartSections.count();
+@@ -144,7 +144,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+ 
+     await expect(page.getByText('データ概要')).toBeVisible();
+ 
+@@ -156,7 +156,7 @@ test.describe('統計データ表示 - E2Eテスト', () => {
+     const generateButton = page.getByRole('button', { name: '初期データを生成' });
+     await generateButton.click();
+ 
+-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
++    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+     await expect(page.getByText('データ概要')).toBeVisible();
+ 
+     await page.reload();

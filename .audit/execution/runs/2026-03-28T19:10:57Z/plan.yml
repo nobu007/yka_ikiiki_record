@@ -1,0 +1,33 @@
+run_id: "2026-03-28T19:10:57Z"
+scope:
+  prs_to_apply:
+    - "PR-002"  # Fix E2E data generation timeout (ISS-002)
+  prs_deferred: []
+  re_validation:
+    - "PR-001"  # Re-run E2E validation after PR-002 fix
+
+success_criteria:
+  - id: "SC-001"
+    from: "intent.yml#quality_attributes[0]"
+    target: "テストカバレッジ >= 95%"
+    verification: "npm run test:coverage"
+
+  - id: "SC-002"
+    from: "intent.yml#core_functions[2]"
+    target: "E2E tests pass (data generation flow)"
+    verification: "npm run test:e2e:local"
+
+  - id: "SC-003"
+    from: "intent.yml#assumptions[2]"
+    target: "ASM-003 confirmed (E2E testing validates production readiness)"
+    verification: "E2E test execution without timeout"
+
+rollback_trigger:
+  - "既存テスト失敗"
+  - "ビルドエラー"
+  - "Test coverage < 95%"
+
+budget:
+  max_prs_per_run: 2
+  max_file_changes_per_pr: 10
+  max_execution_minutes: 30

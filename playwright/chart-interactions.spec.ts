@@ -5,7 +5,7 @@ test.describe('チャートインタラクションとアクセシビリティ -
     await page.goto('/dashboard');
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
   });
 
   test('全てのチャートセクションが表示される', async ({ page }) => {

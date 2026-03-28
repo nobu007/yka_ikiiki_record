@@ -1,8 +1,8 @@
 {
-  "last_run_id": "2026-03-26T10:30:00Z",
-  "last_run_at": "2026-03-26T10:40:00Z",
-  "total_runs": 2,
-  "total_prs_applied": 1,
+  "last_run_id": "2026-03-28T18:49:02Z",
+  "last_run_at": "2026-03-28T18:49:02Z",
+  "total_runs": 3,
+  "total_prs_applied": 2,
   "total_prs_rolled_back": 0,
   "last_decision": "commit_changes",
   "repository_state": {
@@ -10,23 +10,39 @@
     "test_coverage": 99.64,
     "test_success_rate": 1.0,
     "any_types": 0,
-    "e2e_baseurl_configured": true
+    "e2e_baseurl_configured": true,
+    "e2e_configuration_fixed": true
   },
   "blocking_issues": [
     {
       "id": "ISS-002",
       "description": "E2E tests timeout during data generation flow",
-      "priority": "medium"
+      "priority": "high",
+      "status": "confirmed"
+    },
+    {
+      "id": "ISS-E2E-001",
+      "description": "Playwright configuration blocked local E2E testing",
+      "priority": "medium",
+      "status": "resolved"
     }
   ],
   "next_priorities": [
-    "Investigate data generation async timeout (PR-002)",
-    "Production deployment (Human Operator action)",
-    "P2 features post-deployment"
+    "Create PR-002: Fix E2E data generation timeout (ISS-002)",
+    "Increase E2E timeout from 10s to 30s (workaround)",
+    "Re-run PR-001 after ISS-002 fix",
+    "Production deployment (Human Operator action)"
   ],
   "assumptions_status": {
     "ASM-001": "confirmed",
     "ASM-002": "unverified",
     "ASM-003": "partially_confirmed"
+  },
+  "improvements_summary": {
+    "configuration_fixes": 1,
+    "bugs_found": 2,
+    "bugs_fixed": 1,
+    "blockers_confirmed": 1,
+    "quality_maintained": true
   }
 }

@@ -1,0 +1,43 @@
+run_id: "2026-03-28T18:49:02Z"
+execution_start: "2026-03-28T18:49:02Z"
+
+scope:
+  prs_to_apply:
+    - "PR-001"
+  prs_deferred: []
+  total_prs: 1
+
+success_criteria:
+  - id: "SC-001"
+    source: "intent.yml#core_functions[0].verification_method"
+    target: "E2E test for data generation flow passes"
+    verification: "npm run test:e2e:local"
+
+  - id: "SC-002"
+    source: "intent.yml#quality_attributes[0]"
+    target: "テストカバレッジ >= 95%"
+    current: "99.18%"
+    verification: "npm run test:coverage"
+
+  - id: "SC-003"
+    source: "intent.yml#assumptions[2]"
+    target: "ASM-003: E2Eテストで本番相当の検証が可能"
+    current_status: "unverified"
+    target_status: "confirmed"
+
+rollback_trigger:
+  - "E2E tests fail"
+  - "Test coverage drops below 95%"
+  - "Existing tests break"
+
+assumptions_to_verify:
+  - id: "ASM-003"
+    statement: "E2Eテストで本番相当の検証が可能"
+    current_confidence: 0.7
+    verification_method: "Execute npm run test:e2e:local"
+
+execution_strategy:
+  approach: "validation_only"
+  risk_level: "low"
+  expected_changes: "None (validation only)"
+  rollback_possible: true

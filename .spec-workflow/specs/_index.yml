@@ -126,6 +126,9 @@ specs:
   NotificationState:
     name: NotificationState
     spec_file: NotificationState/NotificationState_spec.md
+  PageBreadcrumb:
+    name: PageBreadcrumb
+    spec_file: PageBreadcrumb/PageBreadcrumb_spec.md
   Notification:
     name: Notification
     spec_file: Notification/Notification_spec.md
@@ -402,4 +405,4 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 134
+total_specs: 135

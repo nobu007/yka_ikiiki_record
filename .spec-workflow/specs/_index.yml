@@ -36,6 +36,9 @@ specs:
   DataGenerationConfig:
     name: DataGenerationConfig
     spec_file: DataGenerationConfig/DataGenerationConfig_spec.md
+  DataGeneration:
+    name: DataGeneration
+    spec_file: DataGeneration/DataGeneration_spec.md
   DataVisualization:
     name: DataVisualization
     spec_file: DataVisualization/DataVisualization_spec.md
@@ -393,4 +396,4 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 131
+total_specs: 132

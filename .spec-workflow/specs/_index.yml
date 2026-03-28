@@ -27,6 +27,9 @@ specs:
   ClassEvent:
     name: ClassEvent
     spec_file: ClassEvent/ClassEvent_spec.md
+  ComponentCard:
+    name: ComponentCard
+    spec_file: ComponentCard/ComponentCard_spec.md
   DataGenerationConfig:
     name: DataGenerationConfig
     spec_file: DataGenerationConfig/DataGenerationConfig_spec.md
@@ -375,4 +378,4 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 125
+total_specs: 126

@@ -47,8 +47,27 @@ milestones:
       - "§7 TESTING MANDATES - E2E tests required"
       - "§9 CI/CD REQUIREMENTS - Automated testing in pipeline"
     priority: "P2"
+    status: "done"
+    progress_note: "Completed 2026-03-29. All deliverables implemented and validated. E2E script functional with npm run test:e2e:local."
+
+  - id: "MS-003"
+    name: "データエクスポート機能の実装"
+    intent: "統計データをCSV/Excel形式でエクスポートする機能を追加し、教育現場でのデータ利便性を向上させる"
+    deliverables:
+      - "CSVエクスポートAPIエンドポイント (/api/export/csv)"
+      - "ExcelエクスポートAPIエンドポイント (/api/export/excel)"
+      - "エクスポートユーティリティ (src/lib/export/)"
+      - "エクスポート機能のE2Eテスト"
+      - "UIコンポーネントへのエクスポートボタン追加"
+    acceptance:
+      - type: "quality_gate"
+        target: "全フォーマットでデータが正しくエクスポートされ、テストが通過する"
+    constitution_links:
+      - "§7 TESTING MANDATES - All features must have tests"
+      - "§3 TYPE SUPREMACY - Zod validation for export data"
+    priority: "P2"
     status: "active"
-    progress_note: "T-001 completed (2026-03-26). Created test-e2e-local.sh script and integrated into npm scripts. Ready for validation."
+    progress_note: "Initial milestone created 2026-03-29. Ready for implementation."
 
 work_policy:
   default_mode: "commit"

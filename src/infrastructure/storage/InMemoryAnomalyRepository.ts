@@ -1,6 +1,5 @@
 import {
   type AnomalyRepository,
-  type Anomaly,
   AnomalySeverity,
   AnomalyType,
 } from "@/domain/repositories/AnomalyRepository";

@@ -155,6 +155,10 @@ specs:
     created: '2026-03-30T03:35:54.312757'
     name: InfiniteLoopError
     path: .spec-workflow/specs/InfiniteLoopError/InfiniteLoopError_spec.md
+  InMemoryAnomalyRepository:
+    created: '2026-03-30T07:45:00.000000'
+    name: InMemoryAnomalyRepository
+    path: .spec-workflow/specs/InMemoryAnomalyRepository/InMemoryAnomalyRepository_spec.md
   JsonReadable:
     created: '2026-03-30T03:35:54.314367'
     name: JsonReadable
@@ -695,4 +699,4 @@ specs:
     created: '2026-03-30T06:22:00.000000'
     name: AnomalyDetectionService
     path: .spec-workflow/specs/AnomalyDetectionService/AnomalyDetectionService_spec.md
-total: 173
+total: 174

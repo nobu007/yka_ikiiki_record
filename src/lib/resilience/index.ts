@@ -37,3 +37,13 @@ export {
 } from "./loop-detector";
 
 export { MemoryMonitor, globalMemoryMonitor } from "./memory-monitor";
+
+export {
+  PerformanceMonitor,
+  globalPerformanceMonitor,
+  type PerformanceMetric,
+  type PerformanceStats,
+  type RenderMetric,
+  type RenderStats,
+  type PerformanceMonitorConfig,
+} from "./performance-monitor";

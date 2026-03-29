@@ -109,7 +109,9 @@ export function useDashboard() {
         );
       }
 
-      showSuccess(SUCCESS_MESSAGES.DATA_GENERATION_COMPLETE);
+      // Disable auto-close for data generation success notification
+      // This ensures E2E tests can reliably detect the success message
+      showSuccess(SUCCESS_MESSAGES.DATA_GENERATION_COMPLETE, false);
     } catch (error) {
       const appError = normalizeError(error);
       logError(appError, "useDashboard.handleGenerate");
@@ -124,5 +126,6 @@ export function useDashboard() {
     notification,
     handleGenerate,
     isLoadingMessage: isGenerating ? LOADING_MESSAGES.GENERATING_DATA : null,
+    clearNotification,
   };
 }

@@ -1,4 +1,4 @@
-analysis_date: "2026-03-26T10:15:00Z"
+analysis_date: "2026-03-29T04:30:00Z"
 mission_alignment:
   mission_statement: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
   alignment_score: 100
@@ -14,25 +14,39 @@ identified_gaps:
     effort: "low (manual operation required)"
     blocking:
       external_dependency: "Human Operator action required"
-      workaround: "Local E2E test script created as proxy (T-002 pending validation)"
+      workaround: "Local E2E test script created as proxy (currently blocked by ISS-003)"
     proposed_solution:
       - "Step 1: vercel link でプロジェクト連携"
       - "Step 2: Vercel Postgres / Supabase / Neon でデータベース構築"
       - "Step 3: 環境変数設定 (DATABASE_URL, DATABASE_PROVIDER)"
       - "Step 4: ./scripts/deploy-production.sh 実行"
+    status: "pending"
 
-  - gap_id: "GAP-002"
-    title: "E2Eローカルスクリプト未検証"
+  - gap_id: "ISS-003"
+    title: "E2Eデータ生成成功メッセージが表示されない"
     description: |
-      scripts/test-e2e-local.sh が実装済みだが、まだ実行検証されていない。
-      このスクリプトは本番デプロイの代替としてE2Eテストを自動実行する。
-    impact: "medium"
-    effort: "low (npm run test:e2e:local)"
-    acceptance_test: "npm run test:e2e:local"
-    status: "ready for validation"
+      PR-002でタイムアウトを30秒に延長したが、E2Eテストは依然として失敗している。
+      根本原因は、データ生成完了後に成功メッセージ「テストデータの生成が完了しました」が
+      表示されていないこと。タイムアウト時間ではなく、UIの状態管理またはレンダリングの問題。
+    impact: "high"
+    effort: "medium (requires debugging + fix)"
     evidence: |
-      .audit/purpose_driven_plan.yml に T-002 として記録
-      "Validate E2E local script by running it"
+      E2E Test Output (2026-03-29T04:30:00Z):
+      - 0/39 E2E tests passing
+      - Error: "getByText('テストデータの生成が完了しました') - element(s) not found"
+      - Timeout: 30000ms exceeded
+      - All tests waiting for success message that never appears
+    affected_tests:
+      - "playwright/chart-interactions.spec.ts (16 tests)"
+      - "playwright/data-flow.spec.ts (7 tests)"
+      - "playwright/statistics-display.spec.ts (16 tests)"
+    root_cause_hypotheses:
+      - hypothesis_1: "Success notification state not being set after seed API completes"
+      hypothesis_2: "Success notification component not rendering even when state is set"
+      hypothesis_3: "Success message appears too briefly (< 1s) and disappears before E2E test can detect it"
+    proposed_solution: "PR-003: Add diagnostic logging + fix success message display"
+    status: "ready_for_fix"
+    related_pr: "PR-002 (timeout fix was insufficient)"
 
 quality_gaps: []
 
@@ -58,16 +72,27 @@ improvement_opportunities:
     priority: "P2"
     dependency: "GAP-001 resolution"
 
+  - opportunity_id: "OPP-002"
+    title: "P3: E2Eテストカバレッジ拡張"
+    description: |
+      現在のE2Eテストは主にデータ生成と統計表示に焦点を当てている。
+      以下のシナリオのテスト追加を検討：
+      - エッジケースのテスト（空データ、大量データ）
+      - モバイルデバイスでの操作性テスト
+      - アクセシビリティテスト（スクリーンリーダー対応）
+    priority: "P3"
+    dependency: "ISS-003 resolution"
+
 next_actions:
-  - action_id: "T-002"
-    title: "Validate E2E local script by running it"
-    priority: "P0"
-    command: "npm run test:e2e:local"
+  - action_id: "PR-003"
+    title: "Fix E2E data generation success message display"
+    priority: "P0 (Blocking)"
+    proposal: ".audit/proposal/changes/PR-003.md"
     success_criteria:
-      - "E2E test suite passes"
-      - "All critical user flows validated"
-      - "Test coverage maintained"
-    estimated_time: "5-10 minutes"
+      - "Success message appears after data generation"
+      - "All 39 E2E tests pass"
+      - "ASM-003 upgraded to 'confirmed'"
+    estimated_time: "1-2 hours"
 
 assumptions_to_verify:
   - assumption_id: "ASM-002"
@@ -80,4 +105,30 @@ assumptions_to_verify:
     statement: "E2Eテストで本番相当の検証が可能"
     current_confidence: 0.7
     verification_method: "Execute npm run test:e2e:local"
-    blocking: "GAP-002"
+    blocking: "ISS-003"
+    note: "PR-002のタイムアウト修正だけでは不十分。PR-003で成功メッセージ表示を修正する必要あり。"
+
+issues_summary:
+  total: 2
+  resolved: 0
+  in_progress: 0
+  pending: 2
+  blocking: 1 (ISS-003)
+
+critical_path:
+  - step: 1
+    action: "Fix ISS-003 (PR-003)"
+    description: "Add diagnostic logging and fix success message display"
+    estimated_time: "1-2 hours"
+  - step: 2
+    action: "Validate E2E tests"
+    description: "Run full E2E test suite to confirm fix"
+    estimated_time: "10 minutes"
+  - step: 3
+    action: "Update ASM-003 to 'confirmed'"
+    description: "Mark E2E testing assumption as validated"
+    estimated_time: "5 minutes"
+  - step: 4
+    action: "Proceed with production deployment (Human Operator)"
+    description: "Execute deploy-production.sh after human approval"
+    estimated_time: "30 minutes (manual)"

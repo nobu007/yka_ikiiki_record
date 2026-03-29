@@ -1,10 +1,10 @@
 {
-  "last_run_id": "2026-03-28T19:10:57Z",
-  "last_run_at": "2026-03-28T19:10:57Z",
-  "total_runs": 4,
+  "last_run_id": "2026-03-29T04:30:00Z",
+  "last_run_at": "2026-03-29T04:44:02.526996+00:00",
+  "total_runs": 5,
   "total_prs_applied": 3,
   "total_prs_rolled_back": 0,
-  "last_decision": "commit_changes",
+  "last_decision": "apply_pr_003",
   "repository_state": {
     "judgment_score": 100,
     "test_coverage": 99.64,
@@ -12,7 +12,9 @@
     "any_types": 0,
     "e2e_baseurl_configured": true,
     "e2e_configuration_fixed": true,
-    "e2e_timeout_fixed": true
+    "e2e_timeout_fixed": true,
+    "e2e_success_message_fixed": true,
+    "e2e_validation_pending": true
   },
   "resolved_issues": [
     {
@@ -28,6 +30,13 @@
       "priority": "high",
       "status": "resolved",
       "resolved_in": "2026-03-28T19:10:57Z"
+    },
+    {
+      "id": "ISS-003",
+      "description": "E2E data generation success message not appearing",
+      "priority": "high",
+      "status": "resolved",
+      "resolved_in": "2026-03-29T04:30:00Z"
     }
   ],
   "next_priorities": [

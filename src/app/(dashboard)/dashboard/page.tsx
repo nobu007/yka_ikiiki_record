@@ -7,7 +7,7 @@ import { Dashboard } from "@/components/Dashboard";
 import { LOADING_MESSAGES } from "@/lib/constants/messages";
 
 const DashboardPage = memo(function DashboardPage() {
-  const { isGenerating, notification, handleGenerate, isLoadingMessage } =
+  const { isGenerating, notification, handleGenerate, isLoadingMessage, clearNotification } =
     useDashboard();
 
   return (
@@ -21,6 +21,7 @@ const DashboardPage = memo(function DashboardPage() {
         isGenerating={isGenerating}
         onGenerate={handleGenerate}
         notification={notification}
+        onNotificationClose={clearNotification}
       />
     </ErrorBoundary>
   );

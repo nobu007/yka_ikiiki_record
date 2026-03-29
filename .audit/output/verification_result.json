@@ -1,31 +1,59 @@
 {
-  "run_id": "2026-03-26T10:20:03.287122",
-  "timestamp": "2026-03-26T10:20:03.287154",
-  "core_function_results": [
-    {
-      "id": "CF-001",
-      "name": "1分間記録の作成",
-      "passed": false,
-      "evidence": "Test validation failed"
-    },
-    {
-      "id": "CF-002",
-      "name": "統計の可視化",
-      "passed": false,
-      "evidence": "Test validation failed"
-    },
-    {
-      "id": "CF-003",
-      "name": "データの永続化",
-      "passed": false,
-      "evidence": "Test validation failed"
-    }
-  ],
-  "quality_metrics": {
-    "judgment_score": {
-      "passed": false,
-      "value": "Score check failed"
-    }
+  "timestamp": "2026-03-29T04:30:53.873921",
+  "summary": {
+    "total": 4,
+    "passed": 2,
+    "failed": 2,
+    "success_rate": "50.0%"
   },
-  "overall_status": "partial"
+  "production_ready": false,
+  "quality_gates": {
+    "Core Functions": false,
+    "Test Coverage": true,
+    "Type Safety": true,
+    "Architecture": true,
+    "E2E Tests": true
+  },
+  "results": [
+    {
+      "function_id": "CF-001",
+      "scenario_name": "1分間記録の作成",
+      "passed": false,
+      "actual_output": "DataVisualization=False, Stats=False",
+      "expected_output": "Both DataVisualization and Stats components present",
+      "error_message": null,
+      "interpretation": "ダッシュボード機能が不完全",
+      "evidence": "File: src/app/(dashboard)/dashboard/page.tsx"
+    },
+    {
+      "function_id": "CF-002",
+      "scenario_name": "統計の可視化",
+      "passed": false,
+      "actual_output": "Found 4 charts",
+      "expected_output": "At least 3 chart types with ApexCharts integration",
+      "error_message": null,
+      "interpretation": "グラフコンポーネントが不足している",
+      "evidence": "Charts found: ['MonthlyEmotionChart.tsx', 'DayOfWeekChart.tsx', 'TimeOfDayChart.tsx', 'StudentEmotionChart.tsx']"
+    },
+    {
+      "function_id": "CF-003",
+      "scenario_name": "データの永続化",
+      "passed": true,
+      "actual_output": "Prisma + 10 repository methods + seed API",
+      "expected_output": "PostgreSQL with Prisma, full CRUD operations",
+      "error_message": null,
+      "interpretation": "Prismaでデータ永続化実装済み（10個のリポジトリメソッド）",
+      "evidence": "Record model: True, Prisma repo: True, Seed API: True"
+    },
+    {
+      "function_id": "CF-E2E",
+      "scenario_name": "E2Eテスト実装",
+      "passed": true,
+      "actual_output": "3 E2E test files with config and npm script",
+      "expected_output": "Comprehensive E2E test suite",
+      "error_message": null,
+      "interpretation": "3個のE2Eテストファイルが実装されている",
+      "evidence": "Test files: ['statistics-display.spec.ts', 'chart-interactions.spec.ts', 'data-flow.spec.ts'], Config: True, Script: True"
+    }
+  ]
 }

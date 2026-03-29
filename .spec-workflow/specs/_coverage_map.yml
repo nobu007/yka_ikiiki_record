@@ -1,3 +1,258 @@
+ApiResponse:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414046'
+AppError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414207'
+AsyncState:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414266'
+ChartData:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414283'
+ChartWrapper:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413887'
+CircuitBreaker:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414228'
+CircuitBreakerConfig:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413998'
+CircuitBreakerOpenError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414129'
+ClassCharacteristics:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414356'
+ClassCharacteristicsSchema:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414190'
+ClassEvent:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414197'
+ComponentCard:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414349'
+Dashboard:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414329'
+DataGeneration:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414086'
+DataGenerationConfig:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413858'
+DataGenerationConfigSchema:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413832'
+DataVisualization:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413938'
+DayOfWeekStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414083'
+ERROR_CODES:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414269'
+EmotionChartProps:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413793'
+EmotionDistributionPattern:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413942'
+EmotionDistributionPatternSchema:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414242'
+EmotionGenerator:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413988'
+EmotionRanges:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413843'
+Env:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414001'
+ErrorBoundary:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414214'
+ErrorCodeType:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413797'
+EventEffect:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414114'
+EventEffectSchema:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414319'
+ExportButton:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414359'
+GET:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414160'
+GenerationBounds:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414136'
+GridShape:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414221'
+HTTP_STATUS:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414180'
+IRecordRepository:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414176'
+Icons:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414026'
+InfiniteLoopError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413883'
+JsonReadable:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414245'
+LoadingCard:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414262'
+LoadingOverlay:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413865'
+LoadingSpinner:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414005'
+LogEntry:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414053'
+LogLevel:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414187'
+LogVisibility:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413974'
+LoopDetector:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414204'
+MemoryMonitor:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414312'
+MockFetchResponse:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413977'
+MockStatsRepository:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413905'
+MonthlyStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414170'
+NetworkError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414156'
+Notification:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414019'
+NotificationState:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413876'
+POST:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413966'
+PageBreadcrumb:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413952'
+PaginationOptions:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414231'
+PaginationResult:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414125'
+PrismaRecordRepository:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414366'
+PrismaStatsRepository:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413991'
+Record:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413805'
+RecordSchema:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414142'
+SeasonalEffect:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413984'
+SeedRequest:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414273'
+SeedRequestSchema:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414008'
+SeedResponse:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413755'
+SeedResponseSchema:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414370'
+Stats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414146'
+StatsData:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414173'
+StatsOverview:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414090'
+StatsRepository:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414029'
+StatsResponse:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414300'
+StatsService:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414036'
+StructuredLogger:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414015'
+StudentStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413949'
+TimeOfDayStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414032'
+TimeoutConfig:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414022'
+TimeoutError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413934'
+TrendAnalysisService:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413861'
+UsageInstructions:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414139'
+UseAsyncOptions:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414336'
+UseAsyncResult:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413850'
+UseDataGenerationProps:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414149'
+UseDataGenerationResult:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414132'
+UseNotificationResult:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414346'
+UseStatsResult:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414073'
+ValidationError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413824'
 app.api.analytics.route.GET:
   generated: '2026-03-22T15:08:37.552662'
   spec_file: GET/GET_spec.md
@@ -37,6 +292,42 @@ application.hooks.useStats.UseStatsResult:
 application.hooks.useStats.useStats:
   generated: '2026-03-22T15:08:37.576873'
   spec_file: useStats/useStats_spec.md
+average:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414224'
+calculateDayOfWeekStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414166'
+calculateEmotionDistribution:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413916'
+calculateEmotionTrend:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413995'
+calculateMonthlyStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413901'
+calculateSeasonalEffect:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414276'
+calculateStudentStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414039'
+calculateTimeOfDayStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414342'
+calculateTrendline:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414332'
+clamp:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414286'
+clampEmotion:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413828'
+cleanupMockFetch:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414153'
 components.charts.DynamicBarChart.ChartData:
   generated: '2026-03-22T15:08:37.845024'
   spec_file: ChartData/ChartData_spec.md
@@ -61,6 +352,36 @@ context.SidebarContext.useSidebar:
 context.ThemeContext.useTheme:
   generated: '2026-03-22T15:08:37.841831'
   spec_file: useTheme/useTheme_spec.md
+createCircuitBreaker:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414315'
+createEmptyStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414063'
+createErrorResponse:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414070'
+createMockResponse:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414200'
+createMockedFunction:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414059'
+createRecordRepository:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414122'
+createStatsRepository:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413854'
+createStatsService:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414308'
+createSuccessResponse:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413820'
+createValidStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413894'
 domain.entities.DataGeneration.ClassCharacteristics:
   generated: '2026-03-22T15:08:37.815550'
   spec_file: ClassCharacteristics/ClassCharacteristics_spec.md
@@ -118,6 +439,66 @@ domain.services.EmotionGenerator.generateEmotion:
 domain.services.StatsService.StatsService:
   generated: '2026-03-22T15:08:37.825434'
   spec_file: StatsService/StatsService_spec.md
+ensureServer:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414259'
+expectClasses:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414279'
+exportStatsToCSV:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414012'
+generateBaseEmotion:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413963'
+generateCSVFilename:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414325'
+generateEmotion:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414066'
+generateNormalRandom:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413809'
+generateSeedData:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413956'
+getButtonClasses:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414322'
+getEnv:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414080'
+getFirstMockCallArg:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413926'
+getFirstMockCallArgs:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413836'
+getMockCallCount:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414235'
+getNotificationTimeout:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414193'
+getPageForIndex:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413813'
+getPageNumbers:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413801'
+getRandomHour:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413890'
+getUserFriendlyMessage:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413970'
+globalLoopDetector:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413913'
+handleApiError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414218'
 hooks.useApp.useDashboard:
   generated: '2026-03-22T15:08:37.464095'
   spec_file: useDashboard/useDashboard_spec.md
@@ -163,6 +544,39 @@ infrastructure.services.dataService.DataGenerationConfig:
 infrastructure.storage.MockStatsRepository.MockStatsRepository:
   generated: '2026-03-22T15:08:37.596580'
   spec_file: MockStatsRepository/MockStatsRepository_spec.md
+isAppError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414076'
+isDevelopment:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414210'
+isNetworkError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414056'
+isNotFoundError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414043'
+isNotNullOrUndefined:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414100'
+isPrismaProvider:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413839'
+isProduction:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413981'
+isServerError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414104'
+isTest:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414353'
+isTimeoutError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414093'
+isValidationError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413847'
 lib.api.error-handler.GET:
   generated: '2026-03-22T15:08:37.685169'
   spec_file: GET/GET_spec.md
@@ -292,15 +706,48 @@ lib.resilience.timeout.TimeoutConfig:
 lib.resilience.timeout.TimeoutError:
   generated: '2026-03-22T15:08:37.650942'
   spec_file: TimeoutError/TimeoutError_spec.md
+logError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414163'
+makeServer:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414255'
 mirage.index.ensureServer:
   generated: '2026-03-22T15:08:37.393726'
   spec_file: ensureServer/ensureServer_spec.md
 mirage.server.makeServer:
   generated: '2026-03-22T15:08:37.396974'
   spec_file: makeServer/makeServer_spec.md
+mockFetchError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413909'
+mockFetchNetworkError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413872'
+mockFetchSuccess:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413945'
+mockProcessEnv:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413880'
+normalizeError:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414183'
+paginate:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414049'
+parseRequestBody:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414363'
 presentation.hooks.useStats.useStats:
   generated: '2026-03-22T15:08:37.771025'
   spec_file: useStats/useStats_spec.md
+prisma:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414290'
+reloadPage:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414097'
 schemas.api.ApiResponse:
   generated: '2026-03-22T15:08:37.545936'
   spec_file: ApiResponse/ApiResponse_spec.md
@@ -334,6 +781,9 @@ schemas.api.StatsData:
 schemas.api.StatsResponse:
   generated: '2026-03-22T15:08:37.539570'
   spec_file: StatsResponse/StatsResponse_spec.md
+setupMockFetch:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414252'
 test-utils.api-helpers.MockFetchResponse:
   generated: '2026-03-22T15:08:37.493893'
   spec_file: MockFetchResponse/MockFetchResponse_spec.md
@@ -376,6 +826,30 @@ test-utils.mock-helpers.getFirstMockCallArgs:
 test-utils.mock-helpers.getMockCallCount:
   generated: '2026-03-22T15:08:37.503581'
   spec_file: getMockCallCount/getMockCallCount_spec.md
+useAsync:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413783'
+useDashboard:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413816'
+useDataGeneration:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413869'
+useNotification:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414339'
+useSeedGeneration:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414238'
+useSidebar:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413959'
+useStats:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.414249'
+useTheme:
+  covered: true
+  last_updated: '2026-03-30T04:33:52.413789'
 utils.statsCalculator.analytics.calculateDayOfWeekStats:
   generated: '2026-03-22T15:08:37.757590'
   spec_file: calculateDayOfWeekStats/calculateDayOfWeekStats_spec.md

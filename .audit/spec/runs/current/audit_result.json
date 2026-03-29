@@ -1,66 +1,66 @@
 {
-  "timestamp": "2026-03-30T03:36:25.102861",
+  "timestamp": "2026-03-30T04:33:57.389871",
   "workdir": "/home/jinno/yka_ikiiki_record",
+  "public_symbols_count": 382,
+  "specs_count": 158,
   "results": {
     "S-001": {
       "axis": "S-001",
-      "name": "SPEC Existence",
-      "score": 9,
+      "name": "SPEC存在確認",
+      "score": 10,
       "max_score": 15,
-      "pass_threshold": 12,
-      "pass_status": false,
+      "pass": false,
       "details": [
         {
           "id": "S-001-1",
-          "name": "SPEC Directory",
+          "name": "SPEC出力ディレクトリ",
           "score": 3,
           "max": 3,
           "evidence": "exists=True"
         },
         {
           "id": "S-001-2",
-          "name": "_index.yml Integrity",
+          "name": "_index.yml整合性",
           "score": 3,
           "max": 3
         },
         {
           "id": "S-001-3",
-          "name": "Public Symbol Coverage",
-          "score": 3,
+          "name": "公開シンボルカバレッジ",
+          "score": 4,
           "max": 9,
-          "evidence": "covered=121/280 (43%)"
+          "evidence": "covered=178/382 (47%)"
         }
       ]
     },
     "S-002": {
       "axis": "S-002",
-      "name": "I/O Definition",
-      "score": 11,
+      "name": "入出力定義の厳密性",
+      "score": 3,
       "max_score": 15,
-      "pass_threshold": 12,
-      "pass_status": false,
+      "pass": false,
       "details": [
         {
           "id": "S-002-1",
-          "name": "Input Types",
-          "score": 3,
+          "name": "入力型定義",
+          "score": 0,
           "max": 4
         },
         {
           "id": "S-002-2",
-          "name": "Input Constraints",
-          "score": 3,
+          "name": "入力制約定義",
+          "score": 0,
           "max": 4
         },
         {
           "id": "S-002-3",
-          "name": "Output Definitions",
-          "score": 3,
+          "name": "出力型・制約",
+          "score": 1,
           "max": 4
         },
         {
           "id": "S-002-4",
-          "name": "Pre/Post Conditions",
+          "name": "前提/事後条件",
           "score": 2,
           "max": 3
         }
@@ -68,22 +68,21 @@
     },
     "S-003": {
       "axis": "S-003",
-      "name": "Boundary Analysis",
-      "score": 13,
+      "name": "境界値分析",
+      "score": 6,
       "max_score": 15,
-      "pass_threshold": 12,
-      "pass_status": true,
+      "pass": false,
       "details": [
         {
           "id": "S-003-1",
-          "name": "Boundary Section",
+          "name": "境界値セクション存在",
           "score": 3,
           "max": 3
         },
         {
           "id": "S-003-2",
-          "name": "Boundary Coverage",
-          "score": 5,
+          "name": "境界値網羅性",
+          "score": 0,
           "max": 5
         },
         {
@@ -94,69 +93,68 @@
         },
         {
           "id": "S-003-4",
-          "name": "Rationale",
-          "score": 2,
+          "name": "境界値根拠",
+          "score": 0,
           "max": 3
         }
       ]
     },
     "S-004": {
       "axis": "S-004",
-      "name": "Error Coverage",
-      "score": 11,
+      "name": "エラーシナリオ網羅性",
+      "score": 6,
       "max_score": 15,
-      "pass_threshold": 12,
-      "pass_status": false,
+      "pass": false,
       "details": [
         {
           "id": "S-004-1",
-          "name": "Error Section",
-          "score": 3,
+          "name": "エラーセクション存在",
+          "score": 2,
           "max": 3
         },
         {
           "id": "S-004-2",
-          "name": "Exception Types",
-          "score": 3,
+          "name": "例外型明示",
+          "score": 0,
           "max": 4
         },
         {
           "id": "S-004-3",
           "name": "error_scenarios.yml",
-          "score": 3,
+          "score": 4,
           "max": 4
         },
         {
           "id": "S-004-4",
-          "name": "Edge Cases",
-          "score": 2,
+          "name": "エッジケース品質",
+          "score": 0,
           "max": 4
         }
       ]
     },
     "S-005": {
       "axis": "S-005",
-      "name": "Test Mapping",
-      "score": 5,
+      "name": "テスト-SPEC対応率",
+      "score": 1,
       "max_score": 15,
-      "pass_threshold": 12,
-      "pass_status": false,
+      "pass": false,
       "details": [
         {
           "id": "S-005-1",
-          "name": "Case References",
+          "name": "テスト-SPECケース対応",
           "score": 0,
-          "max": 5
+          "max": 5,
+          "evidence": "referenced=0/15"
         },
         {
           "id": "S-005-2",
-          "name": "Normal Coverage",
-          "score": 4,
+          "name": "正常系カバレッジ",
+          "score": 0,
           "max": 4
         },
         {
           "id": "S-005-3",
-          "name": "Error Coverage",
+          "name": "異常系カバレッジ",
           "score": 0,
           "max": 4
         },
@@ -170,27 +168,26 @@
     },
     "S-006": {
       "axis": "S-006",
-      "name": "Constitution",
+      "name": "憲法準拠性",
       "score": 9,
       "max_score": 10,
-      "pass_threshold": 8,
-      "pass_status": true,
+      "pass": true,
       "details": [
         {
           "id": "S-006-1",
-          "name": "Scope Compliance",
+          "name": "責務範囲内",
           "score": 5,
           "max": 5
         },
         {
           "id": "S-006-2",
-          "name": "No Prohibitions",
+          "name": "禁止事項非侵害",
           "score": 3,
           "max": 3
         },
         {
           "id": "S-006-3",
-          "name": "Tech Stack",
+          "name": "技術スタック準拠",
           "score": 1,
           "max": 2
         }
@@ -198,27 +195,26 @@
     },
     "S-007": {
       "axis": "S-007",
-      "name": "Regression Design",
-      "score": 5,
+      "name": "回帰テスト設計",
+      "score": 4,
       "max_score": 5,
-      "pass_threshold": 4,
-      "pass_status": true,
+      "pass": true,
       "details": [
         {
           "id": "S-007-1",
-          "name": "Regression Section",
-          "score": 2,
+          "name": "回帰テストセクション",
+          "score": 1,
           "max": 2
         },
         {
           "id": "S-007-2",
-          "name": "Impact Scope",
+          "name": "影響範囲明示",
           "score": 2,
           "max": 2
         },
         {
           "id": "S-007-3",
-          "name": "Coverage Map",
+          "name": "_coverage_map.yml",
           "score": 1,
           "max": 1
         }
@@ -226,27 +222,27 @@
     },
     "S-008": {
       "axis": "S-008",
-      "name": "SPEC Freshness",
-      "score": 8,
+      "name": "SPEC鮮度",
+      "score": 7,
       "max_score": 10,
-      "pass_threshold": 8,
-      "pass_status": true,
+      "pass": false,
       "details": [
         {
           "id": "S-008-1",
-          "name": "Update Validity",
+          "name": "更新日妥当性",
           "score": 2,
           "max": 3
         },
         {
           "id": "S-008-2",
-          "name": "Signature Match",
-          "score": 4,
-          "max": 4
+          "name": "シグネチャ一致",
+          "score": 3,
+          "max": 4,
+          "evidence": "matched=155/158"
         },
         {
           "id": "S-008-3",
-          "name": "Version Management",
+          "name": "バージョン管理",
           "score": 2,
           "max": 3
         }
@@ -254,17 +250,19 @@
     }
   },
   "verdict": {
-    "total_score": 71,
+    "total_score": 46,
     "max_score": 100,
-    "percentage": 71.0,
+    "percentage": 46.0,
     "overall_pass": false,
     "s001_threshold_met": false,
     "all_thresholds_met": false,
     "failed_axes": [
       "S-001",
       "S-002",
+      "S-003",
       "S-004",
-      "S-005"
+      "S-005",
+      "S-008"
     ]
   }
 }

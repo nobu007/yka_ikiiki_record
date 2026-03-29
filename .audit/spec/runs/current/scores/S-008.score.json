@@ -1,0 +1,30 @@
+{
+  "axis": "S-008",
+  "name": "SPEC鮮度",
+  "score": 4,
+  "max_score": 10,
+  "pass": false,
+  "details": [
+    {
+      "id": "S-008-1",
+      "name": "Freshness",
+      "score": 2,
+      "max": 3,
+      "evidence": "fresh=137/158"
+    },
+    {
+      "id": "S-008-2",
+      "name": "Signature Match",
+      "score": 0,
+      "max": 4,
+      "evidence": "matched=0/136"
+    },
+    {
+      "id": "S-008-3",
+      "name": "Versioned",
+      "score": 2,
+      "max": 3,
+      "evidence": "versioned=137/158"
+    }
+  ]
+}

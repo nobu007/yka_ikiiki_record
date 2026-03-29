@@ -1,0 +1,27 @@
+{
+  "axis": "S-007",
+  "name": "回帰テスト設計",
+  "score": 4,
+  "max_score": 5,
+  "pass": true,
+  "details": [
+    {
+      "id": "S-007-1",
+      "name": "Regression Section",
+      "score": 1,
+      "max": 2
+    },
+    {
+      "id": "S-007-2",
+      "name": "Impact Scope",
+      "score": 2,
+      "max": 2
+    },
+    {
+      "id": "S-007-3",
+      "name": "_coverage_map.yml",
+      "score": 1,
+      "max": 1
+    }
+  ]
+}

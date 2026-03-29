@@ -1,0 +1,33 @@
+{
+  "axis": "S-004",
+  "name": "エラーシナリオ網羅性",
+  "score": 10,
+  "max_score": 15,
+  "pass": false,
+  "details": [
+    {
+      "id": "S-004-1",
+      "name": "Error Section",
+      "score": 2,
+      "max": 3
+    },
+    {
+      "id": "S-004-2",
+      "name": "Exception Types",
+      "score": 3,
+      "max": 4
+    },
+    {
+      "id": "S-004-3",
+      "name": "error_scenarios.yml",
+      "score": 3,
+      "max": 4
+    },
+    {
+      "id": "S-004-4",
+      "name": "Edge Cases",
+      "score": 2,
+      "max": 4
+    }
+  ]
+}

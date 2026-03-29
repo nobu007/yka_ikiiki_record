@@ -1,0 +1,33 @@
+{
+  "id": "REV-S-008",
+  "axis": "S-008",
+  "axis_name": "SPEC鮮度",
+  "current_score": 4,
+  "required_score": 8,
+  "gap": 4,
+  "type": "gap_s-008",
+  "details": [
+    {
+      "id": "S-008-1",
+      "name": "Freshness",
+      "score": 2,
+      "max": 3,
+      "evidence": "fresh=137/158"
+    },
+    {
+      "id": "S-008-2",
+      "name": "Signature Match",
+      "score": 0,
+      "max": 4,
+      "evidence": "matched=0/136"
+    },
+    {
+      "id": "S-008-3",
+      "name": "Versioned",
+      "score": 2,
+      "max": 3,
+      "evidence": "versioned=137/158"
+    }
+  ],
+  "priority": "P1"
+}

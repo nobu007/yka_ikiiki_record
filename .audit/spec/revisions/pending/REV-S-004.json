@@ -1,0 +1,36 @@
+{
+  "id": "REV-S-004",
+  "axis": "S-004",
+  "axis_name": "エラーシナリオ網羅性",
+  "current_score": 10,
+  "required_score": 12,
+  "gap": 2,
+  "type": "gap_s-004",
+  "details": [
+    {
+      "id": "S-004-1",
+      "name": "Error Section",
+      "score": 2,
+      "max": 3
+    },
+    {
+      "id": "S-004-2",
+      "name": "Exception Types",
+      "score": 3,
+      "max": 4
+    },
+    {
+      "id": "S-004-3",
+      "name": "error_scenarios.yml",
+      "score": 3,
+      "max": 4
+    },
+    {
+      "id": "S-004-4",
+      "name": "Edge Cases",
+      "score": 2,
+      "max": 4
+    }
+  ],
+  "priority": "P0"
+}

@@ -1,0 +1,8 @@
+note: Auto-generated during improvement cycle
+scenarios:
+- description: Type mismatch
+  id: ERR-001
+  type: TypeError
+- description: Invalid value
+  id: ERR-002
+  type: ValueError

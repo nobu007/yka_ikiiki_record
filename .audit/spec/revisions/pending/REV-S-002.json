@@ -1,0 +1,36 @@
+{
+  "id": "REV-S-002",
+  "axis": "S-002",
+  "axis_name": "入出力定義の厳密性",
+  "current_score": 2,
+  "required_score": 12,
+  "gap": 10,
+  "type": "gap_s-002",
+  "details": [
+    {
+      "id": "S-002-1",
+      "name": "Input Types",
+      "score": 0,
+      "max": 4
+    },
+    {
+      "id": "S-002-2",
+      "name": "Input Constraints",
+      "score": 0,
+      "max": 4
+    },
+    {
+      "id": "S-002-3",
+      "name": "Output Definitions",
+      "score": 0,
+      "max": 4
+    },
+    {
+      "id": "S-002-4",
+      "name": "Pre/Post Conditions",
+      "score": 2,
+      "max": 3
+    }
+  ],
+  "priority": "P1"
+}

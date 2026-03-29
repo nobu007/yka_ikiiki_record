@@ -1,28 +1,26 @@
 axis: S-005
-axis_name: Test Mapping
-created: '2026-03-30T03:36:42.902929'
-current_score: 5
+axis_name: テスト-SPEC対応率
+current_score: 1
 details:
-- id: S-005-1
+- evidence: referenced=0/15
+  id: S-005-1
   max: 5
-  name: Case References
+  name: テスト-SPECケース対応
   score: 0
 - id: S-005-2
   max: 4
-  name: Normal Coverage
-  score: 4
+  name: 正常系カバレッジ
+  score: 0
 - id: S-005-3
   max: 4
-  name: Error Coverage
+  name: 異常系カバレッジ
   score: 0
 - id: S-005-4
   max: 2
   name: test_matrix.yml
   score: 1
-gap: 7
+gap: 11
 id: REV-S-005
 priority: P1
-recommendation: Improve test-SPEC mapping. Ensure test files reference SPEC case IDs
-  (TC-*, BV-*, ERR-*). Create test_matrix.yml files for better traceability.
 required_score: 12
 type: test_spec_mismatch

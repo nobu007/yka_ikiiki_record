@@ -1,26 +1,23 @@
 axis: S-001
-axis_name: SPEC Existence
-created: '2026-03-30T03:36:42.895830'
-current_score: 9
+axis_name: SPEC存在確認
+current_score: 6
 details:
 - evidence: exists=True
   id: S-001-1
   max: 3
-  name: SPEC Directory
+  name: SPEC出力ディレクトリ
   score: 3
 - id: S-001-2
   max: 3
-  name: _index.yml Integrity
+  name: _index.yml整合性
   score: 3
-- evidence: covered=121/280 (43%)
+- evidence: covered=0/382 (0%)
   id: S-001-3
   max: 9
-  name: Public Symbol Coverage
-  score: 3
-gap: 3
+  name: 公開シンボルカバレッジ
+  score: 0
+gap: 6
 id: REV-S-001
 priority: P0
-recommendation: Generate SPECs for remaining uncovered public symbols (currently 43%
-  coverage, need 80%). Focus on core domain entities and utilities first.
 required_score: 12
 type: spec_missing

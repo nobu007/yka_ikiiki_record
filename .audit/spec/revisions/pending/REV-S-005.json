@@ -1,0 +1,39 @@
+{
+  "id": "REV-S-005",
+  "axis": "S-005",
+  "axis_name": "テスト-SPEC対応率",
+  "current_score": 6,
+  "required_score": 12,
+  "gap": 6,
+  "type": "gap_s-005",
+  "details": [
+    {
+      "id": "S-005-1",
+      "name": "Test References",
+      "score": 0,
+      "max": 5,
+      "evidence": "referenced=0/15"
+    },
+    {
+      "id": "S-005-2",
+      "name": "Normal Coverage",
+      "score": 4,
+      "max": 4,
+      "evidence": "tested=2180/161"
+    },
+    {
+      "id": "S-005-3",
+      "name": "Error Coverage",
+      "score": 1,
+      "max": 4,
+      "evidence": "tested=274/1024"
+    },
+    {
+      "id": "S-005-4",
+      "name": "test_matrix.yml",
+      "score": 1,
+      "max": 2
+    }
+  ],
+  "priority": "P1"
+}

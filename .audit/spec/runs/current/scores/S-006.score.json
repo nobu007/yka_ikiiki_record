@@ -1,0 +1,29 @@
+{
+  "axis": "S-006",
+  "name": "憲法準拠性",
+  "score": 9,
+  "max_score": 10,
+  "pass": true,
+  "details": [
+    {
+      "id": "S-006-1",
+      "name": "Responsibility Scope",
+      "score": 5,
+      "max": 5,
+      "evidence": "violations=0"
+    },
+    {
+      "id": "S-006-2",
+      "name": "Prohibitions",
+      "score": 3,
+      "max": 3
+    },
+    {
+      "id": "S-006-3",
+      "name": "Tech Stack",
+      "score": 1,
+      "max": 2
+    }
+  ],
+  "violations": []
+}

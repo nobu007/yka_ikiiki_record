@@ -1,0 +1,32 @@
+{
+  "id": "REV-S-001",
+  "axis": "S-001",
+  "axis_name": "SPEC存在確認",
+  "current_score": 9,
+  "required_score": 12,
+  "gap": 3,
+  "type": "gap_s-001",
+  "details": [
+    {
+      "id": "S-001-1",
+      "name": "SPEC Directory",
+      "score": 3,
+      "max": 3,
+      "evidence": "exists=true"
+    },
+    {
+      "id": "S-001-2",
+      "name": "_index.yml",
+      "score": 3,
+      "max": 3
+    },
+    {
+      "id": "S-001-3",
+      "name": "Symbol Coverage",
+      "score": 3,
+      "max": 9,
+      "evidence": "covered=129/386 (33%)"
+    }
+  ],
+  "priority": "P0"
+}

@@ -1,0 +1,22 @@
+axis: S-008
+axis_name: SPEC鮮度
+current_score: 7
+details:
+- id: S-008-1
+  max: 3
+  name: 更新日妥当性
+  score: 2
+- evidence: matched=155/158
+  id: S-008-2
+  max: 4
+  name: シグネチャ一致
+  score: 3
+- id: S-008-3
+  max: 3
+  name: バージョン管理
+  score: 2
+gap: 1
+id: REV-S-008
+priority: P1
+required_score: 8
+type: spec_stale

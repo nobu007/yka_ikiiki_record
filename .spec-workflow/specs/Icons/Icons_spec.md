@@ -25,7 +25,7 @@ A checkmark icon for success states and completion indicators.
 
 #### レンダリング構造
 ```tsx
-<svg className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden={ariaHidden}>
+<svg className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden={ariaHidden}>
   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
 </svg>
 ```
@@ -90,8 +90,8 @@ A dynamic notification icon that displays different icons based on notification 
 #### Notification Type Mapping
 | type | Color | Icon Path |
 |------|-------|-----------|
-| success | text-green-600 | Green checkmark circle |
-| error | text-red-600 | Red X mark circle |
+| success | text-green-500 | Green checkmark circle |
+| error | text-red-500 | Red X mark circle |
 | warning | text-yellow-500 | Yellow triangle |
 | info | text-blue-500 | Blue circle with 'i' |
 
@@ -145,7 +145,7 @@ All components are error-free - no exception scenarios beyond React rendering er
 ## 不変条件チェック
 - [x] INV-ARCH-001: Components have single responsibility (render SVG only)
 - [x] INV-ARCH-001: File line count < 300 (currently 222 lines)
-- [ ] INV-TEST-001: Test coverage >= 90% (to be implemented)
+- [x] INV-TEST-001: Test coverage >= 90% (achieved: 100% coverage, 39 tests passing)
 
 ## 使用例
 

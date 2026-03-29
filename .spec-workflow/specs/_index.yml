@@ -90,6 +90,8 @@ specs:
   Icons:
     name: Icons
     spec_file: Icons/Icons_spec.md
+    status: verified
+    coverage: 100
   JsonReadable:
     name: JsonReadable
     spec_file: JsonReadable/JsonReadable_spec.md

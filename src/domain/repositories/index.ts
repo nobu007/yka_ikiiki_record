@@ -13,3 +13,8 @@ export type {
   BackupQueryResult,
   RestoreResult,
 } from "./BackupRepository";
+export type {
+  AnomalyRepository,
+  AnomalyFilterOptions,
+  AnomalyStatistics,
+} from "./AnomalyRepository";

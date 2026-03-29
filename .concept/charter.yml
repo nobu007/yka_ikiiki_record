@@ -181,6 +181,29 @@ milestones:
     status: "done"
     progress_note: "MS-008 completed 2026-03-30. All 4 tasks completed: (T-001) Domain layer (Backup entity + repository interface), (T-002) Infrastructure layer (InMemoryBackupRepository), (T-003) Application layer (BackupService), (T-004) Presentation layer (API endpoints /api/backup, /api/restore). Total production: 1176 lines. Total tests: 2046 lines. 144 backup-specific tests passing (100% for core layers). Complete 4-layer Clean Architecture implementation. HTTP API endpoints provide POST /api/backup, GET /api/backup, POST /api/restore. SHA-256 checksums for data integrity. Audit logging for all operations. Overall project: 1963/1976 tests passing (99.3%)."
 
+  - id: "MS-009"
+    name: "通知システムの強化（Notification System Enhancement）"
+    intent: "異常値検知時のアラートとメール通知機能を実装し、運用上の監視能力と対応速度を向上させる"
+    deliverables:
+      - "AnomalyDetectionドメインサービス (src/domain/services/AnomalyDetectionService.ts) - T-001"
+      - "AnomalyDetectionRepositoryインターフェース (src/domain/repositories/AnomalyDetectionRepository.ts) - T-001"
+      - "NotificationProviderドメインエンティティ (src/domain/entities/NotificationProvider.ts) - T-002"
+      - "EmailNotificationProvider実装 (src/infrastructure/services/EmailNotificationProvider.ts) - T-002"
+      - "NotificationServiceアプリケーションサービス (src/application/services/NotificationService.ts) - T-003"
+      - "通知設定APIエンドポイント (/api/notifications/settings) - T-004"
+      - "通知履歴APIエンドポイント (/api/notifications/history) - T-004"
+    acceptance:
+      - type: "quality_gate"
+        target: "全通知システム機能のテストが通過し、カバレッジ100%を達成"
+    constitution_links:
+      - "§7 TESTING MANDATES - All features must have comprehensive tests"
+      - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation"
+      - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for business logic, Application layer for orchestration"
+      - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Anomaly detection and alerting for system health"
+    priority: "P3"
+    status: "active"
+    progress_note: "MS-009 created 2026-03-30. Building upon existing Notification UI component (src/components/common/Notification.tsx) and useNotification hook (src/hooks/useNotification.ts). Will add backend anomaly detection, email notification provider abstraction, and notification management service."
+
 work_policy:
   default_mode: "commit"
   iteration_budget:

@@ -1,5 +1,5 @@
 meta:
-  generated_at: "2026-03-30T03:38:00Z"
+  generated_at: "2026-03-30T03:49:00Z"
   source_deliverable: "MS-006: 詳細な分析レポート機能の実装"
   milestone_id: "MS-006"
   milestone_status: "active"
@@ -8,7 +8,7 @@ completed_tasks:
   - id: "T-001"
     title: "Define TrendAnalysis domain entity and repository interface"
     type: "feat"
-    commit_sha: "PENDING"
+    commit_sha: "830c51dc"
     completed_at: "2026-03-30T03:38:00Z"
     files_modified:
       - "src/domain/entities/TrendAnalysis.ts (282 lines, new file)"
@@ -20,14 +20,25 @@ completed_tasks:
       - ".concept/charter.yml (added MS-006)"
     test_results: "69/69 tests passing, 1695/1695 total tests passing (100%)"
 
+  - id: "T-002"
+    title: "Implement TrendAnalysisService with time-series analysis algorithms"
+    type: "feat"
+    commit_sha: "ff957594"
+    completed_at: "2026-03-30T03:49:00Z"
+    files_modified:
+      - "src/application/services/TrendAnalysisService.ts (394 lines, new file)"
+      - "src/application/services/TrendAnalysisService.test.ts (506 lines, new file)"
+      - ".concept/charter.yml (updated progress_note)"
+    test_results: "32/32 TrendAnalysisService tests passing, 1727/1727 total tests passing (100%)"
+
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P2 - Testing Mandates (100% test coverage for trend analysis domain)"
+  quality_gate_contributed: "P2 - Testing Mandates (100% test coverage for trend analysis application layer)"
   constitution_links:
-    - "§3 TYPE SUPREMACY - Full TypeScript type safety with factory functions"
-    - "§7 TESTING MANDATES - Comprehensive test suite (69 tests for trend analysis domain)"
-    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Pure domain entities with no framework dependencies"
-  impact: "T-001 COMPLETED: TrendAnalysis domain entity and repository interface implemented (282 lines production, 920 lines tests). Test coverage: 44 entity tests + 25 repository tests = 69 trend analysis tests. 1695/1695 total tests passing (100%). Provides foundation for analyzing long-term emotion trends at individual and class levels, directly fulfilling PURPOSE.md P2-優先度2: 詳細な分析レポート（個人・クラス単位の長期トレンド）."
+    - "§3 TYPE SUPREMACY - Generic algorithms with full type safety"
+    - "§7 TESTING MANDATES - Comprehensive test suite (101 tests: 69 domain + 32 application)"
+    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer orchestrates domain logic"
+  impact: "T-002 COMPLETED: TrendAnalysisService application service with time-series analysis algorithms implemented (394 lines production, 506 lines tests, 32 tests). Total trend analysis infrastructure: 69 domain tests + 32 application tests = 101 tests. 1727/1727 total tests passing (100%). Provides time-series analysis capabilities: data aggregation, moving average smoothing, anomaly detection (standard deviation), trend correlation (Pearson coefficient), and student/class trend orchestration. Directly fulfills PURPOSE.md P2-優先度2: 詳細な分析レポート（個人・クラス単位の長期トレンド）."
 
 selected_deliverable:
   source: "PURPOSE.md P2: 優先度2: 分析・可視化の強化 → 詳細な分析レポート（個人・クラス単位の長期トレンド）"
@@ -60,9 +71,9 @@ task_breakdown:
       - "src/application/services/TrendAnalysisService.ts (new)"
       - "src/application/services/TrendAnalysisService.test.ts (new)"
     acceptance_test: "npm test -- src/application/services/TrendAnalysisService.test.ts"
-    estimated_diff_lines: 400
+    estimated_diff_lines: 900
     constitution_link: "§3 TYPE SUPREMACY - Generic algorithms with type safety"
-    status: "pending"
+    status: "completed"
 
   - id: "T-003"
     title: "Create TrendReport UI component with interactive charts"
@@ -103,12 +114,25 @@ notes: |
   ✅ Zero lint errors
   ✅ Clean Architecture compliance (pure domain, no framework deps)
 
-  Implementation details:
-  - Production code: 300 lines (282 entity + 18 repository interface)
-  - Test code: 920 lines (463 entity tests + 457 repository tests)
-  - Test-to-code ratio: 3.1:1 (excellent)
-  - Total trend analysis domain tests: 69 (44 entity + 25 repository)
-  - All tests passing: 1695/1695 (100%)
+  T-002 COMPLETED:
+  ✅ TrendAnalysisService application service (394 lines production)
+  ✅ Comprehensive test suite (506 lines tests, 32 tests passing)
+  ✅ Time-series analysis capabilities:
+     * Data aggregation by date with averaging
+     * Moving average smoothing (configurable window size)
+     * Anomaly detection using standard deviation threshold
+     * Trend correlation analysis (Pearson coefficient)
+  ✅ Student/class trend analysis orchestration
+  ✅ Full TypeScript type safety with Zod validation
+  ✅ Clean Architecture compliance (Application layer)
+  ✅ Zero lint errors
+
+  Implementation summary:
+  - Production code: 694 lines (282 entity + 18 repository + 394 service)
+  - Test code: 1426 lines (920 domain tests + 506 service tests)
+  - Test-to-code ratio: 2.1:1 (excellent)
+  - Total trend analysis tests: 101 (69 domain + 32 application)
+  - All tests passing: 1727/1727 (100%)
   - Judgment Score: 100/100 maintained
 
   Domain model capabilities:
@@ -118,23 +142,19 @@ notes: |
   - TrendAnalysisQuery: Flexible query options (student/class, direction, date range, pagination)
   - Time-series utilities: Trend direction detection, moving average calculation
 
+  Application service capabilities:
+  - analyzeStudentTrend: Create student trend from raw records with date aggregation
+  - analyzeClassTrend: Create class trend from multiple student analyses
+  - calculateMovingAverage: Smooth time-series data with sliding window
+  - detectAnomalies: Identify outliers using standard deviation threshold
+  - calculateTrendCorrelation: Measure Pearson correlation between two series
+  - Repository integration: Save/retrieve student and class trends
+
   Next tasks:
-  - T-002: Application service with time-series analysis algorithms
-  - T-003: UI component for interactive trend visualization
-  - T-004: API endpoint for trend data retrieval
+  - T-003: UI component for interactive trend visualization (TrendReportChart)
+  - T-004: API endpoint for trend data retrieval (/api/trends)
 
 remaining_tasks:
-  - id: "T-002"
-    title: "Implement TrendAnalysisService with time-series analysis algorithms"
-    type: "feat"
-    files_to_modify:
-      - "src/application/services/TrendAnalysisService.ts (new)"
-      - "src/application/services/TrendAnalysisService.test.ts (new)"
-    acceptance_test: "npm test -- src/application/services/TrendAnalysisService.test.ts"
-    estimated_diff_lines: 400
-    constitution_link: "§3 TYPE SUPREMACY - Generic algorithms with type safety"
-    status: "pending"
-
   - id: "T-003"
     title: "Create TrendReport UI component with interactive charts"
     type: "feat"
@@ -158,5 +178,5 @@ remaining_tasks:
     status: "pending"
 
 next_execution:
-  task_id: "T-002"
-  rationale: "T-001 established the domain model. T-002 will implement the application service layer (TrendAnalysisService) which orchestrates domain logic, performs time-series analysis (moving averages, trend detection, volatility calculation), and bridges the domain entities with infrastructure repositories. This follows Clean Architecture: Domain (T-001) → Application (T-002) → Infrastructure → Presentation."
+  task_id: "T-003"
+  rationale: "T-001 (Domain) and T-002 (Application) are complete. T-003 will implement the Presentation layer (TrendReportChart UI component) which visualizes trend analysis data with interactive charts. This follows Clean Architecture: Domain (T-001) → Application (T-002) → Presentation (T-003). The UI component will consume the application service's analysis results and display student/class trends with visualizations, making the analysis accessible to users for educational insights."

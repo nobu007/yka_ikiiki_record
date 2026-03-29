@@ -133,7 +133,7 @@ milestones:
       - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for analysis logic"
     priority: "P2"
     status: "active"
-    progress_note: "Started 2026-03-30. T-001 completed: TrendAnalysis domain entity and repository interface implemented with 69 tests (44 entity tests + 25 repository tests). 1715/1715 total tests passing (100%)."
+    progress_note: "Started 2026-03-30. T-001 completed: TrendAnalysis domain entity and repository interface implemented with 69 tests. T-002 completed: TrendAnalysisService application service with time-series analysis algorithms (394 lines production, 506 lines tests, 32 tests). 1727/1727 total tests passing (100%). 2/4 tasks remaining (T-003: TrendReport UI, T-004: API endpoint)."
 
 work_policy:
   default_mode: "commit"

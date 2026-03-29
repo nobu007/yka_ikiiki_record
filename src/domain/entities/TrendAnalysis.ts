@@ -106,6 +106,8 @@ export function createTrendDataPoint(params: {
 }
 
 function calculateAverage(values: number[]): number {
+  // Defensive check: unreachable under current usage as all callers validate arrays first
+  // Maintained as safety net for future refactoring or misuse
   if (values.length === 0) {
     return 0;
   }
@@ -207,6 +209,8 @@ export function createStudentTrendAnalysis(params: {
 function createClassTrendMetrics(
   studentAnalyses: StudentTrendAnalysis[],
 ): ClassTrendMetrics {
+  // Defensive check: unreachable as createClassTrendAnalysis validates before calling this
+  // Maintained as safety net for future refactoring or direct calls
   if (studentAnalyses.length === 0) {
     throw new Error("Student analyses array must not be empty");
   }

@@ -522,6 +522,52 @@ describe("TrendAnalysis", () => {
     });
   });
 
+  describe("calculateVolatility", () => {
+    it("should return 0 for single value", () => {
+      const dataPoints: TrendDataPoint[] = [
+        createTrendDataPoint({
+          date: new Date("2026-03-30T12:00:00Z"),
+          emotion: 3.5,
+          recordCount: 5,
+        }),
+      ];
+
+      const analysis = createStudentTrendAnalysis({
+        student: "SingleValue",
+        dataPoints,
+      });
+
+      expect(analysis.metrics.volatility).toBe(0);
+    });
+
+    it("should calculate volatility for multiple values", () => {
+      const dataPoints: TrendDataPoint[] = [
+        createTrendDataPoint({
+          date: new Date("2026-03-28T12:00:00Z"),
+          emotion: 3.0,
+          recordCount: 5,
+        }),
+        createTrendDataPoint({
+          date: new Date("2026-03-29T12:00:00Z"),
+          emotion: 4.0,
+          recordCount: 5,
+        }),
+        createTrendDataPoint({
+          date: new Date("2026-03-30T12:00:00Z"),
+          emotion: 5.0,
+          recordCount: 5,
+        }),
+      ];
+
+      const analysis = createStudentTrendAnalysis({
+        student: "Volatile",
+        dataPoints,
+      });
+
+      expect(analysis.metrics.volatility).toBeGreaterThan(0);
+    });
+  });
+
   describe("Edge cases", () => {
     it("should handle extreme emotion values", () => {
       const dataPoint = createTrendDataPoint({

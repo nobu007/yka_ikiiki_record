@@ -113,6 +113,13 @@ specs:
   LoadingOverlay:
     name: LoadingOverlay
     spec_file: LoadingOverlay/LoadingOverlay_spec.md
+    status: verified
+    coverage: 100
+  LoadingCard:
+    name: LoadingCard
+    spec_file: LoadingCard/LoadingCard_spec.md
+    status: verified
+    coverage: 100
   MemoryMonitor:
     name: MemoryMonitor
     spec_file: MemoryMonitor/MemoryMonitor_spec.md
@@ -410,7 +417,4 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-  LoadingOverlay:
-    name: LoadingOverlay
-    spec_file: LoadingOverlay/LoadingOverlay_spec.md
-total_specs: 136
+total_specs: 137

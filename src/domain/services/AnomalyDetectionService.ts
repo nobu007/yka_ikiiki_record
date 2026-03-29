@@ -4,7 +4,6 @@ import type {
   AnomalyContext,
   AnomalyDetectionConfig,
   AnomalySeverity,
-  AnomalyType,
 } from "@/domain/entities/Anomaly";
 import {
   DEFAULT_ANOMALY_DETECTION_CONFIG,
@@ -208,12 +207,11 @@ export class AnomalyDetectionService {
   private async detectUnusualPatterns(
     records: Record[],
     student: string,
-    config: AnomalyDetectionConfig,
+    _config: AnomalyDetectionConfig,
   ): Promise<Anomaly[]> {
     const anomalies: Anomaly[] = [];
     const emotions = records.map((r) => r.emotion);
     const mean = this.calculateMean(emotions);
-    const stdDev = this.calculateStandardDeviation(emotions, mean);
 
     // Look for 3+ consecutive records on the same side of mean
     let consecutiveCount = 0;
@@ -355,7 +353,7 @@ export class AnomalyDetectionService {
   private calculateSeverity(
     deviation: number,
     stdDev: number,
-    isSpike: boolean,
+    _isSpike: boolean,
   ): AnomalySeverity {
     const numStdDevs = deviation / stdDev;
 
@@ -392,7 +390,7 @@ export class AnomalyDetectionService {
    */
   private generateSpikeRecommendations(
     actual: number,
-    expected: number,
+    _expected: number,
   ): string[] {
     const recommendations: string[] = [
       "Verify the accuracy of the recorded emotion value",
@@ -412,7 +410,7 @@ export class AnomalyDetectionService {
    */
   private generateDropRecommendations(
     actual: number,
-    expected: number,
+    _expected: number,
   ): string[] {
     const recommendations: string[] = [
       "Check for possible external stressors or difficulties",

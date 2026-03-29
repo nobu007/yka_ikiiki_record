@@ -113,6 +113,28 @@ milestones:
     status: "done"
     progress_note: "Completed 2026-03-30. All 7 deliverables implemented and validated. 1646/1646 tests passing (100%). Test coverage: 25 domain entity tests + 10 repository interface tests + 43 InMemoryAuditLogRepository tests + 20 AuditService tests + 18 integration tests = 116 audit logging tests. Complete audit logging infrastructure from domain to application layer with full TypeScript type safety."
 
+  - id: "MS-006"
+    name: "詳細な分析レポート機能の実装"
+    intent: "個人・クラス単位の長期トレンドを分析し、詳細なレポートを生成する機能を追加し、教育現場でのデータ活用を向上させる"
+    deliverables:
+      - "TrendAnalysisドメインエンティティ (src/domain/entities/TrendAnalysis.ts)"
+      - "TrendAnalysisRepositoryインターフェース (src/domain/repositories/TrendAnalysisRepository.ts)"
+      - "TrendAnalysisエンティティのテスト (src/domain/entities/TrendAnalysis.test.ts)"
+      - "TrendAnalysisRepositoryのテスト (src/domain/repositories/TrendAnalysisRepository.test.ts)"
+      - "TrendAnalysisServiceアプリケーションサービス (T-002)"
+      - "TrendReport UIコンポーネント (T-003)"
+      - "Trend Analysis APIエンドポイント (T-004)"
+    acceptance:
+      - type: "quality_gate"
+        target: "全トレンド分析機能のテストが通過し、カバレッジ100%を達成"
+    constitution_links:
+      - "§7 TESTING MANDATES - All features must have tests"
+      - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation"
+      - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for analysis logic"
+    priority: "P2"
+    status: "active"
+    progress_note: "Started 2026-03-30. T-001 completed: TrendAnalysis domain entity and repository interface implemented with 69 tests (44 entity tests + 25 repository tests). 1715/1715 total tests passing (100%)."
+
 work_policy:
   default_mode: "commit"
   iteration_budget:

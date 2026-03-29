@@ -25,3 +25,21 @@ export {
 } from "./DataGeneration";
 
 export type { EmotionRanges, GenerationBounds } from "./DataGeneration";
+
+export type {
+  TrendDirection,
+  TrendDataPoint,
+  TrendMetrics,
+  StudentTrendMetrics,
+  ClassTrendMetrics,
+  StudentTrendAnalysis,
+  ClassTrendAnalysis,
+} from "./TrendAnalysis";
+
+export {
+  createTrendDataPoint,
+  createStudentTrendAnalysis,
+  createClassTrendAnalysis,
+  calculateTrendDirection,
+  calculateMovingAverage,
+} from "./TrendAnalysis";

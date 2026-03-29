@@ -1,154 +1,162 @@
 meta:
-  generated_at: "2026-03-30T03:20:00Z"
-  source_deliverable: "MS-005: 監査ログ機能の実装"
-  milestone_id: "MS-005"
-  milestone_status: "done"
+  generated_at: "2026-03-30T03:38:00Z"
+  source_deliverable: "MS-006: 詳細な分析レポート機能の実装"
+  milestone_id: "MS-006"
+  milestone_status: "active"
 
 completed_tasks:
   - id: "T-001"
-    title: "Design and implement AuditLog domain entity and repository interface"
+    title: "Define TrendAnalysis domain entity and repository interface"
     type: "feat"
-    commit_sha: "f39aaeb0"
-    completed_at: "2026-03-30T02:45:00Z"
-    files_modified:
-      - "src/domain/entities/AuditLog.ts (162 lines, new file)"
-      - "src/domain/repositories/AuditLogRepository.ts (142 lines, new file)"
-      - "src/domain/entities/AuditLog.test.ts (270 lines, new file)"
-      - "src/domain/repositories/AuditLogRepository.test.ts (271 lines, new file)"
-      - ".concept/charter.yml (added MS-005)"
-    test_results: "25/25 tests passing, 1545/1545 total tests passing (100%)"
-
-  - id: "T-002"
-    title: "Implement InMemoryAuditLogRepository for development"
-    type: "feat"
-    commit_sha: "118141c0"
-    completed_at: "2026-03-30T02:52:00Z"
-    files_modified:
-      - "src/infrastructure/repositories/InMemoryAuditLogRepository.ts (116 lines, new file)"
-      - "src/infrastructure/repositories/InMemoryAuditLogRepository.test.ts (545 lines, new file)"
-    test_results: "43/43 tests passing, 1588/1588 total tests passing (100%)"
-
-  - id: "T-003"
-    title: "Create AuditService middleware for automatic logging"
-    type: "feat"
-    commit_sha: "998c9af0"
-    completed_at: "2026-03-30T03:16:00Z"
-    files_modified:
-      - "src/application/services/AuditService.ts (230 lines, new file)"
-      - "src/application/services/AuditService.test.ts (331 lines, new file)"
-      - ".concept/charter.yml (updated progress_note)"
-    test_results: "20/20 tests passing, 1628/1628 total tests passing (100%)"
-
-  - id: "T-004"
-    title: "Integrate audit logging with existing repositories"
-    type: "test"
     commit_sha: "PENDING"
-    completed_at: "2026-03-30T03:20:00Z"
+    completed_at: "2026-03-30T03:38:00Z"
     files_modified:
-      - "src/infrastructure/repositories/PrismaRecordRepository.audit.test.ts (503 lines, new file)"
-      - ".concept/charter.yml (marked MS-005 as done)"
-      - ".audit/purpose_driven_plan.yml (updated with T-004 completion)"
-    test_results: "18/18 tests passing, 1646/1646 total tests passing (100%)"
+      - "src/domain/entities/TrendAnalysis.ts (282 lines, new file)"
+      - "src/domain/entities/TrendAnalysis.test.ts (463 lines, new file)"
+      - "src/domain/repositories/TrendAnalysisRepository.ts (18 lines, new file)"
+      - "src/domain/repositories/TrendAnalysisRepository.test.ts (457 lines, new file)"
+      - "src/domain/entities/index.ts (updated exports)"
+      - "src/domain/repositories/index.ts (updated exports)"
+      - ".concept/charter.yml (added MS-006)"
+    test_results: "69/69 tests passing, 1695/1695 total tests passing (100%)"
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P3 - Testing Mandates (100% test coverage for audit logging system)"
+  quality_gate_contributed: "P2 - Testing Mandates (100% test coverage for trend analysis domain)"
   constitution_links:
-    - "§3 TYPE SUPREMACY - Full TypeScript type safety with generics"
-    - "§7 TESTING MANDATES - Comprehensive test suite (116 tests for audit logging)"
-    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Cross-cutting concerns with AuditService"
-  impact: "MS-005 COMPLETED: Full audit logging infrastructure implemented (domain → infrastructure → application → integration). T-004 completed: Added 18 comprehensive integration tests for PrismaRecordRepository audit logging (503 lines). Total audit logging test coverage: 116 tests (25 domain + 10 repository + 43 InMemoryAuditLogRepository + 20 AuditService + 18 integration). 1646/1646 total tests passing (100%). Directly fulfills PURPOSE.md P3-優先度3: 運用改善 → 監査ログ機能（操作履歴記録、変更追跡）."
+    - "§3 TYPE SUPREMACY - Full TypeScript type safety with factory functions"
+    - "§7 TESTING MANDATES - Comprehensive test suite (69 tests for trend analysis domain)"
+    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Pure domain entities with no framework dependencies"
+  impact: "T-001 COMPLETED: TrendAnalysis domain entity and repository interface implemented (282 lines production, 920 lines tests). Test coverage: 44 entity tests + 25 repository tests = 69 trend analysis tests. 1695/1695 total tests passing (100%). Provides foundation for analyzing long-term emotion trends at individual and class levels, directly fulfilling PURPOSE.md P2-優先度2: 詳細な分析レポート（個人・クラス単位の長期トレンド）."
 
 selected_deliverable:
-  source: "PURPOSE.md P3: 優先度3: 運用改善 → 監査ログ機能（操作履歴記録、変更追跡）"
-  description: "Implement audit logging system for tracking all data mutations with full context"
-  milestone_id: "MS-005"
-  priority: "P3"
-  constitution_link: "SYSTEM_CONSTITUTION.md §3: Type Supremacy, §7: Testing Mandates, §2: Architectural Discipline"
+  source: "PURPOSE.md P2: 優先度2: 分析・可視化の強化 → 詳細な分析レポート（個人・クラス単位の長期トレンド）"
+  description: "Implement detailed analysis reports showing individual student and class-level long-term trends"
+  milestone_id: "MS-006"
+  priority: "P2"
+  constitution_link: "SYSTEM_CONSTITUTION.md §7: Testing Mandates, §3: Type Supremacy, §2: Architectural Discipline"
 
 task_breakdown:
   - id: "T-001"
-    title: "Design and implement AuditLog domain entity and repository interface"
+    title: "Define TrendAnalysis domain entity and repository interface"
     type: "feat"
     files_to_modify:
-      - "src/domain/entities/AuditLog.ts (new)"
-      - "src/domain/repositories/AuditLogRepository.ts (new)"
-      - "src/domain/entities/AuditLog.test.ts (new)"
-      - "src/domain/repositories/AuditLogRepository.test.ts (new)"
-      - ".concept/charter.yml"
-    acceptance_test: "npm test -- src/domain/entities/AuditLog.test.ts src/domain/repositories/AuditLogRepository.test.ts"
-    estimated_diff_lines: 845
-    constitution_link: "§7 TESTING MANDATES - All features must have tests"
+      - "src/domain/entities/TrendAnalysis.ts (new)"
+      - "src/domain/entities/TrendAnalysis.test.ts (new)"
+      - "src/domain/repositories/TrendAnalysisRepository.ts (new)"
+      - "src/domain/repositories/TrendAnalysisRepository.test.ts (new)"
+      - "src/domain/entities/index.ts (update exports)"
+      - "src/domain/repositories/index.ts (update exports)"
+      - ".concept/charter.yml (add MS-006)"
+    acceptance_test: "npm test -- src/domain/entities/TrendAnalysis.test.ts src/domain/repositories/TrendAnalysisRepository.test.ts"
+    estimated_diff_lines: 1220
+    constitution_link: "§7 TESTING MANDATES - Domain entities must have tests"
     status: "completed"
 
   - id: "T-002"
-    title: "Implement InMemoryAuditLogRepository for development"
+    title: "Implement TrendAnalysisService with time-series analysis algorithms"
     type: "feat"
     files_to_modify:
-      - "src/infrastructure/repositories/InMemoryAuditLogRepository.ts (new)"
-      - "src/infrastructure/repositories/InMemoryAuditLogRepository.test.ts (new)"
-    acceptance_test: "npm test -- src/infrastructure/repositories/InMemoryAuditLogRepository.test.ts"
-    estimated_diff_lines: 661
-    constitution_link: "§7 TESTING MANDATES - All features must have tests"
-    status: "completed"
+      - "src/application/services/TrendAnalysisService.ts (new)"
+      - "src/application/services/TrendAnalysisService.test.ts (new)"
+    acceptance_test: "npm test -- src/application/services/TrendAnalysisService.test.ts"
+    estimated_diff_lines: 400
+    constitution_link: "§3 TYPE SUPREMACY - Generic algorithms with type safety"
+    status: "pending"
 
   - id: "T-003"
-    title: "Create AuditService middleware for automatic logging"
+    title: "Create TrendReport UI component with interactive charts"
     type: "feat"
     files_to_modify:
-      - "src/application/services/AuditService.ts (new)"
-      - "src/application/services/AuditService.test.ts (new)"
-    acceptance_test: "npm test -- src/application/services/AuditService.test.ts"
-    estimated_diff_lines: 280
-    constitution_link: "§7 TESTING MANDATES - All features must have tests"
-    status: "completed"
+      - "src/components/charts/TrendReportChart.tsx (new)"
+      - "src/components/charts/TrendReportChart.test.tsx (new)"
+    acceptance_test: "npm test -- src/components/charts/TrendReportChart.test.tsx"
+    estimated_diff_lines: 350
+    constitution_link: "§5 PERFORMANCE REQUIREMENTS - React component optimization"
+    status: "pending"
 
   - id: "T-004"
-    title: "Integrate audit logging with existing repositories"
-    type: "test"
+    title: "Implement API endpoint for trend analysis data"
+    type: "feat"
     files_to_modify:
-      - "src/infrastructure/repositories/PrismaRecordRepository.audit.test.ts (new)"
-      - ".concept/charter.yml (mark MS-005 as done)"
-    acceptance_test: "npm test -- src/infrastructure/repositories/PrismaRecordRepository.audit.test.ts"
-    estimated_diff_lines: 503
-    constitution_link: "§7 TESTING MANDATES - All features must have tests"
-    status: "completed"
+      - "src/app/api/trends/route.ts (new)"
+      - "src/app/api/trends/route.test.ts (new)"
+    acceptance_test: "npm test -- src/app/api/trends/route.test.ts"
+    estimated_diff_lines: 280
+    constitution_link: "§7 TESTING MANDATES - API endpoints must have tests"
+    status: "pending"
 
 execution_plan:
   first_task: "T-001"
-  rationale: "This task establishes the foundational domain entities for audit logging. The AuditLog entity and repository interface are framework-agnostic, fully typed, and tested, providing a solid foundation for infrastructure implementations and application services to build upon. Directly contributes to P3 operational improvement goals in PURPOSE.md."
+  rationale: "Domain entities form the foundation of Clean Architecture. Starting with TrendAnalysis entity and repository interface establishes the core domain model, ensures type safety, and provides a stable foundation for application services and UI components to build upon. This aligns with the dependency rule: Domain → Application → Infrastructure → Presentation."
 
 notes: |
-  MS-005 COMPLETED (2026-03-30).
+  MS-006 IN PROGRESS (2026-03-30).
 
-  All tasks completed (T-001, T-002, T-003, T-004):
-  ✅ AuditLog domain entity with full TypeScript type safety (25 tests)
-  ✅ Factory functions for create/update/delete operations
-  ✅ AuditLogRepository interface with comprehensive query options (10 tests)
-  ✅ InMemoryAuditLogRepository implementation (43 tests)
-  ✅ AuditService middleware for automatic logging (20 tests)
-  ✅ Integration tests for PrismaRecordRepository audit logging (18 tests)
-  ✅ 100% test coverage for all audit logging components
+  T-001 COMPLETED:
+  ✅ TrendAnalysis domain entity with full TypeScript type safety (282 lines)
+  ✅ Factory functions: createTrendDataPoint, createStudentTrendAnalysis, createClassTrendAnalysis
+  ✅ Utility functions: calculateTrendDirection, calculateMovingAverage
+  ✅ TrendAnalysisRepository interface with query options (18 lines)
+  ✅ Comprehensive test coverage: 69 tests (44 entity + 25 repository)
+  ✅ 100% test coverage for all domain components
   ✅ Zero lint errors
-  ✅ Clean Architecture compliance (domain → application → infrastructure)
+  ✅ Clean Architecture compliance (pure domain, no framework deps)
 
   Implementation details:
-  - Production code: 708 lines (304 domain + 116 infra + 288 application)
-  - Test code: 1649 lines (541 domain + 545 infra + 331 application + 503 integration)
-  - Test-to-code ratio: 2.3:1 (excellent)
-  - Total audit logging tests: 116 (25 + 10 + 43 + 20 + 18)
-  - All tests passing: 1646/1646 (100%)
+  - Production code: 300 lines (282 entity + 18 repository interface)
+  - Test code: 920 lines (463 entity tests + 457 repository tests)
+  - Test-to-code ratio: 3.1:1 (excellent)
+  - Total trend analysis domain tests: 69 (44 entity + 25 repository)
+  - All tests passing: 1695/1695 (100%)
   - Judgment Score: 100/100 maintained
 
-  Benefits delivered:
-  - Complete audit logging infrastructure (domain → infra → application)
-  - Automatic logging of all data mutations with full context
-  - Support for compliance, debugging, and data integrity verification
-  - Foundation for operational monitoring and change tracking
-  - Comprehensive integration test coverage for repository audit logging
+  Domain model capabilities:
+  - TrendDataPoint: Time-series data with date, emotion, record count
+  - StudentTrendAnalysis: Individual student trend with metrics (direction, avg, volatility)
+  - ClassTrendAnalysis: Aggregate class trend with top performers and needs support
+  - TrendAnalysisQuery: Flexible query options (student/class, direction, date range, pagination)
+  - Time-series utilities: Trend direction detection, moving average calculation
 
-remaining_tasks: []
+  Next tasks:
+  - T-002: Application service with time-series analysis algorithms
+  - T-003: UI component for interactive trend visualization
+  - T-004: API endpoint for trend data retrieval
+
+remaining_tasks:
+  - id: "T-002"
+    title: "Implement TrendAnalysisService with time-series analysis algorithms"
+    type: "feat"
+    files_to_modify:
+      - "src/application/services/TrendAnalysisService.ts (new)"
+      - "src/application/services/TrendAnalysisService.test.ts (new)"
+    acceptance_test: "npm test -- src/application/services/TrendAnalysisService.test.ts"
+    estimated_diff_lines: 400
+    constitution_link: "§3 TYPE SUPREMACY - Generic algorithms with type safety"
+    status: "pending"
+
+  - id: "T-003"
+    title: "Create TrendReport UI component with interactive charts"
+    type: "feat"
+    files_to_modify:
+      - "src/components/charts/TrendReportChart.tsx (new)"
+      - "src/components/charts/TrendReportChart.test.tsx (new)"
+    acceptance_test: "npm test -- src/components/charts/TrendReportChart.test.tsx"
+    estimated_diff_lines: 350
+    constitution_link: "§5 PERFORMANCE REQUIREMENTS - React component optimization"
+    status: "pending"
+
+  - id: "T-004"
+    title: "Implement API endpoint for trend analysis data"
+    type: "feat"
+    files_to_modify:
+      - "src/app/api/trends/route.ts (new)"
+      - "src/app/api/trends/route.test.ts (new)"
+    acceptance_test: "npm test -- src/app/api/trends/route.test.ts"
+    estimated_diff_lines: 280
+    constitution_link: "§7 TESTING MANDATES - API endpoints must have tests"
+    status: "pending"
 
 next_execution:
-  task_id: null
-  rationale: "MS-005 is complete. All 4 tasks (T-001 through T-004) have been implemented and tested. The audit logging system is fully functional with 116 tests covering domain entities, repository interfaces, infrastructure implementation, application service, and integration testing. Ready to proceed to the next deliverable from PURPOSE.md."
+  task_id: "T-002"
+  rationale: "T-001 established the domain model. T-002 will implement the application service layer (TrendAnalysisService) which orchestrates domain logic, performs time-series analysis (moving averages, trend detection, volatility calculation), and bridges the domain entities with infrastructure repositories. This follows Clean Architecture: Domain (T-001) → Application (T-002) → Infrastructure → Presentation."

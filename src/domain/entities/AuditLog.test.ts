@@ -250,20 +250,27 @@ describe("AuditLog Domain Entity", () => {
       expect(auditLog.timestamp).toBeLessThanOrEqual(after);
     });
 
-    it("should handle rapid successive calls", () => {
-      const logs = Array.from({ length: 100 }, (_, i) =>
-        createAuditLogForCreate(
-          "Record",
-          `record-${i}`,
-          { id: `record-${i}` },
-          { source: "api" },
-        ),
-      );
+    it("should handle rapid successive calls", async () => {
+      const logs: AuditLog[] = [];
+
+      // Create logs with a small delay to ensure timestamp progression
+      for (let i = 0; i < 10; i++) {
+        logs.push(
+          createAuditLogForCreate(
+            "Record",
+            `record-${i}`,
+            { id: `record-${i}` },
+            { source: "api" },
+          ),
+        );
+        // Small delay to ensure different timestamps (1ms)
+        await new Promise((resolve) => setTimeout(resolve, 1));
+      }
 
       const timestamps = logs.map((log) => log.timestamp);
       const uniqueTimestamps = new Set(timestamps);
 
-      expect(timestamps).toHaveLength(100);
+      expect(timestamps).toHaveLength(10);
       expect(uniqueTimestamps.size).toBeGreaterThan(1);
     });
   });

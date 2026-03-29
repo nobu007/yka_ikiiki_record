@@ -1,422 +1,630 @@
-generated: '2026-03-29T02:54:00.000000'
 specs:
   ApiResponse:
+    created: '2026-03-30T03:35:54.312607'
     name: ApiResponse
-    spec_file: ApiResponse/ApiResponse_spec.md
+    path: .spec-workflow/specs/ApiResponse/ApiResponse_spec.md
   AppError:
+    created: '2026-03-30T03:35:54.306430'
     name: AppError
-    spec_file: AppError/AppError_spec.md
+    path: .spec-workflow/specs/AppError/AppError_spec.md
   AsyncState:
+    created: '2026-03-30T03:35:54.308809'
     name: AsyncState
-    spec_file: AsyncState/AsyncState_spec.md
+    path: .spec-workflow/specs/AsyncState/AsyncState_spec.md
   ChartData:
+    created: '2026-03-30T03:35:54.312393'
     name: ChartData
-    spec_file: ChartData/ChartData_spec.md
+    path: .spec-workflow/specs/ChartData/ChartData_spec.md
   ChartWrapper:
+    created: '2026-03-30T03:35:54.306894'
     name: ChartWrapper
-    spec_file: ChartWrapper/ChartWrapper_spec.md
+    path: .spec-workflow/specs/ChartWrapper/ChartWrapper_spec.md
   CircuitBreaker:
+    created: '2026-03-30T03:35:54.308881'
     name: CircuitBreaker
-    spec_file: CircuitBreaker/CircuitBreaker_spec.md
-    status: verified
-    coverage: 100
+    path: .spec-workflow/specs/CircuitBreaker/CircuitBreaker_spec.md
   CircuitBreakerConfig:
+    created: '2026-03-30T03:35:54.309618'
     name: CircuitBreakerConfig
-    spec_file: CircuitBreakerConfig/CircuitBreakerConfig_spec.md
+    path: .spec-workflow/specs/CircuitBreakerConfig/CircuitBreakerConfig_spec.md
   CircuitBreakerOpenError:
+    created: '2026-03-30T03:35:54.310433'
     name: CircuitBreakerOpenError
-    spec_file: CircuitBreakerOpenError/CircuitBreakerOpenError_spec.md
+    path: .spec-workflow/specs/CircuitBreakerOpenError/CircuitBreakerOpenError_spec.md
   ClassCharacteristics:
+    created: '2026-03-30T03:35:54.309243'
     name: ClassCharacteristics
-    spec_file: ClassCharacteristics/ClassCharacteristics_spec.md
+    path: .spec-workflow/specs/ClassCharacteristics/ClassCharacteristics_spec.md
+  ClassCharacteristicsSchema:
+    created: '2026-03-30T03:35:54.315049'
+    name: ClassCharacteristicsSchema
+    path: .spec-workflow/specs/ClassCharacteristicsSchema/ClassCharacteristicsSchema_spec.md
   ClassEvent:
+    created: '2026-03-30T03:35:54.315409'
     name: ClassEvent
-    spec_file: ClassEvent/ClassEvent_spec.md
+    path: .spec-workflow/specs/ClassEvent/ClassEvent_spec.md
   ComponentCard:
+    created: '2026-03-30T03:35:54.312535'
     name: ComponentCard
-    spec_file: ComponentCard/ComponentCard_spec.md
-  DataGenerationConfig:
-    name: DataGenerationConfig
-    spec_file: DataGenerationConfig/DataGenerationConfig_spec.md
-  DataGeneration:
-    name: DataGeneration
-    spec_file: DataGeneration/DataGeneration_spec.md
-  DataVisualization:
-    name: DataVisualization
-    spec_file: DataVisualization/DataVisualization_spec.md
+    path: .spec-workflow/specs/ComponentCard/ComponentCard_spec.md
   Dashboard:
+    created: '2026-03-30T03:35:54.308508'
     name: Dashboard
-    spec_file: Dashboard/Dashboard_spec.md
+    path: .spec-workflow/specs/Dashboard/Dashboard_spec.md
+  DataGeneration:
+    created: '2026-03-30T03:35:54.306590'
+    name: DataGeneration
+    path: .spec-workflow/specs/DataGeneration/DataGeneration_spec.md
+  DataGenerationConfig:
+    created: '2026-03-30T03:35:54.307616'
+    name: DataGenerationConfig
+    path: .spec-workflow/specs/DataGenerationConfig/DataGenerationConfig_spec.md
+  DataGenerationConfigSchema:
+    created: '2026-03-30T03:35:54.304990'
+    name: DataGenerationConfigSchema
+    path: .spec-workflow/specs/DataGenerationConfigSchema/DataGenerationConfigSchema_spec.md
+  DataVisualization:
+    created: '2026-03-30T03:35:54.312684'
+    name: DataVisualization
+    path: .spec-workflow/specs/DataVisualization/DataVisualization_spec.md
   DayOfWeekStats:
+    created: '2026-03-30T03:35:54.309387'
     name: DayOfWeekStats
-    spec_file: DayOfWeekStats/DayOfWeekStats_spec.md
+    path: .spec-workflow/specs/DayOfWeekStats/DayOfWeekStats_spec.md
+  ERROR_CODES:
+    created: '2026-03-30T03:35:54.308224'
+    name: ERROR_CODES
+    path: .spec-workflow/specs/ERROR_CODES/ERROR_CODES_spec.md
   EmotionChartProps:
+    created: '2026-03-30T03:35:54.308956'
     name: EmotionChartProps
-    spec_file: EmotionChartProps/EmotionChartProps_spec.md
+    path: .spec-workflow/specs/EmotionChartProps/EmotionChartProps_spec.md
   EmotionDistributionPattern:
+    created: '2026-03-30T03:35:54.308582'
     name: EmotionDistributionPattern
-    spec_file: EmotionDistributionPattern/EmotionDistributionPattern_spec.md
+    path: .spec-workflow/specs/EmotionDistributionPattern/EmotionDistributionPattern_spec.md
+  EmotionDistributionPatternSchema:
+    created: '2026-03-30T03:35:54.311161'
+    name: EmotionDistributionPatternSchema
+    path: .spec-workflow/specs/EmotionDistributionPatternSchema/EmotionDistributionPatternSchema_spec.md
   EmotionGenerator:
+    created: '2026-03-30T03:35:54.311378'
     name: EmotionGenerator
-    spec_file: EmotionGenerator/EmotionGenerator_spec.md
+    path: .spec-workflow/specs/EmotionGenerator/EmotionGenerator_spec.md
   EmotionRanges:
+    created: '2026-03-30T03:35:54.310361'
     name: EmotionRanges
-    spec_file: EmotionRanges/EmotionRanges_spec.md
+    path: .spec-workflow/specs/EmotionRanges/EmotionRanges_spec.md
   Env:
+    created: '2026-03-30T03:35:54.311591'
     name: Env
-    spec_file: Env/Env_spec.md
+    path: .spec-workflow/specs/Env/Env_spec.md
   ErrorBoundary:
+    created: '2026-03-30T03:35:54.314223'
     name: ErrorBoundary
-    spec_file: ErrorBoundary/ErrorBoundary_spec.md
+    path: .spec-workflow/specs/ErrorBoundary/ErrorBoundary_spec.md
   ErrorCodeType:
+    created: '2026-03-30T03:35:54.311305'
     name: ErrorCodeType
-    spec_file: ErrorCodeType/ErrorCodeType_spec.md
+    path: .spec-workflow/specs/ErrorCodeType/ErrorCodeType_spec.md
   EventEffect:
+    created: '2026-03-30T03:35:54.309704'
     name: EventEffect
-    spec_file: EventEffect/EventEffect_spec.md
-  GET:
-    name: GET
-    spec_file: GET/GET_spec.md
-  GenerationBounds:
-    name: GenerationBounds
-    spec_file: GenerationBounds/GenerationBounds_spec.md
-  GridShape:
-    name: GridShape
-    spec_file: GridShape/GridShape_spec.md
-  IRecordRepository:
-    name: IRecordRepository
-    spec_file: IRecordRepository/IRecordRepository_spec.md
-  InfiniteLoopError:
-    name: InfiniteLoopError
-    spec_file: InfiniteLoopError/InfiniteLoopError_spec.md
-  Icons:
-    name: Icons
-    spec_file: Icons/Icons_spec.md
-    status: verified
-    coverage: 100
-  JsonReadable:
-    name: JsonReadable
-    spec_file: JsonReadable/JsonReadable_spec.md
-  LogEntry:
-    name: LogEntry
-    spec_file: LogEntry/LogEntry_spec.md
-  LogLevel:
-    name: LogLevel
-    spec_file: LogLevel/LogLevel_spec.md
-  LogVisibility:
-    name: LogVisibility
-    spec_file: LogVisibility/LogVisibility_spec.md
-  LoopDetector:
-    name: LoopDetector
-    spec_file: LoopDetector/LoopDetector_spec.md
-  LoadingSpinner:
-    name: LoadingSpinner
-    spec_file: LoadingSpinner/LoadingSpinner_spec.md
-  LoadingOverlay:
-    name: LoadingOverlay
-    spec_file: LoadingOverlay/LoadingOverlay_spec.md
-    status: verified
-    coverage: 100
-  LoadingCard:
-    name: LoadingCard
-    spec_file: LoadingCard/LoadingCard_spec.md
-    status: verified
-    coverage: 100
-  MemoryMonitor:
-    name: MemoryMonitor
-    spec_file: MemoryMonitor/MemoryMonitor_spec.md
-  MockFetchResponse:
-    name: MockFetchResponse
-    spec_file: MockFetchResponse/MockFetchResponse_spec.md
-  MockStatsRepository:
-    name: MockStatsRepository
-    spec_file: MockStatsRepository/MockStatsRepository_spec.md
-  MonthlyStats:
-    name: MonthlyStats
-    spec_file: MonthlyStats/MonthlyStats_spec.md
-  NetworkError:
-    name: NetworkError
-    spec_file: NetworkError/NetworkError_spec.md
-  NotificationState:
-    name: NotificationState
-    spec_file: NotificationState/NotificationState_spec.md
-  PageBreadcrumb:
-    name: PageBreadcrumb
-    spec_file: PageBreadcrumb/PageBreadcrumb_spec.md
-  Notification:
-    name: Notification
-    spec_file: Notification/Notification_spec.md
-  POST:
-    name: POST
-    spec_file: POST/POST_spec.md
-  PrismaRecordRepository:
-    name: PrismaRecordRepository
-    spec_file: PrismaRecordRepository/PrismaRecordRepository_spec.md
-  PrismaStatsRepository:
-    name: PrismaStatsRepository
-    spec_file: PrismaStatsRepository/PrismaStatsRepository_spec.md
-  Record:
-    name: Record
-    spec_file: Record/Record_spec.md
-  SeasonalEffect:
-    name: SeasonalEffect
-    spec_file: SeasonalEffect/SeasonalEffect_spec.md
-  SeedRequest:
-    name: SeedRequest
-    spec_file: SeedRequest/SeedRequest_spec.md
-  SeedResponse:
-    name: SeedResponse
-    spec_file: SeedResponse/SeedResponse_spec.md
-  Stats:
-    name: Stats
-    spec_file: Stats/Stats_spec.md
-  StatsData:
-    name: StatsData
-    spec_file: StatsData/StatsData_spec.md
-  StatsOverview:
-    name: StatsOverview
-    spec_file: StatsOverview/StatsOverview_spec.md
-  StatsRepository:
-    name: StatsRepository
-    spec_file: StatsRepository/StatsRepository_spec.md
-  StatsResponse:
-    name: StatsResponse
-    spec_file: StatsResponse/StatsResponse_spec.md
-  StatsService:
-    name: StatsService
-    spec_file: StatsService/StatsService_spec.md
-  StructuredLogger:
-    name: StructuredLogger
-    spec_file: StructuredLogger/StructuredLogger_spec.md
-  StudentStats:
-    name: StudentStats
-    spec_file: StudentStats/StudentStats_spec.md
-  TimeOfDayStats:
-    name: TimeOfDayStats
-    spec_file: TimeOfDayStats/TimeOfDayStats_spec.md
-  TimeoutConfig:
-    name: TimeoutConfig
-    spec_file: TimeoutConfig/TimeoutConfig_spec.md
-  TimeoutError:
-    name: TimeoutError
-    spec_file: TimeoutError/TimeoutError_spec.md
-  UsageInstructions:
-    name: UsageInstructions
-    spec_file: UsageInstructions/UsageInstructions_spec.md
-  UseAsyncOptions:
-    name: UseAsyncOptions
-    spec_file: UseAsyncOptions/UseAsyncOptions_spec.md
-  UseAsyncResult:
-    name: UseAsyncResult
-    spec_file: UseAsyncResult/UseAsyncResult_spec.md
-  UseDataGenerationProps:
-    name: UseDataGenerationProps
-    spec_file: UseDataGenerationProps/UseDataGenerationProps_spec.md
-  UseDataGenerationResult:
-    name: UseDataGenerationResult
-    spec_file: UseDataGenerationResult/UseDataGenerationResult_spec.md
-  UseNotificationResult:
-    name: UseNotificationResult
-    spec_file: UseNotificationResult/UseNotificationResult_spec.md
-  UseStatsResult:
-    name: UseStatsResult
-    spec_file: UseStatsResult/UseStatsResult_spec.md
-  ValidationError:
-    name: ValidationError
-    spec_file: ValidationError/ValidationError_spec.md
-  average:
-    name: average
-    spec_file: average/average_spec.md
-  calculateDayOfWeekStats:
-    name: calculateDayOfWeekStats
-    spec_file: calculateDayOfWeekStats/calculateDayOfWeekStats_spec.md
-  calculateEmotionDistribution:
-    name: calculateEmotionDistribution
-    spec_file: calculateEmotionDistribution/calculateEmotionDistribution_spec.md
-  calculateEmotionTrend:
-    name: calculateEmotionTrend
-    spec_file: calculateEmotionTrend/calculateEmotionTrend_spec.md
-  calculateMonthlyStats:
-    name: calculateMonthlyStats
-    spec_file: calculateMonthlyStats/calculateMonthlyStats_spec.md
-  calculateSeasonalEffect:
-    name: calculateSeasonalEffect
-    spec_file: calculateSeasonalEffect/calculateSeasonalEffect_spec.md
-  calculateStudentStats:
-    name: calculateStudentStats
-    spec_file: calculateStudentStats/calculateStudentStats_spec.md
-  calculateTimeOfDayStats:
-    name: calculateTimeOfDayStats
-    spec_file: calculateTimeOfDayStats/calculateTimeOfDayStats_spec.md
-  calculateTrendline:
-    name: calculateTrendline
-    spec_file: calculateTrendline/calculateTrendline_spec.md
-  clamp:
-    name: clamp
-    spec_file: clamp/clamp_spec.md
-  clampEmotion:
-    name: clampEmotion
-    spec_file: clampEmotion/clampEmotion_spec.md
-  cleanupMockFetch:
-    name: cleanupMockFetch
-    spec_file: cleanupMockFetch/cleanupMockFetch_spec.md
-  createCircuitBreaker:
-    name: createCircuitBreaker
-    spec_file: createCircuitBreaker/createCircuitBreaker_spec.md
-  createEmptyStats:
-    name: createEmptyStats
-    spec_file: createEmptyStats/createEmptyStats_spec.md
-  createErrorResponse:
-    name: createErrorResponse
-    spec_file: createErrorResponse/createErrorResponse_spec.md
-  createMockResponse:
-    name: createMockResponse
-    spec_file: createMockResponse/createMockResponse_spec.md
-  createRecordRepository:
-    name: createRecordRepository
-    spec_file: createRecordRepository/createRecordRepository_spec.md
-  createStatsRepository:
-    name: createStatsRepository
-    spec_file: createStatsRepository/createStatsRepository_spec.md
-  createStatsService:
-    name: createStatsService
-    spec_file: createStatsService/createStatsService_spec.md
-  createSuccessResponse:
-    name: createSuccessResponse
-    spec_file: createSuccessResponse/createSuccessResponse_spec.md
-  ensureServer:
-    name: ensureServer
-    spec_file: ensureServer/ensureServer_spec.md
-  expectClasses:
-    name: expectClasses
-    spec_file: expectClasses/expectClasses_spec.md
-  generateBaseEmotion:
-    name: generateBaseEmotion
-    spec_file: generateBaseEmotion/generateBaseEmotion_spec.md
-  generateEmotion:
-    name: generateEmotion
-    spec_file: generateEmotion/generateEmotion_spec.md
-  generateNormalRandom:
-    name: generateNormalRandom
-    spec_file: generateNormalRandom/generateNormalRandom_spec.md
-  generateSeedData:
-    name: generateSeedData
-    spec_file: generateSeedData/generateSeedData_spec.md
-  getButtonClasses:
-    name: getButtonClasses
-    spec_file: getButtonClasses/getButtonClasses_spec.md
-  getEnv:
-    name: getEnv
-    spec_file: getEnv/getEnv_spec.md
-  getFirstMockCallArgs:
-    name: getFirstMockCallArgs
-    spec_file: getFirstMockCallArgs/getFirstMockCallArgs_spec.md
-  getMockCallCount:
-    name: getMockCallCount
-    spec_file: getMockCallCount/getMockCallCount_spec.md
-  getNotificationTimeout:
-    name: getNotificationTimeout
-    spec_file: getNotificationTimeout/getNotificationTimeout_spec.md
-  getRandomHour:
-    name: getRandomHour
-    spec_file: getRandomHour/getRandomHour_spec.md
-  getUserFriendlyMessage:
-    name: getUserFriendlyMessage
-    spec_file: getUserFriendlyMessage/getUserFriendlyMessage_spec.md
-  globalLoopDetector:
-    name: globalLoopDetector
-    spec_file: globalLoopDetector/globalLoopDetector_spec.md
-  handleApiError:
-    name: handleApiError
-    spec_file: handleApiError/handleApiError_spec.md
-  isAppError:
-    name: isAppError
-    spec_file: isAppError/isAppError_spec.md
-  isDevelopment:
-    name: isDevelopment
-    spec_file: isDevelopment/isDevelopment_spec.md
-  isNetworkError:
-    name: isNetworkError
-    spec_file: isNetworkError/isNetworkError_spec.md
-  isNotFoundError:
-    name: isNotFoundError
-    spec_file: isNotFoundError/isNotFoundError_spec.md
-  isPrismaProvider:
-    name: isPrismaProvider
-    spec_file: isPrismaProvider/isPrismaProvider_spec.md
-  isProduction:
-    name: isProduction
-    spec_file: isProduction/isProduction_spec.md
-  isServerError:
-    name: isServerError
-    spec_file: isServerError/isServerError_spec.md
-  isTest:
-    name: isTest
-    spec_file: isTest/isTest_spec.md
-  isTimeoutError:
-    name: isTimeoutError
-    spec_file: isTimeoutError/isTimeoutError_spec.md
-  isValidationError:
-    name: isValidationError
-    spec_file: isValidationError/isValidationError_spec.md
-  logError:
-    name: logError
-    spec_file: logError/logError_spec.md
-  makeServer:
-    name: makeServer
-    spec_file: makeServer/makeServer_spec.md
-  mockFetchError:
-    name: mockFetchError
-    spec_file: mockFetchError/mockFetchError_spec.md
-  mockFetchNetworkError:
-    name: mockFetchNetworkError
-    spec_file: mockFetchNetworkError/mockFetchNetworkError_spec.md
-  mockFetchSuccess:
-    name: mockFetchSuccess
-    spec_file: mockFetchSuccess/mockFetchSuccess_spec.md
-  mockProcessEnv:
-    name: mockProcessEnv
-    spec_file: mockProcessEnv/mockProcessEnv_spec.md
-  normalizeError:
-    name: normalizeError
-    spec_file: normalizeError/normalizeError_spec.md
-  parseRequestBody:
-    name: parseRequestBody
-    spec_file: parseRequestBody/parseRequestBody_spec.md
-  reloadPage:
-    name: reloadPage
-    spec_file: reloadPage/reloadPage_spec.md
-  setupMockFetch:
-    name: setupMockFetch
-    spec_file: setupMockFetch/setupMockFetch_spec.md
-  useDashboard:
-    name: useDashboard
-    spec_file: useDashboard/useDashboard_spec.md
-  useDataGeneration:
-    name: useDataGeneration
-    spec_file: useDataGeneration/useDataGeneration_spec.md
-  useNotification:
-    name: useNotification
-    spec_file: useNotification/useNotification_spec.md
-  useSeedGeneration:
-    name: useSeedGeneration
-    spec_file: useSeedGeneration/useSeedGeneration_spec.md
-  useSidebar:
-    name: useSidebar
-    spec_file: useSidebar/useSidebar_spec.md
-  useStats:
-    name: useStats
-    spec_file: useStats/useStats_spec.md
-  useTheme:
-    name: useTheme
-    spec_file: useTheme/useTheme_spec.md
+    path: .spec-workflow/specs/EventEffect/EventEffect_spec.md
+  EventEffectSchema:
+    created: '2026-03-30T03:35:54.304592'
+    name: EventEffectSchema
+    path: .spec-workflow/specs/EventEffectSchema/EventEffectSchema_spec.md
   ExportButton:
+    created: '2026-03-30T03:35:54.310648'
     name: ExportButton
-    spec_file: ExportButton/ExportButton_spec.md
+    path: .spec-workflow/specs/ExportButton/ExportButton_spec.md
+  GET:
+    created: '2026-03-30T03:35:54.304762'
+    name: GET
+    path: .spec-workflow/specs/GET/GET_spec.md
+  GenerationBounds:
+    created: '2026-03-30T03:35:54.312035'
+    name: GenerationBounds
+    path: .spec-workflow/specs/GenerationBounds/GenerationBounds_spec.md
+  GridShape:
+    created: '2026-03-30T03:35:54.314295'
+    name: GridShape
+    path: .spec-workflow/specs/GridShape/GridShape_spec.md
+  HTTP_STATUS:
+    created: '2026-03-30T03:35:54.308153'
+    name: HTTP_STATUS
+    path: .spec-workflow/specs/HTTP_STATUS/HTTP_STATUS_spec.md
+  IRecordRepository:
+    created: '2026-03-30T03:35:54.304501'
+    name: IRecordRepository
+    path: .spec-workflow/specs/IRecordRepository/IRecordRepository_spec.md
+  Icons:
+    created: '2026-03-30T03:35:54.306208'
+    name: Icons
+    path: .spec-workflow/specs/Icons/Icons_spec.md
+  InfiniteLoopError:
+    created: '2026-03-30T03:35:54.312757'
+    name: InfiniteLoopError
+    path: .spec-workflow/specs/InfiniteLoopError/InfiniteLoopError_spec.md
+  JsonReadable:
+    created: '2026-03-30T03:35:54.314367'
+    name: JsonReadable
+    path: .spec-workflow/specs/JsonReadable/JsonReadable_spec.md
+  LoadingCard:
+    created: '2026-03-30T03:35:54.307776'
+    name: LoadingCard
+    path: .spec-workflow/specs/LoadingCard/LoadingCard_spec.md
+  LoadingOverlay:
+    created: '2026-03-30T03:35:54.313718'
+    name: LoadingOverlay
+    path: .spec-workflow/specs/LoadingOverlay/LoadingOverlay_spec.md
+  LoadingSpinner:
+    created: '2026-03-30T03:35:54.311232'
+    name: LoadingSpinner
+    path: .spec-workflow/specs/LoadingSpinner/LoadingSpinner_spec.md
+  LogEntry:
+    created: '2026-03-30T03:35:54.305516'
+    name: LogEntry
+    path: .spec-workflow/specs/LogEntry/LogEntry_spec.md
+  LogLevel:
+    created: '2026-03-30T03:35:54.308367'
+    name: LogLevel
+    path: .spec-workflow/specs/LogLevel/LogLevel_spec.md
+  LogVisibility:
+    created: '2026-03-30T03:35:54.315121'
+    name: LogVisibility
+    path: .spec-workflow/specs/LogVisibility/LogVisibility_spec.md
+  LoopDetector:
+    created: '2026-03-30T03:35:54.313261'
+    name: LoopDetector
+    path: .spec-workflow/specs/LoopDetector/LoopDetector_spec.md
+  MemoryMonitor:
+    created: '2026-03-30T03:35:54.310804'
+    name: MemoryMonitor
+    path: .spec-workflow/specs/MemoryMonitor/MemoryMonitor_spec.md
+  MockFetchResponse:
+    created: '2026-03-30T03:35:54.304915'
+    name: MockFetchResponse
+    path: .spec-workflow/specs/MockFetchResponse/MockFetchResponse_spec.md
+  MockStatsRepository:
+    created: '2026-03-30T03:35:54.313633'
+    name: MockStatsRepository
+    path: .spec-workflow/specs/MockStatsRepository/MockStatsRepository_spec.md
+  MonthlyStats:
+    created: '2026-03-30T03:35:54.307701'
+    name: MonthlyStats
+    path: .spec-workflow/specs/MonthlyStats/MonthlyStats_spec.md
+  NetworkError:
+    created: '2026-03-30T03:35:54.310290'
+    name: NetworkError
+    path: .spec-workflow/specs/NetworkError/NetworkError_spec.md
+  Notification:
+    created: '2026-03-30T03:35:54.305292'
+    name: Notification
+    path: .spec-workflow/specs/Notification/Notification_spec.md
+  NotificationState:
+    created: '2026-03-30T03:35:54.314151'
+    name: NotificationState
+    path: .spec-workflow/specs/NotificationState/NotificationState_spec.md
+  POST:
+    created: '2026-03-30T03:35:54.314975'
+    name: POST
+    path: .spec-workflow/specs/POST/POST_spec.md
+  PageBreadcrumb:
+    created: '2026-03-30T03:35:54.315850'
+    name: PageBreadcrumb
+    path: .spec-workflow/specs/PageBreadcrumb/PageBreadcrumb_spec.md
+  PaginationOptions:
+    created: '2026-03-30T03:35:54.304681'
+    name: PaginationOptions
+    path: .spec-workflow/specs/PaginationOptions/PaginationOptions_spec.md
+  PaginationResult:
+    created: '2026-03-30T03:35:54.306966'
+    name: PaginationResult
+    path: .spec-workflow/specs/PaginationResult/PaginationResult_spec.md
+  PrismaRecordRepository:
+    created: '2026-03-30T03:35:54.307182'
+    name: PrismaRecordRepository
+    path: .spec-workflow/specs/PrismaRecordRepository/PrismaRecordRepository_spec.md
+  PrismaStatsRepository:
+    created: '2026-03-30T03:35:54.313791'
+    name: PrismaStatsRepository
+    path: .spec-workflow/specs/PrismaStatsRepository/PrismaStatsRepository_spec.md
+  Record:
+    created: '2026-03-30T03:35:54.313047'
+    name: Record
+    path: .spec-workflow/specs/Record/Record_spec.md
+  RecordSchema:
+    created: '2026-03-30T03:35:54.309458'
+    name: RecordSchema
+    path: .spec-workflow/specs/RecordSchema/RecordSchema_spec.md
+  SeasonalEffect:
+    created: '2026-03-30T03:35:54.314006'
+    name: SeasonalEffect
+    path: .spec-workflow/specs/SeasonalEffect/SeasonalEffect_spec.md
+  SeedRequest:
+    created: '2026-03-30T03:35:54.310949'
+    name: SeedRequest
+    path: .spec-workflow/specs/SeedRequest/SeedRequest_spec.md
+  SeedRequestSchema:
+    created: '2026-03-30T03:35:54.315192'
+    name: SeedRequestSchema
+    path: .spec-workflow/specs/SeedRequestSchema/SeedRequestSchema_spec.md
+  SeedResponse:
+    created: '2026-03-30T03:35:54.315706'
+    name: SeedResponse
+    path: .spec-workflow/specs/SeedResponse/SeedResponse_spec.md
+  SeedResponseSchema:
+    created: '2026-03-30T03:35:54.315621'
+    name: SeedResponseSchema
+    path: .spec-workflow/specs/SeedResponseSchema/SeedResponseSchema_spec.md
+  Stats:
+    created: '2026-03-30T03:35:54.311747'
+    name: Stats
+    path: .spec-workflow/specs/Stats/Stats_spec.md
+  StatsData:
+    created: '2026-03-30T03:35:54.308065'
+    name: StatsData
+    path: .spec-workflow/specs/StatsData/StatsData_spec.md
+  StatsOverview:
+    created: '2026-03-30T03:35:54.311449'
+    name: StatsOverview
+    path: .spec-workflow/specs/StatsOverview/StatsOverview_spec.md
+  StatsRepository:
+    created: '2026-03-30T03:35:54.312465'
+    name: StatsRepository
+    path: .spec-workflow/specs/StatsRepository/StatsRepository_spec.md
+  StatsResponse:
+    created: '2026-03-30T03:35:54.309315'
+    name: StatsResponse
+    path: .spec-workflow/specs/StatsResponse/StatsResponse_spec.md
+  StatsService:
+    created: '2026-03-30T03:35:54.311819'
+    name: StatsService
+    path: .spec-workflow/specs/StatsService/StatsService_spec.md
+  StructuredLogger:
+    created: '2026-03-30T03:35:54.305605'
+    name: StructuredLogger
+    path: .spec-workflow/specs/StructuredLogger/StructuredLogger_spec.md
+  StudentStats:
+    created: '2026-03-30T03:35:54.305765'
+    name: StudentStats
+    path: .spec-workflow/specs/StudentStats/StudentStats_spec.md
+  TimeOfDayStats:
+    created: '2026-03-30T03:35:54.310146'
+    name: TimeOfDayStats
+    path: .spec-workflow/specs/TimeOfDayStats/TimeOfDayStats_spec.md
+  TimeoutConfig:
+    created: '2026-03-30T03:35:54.314078'
+    name: TimeoutConfig
+    path: .spec-workflow/specs/TimeoutConfig/TimeoutConfig_spec.md
+  TimeoutError:
+    created: '2026-03-30T03:35:54.307111'
+    name: TimeoutError
+    path: .spec-workflow/specs/TimeoutError/TimeoutError_spec.md
+  UsageInstructions:
+    created: '2026-03-30T03:35:54.310576'
+    name: UsageInstructions
+    path: .spec-workflow/specs/UsageInstructions/UsageInstructions_spec.md
+  UseAsyncOptions:
+    created: '2026-03-30T03:35:54.311962'
+    name: UseAsyncOptions
+    path: .spec-workflow/specs/UseAsyncOptions/UseAsyncOptions_spec.md
+  UseAsyncResult:
+    created: '2026-03-30T03:35:54.307038'
+    name: UseAsyncResult
+    path: .spec-workflow/specs/UseAsyncResult/UseAsyncResult_spec.md
+  UseDataGenerationProps:
+    created: '2026-03-30T03:35:54.315995'
+    name: UseDataGenerationProps
+    path: .spec-workflow/specs/UseDataGenerationProps/UseDataGenerationProps_spec.md
+  UseDataGenerationResult:
+    created: '2026-03-30T03:35:54.315551'
+    name: UseDataGenerationResult
+    path: .spec-workflow/specs/UseDataGenerationResult/UseDataGenerationResult_spec.md
+  UseNotificationResult:
+    created: '2026-03-30T03:35:54.305691'
+    name: UseNotificationResult
+    path: .spec-workflow/specs/UseNotificationResult/UseNotificationResult_spec.md
+  UseStatsResult:
+    created: '2026-03-30T03:35:54.315776'
+    name: UseStatsResult
+    path: .spec-workflow/specs/UseStatsResult/UseStatsResult_spec.md
+  ValidationError:
+    created: '2026-03-30T03:35:54.310504'
+    name: ValidationError
+    path: .spec-workflow/specs/ValidationError/ValidationError_spec.md
+  average:
+    created: '2026-03-30T03:35:54.306357'
+    name: average
+    path: .spec-workflow/specs/average/average_spec.md
+  calculateDayOfWeekStats:
+    created: '2026-03-30T03:35:54.309028'
+    name: calculateDayOfWeekStats
+    path: .spec-workflow/specs/calculateDayOfWeekStats/calculateDayOfWeekStats_spec.md
+  calculateEmotionDistribution:
+    created: '2026-03-30T03:35:54.309931'
+    name: calculateEmotionDistribution
+    path: .spec-workflow/specs/calculateEmotionDistribution/calculateEmotionDistribution_spec.md
+  calculateEmotionTrend:
+    created: '2026-03-30T03:35:54.313561'
+    name: calculateEmotionTrend
+    path: .spec-workflow/specs/calculateEmotionTrend/calculateEmotionTrend_spec.md
+  calculateMonthlyStats:
+    created: '2026-03-30T03:35:54.316066'
+    name: calculateMonthlyStats
+    path: .spec-workflow/specs/calculateMonthlyStats/calculateMonthlyStats_spec.md
+  calculateSeasonalEffect:
+    created: '2026-03-30T03:35:54.307401'
+    name: calculateSeasonalEffect
+    path: .spec-workflow/specs/calculateSeasonalEffect/calculateSeasonalEffect_spec.md
+  calculateStudentStats:
+    created: '2026-03-30T03:35:54.312903'
+    name: calculateStudentStats
+    path: .spec-workflow/specs/calculateStudentStats/calculateStudentStats_spec.md
+  calculateTimeOfDayStats:
+    created: '2026-03-30T03:35:54.314822'
+    name: calculateTimeOfDayStats
+    path: .spec-workflow/specs/calculateTimeOfDayStats/calculateTimeOfDayStats_spec.md
+  calculateTrendline:
+    created: '2026-03-30T03:35:54.305988'
+    name: calculateTrendline
+    path: .spec-workflow/specs/calculateTrendline/calculateTrendline_spec.md
+  clamp:
+    created: '2026-03-30T03:35:54.315922'
+    name: clamp
+    path: .spec-workflow/specs/clamp/clamp_spec.md
+  clampEmotion:
+    created: '2026-03-30T03:35:54.310730'
+    name: clampEmotion
+    path: .spec-workflow/specs/clampEmotion/clampEmotion_spec.md
+  cleanupMockFetch:
+    created: '2026-03-30T03:35:54.315481'
+    name: cleanupMockFetch
+    path: .spec-workflow/specs/cleanupMockFetch/cleanupMockFetch_spec.md
+  createCircuitBreaker:
+    created: '2026-03-30T03:35:54.307994'
+    name: createCircuitBreaker
+    path: .spec-workflow/specs/createCircuitBreaker/createCircuitBreaker_spec.md
+  createEmptyStats:
+    created: '2026-03-30T03:35:54.304839'
+    name: createEmptyStats
+    path: .spec-workflow/specs/createEmptyStats/createEmptyStats_spec.md
+  createErrorResponse:
+    created: '2026-03-30T03:35:54.307921'
+    name: createErrorResponse
+    path: .spec-workflow/specs/createErrorResponse/createErrorResponse_spec.md
+  createMockResponse:
+    created: '2026-03-30T03:35:54.309530'
+    name: createMockResponse
+    path: .spec-workflow/specs/createMockResponse/createMockResponse_spec.md
+  createMockedFunction:
+    created: '2026-03-30T03:35:54.311091'
+    name: createMockedFunction
+    path: .spec-workflow/specs/createMockedFunction/createMockedFunction_spec.md
+  createRecordRepository:
+    created: '2026-03-30T03:35:54.314441'
+    name: createRecordRepository
+    path: .spec-workflow/specs/createRecordRepository/createRecordRepository_spec.md
+  createStatsRepository:
+    created: '2026-03-30T03:35:54.309848'
+    name: createStatsRepository
+    path: .spec-workflow/specs/createStatsRepository/createStatsRepository_spec.md
+  createStatsService:
+    created: '2026-03-30T03:35:54.308295'
+    name: createStatsService
+    path: .spec-workflow/specs/createStatsService/createStatsService_spec.md
+  createSuccessResponse:
+    created: '2026-03-30T03:35:54.306283'
+    name: createSuccessResponse
+    path: .spec-workflow/specs/createSuccessResponse/createSuccessResponse_spec.md
+  createValidStats:
+    created: '2026-03-30T03:35:54.313116'
+    name: createValidStats
+    path: .spec-workflow/specs/createValidStats/createValidStats_spec.md
+  ensureServer:
+    created: '2026-03-30T03:35:54.313333'
+    name: ensureServer
+    path: .spec-workflow/specs/ensureServer/ensureServer_spec.md
+  expectClasses:
+    created: '2026-03-30T03:35:54.307255'
+    name: expectClasses
+    path: .spec-workflow/specs/expectClasses/expectClasses_spec.md
   exportStatsToCSV:
+    created: '2026-03-30T03:35:54.312179'
     name: exportStatsToCSV
-    spec_file: exportStatsToCSV/exportStatsToCSV_spec.md
+    path: .spec-workflow/specs/exportStatsToCSV/exportStatsToCSV_spec.md
+  generateBaseEmotion:
+    created: '2026-03-30T03:35:54.309170'
+    name: generateBaseEmotion
+    path: .spec-workflow/specs/generateBaseEmotion/generateBaseEmotion_spec.md
   generateCSVFilename:
+    created: '2026-03-30T03:35:54.308437'
     name: generateCSVFilename
-    spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 137
+    path: .spec-workflow/specs/generateCSVFilename/generateCSVFilename_spec.md
+  generateEmotion:
+    created: '2026-03-30T03:35:54.313406'
+    name: generateEmotion
+    path: .spec-workflow/specs/generateEmotion/generateEmotion_spec.md
+  generateNormalRandom:
+    created: '2026-03-30T03:35:54.305915'
+    name: generateNormalRandom
+    path: .spec-workflow/specs/generateNormalRandom/generateNormalRandom_spec.md
+  generateSeedData:
+    created: '2026-03-30T03:35:54.314514'
+    name: generateSeedData
+    path: .spec-workflow/specs/generateSeedData/generateSeedData_spec.md
+  getButtonClasses:
+    created: '2026-03-30T03:35:54.312320'
+    name: getButtonClasses
+    path: .spec-workflow/specs/getButtonClasses/getButtonClasses_spec.md
+  getEnv:
+    created: '2026-03-30T03:35:54.307849'
+    name: getEnv
+    path: .spec-workflow/specs/getEnv/getEnv_spec.md
+  getFirstMockCallArg:
+    created: '2026-03-30T03:35:54.314892'
+    name: getFirstMockCallArg
+    path: .spec-workflow/specs/getFirstMockCallArg/getFirstMockCallArg_spec.md
+  getFirstMockCallArgs:
+    created: '2026-03-30T03:35:54.315337'
+    name: getFirstMockCallArgs
+    path: .spec-workflow/specs/getFirstMockCallArgs/getFirstMockCallArgs_spec.md
+  getMockCallCount:
+    created: '2026-03-30T03:35:54.311022'
+    name: getMockCallCount
+    path: .spec-workflow/specs/getMockCallCount/getMockCallCount_spec.md
+  getNotificationTimeout:
+    created: '2026-03-30T03:35:54.311520'
+    name: getNotificationTimeout
+    path: .spec-workflow/specs/getNotificationTimeout/getNotificationTimeout_spec.md
+  getPageForIndex:
+    created: '2026-03-30T03:35:54.312249'
+    name: getPageForIndex
+    path: .spec-workflow/specs/getPageForIndex/getPageForIndex_spec.md
+  getPageNumbers:
+    created: '2026-03-30T03:35:54.308654'
+    name: getPageNumbers
+    path: .spec-workflow/specs/getPageNumbers/getPageNumbers_spec.md
+  getRandomHour:
+    created: '2026-03-30T03:35:54.314659'
+    name: getRandomHour
+    path: .spec-workflow/specs/getRandomHour/getRandomHour_spec.md
+  getUserFriendlyMessage:
+    created: '2026-03-30T03:35:54.310219'
+    name: getUserFriendlyMessage
+    path: .spec-workflow/specs/getUserFriendlyMessage/getUserFriendlyMessage_spec.md
+  globalLoopDetector:
+    created: '2026-03-30T03:35:54.313862'
+    name: globalLoopDetector
+    path: .spec-workflow/specs/globalLoopDetector/globalLoopDetector_spec.md
+  handleApiError:
+    created: '2026-03-30T03:35:54.314586'
+    name: handleApiError
+    path: .spec-workflow/specs/handleApiError/handleApiError_spec.md
+  isAppError:
+    created: '2026-03-30T03:35:54.315265'
+    name: isAppError
+    path: .spec-workflow/specs/isAppError/isAppError_spec.md
+  isDevelopment:
+    created: '2026-03-30T03:35:54.309776'
+    name: isDevelopment
+    path: .spec-workflow/specs/isDevelopment/isDevelopment_spec.md
+  isNetworkError:
+    created: '2026-03-30T03:35:54.312831'
+    name: isNetworkError
+    path: .spec-workflow/specs/isNetworkError/isNetworkError_spec.md
+  isNotFoundError:
+    created: '2026-03-30T03:35:54.305367'
+    name: isNotFoundError
+    path: .spec-workflow/specs/isNotFoundError/isNotFoundError_spec.md
+  isNotNullOrUndefined:
+    created: '2026-03-30T03:35:54.306747'
+    name: isNotNullOrUndefined
+    path: .spec-workflow/specs/isNotNullOrUndefined/isNotNullOrUndefined_spec.md
+  isPrismaProvider:
+    created: '2026-03-30T03:35:54.305066'
+    name: isPrismaProvider
+    path: .spec-workflow/specs/isPrismaProvider/isPrismaProvider_spec.md
+  isProduction:
+    created: '2026-03-30T03:35:54.306515'
+    name: isProduction
+    path: .spec-workflow/specs/isProduction/isProduction_spec.md
+  isServerError:
+    created: '2026-03-30T03:35:54.307544'
+    name: isServerError
+    path: .spec-workflow/specs/isServerError/isServerError_spec.md
+  isTest:
+    created: '2026-03-30T03:35:54.307472'
+    name: isTest
+    path: .spec-workflow/specs/isTest/isTest_spec.md
+  isTimeoutError:
+    created: '2026-03-30T03:35:54.305217'
+    name: isTimeoutError
+    path: .spec-workflow/specs/isTimeoutError/isTimeoutError_spec.md
+  isValidationError:
+    created: '2026-03-30T03:35:54.305443'
+    name: isValidationError
+    path: .spec-workflow/specs/isValidationError/isValidationError_spec.md
+  logError:
+    created: '2026-03-30T03:35:54.314749'
+    name: logError
+    path: .spec-workflow/specs/logError/logError_spec.md
+  makeServer:
+    created: '2026-03-30T03:35:54.313934'
+    name: makeServer
+    path: .spec-workflow/specs/makeServer/makeServer_spec.md
+  mockFetchError:
+    created: '2026-03-30T03:35:54.309099'
+    name: mockFetchError
+    path: .spec-workflow/specs/mockFetchError/mockFetchError_spec.md
+  mockFetchNetworkError:
+    created: '2026-03-30T03:35:54.305141'
+    name: mockFetchNetworkError
+    path: .spec-workflow/specs/mockFetchNetworkError/mockFetchNetworkError_spec.md
+  mockFetchSuccess:
+    created: '2026-03-30T03:35:54.312975'
+    name: mockFetchSuccess
+    path: .spec-workflow/specs/mockFetchSuccess/mockFetchSuccess_spec.md
+  mockProcessEnv:
+    created: '2026-03-30T03:35:54.312108'
+    name: mockProcessEnv
+    path: .spec-workflow/specs/mockProcessEnv/mockProcessEnv_spec.md
+  normalizeError:
+    created: '2026-03-30T03:35:54.313188'
+    name: normalizeError
+    path: .spec-workflow/specs/normalizeError/normalizeError_spec.md
+  paginate:
+    created: '2026-03-30T03:35:54.307327'
+    name: paginate
+    path: .spec-workflow/specs/paginate/paginate_spec.md
+  parseRequestBody:
+    created: '2026-03-30T03:35:54.310875'
+    name: parseRequestBody
+    path: .spec-workflow/specs/parseRequestBody/parseRequestBody_spec.md
+  prisma:
+    created: '2026-03-30T03:35:54.306819'
+    name: prisma
+    path: .spec-workflow/specs/prisma/prisma_spec.md
+  reloadPage:
+    created: '2026-03-30T03:35:54.313479'
+    name: reloadPage
+    path: .spec-workflow/specs/reloadPage/reloadPage_spec.md
+  setupMockFetch:
+    created: '2026-03-30T03:35:54.310003'
+    name: setupMockFetch
+    path: .spec-workflow/specs/setupMockFetch/setupMockFetch_spec.md
+  useAsync:
+    created: '2026-03-30T03:35:54.306061'
+    name: useAsync
+    path: .spec-workflow/specs/useAsync/useAsync_spec.md
+  useDashboard:
+    created: '2026-03-30T03:35:54.305840'
+    name: useDashboard
+    path: .spec-workflow/specs/useDashboard/useDashboard_spec.md
+  useDataGeneration:
+    created: '2026-03-30T03:35:54.306134'
+    name: useDataGeneration
+    path: .spec-workflow/specs/useDataGeneration/useDataGeneration_spec.md
+  useNotification:
+    created: '2026-03-30T03:35:54.311664'
+    name: useNotification
+    path: .spec-workflow/specs/useNotification/useNotification_spec.md
+  useSeedGeneration:
+    created: '2026-03-30T03:35:54.306664'
+    name: useSeedGeneration
+    path: .spec-workflow/specs/useSeedGeneration/useSeedGeneration_spec.md
+  useSidebar:
+    created: '2026-03-30T03:35:54.310073'
+    name: useSidebar
+    path: .spec-workflow/specs/useSidebar/useSidebar_spec.md
+  useStats:
+    created: '2026-03-30T03:35:54.308736'
+    name: useStats
+    path: .spec-workflow/specs/useStats/useStats_spec.md
+  useTheme:
+    created: '2026-03-30T03:35:54.311889'
+    name: useTheme
+    path: .spec-workflow/specs/useTheme/useTheme_spec.md
+total: 157

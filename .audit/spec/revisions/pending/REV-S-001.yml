@@ -1,36 +1,26 @@
-id: "REV-S-001"
-axis: "S-001"
-axis_name: "SPEC存在確認"
-type: "spec_missing"
-priority: "P0"
-current_score: 10
+axis: S-001
+axis_name: SPEC Existence
+created: '2026-03-30T03:36:42.895830'
+current_score: 9
+details:
+- evidence: exists=True
+  id: S-001-1
+  max: 3
+  name: SPEC Directory
+  score: 3
+- id: S-001-2
+  max: 3
+  name: _index.yml Integrity
+  score: 3
+- evidence: covered=121/280 (43%)
+  id: S-001-3
+  max: 9
+  name: Public Symbol Coverage
+  score: 3
+gap: 3
+id: REV-S-001
+priority: P0
+recommendation: Generate SPECs for remaining uncovered public symbols (currently 43%
+  coverage, need 80%). Focus on core domain entities and utilities first.
 required_score: 12
-gap: 2
-recommendation: |
-  SPECカバレッジが46% (137/300公開シンボル) に留まっており、163の公開シンボルが未カバーです。
-
-  優先的にSPECを追加すべきシンボル:
-  - src/lib/constants/index.ts (50+の定数・設定)
-  - src/utils/statsCalculator.ts (17のユーティリティ関数)
-  - src/schemas/api.ts (20+のZodスキーマ)
-  - src/components/charts/ (主要なチャートコンポーネント)
-  - src/application/hooks/ (React hooks)
-
-  アクション:
-  1. クリティカルなドメインサービスから優先的に追加
-  2. 各SPECの *_spec.md ファイルを作成
-  3. _index.yml に新SPECを登録
-  4. _coverage_map.yml を更新
-affected_symbols:
-  - category: "constants"
-    count: 50
-    location: "src/lib/constants/index.ts"
-  - category: "utilities"
-    count: 17
-    location: "src/utils/statsCalculator.ts"
-  - category: "schemas"
-    count: 20
-    location: "src/schemas/api.ts"
-  - category: "components"
-    count: 30
-    location: "src/components/"
+type: spec_missing

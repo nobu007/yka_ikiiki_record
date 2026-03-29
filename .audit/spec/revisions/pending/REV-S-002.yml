@@ -1,0 +1,28 @@
+axis: S-002
+axis_name: I/O Definition
+created: '2026-03-30T03:36:42.898458'
+current_score: 11
+details:
+- id: S-002-1
+  max: 4
+  name: Input Types
+  score: 3
+- id: S-002-2
+  max: 4
+  name: Input Constraints
+  score: 3
+- id: S-002-3
+  max: 4
+  name: Output Definitions
+  score: 3
+- id: S-002-4
+  max: 3
+  name: Pre/Post Conditions
+  score: 2
+gap: 1
+id: REV-S-002
+priority: P1
+recommendation: Complete I/O definitions for all SPECs. Ensure input parameters have
+  explicit type annotations and constraint definitions. Add pre/post-condition sections.
+required_score: 12
+type: io_definition_incomplete

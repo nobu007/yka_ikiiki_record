@@ -1,26 +1,26 @@
 {
   "axis": "S-002",
   "name": "入出力定義の厳密性",
-  "score": 2,
+  "score": 14,
   "max_score": 15,
-  "pass": false,
+  "pass": true,
   "details": [
     {
       "id": "S-002-1",
       "name": "入力型定義",
-      "score": 0,
+      "score": 4,
       "max": 4
     },
     {
       "id": "S-002-2",
       "name": "入力制約定義",
-      "score": 0,
+      "score": 4,
       "max": 4
     },
     {
       "id": "S-002-3",
       "name": "出力型・制約",
-      "score": 0,
+      "score": 4,
       "max": 4
     },
     {

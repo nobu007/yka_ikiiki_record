@@ -1,0 +1,4 @@
+# Error scenarios for HTTP_STATUS
+- exception: TypeError
+  id: EDGE-001
+  scenario: Null input

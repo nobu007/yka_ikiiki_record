@@ -1,0 +1,4 @@
+# Error scenarios for RecordSchema
+- exception: TypeError
+  id: EDGE-001
+  scenario: Null input

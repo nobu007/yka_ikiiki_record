@@ -1,9 +1,9 @@
 {
   "axis": "S-008",
   "name": "SPEC鮮度",
-  "score": 6,
+  "score": 9,
   "max_score": 10,
-  "pass": false,
+  "pass": true,
   "details": [
     {
       "id": "S-008-1",
@@ -14,9 +14,8 @@
     {
       "id": "S-008-2",
       "name": "シグネチャ一致",
-      "score": 0,
-      "max": 4,
-      "evidence": "matched=0/113"
+      "score": 3,
+      "max": 4
     },
     {
       "id": "S-008-3",

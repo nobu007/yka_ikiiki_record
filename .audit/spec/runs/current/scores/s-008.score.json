@@ -1,26 +1,27 @@
 {
   "axis": "S-008",
-  "name": "SPEC鮮度",
-  "score": 9,
+  "name": "SPEC Freshness",
+  "score": 8,
   "max_score": 10,
-  "pass": true,
+  "pass_threshold": 8,
+  "pass_status": true,
   "details": [
     {
       "id": "S-008-1",
-      "name": "更新日妥当性",
-      "score": 3,
+      "name": "Update Validity",
+      "score": 2,
       "max": 3
     },
     {
       "id": "S-008-2",
-      "name": "シグネチャ一致",
-      "score": 3,
+      "name": "Signature Match",
+      "score": 4,
       "max": 4
     },
     {
       "id": "S-008-3",
-      "name": "バージョン管理",
-      "score": 3,
+      "name": "Version Management",
+      "score": 2,
       "max": 3
     }
   ]

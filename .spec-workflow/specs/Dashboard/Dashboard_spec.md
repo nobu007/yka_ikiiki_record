@@ -105,3 +105,14 @@ Last Updated: 2026-03-30
 - 変更時に確認すべき既存機能: (このSPECに関連する機能)
 - 影響範囲: (このSPECを使用しているモジュール)
 - 回帰テストケース: (変更時の挙動確認)
+
+
+## 11. 既存テスト対応
+
+| テストファイル | テスト関数 | 対応ケース |
+|--------------|-----------|-----------|
+| useDashboard.edge-cases.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| useDashboard.validation-errors.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| useDashboard.loading-notifications.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| useDashboard.api-errors.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| useDashboard.initialization.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |

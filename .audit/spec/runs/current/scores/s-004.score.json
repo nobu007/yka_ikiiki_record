@@ -1,20 +1,21 @@
 {
   "axis": "S-004",
-  "name": "エラーシナリオ網羅性",
-  "score": 13,
+  "name": "Error Coverage",
+  "score": 11,
   "max_score": 15,
-  "pass": true,
+  "pass_threshold": 12,
+  "pass_status": false,
   "details": [
     {
       "id": "S-004-1",
-      "name": "エラーセクション存在",
-      "score": 2,
+      "name": "Error Section",
+      "score": 3,
       "max": 3
     },
     {
       "id": "S-004-2",
-      "name": "例外型明示",
-      "score": 4,
+      "name": "Exception Types",
+      "score": 3,
       "max": 4
     },
     {
@@ -25,8 +26,8 @@
     },
     {
       "id": "S-004-4",
-      "name": "エッジケース品質",
-      "score": 4,
+      "name": "Edge Cases",
+      "score": 2,
       "max": 4
     }
   ]

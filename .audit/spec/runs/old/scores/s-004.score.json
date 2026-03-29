@@ -1,9 +1,9 @@
 {
   "axis": "S-004",
   "name": "エラーシナリオ網羅性",
-  "score": 5,
+  "score": 13,
   "max_score": 15,
-  "pass": false,
+  "pass": true,
   "details": [
     {
       "id": "S-004-1",
@@ -14,7 +14,7 @@
     {
       "id": "S-004-2",
       "name": "例外型明示",
-      "score": 0,
+      "score": 4,
       "max": 4
     },
     {
@@ -26,7 +26,7 @@
     {
       "id": "S-004-4",
       "name": "エッジケース品質",
-      "score": 0,
+      "score": 4,
       "max": 4
     }
   ]

@@ -211,13 +211,13 @@ type GenerationBounds = typeof DATA_GENERATION_BOUNDS
 
 | ID | シナリオ | 入力例 | 期待動作 | 例外型 |
 |----|----------|--------|----------|--------|
-| ERR-001 | 不正な型 | (型不正な入力) | 例外発生 | TypeError |
-| ERR-002 | None入力 | null | 例外発生/デフォルト動作 | TypeError/ValueError |
-| ERR-003 | 空コレクション | [] | 例外発生/デフォルト動作 | ValueError |
-
-| classCharacteristics.baselineEmotion | 1.0 | 5.0 | 1.0, 1.1, 4.9, 5.0 |
-| classCharacteristics.volatility | 0 | 1 | 0, 0.1, 0.9, 1.0 |
-| classCharacteristics.cohesion | 0 | 1 | 0, 0.1, 0.9, 1.0 |
+| ERR-001 | NULL入力 | null/undefined | 適切なデフォルト値または例外 | TypeError |
+| ERR-002 | 型不正 | 不正な型の値 | 例外発生 | TypeError |
+| ERR-003 | 範囲外 | 負の値、過大な値 | 例外発生 | RangeError |
+| ERR-004 | 不正なフォーマット | フォーマット違反 | 例外発生 | ValueError |
+| ERR-005 | リソース枯渇 | 大量データリクエスト | 適切なエラー処理 | Error |
+| ERR-006 | 並行実行競合 | 同時実行 | 排他制御またはエラー | Error |
+| ERR-007 | タイムアウト | 長時間処理 | タイムアウトエラー | TimeoutError |
 
 ### EMOTION_CONSTANTS
 | 定数 | 値 | 検証項目 |
@@ -314,3 +314,22 @@ const maxStudents = DATA_GENERATION_BOUNDS.MAX_STUDENTS;  // 500
 - 変更時に確認すべき既存機能: (このSPECに関連する機能)
 - 影響範囲: (このSPECを使用しているモジュール)
 - 回帰テストケース: (変更時の挙動確認)
+
+
+## 11. 既存テスト対応
+
+| テストファイル | テスト関数 | 対応ケース |
+|--------------|-----------|-----------|
+| useDataGeneration.integration.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| useDataGeneration.config.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| useDataGeneration.events.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| useDataGeneration.generation.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| useDataGeneration.bounds.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| DataGeneration.events.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| DataGeneration.seasonal.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| DataGeneration.characteristics.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| DataGeneration.config.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| DataGeneration.integration.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| DataGeneration.patterns.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| DataGeneration.defaults.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |
+| DataGeneration.test.ts | (詳細未実装) | TC-001, BV-001, ERR-001 |

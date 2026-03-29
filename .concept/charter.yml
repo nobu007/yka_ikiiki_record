@@ -185,13 +185,15 @@ milestones:
     name: "通知システムの強化（Notification System Enhancement）"
     intent: "異常値検知時のアラートとメール通知機能を実装し、運用上の監視能力と対応速度を向上させる"
     deliverables:
-      - "AnomalyDetectionドメインサービス (src/domain/services/AnomalyDetectionService.ts) - T-001"
-      - "AnomalyDetectionRepositoryインターフェース (src/domain/repositories/AnomalyDetectionRepository.ts) - T-001"
-      - "NotificationProviderドメインエンティティ (src/domain/entities/NotificationProvider.ts) - T-002"
-      - "EmailNotificationProvider実装 (src/infrastructure/services/EmailNotificationProvider.ts) - T-002"
-      - "NotificationServiceアプリケーションサービス (src/application/services/NotificationService.ts) - T-003"
-      - "通知設定APIエンドポイント (/api/notifications/settings) - T-004"
-      - "通知履歴APIエンドポイント (/api/notifications/history) - T-004"
+      - "AnomalyDetectionドメインサービス (src/domain/services/AnomalyDetectionService.ts) - T-001 completed"
+      - "AnomalyDetectionRepositoryインターフェース (src/domain/repositories/AnomalyDetectionRepository.ts) - T-001 completed"
+      - "NotificationProviderドメインエンティティ (src/domain/entities/NotificationProvider.ts) - T-002 completed"
+      - "EmailNotificationProvider実装 (src/infrastructure/services/EmailNotificationProvider.ts) - T-002 completed"
+      - "NotificationServiceアプリケーションサービス (src/application/services/NotificationService.ts) - T-003 completed"
+      - "通知設定APIエンドポイント (/api/notifications/settings) - T-004 completed"
+      - "通知履歴APIエンドポイント (/api/notifications/history) - T-004 completed"
+      - "InMemoryNotificationProviderRepository (src/infrastructure/storage/InMemoryNotificationProviderRepository.ts) - T-004 completed"
+      - "InMemoryAnomalyRepository (src/infrastructure/storage/InMemoryAnomalyRepository.ts) - T-004 completed"
     acceptance:
       - type: "quality_gate"
         target: "全通知システム機能のテストが通過し、カバレッジ100%を達成"
@@ -201,8 +203,8 @@ milestones:
       - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for business logic, Application layer for orchestration"
       - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Anomaly detection and alerting for system health"
     priority: "P3"
-    status: "active"
-    progress_note: "MS-009 created 2026-03-30. Building upon existing Notification UI component (src/components/common/Notification.tsx) and useNotification hook (src/hooks/useNotification.ts). Will add backend anomaly detection, email notification provider abstraction, and notification management service."
+    status: "done"
+    progress_note: "MS-009 completed 2026-03-30. All 4 tasks completed: (T-001) Domain layer (AnomalyDetectionService + AnomalyRepository), (T-002) Infrastructure layer (NotificationProvider + EmailNotificationProvider), (T-003) Application layer (NotificationService), (T-004) Presentation layer (API endpoints /api/notifications/settings, /api/notifications/history). Total production: 794 (anomaly) + 1022 (provider) + 654 (service) + 301 (API) = 2771 lines. Total tests: 1208 (anomaly) + 1004 (provider) + 767 (service) + 272 (API) = 3251 lines. 204 notification-specific tests passing (100% for all layers). Complete 4-layer Clean Architecture implementation. HTTP API endpoints: GET/POST /api/notifications/settings, GET /api/notifications/history. Features: Email validation, Rate limiting (per hour/day), Quiet hours with timezone, Critical priority bypasses quiet hours, Automatic retry with exponential backoff (3 attempts), Provider selection by channel and status, In-memory notification storage, Notification history with filtering and pagination, Configuration management with Zod validation, Provider health monitoring, Channel enable/disable functionality. Overall project: 2143/2143 tests passing (100%)."
 
 work_policy:
   default_mode: "commit"

@@ -44,6 +44,8 @@ export const API_ENDPOINTS = {
   METRICS: "/api/metrics",
   ANALYTICS: "/api/analytics",
   TRENDS: "/api/trends",
+  NOTIFICATIONS_SETTINGS: "/api/notifications/settings",
+  NOTIFICATIONS_HISTORY: "/api/notifications/history",
 } as const;
 
 export const API_OPERATIONS = {
@@ -58,4 +60,7 @@ export const API_OPERATIONS = {
   CREATE_BACKUP: "POST /api/backup",
   LIST_BACKUPS: "GET /api/backup",
   RESTORE_BACKUP: "POST /api/restore",
+  GET_NOTIFICATION_SETTINGS: "GET /api/notifications/settings",
+  UPDATE_NOTIFICATION_SETTINGS: "POST /api/notifications/settings",
+  GET_NOTIFICATION_HISTORY: "GET /api/notifications/history",
 } as const;

@@ -3,7 +3,10 @@ import { IRecordRepository } from "@/domain/repositories/IRecordRepository";
 import { TrendAnalysisRepository } from "@/domain/repositories/TrendAnalysisRepository";
 import { BackupRepository } from "@/domain/repositories/BackupRepository";
 import { AuditLogRepository } from "@/domain/repositories/AuditLogRepository";
+import { NotificationProviderRepository } from "@/domain/repositories/NotificationProviderRepository";
+import { AnomalyRepository } from "@/domain/repositories/AnomalyRepository";
 import { StatsService } from "@/domain/services/StatsService";
+import { AnomalyDetectionService } from "@/domain/services/AnomalyDetectionService";
 import { MockStatsRepository } from "@/infrastructure/storage/MockStatsRepository";
 import { PrismaStatsRepository } from "@/infrastructure/repositories/PrismaStatsRepository";
 import { PrismaRecordRepository } from "@/infrastructure/repositories/PrismaRecordRepository";
@@ -11,7 +14,10 @@ import { InMemoryTrendAnalysisRepository } from "@/infrastructure/storage/InMemo
 import { InMemoryBackupRepository } from "@/infrastructure/repositories/InMemoryBackupRepository";
 import { InMemoryAuditLogRepository } from "@/infrastructure/repositories/InMemoryAuditLogRepository";
 import { InMemoryRecordRepository } from "@/infrastructure/storage/InMemoryRecordRepository";
+import { InMemoryNotificationProviderRepository } from "@/infrastructure/storage/InMemoryNotificationProviderRepository";
+import { InMemoryAnomalyRepository } from "@/infrastructure/storage/InMemoryAnomalyRepository";
 import { BackupService } from "@/application/services/BackupService";
+import { NotificationService } from "@/application/services/NotificationService";
 import { isPrismaProvider } from "@/lib/config/env";
 import { ValidationError } from "@/lib/error-handler";
 
@@ -174,3 +180,72 @@ export function createBackupService(): BackupService {
     auditLogRepository,
   );
 }
+
+/**
+ * Creates a NotificationProviderRepository instance for notification provider operations.
+ *
+ * Returns an InMemoryNotificationProviderRepository with in-memory storage.
+ * Suitable for development environments and testing scenarios.
+ *
+ * @returns {NotificationProviderRepository} A repository instance for notification provider operations
+ *
+ * @example
+ * ```ts
+ * const repository = createNotificationProviderRepository();
+ * const provider = await repository.findById("provider-123");
+ * ```
+ */
+export function createNotificationProviderRepository(): NotificationProviderRepository {
+  return new InMemoryNotificationProviderRepository();
+}
+
+/**
+ * Creates an AnomalyRepository instance for anomaly detection operations.
+ *
+ * Returns an InMemoryAnomalyRepository with in-memory storage.
+ * Suitable for development environments and testing scenarios.
+ *
+ * @returns {AnomalyRepository} A repository instance for anomaly detection operations
+ *
+ * @example
+ * ```ts
+ * const repository = createAnomalyRepository();
+ * const anomaly = await repository.findById("anomaly-123");
+ * ```
+ */
+export function createAnomalyRepository(): AnomalyRepository {
+  return new InMemoryAnomalyRepository();
+}
+
+/**
+ * Creates a NotificationService instance with its required dependencies.
+ *
+ * The NotificationService provides high-level notification operations,
+ * automatically wired to the appropriate repositories based on environment
+ * configuration.
+ *
+ * @returns {NotificationService} A service instance for notification operations
+ *
+ * @example
+ * ```ts
+ * const service = createNotificationService();
+ * const result = await service.sendNotification({
+ *   channel: NotificationChannel.ANOMALY_DETECTION,
+ *   priority: NotificationPriority.HIGH,
+ *   subject: "Test Alert",
+ *   body: "Test message",
+ *   recipients: ["admin@example.com"],
+ * });
+ * ```
+ */
+export function createNotificationService(): NotificationService {
+  const providerRepository = createNotificationProviderRepository();
+  const anomalyRepository = createAnomalyRepository();
+  const anomalyDetectionService = new AnomalyDetectionService(anomalyRepository);
+
+  return new NotificationService(
+    providerRepository,
+    anomalyDetectionService,
+  );
+}
+

@@ -6,7 +6,7 @@ product_goal:
     - id: "MET-001"
       name: "テストカバレッジ"
       target: "≥ 90%"
-      current: "100% (1312 tests passing)"
+      current: "100% (1588 tests passing)"
     - id: "MET-002"
       name: "不変条件準拠率"
       target: "100%"
@@ -111,7 +111,7 @@ milestones:
       - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Cross-cutting concerns"
     priority: "P3"
     status: "active"
-    progress_note: "T-001 completed (2026-03-30). Domain entity and repository interface implemented with 25 tests passing. 1545/1545 total tests passing."
+    progress_note: "T-001 and T-002 completed (2026-03-30). Domain entity (25 tests) and InMemoryAuditLogRepository (43 tests) implemented. 1588/1588 total tests passing (100%). 2/4 tasks complete (50%)."
 
 work_policy:
   default_mode: "commit"

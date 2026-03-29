@@ -61,7 +61,7 @@ describe("POST /api/backup", () => {
     expect(data.data).toHaveProperty("size");
     expect(data.data).toHaveProperty("checksum");
     expect(data.data).toHaveProperty("timestamp");
-    expect(data.data.source).toBe("manual");
+    expect(data.data.metadata.source).toBe("manual");
   });
 
   test("creates backup with default metadata when body is empty", async () => {

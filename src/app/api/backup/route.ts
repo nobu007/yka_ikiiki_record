@@ -74,12 +74,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       }
 
       const backupService = createBackupService();
-      const queryResult = await backupService.listBackups(query);
+      const backups = await backupService.listBackups(query);
 
       return createSuccessResponse(
         {
           success: true,
-          data: queryResult.backups,
+          data: backups,
         },
         undefined,
       );

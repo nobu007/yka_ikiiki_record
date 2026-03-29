@@ -99,6 +99,10 @@ specs:
     created: '2026-03-30T03:35:54.310361'
     name: EmotionRanges
     path: .spec-workflow/specs/EmotionRanges/EmotionRanges_spec.md
+  EmailNotificationProvider:
+    created: '2026-03-30T06:35:00.000000'
+    name: EmailNotificationProvider
+    path: .spec-workflow/specs/EmailNotificationProvider/EmailNotificationProvider_spec.md
   Env:
     created: '2026-03-30T03:35:54.311591'
     name: Env
@@ -687,4 +691,4 @@ specs:
     created: '2026-03-30T05:30:00.000000'
     name: TrendAnalysis
     path: .spec-workflow/specs/TrendAnalysis/TrendAnalysis_spec.md
-total: 171
+total: 172

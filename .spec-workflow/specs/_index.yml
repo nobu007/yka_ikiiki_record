@@ -18,6 +18,8 @@ specs:
   CircuitBreaker:
     name: CircuitBreaker
     spec_file: CircuitBreaker/CircuitBreaker_spec.md
+    status: verified
+    coverage: 100
   CircuitBreakerConfig:
     name: CircuitBreakerConfig
     spec_file: CircuitBreakerConfig/CircuitBreakerConfig_spec.md

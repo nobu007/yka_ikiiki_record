@@ -223,6 +223,22 @@ specs:
     created: '2026-03-30T03:35:54.306966'
     name: PaginationResult
     path: .spec-workflow/specs/PaginationResult/PaginationResult_spec.md
+  PerformanceMetric:
+    created: '2026-03-30T04:55:00.000000'
+    name: PerformanceMetric
+    path: .spec-workflow/specs/PerformanceMetric/PerformanceMetric_spec.md
+  PerformanceMonitor:
+    created: '2026-03-30T04:55:00.000000'
+    name: PerformanceMonitor
+    path: .spec-workflow/specs/PerformanceMonitor/PerformanceMonitor_spec.md
+  PerformanceMonitorConfig:
+    created: '2026-03-30T04:55:00.000000'
+    name: PerformanceMonitorConfig
+    path: .spec-workflow/specs/PerformanceMonitorConfig/PerformanceMonitorConfig_spec.md
+  PerformanceStats:
+    created: '2026-03-30T03:35:54.306966'
+    name: PaginationResult
+    path: .spec-workflow/specs/PaginationResult/PaginationResult_spec.md
   PrismaRecordRepository:
     created: '2026-03-30T03:35:54.307182'
     name: PrismaRecordRepository
@@ -239,6 +255,14 @@ specs:
     created: '2026-03-30T03:35:54.309458'
     name: RecordSchema
     path: .spec-workflow/specs/RecordSchema/RecordSchema_spec.md
+  RenderMetric:
+    created: '2026-03-30T04:55:00.000000'
+    name: RenderMetric
+    path: .spec-workflow/specs/RenderMetric/RenderMetric_spec.md
+  RenderStats:
+    created: '2026-03-30T04:55:00.000000'
+    name: RenderStats
+    path: .spec-workflow/specs/RenderStats/RenderStats_spec.md
   SeasonalEffect:
     created: '2026-03-30T03:35:54.314006'
     name: SeasonalEffect
@@ -639,4 +663,4 @@ specs:
     created: '2026-03-30T04:35:14.000000'
     name: AuditService
     path: .spec-workflow/specs/AuditService/AuditService_spec.md
-total: 160
+total: 165

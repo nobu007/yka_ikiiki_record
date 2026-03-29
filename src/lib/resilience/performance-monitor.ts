@@ -4,7 +4,7 @@ import { PERFORMANCE_MONITOR_CONSTANTS } from "@/lib/constants";
 /**
  * Performance metrics for a single measurement.
  */
-interface PerformanceMetric {
+export interface PerformanceMetric {
   /** Unique identifier for the measurement */
   name: string;
   /** Duration in milliseconds */
@@ -18,7 +18,7 @@ interface PerformanceMetric {
 /**
  * Performance statistics for a specific metric.
  */
-interface PerformanceStats {
+export interface PerformanceStats {
   /** Metric name */
   name: string;
   /** Number of measurements */
@@ -36,7 +36,7 @@ interface PerformanceStats {
 /**
  * React component render metrics.
  */
-interface RenderMetric {
+export interface RenderMetric {
   /** Component name */
   componentName: string;
   /** Render duration in milliseconds */
@@ -50,7 +50,7 @@ interface RenderMetric {
 /**
  * React component render statistics.
  */
-interface RenderStats {
+export interface RenderStats {
   /** Component name */
   componentName: string;
   /** Number of renders */
@@ -70,7 +70,7 @@ interface RenderStats {
 /**
  * Performance monitoring configuration.
  */
-interface PerformanceMonitorConfig {
+export interface PerformanceMonitorConfig {
   /** Maximum number of metrics to store in memory */
   maxMetrics: number;
   /** Threshold (in ms) for slow renders */
@@ -238,7 +238,7 @@ export class PerformanceMonitor {
       componentName,
       renderTime,
       timestamp: Date.now(),
-      propsHash,
+      ...(propsHash !== undefined && { propsHash }),
     };
 
     if (!this.renderMetrics.has(componentName)) {
@@ -447,7 +447,7 @@ export class PerformanceMonitor {
       name,
       duration,
       timestamp: Date.now(),
-      metadata,
+      ...(metadata !== undefined && { metadata }),
     };
 
     if (!this.metrics.has(name)) {

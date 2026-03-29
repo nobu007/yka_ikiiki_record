@@ -20,7 +20,7 @@ completed_tasks:
   - id: "T-002"
     title: "Implement InMemoryBackupRepository with comprehensive tests"
     type: "feat"
-    commit_sha: "PENDING"
+    commit_sha: "4437ef03"
     completed_at: "2026-03-30T05:13:00Z"
     files_modified:
       - "src/infrastructure/repositories/InMemoryBackupRepository.ts (144 lines, new file)"

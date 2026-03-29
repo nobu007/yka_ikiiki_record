@@ -51,4 +51,13 @@ export class MockStatsRepository implements StatsRepository {
   }
 
   async generateSeedData(): Promise<void> {}
+
+  /**
+   * Returns all stats as an array.
+   * Note: Stats is a singleton object, so this returns an array with one element.
+   * This method is used by BackupService to backup stats data.
+   */
+  async findAll(): Promise<Stats[]> {
+    return [this.mockStats];
+  }
 }

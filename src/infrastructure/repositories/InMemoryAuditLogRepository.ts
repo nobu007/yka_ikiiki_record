@@ -23,9 +23,19 @@ import type { AuditLogRepository } from "../../domain/repositories/AuditLogRepos
  */
 export class InMemoryAuditLogRepository implements AuditLogRepository {
   private logs: AuditLog[] = [];
+  private idCounter = 0;
 
   async save(log: AuditLog): Promise<void> {
     this.logs.push(log);
+  }
+
+  async create(log: Omit<AuditLog, "id">): Promise<AuditLog> {
+    const newLog: AuditLog = {
+      ...log,
+      id: `audit-${++this.idCounter}`,
+    };
+    this.logs.push(newLog);
+    return newLog;
   }
 
   async findById(id: string): Promise<AuditLog | null> {
@@ -96,6 +106,14 @@ export class InMemoryAuditLogRepository implements AuditLogRepository {
    */
   clear(): void {
     this.logs = [];
+  }
+
+  /**
+   * Returns all audit logs.
+   * This method is used by BackupService to backup audit logs.
+   */
+  async findAll(): Promise<AuditLog[]> {
+    return [...this.logs];
   }
 
   /**

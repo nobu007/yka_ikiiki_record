@@ -1,11 +1,17 @@
 import { StatsRepository } from "@/domain/repositories/StatsRepository";
 import { IRecordRepository } from "@/domain/repositories/IRecordRepository";
 import { TrendAnalysisRepository } from "@/domain/repositories/TrendAnalysisRepository";
+import { BackupRepository } from "@/domain/repositories/BackupRepository";
+import { AuditLogRepository } from "@/domain/repositories/AuditLogRepository";
 import { StatsService } from "@/domain/services/StatsService";
 import { MockStatsRepository } from "@/infrastructure/storage/MockStatsRepository";
 import { PrismaStatsRepository } from "@/infrastructure/repositories/PrismaStatsRepository";
 import { PrismaRecordRepository } from "@/infrastructure/repositories/PrismaRecordRepository";
 import { InMemoryTrendAnalysisRepository } from "@/infrastructure/storage/InMemoryTrendAnalysisRepository";
+import { InMemoryBackupRepository } from "@/infrastructure/repositories/InMemoryBackupRepository";
+import { InMemoryAuditLogRepository } from "@/infrastructure/repositories/InMemoryAuditLogRepository";
+import { InMemoryRecordRepository } from "@/infrastructure/storage/InMemoryRecordRepository";
+import { BackupService } from "@/application/services/BackupService";
 import { isPrismaProvider } from "@/lib/config/env";
 import { ValidationError } from "@/lib/error-handler";
 
@@ -99,4 +105,72 @@ export function createStatsService(): StatsService {
  */
 export function createTrendAnalysisRepository(): TrendAnalysisRepository {
   return new InMemoryTrendAnalysisRepository();
+}
+
+/**
+ * Creates a BackupRepository instance for backup operations.
+ *
+ * Returns an InMemoryBackupRepository with in-memory storage.
+ * Suitable for development environments and testing scenarios.
+ *
+ * @returns {BackupRepository} A repository instance for backup operations
+ *
+ * @example
+ * ```ts
+ * const repository = createBackupRepository();
+ * const backup = await repository.findById("backup-123");
+ * ```
+ */
+export function createBackupRepository(): BackupRepository {
+  return new InMemoryBackupRepository();
+}
+
+/**
+ * Creates an AuditLogRepository instance for audit logging operations.
+ *
+ * Returns an InMemoryAuditLogRepository with in-memory storage.
+ * Suitable for development environments and testing scenarios.
+ *
+ * @returns {AuditLogRepository} A repository instance for audit logging
+ *
+ * @example
+ * ```ts
+ * const repository = createAuditLogRepository();
+ * await repository.create({ ...auditLogEntry });
+ * ```
+ */
+export function createAuditLogRepository(): AuditLogRepository {
+  return new InMemoryAuditLogRepository();
+}
+
+/**
+ * Creates a BackupService instance with its required dependencies.
+ *
+ * The BackupService provides high-level backup and restore operations,
+ * automatically wired to the appropriate repositories based on environment
+ * configuration.
+ *
+ * @returns {BackupService} A service instance for backup and restore operations
+ *
+ * @example
+ * ```ts
+ * const service = createBackupService();
+ * const backup = await service.createBackup({ source: "manual" }, "user-123");
+ * const result = await service.restoreBackup(backup.id);
+ * ```
+ */
+export function createBackupService(): BackupService {
+  const backupRepository = createBackupRepository();
+  const recordRepository = isPrismaProvider()
+    ? createRecordRepository()
+    : new InMemoryRecordRepository();
+  const statsRepository = createStatsRepository();
+  const auditLogRepository = createAuditLogRepository();
+
+  return new BackupService(
+    backupRepository,
+    recordRepository,
+    statsRepository,
+    auditLogRepository,
+  );
 }

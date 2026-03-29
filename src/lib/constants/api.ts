@@ -55,4 +55,7 @@ export const API_OPERATIONS = {
   GET_METRICS: "GET /api/metrics",
   GET_ANALYTICS: "GET /api/analytics",
   GET_TRENDS: "GET /api/trends",
+  CREATE_BACKUP: "POST /api/backup",
+  LIST_BACKUPS: "GET /api/backup",
+  RESTORE_BACKUP: "POST /api/restore",
 } as const;

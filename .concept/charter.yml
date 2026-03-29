@@ -156,6 +156,31 @@ milestones:
     status: "done"
     progress_note: "Completed 2026-03-30. All 5 deliverables implemented and validated. 1874/1874 total tests passing (100%). PerformanceMonitor utility (481 lines production) with comprehensive test suite (557 lines tests, 33 tests passing). Features: Synchronous code measurement, Async code measurement, React render tracking, Performance statistics (avg, min, max, count), Slow render detection (16.67ms threshold), Metrics history with configurable limit, Summary reporting. All existing components already optimized with React.memo, useCallback, useMemo. Performance optimization documentation created with best practices and profiling guidelines."
 
+  - id: "MS-008"
+    name: "バックアップ・復元システム（Backup and Restore System）"
+    intent: "データの整合性と災害復旧のため、バックアップ・復元システムを実装し、運用上の回復力を向上させる"
+    deliverables:
+      - "Backupドメインエンティティ (src/domain/entities/Backup.ts) - T-001 completed"
+      - "BackupRepositoryインターフェース (src/domain/repositories/BackupRepository.ts) - T-001 completed"
+      - "Backupエンティティのテスト (src/domain/entities/Backup.test.ts) - T-001 completed"
+      - "BackupRepositoryのテスト (src/domain/repositories/BackupRepository.test.ts) - T-001 completed"
+      - "InMemoryBackupRepository実装 (src/infrastructure/repositories/InMemoryBackupRepository.ts) - T-002 completed"
+      - "InMemoryBackupRepositoryのテスト (src/infrastructure/repositories/InMemoryBackupRepository.test.ts) - T-002 completed"
+      - "BackupServiceアプリケーションサービス (src/application/services/BackupService.ts) - T-003 completed"
+      - "BackupServiceのテスト (src/application/services/BackupService.test.ts) - T-003 completed"
+      - "Backup APIエンドポイント (/api/backup, /api/restore) - T-004 pending"
+    acceptance:
+      - type: "quality_gate"
+        target: "全バックアップ・復元機能のテストが通過し、カバレッジ100%を達成"
+    constitution_links:
+      - "§7 TESTING MANDATES - All features must have comprehensive tests"
+      - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation"
+      - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer use cases orchestrate domain logic"
+      - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Data protection and disaster recovery infrastructure"
+    priority: "P3"
+    status: "active"
+    progress_note: "T-003 completed 2026-03-30. BackupService application layer implemented with 28 tests passing (100%). Features: createBackup(), restoreBackup(), listBackups(), deleteOldBackups(), getBackupById(), getLatestBackup(), getBackupStats(). Orchestrates all data repositories (Record, Stats, AuditLog) with SHA-256 checksums. Production: 292 lines. Tests: 620 lines. Total: 912 lines. T-004 (API endpoints) remaining. MS-008 overall progress: 3/4 tasks complete (75%)."
+
 work_policy:
   default_mode: "commit"
   iteration_budget:

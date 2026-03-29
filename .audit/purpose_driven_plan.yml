@@ -1,5 +1,5 @@
 meta:
-  generated_at: "2026-03-30T05:13:00Z"
+  generated_at: "2026-03-30T05:23:00Z"
   source_deliverable: "MS-008: バックアップ・復元システム（Backup and Restore System）"
   milestone_id: "MS-008"
   milestone_status: "active"
@@ -26,16 +26,25 @@ completed_tasks:
       - "src/infrastructure/repositories/InMemoryBackupRepository.ts (144 lines, new file)"
       - "src/infrastructure/repositories/InMemoryBackupRepository.test.ts (542 lines, new file)"
     test_results: "45/45 InMemoryBackupRepository tests passing (100%), 1931/1931 total tests passing (100%)"
+  - id: "T-003"
+    title: "Create BackupService application layer with backup/restore orchestration"
+    type: "feat"
+    commit_sha: "PENDING"
+    completed_at: "2026-03-30T05:23:00Z"
+    files_modified:
+      - "src/application/services/BackupService.ts (292 lines, new file)"
+      - "src/application/services/BackupService.test.ts (620 lines, new file)"
+    test_results: "28/28 BackupService tests passing (100%), 1959/1959 total tests passing (100%)"
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P3 - 運用改善 → §6 AUTONOMOUS RESILIENCE PROTOCOLS (Data protection and recovery), §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Infrastructure layer), §7 TESTING MANDATES (100% infrastructure coverage)"
+  quality_gate_contributed: "P3 - 運用改善 → §6 AUTONOMOUS RESILIENCE PROTOCOLS (Data protection and recovery), §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Application layer), §7 TESTING MANDATES (100% coverage)"
   constitution_links:
-    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Infrastructure layer depends only on Domain, Clean Architecture compliance"
-    - "§7 TESTING MANDATES - All features must have comprehensive tests (88 tests, 100% passing)"
+    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer orchestrates domain logic with clean separation"
+    - "§7 TESTING MANDATES - All features must have comprehensive tests (116 backup tests, 100% passing)"
     - "§3 TYPE SUPREMACY - Full TypeScript type safety with interface implementation"
     - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Data protection, disaster recovery infrastructure"
-  impact: "T-001 & T-002 COMPLETED: (T-001) Backup domain entity and repository interface. (T-002) InMemoryBackupRepository implementation. Production: 475 lines (176 entity + 155 interface + 144 infrastructure). Tests: 1037 lines (254 entity + 241 interface + 542 infrastructure). Total: 1512 lines. Features: In-memory storage with full BackupRepository implementation (save, findById, query with filters, deleteOlderThan, delete, restore, findLatestCompleted, count, getTotalSize). Query filters: status, source, triggeredBy, time range, pagination. Restore validation: only completed backups restorable. Utility methods: clear(), size() for testing. 88 tests covering all operations and edge cases. Infrastructure layer 100% coverage achieved."
+  impact: "T-001, T-002, T-003 COMPLETED: (T-001) Backup domain entity and repository interface. (T-002) InMemoryBackupRepository implementation. (T-003) BackupService application layer. Production: 767 lines (176 entity + 155 interface + 144 infrastructure + 292 application). Tests: 1657 lines (254 entity + 241 interface + 542 infrastructure + 620 application). Total: 2424 lines. Features: Complete backup/restore orchestration (createBackup, restoreBackup, listBackups, deleteOldBackups, getBackupById, getLatestBackup, getBackupStats). SHA-256 checksums for data integrity. Audit logging for all operations. Supports all data repositories (Record, Stats, AuditLog). 116 tests covering all operations and edge cases. Application layer 100% coverage achieved. MS-008 is 75% complete (3/4 tasks done)."
 
 selected_deliverable:
   source: "PURPOSE.md P3: 運用改善 → バックアップ・復元システム（定期バックアップ、ワンクリック復元）"
@@ -79,7 +88,7 @@ task_breakdown:
     acceptance_test: "npm test -- src/application/services/BackupService.test.ts"
     estimated_diff_lines: 450
     constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer use cases orchestrate domain logic"
-    status: "pending"
+    status: "completed"
 
   - id: "T-004"
     title: "Add backup API endpoints (/api/backup, /api/restore)"
@@ -96,7 +105,7 @@ task_breakdown:
 
 execution_plan:
   first_task: "T-001"
-  rationale: "Backup domain entity is the foundation for the entire backup/restore system. Following Clean Architecture, we must define the domain layer (Backup entity + BackupRepository interface) before implementing infrastructure or application layers. This ensures type safety and architectural discipline from the ground up. The domain layer provides the vocabulary and contracts that all other layers depend on, making it the critical first step. T-001 and T-002 completed successfully with 88 tests passing and 100% coverage."
+  rationale: "Backup domain entity is the foundation for the entire backup/restore system. Following Clean Architecture, we must define the domain layer (Backup entity + BackupRepository interface) before implementing infrastructure or application layers. This ensures type safety and architectural discipline from the ground up. The domain layer provides the vocabulary and contracts that all other layers depend on, making it the critical first step. T-001, T-002, and T-003 completed successfully with 116 tests passing and 100% coverage."
 
 notes: |
   MS-008 IN PROGRESS (2026-03-30).
@@ -104,27 +113,16 @@ notes: |
   COMPLETED TASKS:
   ✅ T-001: Backup domain entity and repository interface (331 lines production, 495 lines tests, 43 tests)
   ✅ T-002: InMemoryBackupRepository implementation (144 lines production, 542 lines tests, 45 tests)
+  ✅ T-003: BackupService application layer (292 lines production, 620 lines tests, 28 tests)
 
   REMAINING TASKS:
-  ⏳ T-003: BackupService application layer
   ⏳ T-004: Backup API endpoints
 
-  MS-008 STATUS: ACTIVE
-  Domain + Infrastructure layers complete with full test coverage.
-  Next: Implement application layer (BackupService) to orchestrate backup/restore operations.
+  MS-008 STATUS: ACTIVE (75% complete - 3/4 tasks done)
+  Domain + Infrastructure + Application layers complete with full test coverage.
+  Next: Implement API layer (/api/backup, /api/restore) to expose backup/restore operations via HTTP.
 
 remaining_tasks:
-  - id: "T-003"
-    title: "Create BackupService application layer with backup/restore orchestration"
-    type: "feat"
-    files_to_modify:
-      - "src/application/services/BackupService.ts (new)"
-      - "src/application/services/BackupService.test.ts (new)"
-    acceptance_test: "npm test -- src/application/services/BackupService.test.ts"
-    estimated_diff_lines: 450
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer use cases orchestrate domain logic"
-    status: "pending"
-
   - id: "T-004"
     title: "Add backup API endpoints (/api/backup, /api/restore)"
     type: "feat"
@@ -139,5 +137,6 @@ remaining_tasks:
     status: "pending"
 
 next_execution:
-  task_id: "T-003"
-  rationale: "T-001 (domain layer) and T-002 (infrastructure layer) are complete. T-003 implements the BackupService in the application layer, which will orchestrate backup and restore operations using the InMemoryBackupRepository. This follows Clean Architecture's dependency rule: Application depends on Domain (interfaces) and Infrastructure (implementations). The BackupService will provide high-level operations like createBackup(), restoreBackup(), listBackups(), and deleteOldBackups() with proper error handling and business logic. All operations will have full test coverage (target: 90%+)."
+  task_id: "T-004"
+  rationale: "T-001 (domain layer), T-002 (infrastructure layer), and T-003 (application layer) are complete. T-004 implements the API layer, which will expose backup and restore operations via HTTP endpoints (/api/backup, /api/restore). This follows Clean Architecture's dependency rule: Presentation layer (API routes) depends on Application layer (BackupService). The API endpoints will provide REST interfaces for creating backups, restoring from backups, listing backups, and managing backup retention. All endpoints will have full test coverage (target: 100%). This is the final task for MS-008."
+

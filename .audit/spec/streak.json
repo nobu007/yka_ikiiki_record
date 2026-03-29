@@ -1,12 +1,28 @@
 {
   "consecutive_pass": 0,
-  "total_audits": 1,
+  "total_audits": 2,
+  "last_audit": {
+    "timestamp": "2026-03-30T02:54:00.000Z",
+    "passed": false,
+    "score": 54
+  },
   "history": [
     {
       "timestamp": "2026-03-22T15:08:37.321803",
       "passed": false,
       "score": 3
+    },
+    {
+      "timestamp": "2026-03-30T02:54:00.000Z",
+      "passed": false,
+      "score": 54
     }
   ],
-  "spec_stable": false
+  "spec_stable": false,
+  "improvement_trend": {
+    "previous_score": 3,
+    "current_score": 54,
+    "improvement": 51,
+    "trend": "IMPROVING"
+  }
 }

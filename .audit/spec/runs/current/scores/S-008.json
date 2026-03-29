@@ -1,0 +1,22 @@
+{
+  "axis": "S-008",
+  "name": "SPEC Freshness",
+  "description": "Measures how recently SPECs have been updated",
+  "evaluation_method": "Percentage of SPECs updated within last 7 days",
+  "score": 6,
+  "max_score": 10,
+  "threshold": 8,
+  "percentage": "60.0%",
+  "status": "FAIL",
+  "gap": 2,
+  "findings": [
+    "60% freshness score achieved",
+    "Many SPECs haven't been updated in > 7 days",
+    "Some SPECs may be out of sync with implementation",
+    "Lack of regular SPEC update process"
+  ],
+  "recommendations": [
+    "CRITICAL: Score is 2 points below threshold",
+    "Review revision_proposals.json for detailed action items"
+  ]
+}

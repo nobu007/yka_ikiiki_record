@@ -1,0 +1,541 @@
+{
+  "timestamp": "2026-03-30T02:54:00.000Z",
+  "audit_score": 54,
+  "overall_verdict": "FAIL",
+  "proposals": [
+    {
+      "axis": "S-001",
+      "title": "SPEC Existence - Critical Coverage Gap",
+      "severity": "CRITICAL",
+      "current_score": 8,
+      "threshold": 12,
+      "gap": 4,
+      "findings": [
+        "Only 51.1% of public symbols have SPECs (137/268)",
+        "166 symbols lack documentation",
+        "Domain layer missing 10 critical SPECs",
+        "Components layer missing 40 SPECs",
+        "Utilities/constants missing 57 SPECs"
+      ],
+      "priority_actions": [
+        {
+          "priority": 1,
+          "category": "Domain Layer",
+          "action": "Create SPECs for all domain entities and repositories",
+          "targets": [
+            "createAuditLogForCreate",
+            "createAuditLogForUpdate",
+            "createAuditLogForDelete",
+            "AuditOperation",
+            "AuditLog",
+            "AuditLogQuery",
+            "AuditLogQueryResult",
+            "AuditLogRepository",
+            "EMOTION_CONSTANTS",
+            "DATA_GENERATION_BOUNDS"
+          ],
+          "estimated_effort": "2-3 hours",
+          "rationale": "Domain layer is the foundation of Clean Architecture. Missing SPECs here violate constitution requirements for complete documentation of business logic."
+        },
+        {
+          "priority": 2,
+          "category": "Application/Infrastructure Layer",
+          "action": "Create SPECs for application hooks and infrastructure services",
+          "targets": [
+            "usePagination",
+            "InMemoryAuditLogRepository",
+            "setupTest",
+            "createMockRecord",
+            "createMockPrismaRecord",
+            "TestSetup",
+            "MockPrismaRecord",
+            "dataService"
+          ],
+          "estimated_effort": "2-3 hours",
+          "rationale": "Application and infrastructure layers contain critical business logic and data access patterns that require documentation."
+        },
+        {
+          "priority": 3,
+          "category": "Components Layer",
+          "action": "Create SPECs for React components",
+          "targets": [
+            "DayOfWeekChart",
+            "EmotionChart",
+            "EmotionDistributionChart",
+            "EmotionTrendChart",
+            "MonthlyEmotionChart",
+            "StudentEmotionChart",
+            "TimeOfDayChart",
+            "CheckIcon",
+            "PlusIcon",
+            "NotificationIcon",
+            "DownloadIcon",
+            "ExclamationIcon"
+          ],
+          "estimated_effort": "4-6 hours",
+          "rationale": "Component documentation is essential for UI maintenance and consistency. Focus on chart components first as they're core to the application."
+        },
+        {
+          "priority": 4,
+          "category": "Utilities/Constants",
+          "action": "Create SPECs for utility functions and constants",
+          "targets": [
+            "paginate",
+            "getPageForIndex",
+            "getPageNumbers",
+            "API_ERROR_MESSAGES",
+            "HTTP_STATUS",
+            "DEFAULT_API_RESPONSE",
+            "API_ENDPOINTS"
+          ],
+          "estimated_effort": "2-3 hours",
+          "rationale": "Utility functions are reused across the codebase. Documentation prevents misuse and ensures consistent behavior."
+        }
+      ],
+      "success_criteria": [
+        "SPEC coverage reaches 75% (201/268 symbols)",
+        "All domain layer symbols have SPECs",
+        "All application layer symbols have SPECs",
+        "Critical infrastructure symbols have SPECs"
+      ],
+      "estimated_total_effort": "10-15 hours"
+    },
+    {
+      "axis": "S-002",
+      "title": "I/O Strictness - Minor Improvements Needed",
+      "severity": "LOW",
+      "current_score": 14,
+      "threshold": 12,
+      "gap": 0,
+      "status": "PASS",
+      "findings": [
+        "Most SPECs have complete I/O specifications",
+        "14/15 points achieved (93.3%)",
+        "Minor gaps in some SPECs' preconditions/postconditions documentation"
+      ],
+      "priority_actions": [
+        {
+          "priority": 1,
+          "category": "Documentation Quality",
+          "action": "Review and enhance preconditions/postconditions for remaining 1 point",
+          "targets": [
+            "SPECs with generic preconditions",
+            "SPECs missing invariants documentation"
+          ],
+          "estimated_effort": "1 hour",
+          "rationale": "Achieving perfect score on I/O strictness ensures all behavior is documented."
+        }
+      ],
+      "success_criteria": [
+        "All SPECs have complete input specifications",
+        "All SPECs have complete output specifications",
+        "All SPECs document preconditions",
+        "All SPECs document postconditions",
+        "All SPECs document invariants where applicable"
+      ],
+      "estimated_total_effort": "1 hour"
+    },
+    {
+      "axis": "S-003",
+      "title": "Boundary Analysis - Insufficient Coverage",
+      "severity": "HIGH",
+      "current_score": 7,
+      "threshold": 12,
+      "gap": 5,
+      "findings": [
+        "Only 46.7% of required boundary value coverage achieved",
+        "Many SPECs have generic or incomplete boundary_values.yml",
+        "Missing boundary cases for edge conditions",
+        "Lack of systematic boundary value analysis"
+      ],
+      "priority_actions": [
+        {
+          "priority": 1,
+          "category": "Boundary Value Documentation",
+          "action": "Enhance boundary_values.yml for all SPECs with actual boundaries",
+          "targets": [
+            "All functions with numeric parameters",
+            "All functions with array/string parameters",
+            "All functions with enum parameters"
+          ],
+          "estimated_effort": "6-8 hours",
+          "rationale": "Boundary values are critical for preventing edge case bugs. Current generic templates don't provide value."
+        },
+        {
+          "priority": 2,
+          "category": "Systematic Analysis",
+          "action": "Perform boundary value analysis for each symbol type",
+          "methodology": [
+            "For numeric types: min, max, min-1, max+1, zero, negative",
+            "For arrays: empty, single element, max capacity",
+            "For strings: empty, max length, special characters",
+            "For dates: min date, max date, leap year, timezone boundaries",
+            "For enums: all valid values, invalid values"
+          ],
+          "estimated_effort": "4-6 hours",
+          "rationale": "Systematic approach ensures comprehensive coverage."
+        }
+      ],
+      "success_criteria": [
+        "All SPECs have specific boundary_values.yml (not generic templates)",
+        "Boundary cases cover min, max, and edge conditions",
+        "Each parameter type has appropriate boundary analysis",
+        "Boundary cases are testable and have corresponding tests"
+      ],
+      "estimated_total_effort": "10-14 hours"
+    },
+    {
+      "axis": "S-004",
+      "title": "Error Coverage - Insufficient Error Scenarios",
+      "severity": "HIGH",
+      "current_score": 7,
+      "threshold": 12,
+      "gap": 5,
+      "findings": [
+        "Only 46.7% of required error coverage achieved",
+        "Many SPECs have empty or generic error_scenarios.yml",
+        "Missing error cases for external dependencies",
+        "Lack of systematic error scenario analysis"
+      ],
+      "priority_actions": [
+        {
+          "priority": 1,
+          "category": "Error Scenario Documentation",
+          "action": "Create comprehensive error_scenarios.yml for all SPECs",
+          "targets": [
+            "All API endpoints (network errors, timeouts, 4xx, 5xx)",
+            "All database operations (connection failures, constraints, timeouts)",
+            "All validation functions (invalid types, out of range, malformed data)",
+            "All file operations (not found, permission denied, disk full)"
+          ],
+          "estimated_effort": "6-8 hours",
+          "rationale": "Error scenarios are critical for resilience. Current gaps leave the system vulnerable to unhandled errors."
+        },
+        {
+          "priority": 2,
+          "category": "Error Type Mapping",
+          "action": "Map all error types to their scenarios",
+          "error_types": [
+            "ValidationError - input validation failures",
+            "NetworkError - API/external service failures",
+            "TimeoutError - operation timeout exceeded",
+            "CircuitBreakerOpenError - cascading failure prevention",
+            "InfiniteLoopError - loop detection triggered",
+            "NotFoundError - resource not found",
+            "ServerError - internal server errors"
+          ],
+          "estimated_effort": "3-4 hours",
+          "rationale": "Systematic error type mapping ensures comprehensive error handling."
+        }
+      ],
+      "success_criteria": [
+        "All SPECs have specific error_scenarios.yml (not generic templates)",
+        "Error scenarios cover all error types thrown by the symbol",
+        "Each error scenario includes expected behavior and error type",
+        "Error scenarios have corresponding tests"
+      ],
+      "estimated_total_effort": "9-12 hours"
+    },
+    {
+      "axis": "S-005",
+      "title": "Test-SPEC Mapping - Critical Gap",
+      "severity": "CRITICAL",
+      "current_score": 1,
+      "threshold": 12,
+      "gap": 11,
+      "findings": [
+        "Only 6.7% of test-SPEC mapping achieved",
+        "189 test files exist but minimal test_matrix.yml files",
+        "Tests exist but aren't systematically mapped to SPECs",
+        "Missing traceability from tests to specifications"
+      ],
+      "priority_actions": [
+        {
+          "priority": 1,
+          "category": "Test Matrix Creation",
+          "action": "Create test_matrix.yml for all SPECs",
+          "targets": [
+            "All 137 existing SPECs need test_matrix.yml",
+            "Map existing test files to SPECs",
+            "Identify test gaps (SPEC requirements without tests)"
+          ],
+          "estimated_effort": "12-15 hours",
+          "rationale": "Test-SPEC mapping is essential for ensuring tests validate specifications. Without it, we can't verify if tests cover requirements."
+        },
+        {
+          "priority": 2,
+          "category": "Test Gap Analysis",
+          "action": "Perform comprehensive test gap analysis",
+          "methodology": [
+            "For each SPEC, list all boundary cases and error scenarios",
+            "Map each case to specific test files and test names",
+            "Identify SPEC requirements without corresponding tests",
+            "Create new tests to fill gaps"
+          ],
+          "estimated_effort": "8-10 hours",
+          "rationale": "Systematic gap analysis ensures comprehensive test coverage."
+        },
+        {
+          "priority": 3,
+          "category": "Test Organization",
+          "action": "Reorganize tests to align with SPEC structure",
+          "methodology": [
+            "Group tests by SPEC name",
+            "Name test files to match SPEC names",
+            "Add test comments referencing SPEC IDs",
+            "Create test suites for boundary cases and error scenarios"
+          ],
+          "estimated_effort": "6-8 hours",
+          "rationale": "Aligned test structure improves maintainability and traceability."
+        }
+      ],
+      "success_criteria": [
+        "All SPECs have test_matrix.yml files",
+        "All test files are mapped to SPECs",
+        "All boundary cases have corresponding tests",
+        "All error scenarios have corresponding tests",
+        "Test coverage for each SPEC is documented and measurable"
+      ],
+      "estimated_total_effort": "26-33 hours"
+    },
+    {
+      "axis": "S-006",
+      "title": "Constitution Compliance - Minor Gap",
+      "severity": "MEDIUM",
+      "current_score": 7,
+      "threshold": 8,
+      "gap": 1,
+      "findings": [
+        "70% constitution compliance achieved",
+        "Most SPECs document types and constraints",
+        "Some SPECs lack explicit validation documentation",
+        "Minor gaps in constraint specification"
+      ],
+      "priority_actions": [
+        {
+          "priority": 1,
+          "category": "Type Safety Documentation",
+          "action": "Ensure all SPECs document TypeScript types",
+          "targets": [
+            "All input parameters must have explicit type documentation",
+            "All return values must have explicit type documentation",
+            "All type parameters must be documented with constraints"
+          ],
+          "estimated_effort": "2-3 hours",
+          "rationale": "Type safety is a core constitution requirement. Explicit documentation prevents type-related bugs."
+        },
+        {
+          "priority": 2,
+          "category": "Constraint Documentation",
+          "action": "Document all constraints in SPECs",
+          "constraint_types": [
+            "Range constraints (min/max values)",
+            "Format constraints (regex patterns)",
+            "Length constraints (string/array lengths)",
+            "Business logic constraints (validation rules)",
+            "Dependency constraints (required relationships)"
+          ],
+          "estimated_effort": "2-3 hours",
+          "rationale": "Explicit constraints ensure implementation matches specification."
+        },
+        {
+          "priority": 3,
+          "category": "Validation Documentation",
+          "action": "Document validation requirements",
+          "targets": [
+            "All external inputs must document validation",
+            "All Zod schemas must be referenced",
+            "All runtime validation must be documented"
+          ],
+          "estimated_effort": "1-2 hours",
+          "rationale": "Validation is critical for preventing invalid data from entering the system."
+        }
+      ],
+      "success_criteria": [
+        "All SPECs document TypeScript types for all inputs/outputs",
+        "All SPECs document constraints explicitly",
+        "All SPECs reference validation schemas where applicable",
+        "All SPECs comply with SYSTEM_CONSTITUTION.md requirements"
+      ],
+      "estimated_total_effort": "5-8 hours"
+    },
+    {
+      "axis": "S-007",
+      "title": "Regression Design - Passing",
+      "severity": "LOW",
+      "current_score": 4,
+      "threshold": 4,
+      "gap": 0,
+      "status": "PASS",
+      "findings": [
+        "80% regression design score achieved",
+        "Most SPECs have version information",
+        "Most SPECs have last updated timestamps",
+        "Minor improvements possible for changelog tracking"
+      ],
+      "priority_actions": [
+        {
+          "priority": 1,
+          "category": "Version Tracking",
+          "action": "Ensure all SPECs have semantic version numbers",
+          "targets": [
+            "All SPECs should follow semantic versioning (MAJOR.MINOR.PATCH)",
+            "Document breaking changes (MAJOR)",
+            "Document new features (MINOR)",
+            "Document bug fixes (PATCH)"
+          ],
+          "estimated_effort": "1-2 hours",
+          "rationale": "Consistent version tracking enables change management and regression detection."
+        }
+      ],
+      "success_criteria": [
+        "All SPECs have version numbers",
+        "All SPECs have last updated timestamps",
+        "Version changes follow semantic versioning",
+        "Breaking changes are documented in SPEC changelogs"
+      ],
+      "estimated_total_effort": "1-2 hours"
+    },
+    {
+      "axis": "S-008",
+      "title": "SPEC Freshness - Stale Documentation",
+      "severity": "MEDIUM",
+      "current_score": 6,
+      "threshold": 8,
+      "gap": 2,
+      "findings": [
+        "60% freshness score achieved",
+        "Many SPECs haven't been updated in > 7 days",
+        "Some SPECs may be out of sync with implementation",
+        "Lack of regular SPEC update process"
+      ],
+      "priority_actions": [
+        {
+          "priority": 1,
+          "category": "SPEC Update Cycle",
+          "action": "Implement regular SPEC update process",
+          "methodology": [
+            "Review and update SPECs when code changes",
+            "Update SPECs as part of code review process",
+            "Automate SPEC freshness checks",
+            "Require SPEC updates for PR approval"
+          ],
+          "estimated_effort": "3-4 hours setup + ongoing",
+          "rationale": "Fresh SPECs ensure documentation stays synchronized with implementation."
+        },
+        {
+          "priority": 2,
+          "category": "Stale SPEC Review",
+          "action": "Review and update all SPECs older than 30 days",
+          "targets": [
+            "Identify SPECs with last update > 30 days ago",
+            "Compare SPEC content with current implementation",
+            "Update SPECs to match current behavior",
+            "Add missing boundary cases and error scenarios"
+          ],
+          "estimated_effort": "8-10 hours",
+          "rationale": "Bulk update brings all SPECs to current state."
+        },
+        {
+          "priority": 3,
+          "category": "Automated Freshness Monitoring",
+          "action": "Add SPEC freshness to quality monitoring",
+          "implementation": [
+            "Add SPEC age check to meta_checker.py",
+            "Alert when SPECs are > 30 days old",
+            "Track SPEC freshness in JudgmentScore",
+            "Generate SPEC freshness reports"
+          ],
+          "estimated_effort": "4-6 hours",
+          "rationale": "Automated monitoring ensures SPECs don't become stale."
+        }
+      ],
+      "success_criteria": [
+        "All SPECs updated within last 30 days",
+        "SPEC updates are part of development workflow",
+        "SPEC freshness is monitored and reported",
+        "Stale SPECs trigger alerts for review"
+      ],
+      "estimated_total_effort": "15-20 hours"
+    }
+  ],
+  "implementation_plan": {
+    "phase_1_critical": [
+      {
+        "axis": "S-001",
+        "action": "Create missing SPECs for domain layer",
+        "effort": "2-3 hours",
+        "priority": "P0"
+      },
+      {
+        "axis": "S-005",
+        "action": "Create test_matrix.yml for all existing SPECs",
+        "effort": "12-15 hours",
+        "priority": "P0"
+      }
+    ],
+    "phase_2_high": [
+      {
+        "axis": "S-003",
+        "action": "Enhance boundary_values.yml with specific cases",
+        "effort": "6-8 hours",
+        "priority": "P1"
+      },
+      {
+        "axis": "S-004",
+        "action": "Create comprehensive error_scenarios.yml",
+        "effort": "6-8 hours",
+        "priority": "P1"
+      },
+      {
+        "axis": "S-001",
+        "action": "Create missing SPECs for application/infrastructure",
+        "effort": "2-3 hours",
+        "priority": "P1"
+      }
+    ],
+    "phase_3_medium": [
+      {
+        "axis": "S-006",
+        "action": "Complete constitution compliance documentation",
+        "effort": "5-8 hours",
+        "priority": "P2"
+      },
+      {
+        "axis": "S-008",
+        "action": "Update stale SPECs and implement freshness monitoring",
+        "effort": "15-20 hours",
+        "priority": "P2"
+      },
+      {
+        "axis": "S-001",
+        "action": "Create missing SPECs for components and utilities",
+        "effort": "6-9 hours",
+        "priority": "P2"
+      }
+    ],
+    "phase_4_low": [
+      {
+        "axis": "S-002",
+        "action": "Achieve perfect I/O strictness score",
+        "effort": "1 hour",
+        "priority": "P3"
+      },
+      {
+        "axis": "S-007",
+        "action": "Enhance version tracking consistency",
+        "effort": "1-2 hours",
+        "priority": "P3"
+      }
+    ]
+  },
+  "total_estimated_effort": "63-91 hours",
+  "recommended_approach": {
+    "strategy": "Incremental improvement with continuous audit cycles",
+    "sprint_1": "Focus on S-001 (Domain SPECs) + S-005 (Test matrices) - 14-18 hours",
+    "sprint_2": "Focus on S-003 (Boundaries) + S-004 (Errors) - 12-16 hours",
+    "sprint_3": "Focus on S-006 (Constitution) + S-008 (Freshness) - 20-28 hours",
+    "sprint_4": "Polish S-002 + S-007 + remaining S-001 - 8-12 hours",
+    "target_achievement": "Reach 80+ points with all axes passing thresholds"
+  }
+}

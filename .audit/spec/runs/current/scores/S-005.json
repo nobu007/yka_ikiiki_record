@@ -1,0 +1,22 @@
+{
+  "axis": "S-005",
+  "name": "Test-SPEC Mapping",
+  "description": "Evaluates the traceability between tests and specifications",
+  "evaluation_method": "Presence of test_matrix.yml files mapping tests to SPEC requirements",
+  "score": 1,
+  "max_score": 15,
+  "threshold": 12,
+  "percentage": "6.7%",
+  "status": "FAIL",
+  "gap": 11,
+  "findings": [
+    "Only 6.7% of test-SPEC mapping achieved",
+    "189 test files exist but minimal test_matrix.yml files",
+    "Tests exist but aren't systematically mapped to SPECs",
+    "Missing traceability from tests to specifications"
+  ],
+  "recommendations": [
+    "CRITICAL: Score is 11 points below threshold",
+    "Review revision_proposals.json for detailed action items"
+  ]
+}

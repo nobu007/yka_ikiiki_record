@@ -1,0 +1,18 @@
+{
+  "axis": "S-002",
+  "name": "I/O Strictness",
+  "description": "Evaluates the completeness of input/output specifications in SPECs",
+  "evaluation_method": "Average completeness of input, output, preconditions, postconditions, invariants",
+  "score": 14,
+  "max_score": 15,
+  "threshold": 12,
+  "percentage": "93.3%",
+  "status": "PASS",
+  "gap": 0,
+  "findings": [
+    "93.3% achievement rate",
+    "Most SPECs have complete I/O specifications",
+    "Minor gaps in preconditions/postconditions documentation"
+  ],
+  "recommendations": []
+}

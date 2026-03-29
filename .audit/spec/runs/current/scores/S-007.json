@@ -1,0 +1,19 @@
+{
+  "axis": "S-007",
+  "name": "Regression Design",
+  "description": "Assesses the quality of version tracking and change documentation",
+  "evaluation_method": "Presence of version numbers and update timestamps",
+  "score": 4,
+  "max_score": 5,
+  "threshold": 4,
+  "percentage": "80.0%",
+  "status": "PASS",
+  "gap": 0,
+  "findings": [
+    "80% regression design score achieved",
+    "Most SPECs have version information",
+    "Most SPECs have last updated timestamps",
+    "Minor improvements possible for changelog tracking"
+  ],
+  "recommendations": []
+}

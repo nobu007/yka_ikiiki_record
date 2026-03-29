@@ -1,0 +1,23 @@
+{
+  "axis": "S-001",
+  "name": "SPEC Existence",
+  "description": "Measures the percentage of public symbols with complete SPEC documentation",
+  "evaluation_method": "Count of symbols with SPECs / Total public symbols",
+  "score": 8,
+  "max_score": 15,
+  "threshold": 12,
+  "percentage": "53.3%",
+  "status": "FAIL",
+  "gap": 4,
+  "findings": [
+    "Only 51.1% of public symbols have SPECs (137/268)",
+    "166 symbols lack documentation",
+    "Critical gaps in domain layer (10 missing SPECs)",
+    "Components layer missing 40 SPECs",
+    "Utilities/constants missing 57 SPECs"
+  ],
+  "recommendations": [
+    "CRITICAL: Score is 4 points below threshold",
+    "Review revision_proposals.json for detailed action items"
+  ]
+}

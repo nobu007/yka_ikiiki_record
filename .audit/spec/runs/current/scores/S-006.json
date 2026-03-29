@@ -1,0 +1,22 @@
+{
+  "axis": "S-006",
+  "name": "Constitution Compliance",
+  "description": "Measures adherence to SYSTEM_CONSTITUTION.md requirements",
+  "evaluation_method": "Presence of type safety, constraints, and validation documentation",
+  "score": 7,
+  "max_score": 10,
+  "threshold": 8,
+  "percentage": "70.0%",
+  "status": "FAIL",
+  "gap": 1,
+  "findings": [
+    "70% constitution compliance achieved",
+    "Most SPECs document types and constraints",
+    "Some SPECs lack explicit validation documentation",
+    "Minor gaps in constraint specification"
+  ],
+  "recommendations": [
+    "CRITICAL: Score is 1 points below threshold",
+    "Review revision_proposals.json for detailed action items"
+  ]
+}

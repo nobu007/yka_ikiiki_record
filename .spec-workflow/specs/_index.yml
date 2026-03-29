@@ -108,6 +108,9 @@ specs:
   LoadingSpinner:
     name: LoadingSpinner
     spec_file: LoadingSpinner/LoadingSpinner_spec.md
+  LoadingOverlay:
+    name: LoadingOverlay
+    spec_file: LoadingOverlay/LoadingOverlay_spec.md
   MemoryMonitor:
     name: MemoryMonitor
     spec_file: MemoryMonitor/MemoryMonitor_spec.md
@@ -405,4 +408,7 @@ specs:
   generateCSVFilename:
     name: generateCSVFilename
     spec_file: generateCSVFilename/generateCSVFilename_spec.md
-total_specs: 135
+  LoadingOverlay:
+    name: LoadingOverlay
+    spec_file: LoadingOverlay/LoadingOverlay_spec.md
+total_specs: 136

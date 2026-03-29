@@ -7,14 +7,15 @@ import {
   StudentEmotionChart,
   EmotionTrendChart,
 } from "@/components/charts";
-import { ExportButton } from "@/components/common";
+import { ExportButton, PaginationControl } from "@/components/common";
 import { StatsData } from "@/schemas/api";
 import { CHART_TITLES } from "@/lib/constants/messages";
+import { usePagination } from "@/presentation/hooks/usePagination";
 
 /**
- * Maximum number of students to display in the table.
+ * Default number of students per page in the table.
  */
-const MAX_STUDENTS_IN_TABLE = 10;
+const DEFAULT_STUDENTS_PER_PAGE = 10;
 
 /**
  * Modulo value for alternating row background colors.
@@ -80,10 +81,19 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
     return last > prev ? "↗️" : last < prev ? "↘️" : "→";
   }, []);
 
-  const studentStatsSlice = useMemo(
-    () => data.studentStats.slice(0, MAX_STUDENTS_IN_TABLE),
-    [data.studentStats],
-  );
+  const {
+    currentPageData: paginatedStudentStats,
+    currentPage,
+    totalPages,
+    goToPage,
+    goToNextPage,
+    goToPreviousPage,
+  } = usePagination(data.studentStats, {
+    pageSize: DEFAULT_STUDENTS_PER_PAGE,
+  });
+
+  const shouldShowPagination = totalPages > 1;
+
   return (
     <div className="space-y-8">
       {/* Overview Statistics */}
@@ -172,7 +182,7 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {studentStatsSlice.map((student, index) => (
+              {paginatedStudentStats.map((student, index) => (
                 <tr
                   key={student.student}
                   className={
@@ -207,6 +217,16 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
             </tbody>
           </table>
         </div>
+        {shouldShowPagination && (
+          <div className="mt-4 flex justify-center">
+            <PaginationControl
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={goToPage}
+              showPageInfo={true}
+            />
+          </div>
+        )}
       </section>
     </div>
   );

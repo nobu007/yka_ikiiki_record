@@ -206,6 +206,29 @@ milestones:
     status: "done"
     progress_note: "MS-009 completed 2026-03-30. All 4 tasks completed: (T-001) Domain layer (AnomalyDetectionService + AnomalyRepository), (T-002) Infrastructure layer (NotificationProvider + EmailNotificationProvider), (T-003) Application layer (NotificationService), (T-004) Presentation layer (API endpoints /api/notifications/settings, /api/notifications/history). Total production: 794 (anomaly) + 1022 (provider) + 654 (service) + 301 (API) = 2771 lines. Total tests: 1208 (anomaly) + 1004 (provider) + 767 (service) + 272 (API) = 3251 lines. 204 notification-specific tests passing (100% for all layers). Complete 4-layer Clean Architecture implementation. HTTP API endpoints: GET/POST /api/notifications/settings, GET /api/notifications/history. Features: Email validation, Rate limiting (per hour/day), Quiet hours with timezone, Critical priority bypasses quiet hours, Automatic retry with exponential backoff (3 attempts), Provider selection by channel and status, In-memory notification storage, Notification history with filtering and pagination, Configuration management with Zod validation, Provider health monitoring, Channel enable/disable functionality. Overall project: 2143/2143 tests passing (100%)."
 
+  - id: "MS-010"
+    name: "Production Readiness Validation"
+    intent: "本番デプロイの外部依存をコードベースの解決策に変換し、継続的な本番稼働準備状況の検証を可能にすることで、デプロイリスクを低減し、人間オペレーターがデプロイを実行する際の確信を提供する"
+    deliverables:
+      - "Production Readiness Validation Script (scripts/validate-production-readiness.sh) - T-001 completed"
+      - "Validation Script Tests (scripts/validate-production-readiness.test.ts) - T-001 completed"
+      - "Jest Configuration Update (jest.config.js) - T-001 completed"
+      - "npm Script Integration (package.json) - T-001 completed"
+      - "Documentation Update (scripts/README.md) - T-001 completed"
+      - "Pre-flight Checks Integration (scripts/deploy-production.sh) - T-002 pending"
+    acceptance:
+      - type: "quality_gate"
+        target: "全検証チェックがパスし、テストが100%通過する"
+    constitution_links:
+      - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Clean Architecture compliance validation (4-layer structure, circular dependency checks)"
+      - "§3 TYPE SUPREMACY - TypeScript compilation validation, 'any' type detection"
+      - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Resilience components validation (timeout, circuit-breaker, loop-detector, memory-monitor)"
+      - "§7 TESTING MANDATES - Test suite validation, 90% coverage threshold enforcement, comprehensive test coverage"
+      - "§9 CI/CD REQUIREMENTS - Pre-deployment validation, automated quality gates"
+    priority: "P0"
+    status: "active"
+    progress_note: "MS-010 in progress (2026-03-30). T-001 completed: Production Readiness Validation Script implemented with comprehensive checks across 11 sections (Environment, Dependencies, Type Safety, Linting, Testing, Database/Prisma, Build, Clean Architecture, Environment Configuration, Deployment Scripts, Resilience Protocols). Total production: 391 lines. Total tests: 313 lines. 45 tests passing (100%). Features: Color-coded output, test counters, exit code 0 on success/1 on failure, next steps guidance. Converts external dependency (production deployment) into code-based solution (automated validation). Overall project: 2205/2205 tests passing (100%, +62 from 2143). T-002 pending: Integrate validation into deploy-production.sh as pre-flight check."
+
 work_policy:
   default_mode: "commit"
   iteration_budget:

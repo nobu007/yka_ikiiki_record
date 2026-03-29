@@ -1,128 +1,145 @@
 meta:
-  generated_at: "2026-03-30T05:00:00Z"
-  source_deliverable: "MS-007: パフォーマンス監視・最適化機能の実装"
-  milestone_id: "MS-007"
-  milestone_status: "done"
+  generated_at: "2026-03-30T05:09:00Z"
+  source_deliverable: "MS-008: バックアップ・復元システム（Backup and Restore System）"
+  milestone_id: "MS-008"
+  milestone_status: "active"
 
 completed_tasks:
   - id: "T-001"
-    title: "Create PerformanceMonitor utility for tracking performance metrics"
+    title: "Create BackupService domain entity and repository interface"
     type: "feat"
-    commit_sha: "[PENDING_COMMIT]"
-    completed_at: "2026-03-30T05:00:00Z"
+    commit_sha: "50836321"
+    completed_at: "2026-03-30T05:09:00Z"
     files_modified:
-      - "src/lib/resilience/performance-monitor.ts (481 lines, new file)"
-      - "src/lib/constants/resilience.ts (added PERFORMANCE_MONITOR_CONSTANTS)"
-      - "src/lib/resilience/index.ts (updated exports)"
-    test_results: "33/33 PerformanceMonitor tests passing, 1841/1841 total tests passing (100%)"
-
-  - id: "T-002"
-    title: "Add comprehensive tests for PerformanceMonitor"
-    type: "test"
-    commit_sha: "[PENDING_COMMIT]"
-    completed_at: "2026-03-30T05:00:00Z"
-    files_modified:
-      - "src/lib/resilience/performance-monitor.test.ts (557 lines, new file)"
-    test_results: "33/33 tests passing (100% coverage). Tests cover: constructor, measure, measureAsync, trackRender, statistics, slow render detection, maxMetrics limit, precision."
-
-  - id: "T-003"
-    title: "Create performance optimization documentation"
-    type: "docs"
-    commit_sha: "[PENDING_COMMIT]"
-    completed_at: "2026-03-30T05:00:00Z"
-    files_modified:
-      - "docs/performance-optimization.md (new file)"
-    test_results: "N/A (documentation)"
-
-  - id: "T-004"
-    title: "Update charter.yml with MS-007"
-    type: "chore"
-    commit_sha: "[PENDING_COMMIT]"
-    completed_at: "2026-03-30T05:00:00Z"
-    files_modified:
-      - ".concept/charter.yml (added MS-007, updated success metrics)"
-    test_results: "1841/1841 tests passing (100%)"
+      - "src/domain/entities/Backup.ts (176 lines, new file)"
+      - "src/domain/repositories/BackupRepository.ts (155 lines, new file)"
+      - "src/domain/entities/Backup.test.ts (254 lines, new file)"
+      - "src/domain/repositories/BackupRepository.test.ts (241 lines, new file)"
+      - "src/domain/repositories/index.ts (updated exports)"
+    test_results: "43/43 Backup domain tests passing (100%), 1886/1886 total tests passing (100%)"
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P2 - Performance Requirements (§5 PERFORMANCE REQUIREMENTS - React component optimization and performance monitoring)"
+  quality_gate_contributed: "P3 - 運用改善 → §6 AUTONOMOUS RESILIENCE PROTOCOLS (Data protection and recovery), §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Domain layer), §7 TESTING MANDATES (100% domain coverage)"
   constitution_links:
-    - "§7 TESTING MANDATES - All features must have comprehensive tests (33 tests, 100% passing)"
-    - "§3 TYPE SUPREMACY - Full TypeScript type safety with all types properly defined"
-    - "§5 PERFORMANCE REQUIREMENTS - Performance monitoring and optimization infrastructure"
-  impact: "MS-007 COMPLETED: Performance monitoring and optimization infrastructure implemented. Production: 481 lines (PerformanceMonitor utility + constants + index exports). Tests: 557 lines (33 tests passing). Total: 1038 lines. Features: Synchronous code measurement, Async code measurement, React render tracking, Performance statistics (avg, min, max, count), Slow render detection (16.67ms threshold = 60fps), Metrics history with configurable limit (default: 1000), Summary reporting, Enable/disable monitoring. All existing components already optimized with React.memo, useCallback, useMemo (verified during audit). Performance optimization documentation created with best practices, profiling guidelines, and optimization checklist. Directly fulfills PURPOSE.md P2-優先度2: パフォーマンス最適化（大量データ時の表示速度改善）."
+    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain layer foundation with Clean Architecture"
+    - "§7 TESTING MANDATES - All features must have comprehensive tests (43 tests, 100% passing)"
+    - "§3 TYPE SUPREMACY - Full TypeScript type safety with factory functions and status validation"
+    - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Data protection, disaster recovery infrastructure"
+  impact: "T-001 COMPLETED: Backup domain entity and repository interface implemented. Production: 331 lines (176 Backup entity + 155 BackupRepository interface). Tests: 495 lines (254 entity tests + 241 repository tests). Total: 826 lines. Features: Backup lifecycle management (pending → completed/failed), Status validation (isBackupTerminal, isBackupRestorable), Repository operations (save, findById, query, delete, restore, findLatestCompleted, count, getTotalSize), Query support with filters (status, source, triggeredBy, time range, pagination), Restore operation with detailed result metadata. Domain layer 100% coverage achieved. Foundation for backup/restore system established following Clean Architecture principles."
 
 selected_deliverable:
-  source: "PURPOSE.md P2: 優先度2: 分析・可視化の強化 → パフォーマンス最適化（大量データ時の表示速度改善）"
-  description: "Optimize React component performance for large datasets through monitoring, memoization, and performance tracking utilities"
-  milestone_id: "MS-007"
-  priority: "P2"
-  constitution_link: "SYSTEM_CONSTITUTION.md §5: PERFORMANCE REQUIREMENTS - React component optimization, §3: Type Supremacy, §7: Testing Mandates"
+  source: "PURPOSE.md P3: 運用改善 → バックアップ・復元システム（定期バックアップ、ワンクリック復元）"
+  description: "Implement automated backup and restore system for data integrity and disaster recovery"
+  milestone_id: "MS-008"
+  priority: "P3"
+  constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Data protection and disaster recovery, §2 RIGOROUS ARCHITECTURAL DISCIPLINE - Cross-cutting concerns for operational resilience"
 
 task_breakdown:
   - id: "T-001"
-    title: "Create PerformanceMonitor utility for tracking performance metrics"
+    title: "Create BackupService domain entity and repository interface"
     type: "feat"
     files_to_modify:
-      - "src/lib/resilience/performance-monitor.ts (new)"
-      - "src/lib/constants/resilience.ts (update)"
-      - "src/lib/resilience/index.ts (update)"
-    acceptance_test: "npm test -- src/lib/resilience/performance-monitor.test.ts"
-    estimated_diff_lines: 500
-    constitution_link: "§7 TESTING MANDATES - All features must have tests"
+      - "src/domain/entities/Backup.ts (new)"
+      - "src/domain/repositories/BackupRepository.ts (new)"
+      - "src/domain/entities/Backup.test.ts (new)"
+      - "src/domain/repositories/BackupRepository.test.ts (new)"
+      - "src/domain/repositories/index.ts (update)"
+    acceptance_test: "npm test -- src/domain/entities/Backup.test.ts src/domain/repositories/BackupRepository.test.ts"
+    estimated_diff_lines: 850
+    constitution_link: "§7 TESTING MANDATES - Domain layer 100% coverage mandatory"
     status: "completed"
 
   - id: "T-002"
-    title: "Add comprehensive tests for PerformanceMonitor"
-    type: "test"
+    title: "Implement InMemoryBackupRepository with comprehensive tests"
+    type: "feat"
     files_to_modify:
-      - "src/lib/resilience/performance-monitor.test.ts (new)"
-    acceptance_test: "npm test -- src/lib/resilience/performance-monitor.test.ts"
-    estimated_diff_lines: 600
-    constitution_link: "§7 TESTING MANDATES - All features must have tests"
-    status: "completed"
+      - "src/infrastructure/repositories/InMemoryBackupRepository.ts (new)"
+      - "src/infrastructure/repositories/InMemoryBackupRepository.test.ts (new)"
+    acceptance_test: "npm test -- src/infrastructure/repositories/InMemoryBackupRepository.test.ts"
+    estimated_diff_lines: 400
+    constitution_link: "§7 TESTING MANDATES - Infrastructure layer 90% coverage minimum"
+    status: "pending"
 
   - id: "T-003"
-    title: "Create performance optimization documentation"
-    type: "docs"
+    title: "Create BackupService application layer with backup/restore orchestration"
+    type: "feat"
     files_to_modify:
-      - "docs/performance-optimization.md (new)"
-    acceptance_test: "N/A (documentation review)"
-    estimated_diff_lines: 400
-    constitution_link: "§5 PERFORMANCE REQUIREMENTS - Documentation for performance best practices"
-    status: "completed"
+      - "src/application/services/BackupService.ts (new)"
+      - "src/application/services/BackupService.test.ts (new)"
+    acceptance_test: "npm test -- src/application/services/BackupService.test.ts"
+    estimated_diff_lines: 450
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer use cases orchestrate domain logic"
+    status: "pending"
 
   - id: "T-004"
-    title: "Update charter.yml with MS-007"
-    type: "chore"
+    title: "Add backup API endpoints (/api/backup, /api/restore)"
+    type: "feat"
     files_to_modify:
-      - ".concept/charter.yml (update)"
-    acceptance_test: "N/A (charter update)"
-    estimated_diff_lines: 20
-    constitution_link: "§7 TESTING MANDATES - Track progress in charter"
-    status: "completed"
+      - "src/app/api/backup/route.ts (new)"
+      - "src/app/api/restore/route.ts (new)"
+      - "src/app/api/backup/route.test.ts (new)"
+      - "src/app/api/restore/route.test.ts (new)"
+    acceptance_test: "npm test -- src/app/api/backup src/app/api/restore"
+    estimated_diff_lines: 350
+    constitution_link: "§7 TESTING MANDATES - All API endpoints must have comprehensive tests"
+    status: "pending"
 
 execution_plan:
   first_task: "T-001"
-  rationale: "PerformanceMonitor utility is the foundation for performance optimization. It provides the infrastructure to measure, track, and analyze performance metrics across the application. This enables data-driven optimization decisions and helps identify performance bottlenecks before they impact users. The utility integrates seamlessly with existing resilience utilities (memory-monitor, circuit-breaker, timeout) and follows the same architectural patterns."
+  rationale: "Backup domain entity is the foundation for the entire backup/restore system. Following Clean Architecture, we must define the domain layer (Backup entity + BackupRepository interface) before implementing infrastructure or application layers. This ensures type safety and architectural discipline from the ground up. The domain layer provides the vocabulary and contracts that all other layers depend on, making it the critical first step. T-001 completed successfully with 43 tests passing and 100% domain coverage."
 
 notes: |
-  MS-007 COMPLETED (2026-03-30).
+  MS-008 IN PROGRESS (2026-03-30).
 
-  ALL TASKS COMPLETED:
-  ✅ T-001: PerformanceMonitor utility (481 lines production)
-  ✅ T-002: Comprehensive test suite (557 lines tests, 33 tests)
-  ✅ T-003: Performance optimization documentation
-  ✅ T-004: charter.yml updated with MS-007
+  COMPLETED TASKS:
+  ✅ T-001: Backup domain entity and repository interface (331 lines production, 495 lines tests, 43 tests)
 
-  MS-007 STATUS: DONE
-  All deliverables completed with 100% test coverage.
-  Performance monitoring infrastructure fully functional and integrated.
-  Documentation provides comprehensive guidance for ongoing optimization.
-  Ready for production use.
+  REMAINING TASKS:
+  ⏳ T-002: InMemoryBackupRepository implementation
+  ⏳ T-003: BackupService application layer
+  ⏳ T-004: Backup API endpoints
 
-remaining_tasks: []
+  MS-008 STATUS: ACTIVE
+  Domain layer foundation complete with full test coverage.
+  Next: Implement infrastructure layer (InMemoryBackupRepository) to provide in-memory storage for development/testing.
+
+remaining_tasks:
+  - id: "T-002"
+    title: "Implement InMemoryBackupRepository with comprehensive tests"
+    type: "feat"
+    files_to_modify:
+      - "src/infrastructure/repositories/InMemoryBackupRepository.ts (new)"
+      - "src/infrastructure/repositories/InMemoryBackupRepository.test.ts (new)"
+    acceptance_test: "npm test -- src/infrastructure/repositories/InMemoryBackupRepository.test.ts"
+    estimated_diff_lines: 400
+    constitution_link: "§7 TESTING MANDATES - Infrastructure layer 90% coverage minimum"
+    status: "pending"
+
+  - id: "T-003"
+    title: "Create BackupService application layer with backup/restore orchestration"
+    type: "feat"
+    files_to_modify:
+      - "src/application/services/BackupService.ts (new)"
+      - "src/application/services/BackupService.test.ts (new)"
+    acceptance_test: "npm test -- src/application/services/BackupService.test.ts"
+    estimated_diff_lines: 450
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer use cases orchestrate domain logic"
+    status: "pending"
+
+  - id: "T-004"
+    title: "Add backup API endpoints (/api/backup, /api/restore)"
+    type: "feat"
+    files_to_modify:
+      - "src/app/api/backup/route.ts (new)"
+      - "src/app/api/restore/route.ts (new)"
+      - "src/app/api/backup/route.test.ts (new)"
+      - "src/app/api/restore/route.test.ts (new)"
+    acceptance_test: "npm test -- src/app/api/backup src/app/api/restore"
+    estimated_diff_lines: 350
+    constitution_link: "§7 TESTING MANDATES - All API endpoints must have comprehensive tests"
+    status: "pending"
 
 next_execution:
-  task_id: null
-  rationale: "MS-007 is complete. All 4 tasks (T-001 through T-004) have been successfully implemented with 33 tests passing. The performance monitoring and optimization infrastructure is fully functional. All existing components are already optimized with React.memo, useCallback, and useMemo (verified during audit). PerformanceMonitor provides comprehensive tracking for synchronous operations, async operations, and React renders with automatic slow render detection. The next cycle should select a new deliverable from PURPOSE.md, likely from P2 (基盤機能) or P3 (運用改善)."
+  task_id: "T-002"
+  rationale: "T-001 (domain layer) is complete. T-002 implements the InMemoryBackupRepository in the infrastructure layer, which depends on the domain interfaces just created. This follows Clean Architecture's dependency rule: Infrastructure depends on Domain. The InMemoryBackupRepository will provide a concrete implementation for development and testing, with methods for saving, querying, restoring, and managing backups. All operations will be in-memory with full test coverage (target: 90%+)."

@@ -7,3 +7,9 @@ export type {
   TrendAnalysisQueryResult,
   TrendAggregationPeriod,
 } from "./TrendAnalysisRepository";
+export type {
+  BackupRepository,
+  BackupQuery,
+  BackupQueryResult,
+  RestoreResult,
+} from "./BackupRepository";

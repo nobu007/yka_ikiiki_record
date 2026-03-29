@@ -26,6 +26,15 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Step 0: Pre-flight production readiness validation
+log_info "Step 0: Running production readiness validation (pre-flight check)..."
+if ! "${SCRIPT_DIR}/validate-production-readiness.sh"; then
+    log_error "Production readiness validation failed. Deployment aborted."
+    log_error "Please fix the issues reported by validate-production-readiness.sh"
+    exit 1
+fi
+log_info "✓ Production readiness validation passed"
+
 # Step 1: Verify prerequisites
 log_info "Step 1: Verifying deployment prerequisites..."
 
@@ -43,7 +52,7 @@ fi
 log_info "✓ Vercel CLI installed and authenticated"
 
 # Verify tests pass
-log_info "Step 2: Running test suite..."
+log_info "Step 3: Running test suite..."
 cd "${PROJECT_ROOT}"
 if ! npm test -- --silent 2>&1 | grep -q "passed"; then
     log_error "Tests failed. Cannot deploy with failing tests."
@@ -52,18 +61,18 @@ fi
 log_info "✓ All tests passing"
 
 # Verify build succeeds
-log_info "Step 3: Verifying production build..."
+log_info "Step 4: Verifying production build..."
 if ! npm run build &> /dev/null; then
     log_error "Production build failed. Cannot deploy."
     exit 1
 fi
 log_info "✓ Production build successful"
 
-# Step 4: Deploy to Vercel
-log_info "Step 4: Deploying to Vercel production..."
+# Step 5: Deploy to Vercel
+log_info "Step 5: Deploying to Vercel production..."
 vercel --prod --yes
 
-# Step 5: Database setup instructions
+# Step 6: Database setup instructions
 log_info "Step 5: Database setup required"
 log_warn "==========================================="
 log_warn "ACTION REQUIRED: Set up production database"
@@ -93,8 +102,8 @@ if ! vercel env ls . | grep -q "DATABASE_URL.*production"; then
 else
     log_info "DATABASE_URL is configured"
 
-    # Step 6: Deploy database migrations
-    log_info "Step 6: Deploying database migrations..."
+    # Step 7: Deploy database migrations
+    log_info "Step 7: Deploying database migrations..."
     if vercel exec -- npm run db:migrate:deploy; then
         log_info "✓ Database migrations deployed successfully"
     else
@@ -103,8 +112,8 @@ else
     fi
 fi
 
-# Step 7: Verify deployment
-log_info "Step 7: Verifying production deployment..."
+# Step 8: Verify deployment
+log_info "Step 8: Verifying production deployment..."
 PROD_URL=$(vercel ls --prod | grep -m1 'lively-demo' | awk '{print $2}')
 if [[ -n "$PROD_URL" ]]; then
     log_info "✓ Production URL: https://${PROD_URL}"

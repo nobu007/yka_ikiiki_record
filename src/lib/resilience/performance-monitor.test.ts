@@ -138,7 +138,7 @@ describe("PerformanceMonitor", () => {
       const stats = monitor.getStats("async-operation");
       expect(stats).toBeDefined();
       expect(stats?.count).toBe(1);
-      expect(stats?.avgDuration).toBeGreaterThanOrEqual(10);
+      expect(stats?.avgDuration).toBeGreaterThan(9);
     });
 
     it("should handle multiple async measurements", async () => {

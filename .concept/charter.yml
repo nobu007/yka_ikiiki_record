@@ -215,7 +215,7 @@ milestones:
       - "Jest Configuration Update (jest.config.js) - T-001 completed"
       - "npm Script Integration (package.json) - T-001 completed"
       - "Documentation Update (scripts/README.md) - T-001 completed"
-      - "Pre-flight Checks Integration (scripts/deploy-production.sh) - T-002 pending"
+      - "Pre-flight Checks Integration (scripts/deploy-production.sh) - T-002 completed"
     acceptance:
       - type: "quality_gate"
         target: "全検証チェックがパスし、テストが100%通過する"
@@ -226,8 +226,8 @@ milestones:
       - "§7 TESTING MANDATES - Test suite validation, 90% coverage threshold enforcement, comprehensive test coverage"
       - "§9 CI/CD REQUIREMENTS - Pre-deployment validation, automated quality gates"
     priority: "P0"
-    status: "active"
-    progress_note: "MS-010 in progress (2026-03-30). T-001 completed: Production Readiness Validation Script implemented with comprehensive checks across 11 sections (Environment, Dependencies, Type Safety, Linting, Testing, Database/Prisma, Build, Clean Architecture, Environment Configuration, Deployment Scripts, Resilience Protocols). Total production: 391 lines. Total tests: 313 lines. 45 tests passing (100%). Features: Color-coded output, test counters, exit code 0 on success/1 on failure, next steps guidance. Converts external dependency (production deployment) into code-based solution (automated validation). Overall project: 2205/2205 tests passing (100%, +62 from 2143). T-002 pending: Integrate validation into deploy-production.sh as pre-flight check."
+    status: "done"
+    progress_note: "MS-010 completed 2026-03-30. All 2 tasks completed: (T-001) Production Readiness Validation Script with comprehensive checks across 11 sections (Environment, Dependencies, Type Safety, Linting, Testing, Database/Prisma, Build, Clean Architecture, Environment Configuration, Deployment Scripts, Resilience Protocols), (T-002) Pre-flight check integration in deploy-production.sh. Total production: 399 lines (391 validation script + 8 pre-flight integration). Total tests: 313 lines. 45 validation script tests passing (100%). Converts external dependency (production deployment) into code-based solution (automated validation + pre-flight integration). Deployment now automatically validates all prerequisites before attempting deployment, aborting with clear error messages if validation fails. Overall project: 2205/2205 tests passing (100%)."
 
 work_policy:
   default_mode: "commit"

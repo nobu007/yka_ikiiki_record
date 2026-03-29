@@ -76,6 +76,8 @@ milestones:
       - "ページネーションユーティリティ (src/utils/pagination.ts)"
       - "ページネーション関数のテスト (src/utils/pagination.test.ts)"
       - "PaginationResult型の定義 (src/types/pagination.ts)"
+      - "PaginationControl UIコンポーネント (src/components/common/PaginationControl.tsx)"
+      - "PaginationControlコンポーネントのテスト (src/components/common/PaginationControl.test.tsx)"
     acceptance:
       - type: "quality_gate"
         target: "全ページネーション関数のテストが通過し、カバレッジ100%を達成"
@@ -85,7 +87,7 @@ milestones:
       - "§5 PERFORMANCE REQUIREMENTS - React component optimization"
     priority: "P2"
     status: "active"
-    progress_note: "Started 2026-03-29. Initial deliverable: pagination utility functions."
+    progress_note: "In progress 2026-03-29. T-001 completed (pagination utilities), T-002 completed (PaginationControl component). 1 remaining: T-003 (DataVisualization integration)."
 
 work_policy:
   default_mode: "commit"

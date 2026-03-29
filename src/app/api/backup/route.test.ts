@@ -169,7 +169,7 @@ describe("GET /api/backup", () => {
 
     expect(response.status).toBe(200);
     expect(data.success).toBe(true);
-    expect(data.data.every((b: any) => b.source === "manual")).toBe(true);
+    expect(data.data.every((b: any) => b.metadata.source === "manual")).toBe(true);
   });
 
   test("returns empty array when no backups match filter", async () => {

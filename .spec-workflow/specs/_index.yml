@@ -219,6 +219,10 @@ specs:
     created: '2026-03-30T06:30:00.000000'
     name: NotificationProvider
     path: .spec-workflow/specs/NotificationProvider/NotificationProvider_spec.md
+  NotificationService:
+    created: '2026-03-30T07:49:00.000000'
+    name: NotificationService
+    path: .spec-workflow/specs/NotificationService/NotificationService_spec.md
   NotificationState:
     created: '2026-03-30T03:35:54.314151'
     name: NotificationState
@@ -699,4 +703,4 @@ specs:
     created: '2026-03-30T06:22:00.000000'
     name: AnomalyDetectionService
     path: .spec-workflow/specs/AnomalyDetectionService/AnomalyDetectionService_spec.md
-total: 174
+total: 175

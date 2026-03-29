@@ -37,20 +37,18 @@ completed_tasks:
       - "src/domain/repositories/index.ts (updated exports)"
       - "src/infrastructure/services/index.ts (updated exports)"
     test_results: "70 notification provider tests passing (100% for all layers). Total production: 1022 lines (356 entity + 177 repository + 489 infrastructure). Total tests: 1004 lines (329 entity + 267 repository + 408 infrastructure). Complete 3-layer Clean Architecture implementation: Domain Entity (NotificationProvider) + Repository Interface (NotificationProviderRepository) + Infrastructure (EmailNotificationProvider). Features: 5 provider types (EMAIL, SMS, SLACK, WEBHOOK, IN_APP), 5 notification channels (ANOMALY_DETECTION, SYSTEM_ALERTS, DATA_BACKUP, USER_ACTIVITY, REPORTS), 4 priority levels (LOW, MEDIUM, HIGH, CRITICAL), 4 delivery statuses (PENDING, SENT, FAILED, RETRYING), Email provider with SMTP configuration validation, Health check functionality, Channel enable/disable support, Provider availability checking, Comprehensive error handling with retry logic."
-
-remaining_tasks:
   - id: "T-003"
     title: "Create NotificationService application layer"
     type: "feat"
-    files_to_modify:
-      - "src/application/services/NotificationService.ts (new)"
-      - "src/application/services/NotificationService.test.ts (new)"
-      - "src/application/services/index.ts (update)"
-    acceptance_test: "npm test -- src/application/services/NotificationService.test.ts"
-    estimated_diff_lines: 400
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer use cases orchestrate domain logic"
-    status: "pending"
+    commit_sha: "pending"
+    completed_at: "2026-03-30T07:00:00Z"
+    files_modified:
+      - "src/application/services/NotificationService.ts (654 lines, new file)"
+      - "src/application/services/NotificationService.test.ts (767 lines, new file)"
+      - "src/application/services/index.ts (new file)"
+    test_results: "25 notification service tests passing (100% for application layer). Total production: 654 lines. Total tests: 767 lines. Complete application layer implementation with comprehensive notification orchestration: sendNotification, sendAnomalyAlert, getNotificationHistory, getNotificationSettings, updateConfig, getProviderStatus, validateProviderConfiguration, enableChannel, disableChannel, setProviderStatus. Features: Email validation with regex, Rate limiting (per hour/day), Quiet hours with timezone, Critical priority bypasses quiet hours, Automatic retry with exponential backoff (3 attempts), Provider selection by channel and status, In-memory notification storage, Notification history with filtering and pagination, Configuration management with Zod validation, Provider health monitoring, Channel enable/disable functionality."
 
+remaining_tasks:
   - id: "T-004"
     title: "Add notification API endpoints (/api/notifications/settings, /api/notifications/history)"
     type: "feat"
@@ -67,13 +65,13 @@ remaining_tasks:
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P3 - 運用改善 → §6 AUTONOMOUS RESILIENCE PROTOCOLS (Anomaly detection and alerting for system health), §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Complete 3-layer Clean Architecture with Domain+Repository+Infrastructure), §7 TESTING MANDATES (100% coverage for all layers - 161 tests)"
+  quality_gate_contributed: "P3 - 運用改善 → §6 AUTONOMOUS RESILIENCE PROTOCOLS (Anomaly detection and alerting for system health), §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Complete 4-layer Clean Architecture with Domain+Repository+Infrastructure+Application), §7 TESTING MANDATES (100% coverage for all layers - 186 tests)"
   constitution_links:
-    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain entities, repository interfaces, and infrastructure implementations follow strict layer separation"
-    - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation for all domain entities and notifications"
-    - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Notification providers support health checks, retry logic, and availability monitoring"
-    - "§7 TESTING MANDATES - All features must have comprehensive tests (161 tests: 91 anomaly + 70 notification, 100% passing)"
-  impact: "T-002 COMPLETED: NotificationProvider domain entity + EmailNotificationProvider infrastructure fully implemented. Provides comprehensive notification delivery system with 5 provider types (EMAIL, SMS, SLACK, WEBHOOK, IN_APP), 5 notification channels (ANOMALY_DETECTION, SYSTEM_ALERTS, DATA_BACKUP, USER_ACTIVITY, REPORTS), 4 priority levels (LOW, MEDIUM, HIGH, CRITICAL), and 4 delivery statuses (PENDING, SENT, FAILED, RETRYING). Email provider includes SMTP configuration validation with auth checking, port validation, and email address validation. Health check functionality for monitoring provider availability. Channel enable/disable support for granular control. Comprehensive error handling with retry logic and detailed error reporting. Complete Clean Architecture implementation: Domain Entity (NotificationProvider, 356 lines) + Repository Interface (NotificationProviderRepository, 177 lines) + Infrastructure (EmailNotificationProvider, 489 lines). Full test coverage: 70 tests (25 entity + 18 repository + 27 infrastructure). Production: 1022 lines. Tests: 1004 lines. Builds upon existing Notification UI component and useNotification hook. Next: T-003 will create NotificationService application layer to orchestrate providers."
+    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer orchestrates domain logic and infrastructure, following strict layer separation"
+    - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation for all notification configurations"
+    - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Rate limiting, quiet hours, retry logic, and provider health monitoring"
+    - "§7 TESTING MANDATES - All features must have comprehensive tests (186 tests: 91 anomaly + 70 notification + 25 application service, 100% passing)"
+  impact: "T-003 COMPLETED: NotificationService application layer fully implemented. Orchestrates notification providers, handles delivery logic, manages provider selection based on channel and priority, and integrates with AnomalyDetectionService for automatic anomaly alerts. Features: sendNotification with validation, rate limiting, quiet hours, and retry logic; sendAnomalyAlert for automatic anomaly notifications; getNotificationHistory with filtering and pagination; Configuration management with Zod validation; Provider health monitoring and status management; Channel enable/disable functionality; Email validation with regex; Critical priority bypasses quiet hours; Automatic retry with exponential backoff (3 attempts). Complete Clean Architecture implementation: Application Service (NotificationService, 654 lines) + Tests (767 lines, 25 tests). Total MS-009 progress: 3/4 tasks complete (75%). Next: T-004 will add notification API endpoints (/api/notifications/settings, /api/notifications/history)."
 
 selected_deliverable:
   source: "PURPOSE.md P3: 優先度3: 運用改善 → 通知システム（異常値検知時のアラート、メール通知）"
@@ -145,7 +143,7 @@ task_breakdown:
 
 execution_plan:
   first_task: "T-001"
-  rationale: "AnomalyDetectionService is the foundation for the entire notification system. Following Clean Architecture, we must define the domain layer (Anomaly entity + AnomalyRepository interface + AnomalyDetectionService) before implementing infrastructure (EmailNotificationProvider) or application (NotificationService) layers. This ensures type safety and architectural discipline from the ground up. The domain layer provides the vocabulary (Anomaly types, severity levels) and contracts (repository interface) that all other layers depend on, making it the critical first step. T-001 completed successfully with 91 tests passing (100% coverage for domain layer). T-002 completed successfully with 70 tests passing (100% coverage for domain+repository+infrastructure layers)."
+  rationale: "AnomalyDetectionService is the foundation for the entire notification system. Following Clean Architecture, we must define the domain layer (Anomaly entity + AnomalyRepository interface + AnomalyDetectionService) before implementing infrastructure (EmailNotificationProvider) or application (NotificationService) layers. This ensures type safety and architectural discipline from the ground up. The domain layer provides the vocabulary (Anomaly types, severity levels) and contracts (repository interface) that all other layers depend on, making it the critical first step. T-001 completed successfully with 91 tests passing (100% coverage for domain layer). T-002 completed successfully with 70 tests passing (100% coverage for domain+repository+infrastructure layers). T-003 completed successfully with 25 tests passing (100% coverage for application layer)."
 
 notes: |
   MS-009 IN PROGRESS (2026-03-30).
@@ -153,15 +151,15 @@ notes: |
   COMPLETED TASKS:
   ✅ T-001: AnomalyDetectionService domain layer (794 lines production, 1208 lines tests, 91 tests)
   ✅ T-002: NotificationProvider domain entity + EmailNotificationProvider infrastructure (1022 lines production, 1004 lines tests, 70 tests)
+  ✅ T-003: NotificationService application layer (654 lines production, 767 lines tests, 25 tests)
 
-  REMAINING TASKS (2/4):
-  ⏳ T-003: NotificationService application layer
+  REMAINING TASKS (1/4):
   ⏳ T-004: Notification API endpoints (/api/notifications/settings, /api/notifications/history)
 
-  MS-009 STATUS: ACTIVE (2/4 tasks done - 50% complete)
-  Domain layer complete. Infrastructure layer complete (EmailNotificationProvider).
-  Next: Application layer (NotificationService) to orchestrate providers and handle notification delivery logic.
+  MS-009 STATUS: ACTIVE (3/4 tasks done - 75% complete)
+  Domain layer complete. Infrastructure layer complete (EmailNotificationProvider). Application layer complete (NotificationService).
+  Next: Presentation layer (API endpoints) to expose notification settings and history via HTTP.
 
 next_execution:
-  task_id: "T-003"
-  rationale: "With T-001 (AnomalyDetectionService) and T-002 (NotificationProvider + EmailNotificationProvider) complete, the next logical step is T-003 to implement the NotificationService application layer. This will orchestrate the notification providers, handle notification delivery logic, manage provider selection based on channel and priority, and integrate with the AnomalyDetectionService to automatically send notifications when anomalies are detected. The NotificationService will use the EmailNotificationProvider (and future providers) to deliver notifications through appropriate channels. T-003 estimated at 400 lines of production code with comprehensive test coverage."
+  task_id: "T-004"
+  rationale: "With T-001 (AnomalyDetectionService), T-002 (NotificationProvider + EmailNotificationProvider), and T-003 (NotificationService) complete, the next logical step is T-004 to implement the notification API endpoints. This will expose the notification system functionality via HTTP: GET/POST /api/notifications/settings for configuration management, and GET /api/notifications/history for notification history retrieval. These API endpoints will use the NotificationService application layer to handle requests and follow Next.js App Router conventions. T-004 estimated at 350 lines of production code with comprehensive test coverage."

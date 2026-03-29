@@ -1,0 +1,29 @@
+{
+  "axis": "S-001",
+  "name": "SPEC存在確認",
+  "score": 10,
+  "max_score": 15,
+  "pass": false,
+  "details": [
+    {
+      "id": "S-001-1",
+      "name": "SPEC出力ディレクトリ",
+      "score": 3,
+      "max": 3,
+      "evidence": "exists=True"
+    },
+    {
+      "id": "S-001-2",
+      "name": "_index.yml整合性",
+      "score": 3,
+      "max": 3
+    },
+    {
+      "id": "S-001-3",
+      "name": "公開シンボルカバレッジ",
+      "score": 4,
+      "max": 9,
+      "evidence": "covered=132/291 (45%)"
+    }
+  ]
+}

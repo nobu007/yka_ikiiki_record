@@ -1,5 +1,27 @@
+Version: 1.0.0
+Last Updated: 2026-03-30
 # SPEC: LoadingSpinner, LoadingOverlay, LoadingCard
 
+## 2. 入力仕様
+
+| パラメータ | 型 | 必須 | 制約 | デフォルト値 | 説明 |
+|-----------|------|------|------|------------|------|
+| N/A | - | - | - | - | (パラメータなし) |
+## 3. 出力仕様
+
+| 戻り値 | 型 | 制約 | 説明 |
+|--------|------|------|------|
+| N/A | - | - | (戻り値なし) |
+## 2. 入力仕様
+
+| パラメータ | 型 | 必須 | 制約 | デフォルト値 | 説明 |
+|-----------|------|------|------|------------|------|
+| N/A | - | - | - | - | (パラメータなし) |
+## 3. 出力仕様
+
+| 戻り値 | 型 | 制約 | 説明 |
+|--------|------|------|------|
+| N/A | - | - | (戻り値なし) |
 ## 概要
 - **モジュール**: src/components/common/LoadingSpinner.tsx
 - **責務**: Provides reusable loading indicator components for displaying loading states across the application
@@ -174,3 +196,10 @@ All components are error-free - no exception scenarios beyond React rendering er
 - LoadingOverlay: `max-w-sm w-full mx-4` for mobile responsiveness
 - LoadingCard: Fixed padding, inherits parent width
 - LoadingSpinner: Responsive sizing through Tailwind classes
+
+
+## 10. 回帰テスト要件
+
+- 変更時に確認すべき既存機能: (このSPECに関連する機能)
+- 影響範囲: (このSPECを使用しているモジュール)
+- 回帰テストケース: (変更時の挙動確認)

@@ -1,0 +1,33 @@
+{
+  "axis": "S-004",
+  "name": "エラーシナリオ網羅性",
+  "score": 5,
+  "max_score": 15,
+  "pass": false,
+  "details": [
+    {
+      "id": "S-004-1",
+      "name": "エラーセクション存在",
+      "score": 2,
+      "max": 3
+    },
+    {
+      "id": "S-004-2",
+      "name": "例外型明示",
+      "score": 0,
+      "max": 4
+    },
+    {
+      "id": "S-004-3",
+      "name": "error_scenarios.yml",
+      "score": 3,
+      "max": 4
+    },
+    {
+      "id": "S-004-4",
+      "name": "エッジケース品質",
+      "score": 0,
+      "max": 4
+    }
+  ]
+}

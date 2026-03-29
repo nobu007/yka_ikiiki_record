@@ -1,6 +1,6 @@
 {
   "consecutive_pass": 0,
-  "total_audits": 2,
+  "total_audits": 5,
   "last_audit": {
     "timestamp": "2026-03-30T02:54:00.000Z",
     "passed": false,
@@ -16,6 +16,21 @@
       "timestamp": "2026-03-30T02:54:00.000Z",
       "passed": false,
       "score": 54
+    },
+    {
+      "timestamp": "2026-03-30T03:00:39.773635",
+      "pass": false,
+      "score": 48
+    },
+    {
+      "timestamp": "2026-03-30T03:01:23.012166",
+      "pass": false,
+      "score": 50
+    },
+    {
+      "timestamp": "2026-03-30T03:01:43.096884",
+      "pass": false,
+      "score": 56
     }
   ],
   "spec_stable": false,

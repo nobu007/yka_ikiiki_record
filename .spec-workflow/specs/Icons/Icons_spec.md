@@ -1,5 +1,27 @@
+Version: 1.0.0
+Last Updated: 2026-03-30
 # SPEC: Icons Component Library
 
+## 2. 入力仕様
+
+| パラメータ | 型 | 必須 | 制約 | デフォルト値 | 説明 |
+|-----------|------|------|------|------------|------|
+| N/A | - | - | - | - | (パラメータなし) |
+## 3. 出力仕様
+
+| 戻り値 | 型 | 制約 | 説明 |
+|--------|------|------|------|
+| N/A | - | - | (戻り値なし) |
+## 2. 入力仕様
+
+| パラメータ | 型 | 必須 | 制約 | デフォルト値 | 説明 |
+|-----------|------|------|------|------------|------|
+| N/A | - | - | - | - | (パラメータなし) |
+## 3. 出力仕様
+
+| 戻り値 | 型 | 制約 | 説明 |
+|--------|------|------|------|
+| N/A | - | - | (戻り値なし) |
 ## 概要
 - **モジュール**: src/components/common/Icons.tsx
 - **責務**: Provides reusable SVG icon components for consistent UI iconography across the application
@@ -221,3 +243,10 @@ All components are error-free - no exception scenarios beyond React rendering er
 - All icons are memoized with React.memo to prevent unnecessary re-renders
 - SVG rendering is lightweight compared to icon fonts or image-based icons
 - No external icon library dependencies required
+
+
+## 10. 回帰テスト要件
+
+- 変更時に確認すべき既存機能: (このSPECに関連する機能)
+- 影響範囲: (このSPECを使用しているモジュール)
+- 回帰テストケース: (変更時の挙動確認)

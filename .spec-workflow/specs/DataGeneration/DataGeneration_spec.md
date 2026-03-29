@@ -1,5 +1,27 @@
+Version: 1.0.0
+Last Updated: 2026-03-30
 # SPEC: DataGeneration
 
+## 2. 入力仕様
+
+| パラメータ | 型 | 必須 | 制約 | デフォルト値 | 説明 |
+|-----------|------|------|------|------------|------|
+| N/A | - | - | - | - | (パラメータなし) |
+## 3. 出力仕様
+
+| 戻り値 | 型 | 制約 | 説明 |
+|--------|------|------|------|
+| N/A | - | - | (戻り値なし) |
+## 2. 入力仕様
+
+| パラメータ | 型 | 必須 | 制約 | デフォルト値 | 説明 |
+|-----------|------|------|------|------------|------|
+| N/A | - | - | - | - | (パラメータなし) |
+## 3. 出力仕様
+
+| 戻り値 | 型 | 制約 | 説明 |
+|--------|------|------|------|
+| N/A | - | - | (戻り値なし) |
 ## 概要
 - **モジュール**: `src/domain/entities/DataGeneration.ts`
 - **責務**: データ生成のための型定義、定数、デフォルト設定を提供する
@@ -184,6 +206,15 @@ type GenerationBounds = typeof DATA_GENERATION_BOUNDS
 | distributionPattern | - | - | "normal", "bimodal", "stress", "happy" |
 | seasonalEffects | - | - | true, false |
 | eventEffects.length | 0 | ∞ | 0, 1, 10 |
+
+## 8. エラーシナリオ
+
+| ID | シナリオ | 入力例 | 期待動作 | 例外型 |
+|----|----------|--------|----------|--------|
+| ERR-001 | 不正な型 | (型不正な入力) | 例外発生 | TypeError |
+| ERR-002 | None入力 | null | 例外発生/デフォルト動作 | TypeError/ValueError |
+| ERR-003 | 空コレクション | [] | 例外発生/デフォルト動作 | ValueError |
+
 | classCharacteristics.baselineEmotion | 1.0 | 5.0 | 1.0, 1.1, 4.9, 5.0 |
 | classCharacteristics.volatility | 0 | 1 | 0, 0.1, 0.9, 1.0 |
 | classCharacteristics.cohesion | 0 | 1 | 0, 0.1, 0.9, 1.0 |
@@ -276,3 +307,10 @@ const maxStudents = DATA_GENERATION_BOUNDS.MAX_STUDENTS;  // 500
 
 ## 履歴
 - 2026-03-29: SPEC作成 - 実装は既に存在
+
+
+## 10. 回帰テスト要件
+
+- 変更時に確認すべき既存機能: (このSPECに関連する機能)
+- 影響範囲: (このSPECを使用しているモジュール)
+- 回帰テストケース: (変更時の挙動確認)

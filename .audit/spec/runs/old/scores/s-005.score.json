@@ -1,0 +1,34 @@
+{
+  "axis": "S-005",
+  "name": "テスト-SPEC対応率",
+  "score": 13,
+  "max_score": 15,
+  "pass": true,
+  "details": [
+    {
+      "id": "S-005-1",
+      "name": "テスト-SPECケース対応",
+      "score": 5,
+      "max": 5,
+      "evidence": "cases=971"
+    },
+    {
+      "id": "S-005-2",
+      "name": "正常系カバレッジ",
+      "score": 3,
+      "max": 4
+    },
+    {
+      "id": "S-005-3",
+      "name": "異常系カバレッジ",
+      "score": 4,
+      "max": 4
+    },
+    {
+      "id": "S-005-4",
+      "name": "test_matrix.yml",
+      "score": 1,
+      "max": 2
+    }
+  ]
+}

@@ -69,6 +69,24 @@ milestones:
     status: "done"
     progress_note: "Completed 2026-03-29. All 6 deliverables implemented: CSV/Excel utilities, API endpoints, E2E tests (33 passing), ExportButton component with 14 tests, UI integration in DataVisualization."
 
+  - id: "MS-004"
+    name: "データページネーション機能の実装"
+    intent: "大量データ時の表示速度改善のため、ページネーション機能を追加し、ユーザー体験を向上させる"
+    deliverables:
+      - "ページネーションユーティリティ (src/utils/pagination.ts)"
+      - "ページネーション関数のテスト (src/utils/pagination.test.ts)"
+      - "PaginationResult型の定義 (src/types/pagination.ts)"
+    acceptance:
+      - type: "quality_gate"
+        target: "全ページネーション関数のテストが通過し、カバレッジ100%を達成"
+    constitution_links:
+      - "§7 TESTING MANDATES - All features must have tests"
+      - "§3 TYPE SUPREMACY - Full TypeScript type safety"
+      - "§5 PERFORMANCE REQUIREMENTS - React component optimization"
+    priority: "P2"
+    status: "active"
+    progress_note: "Started 2026-03-29. Initial deliverable: pagination utility functions."
+
 work_policy:
   default_mode: "commit"
   iteration_budget:

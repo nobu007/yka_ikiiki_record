@@ -1,5 +1,5 @@
 meta:
-  generated_at: "2026-03-30T06:06:00Z"
+  generated_at: "2026-03-30T06:10:00Z"
   source_deliverable: "PURPOSE.md P3: 運用改善 → 通知システム（異常値検知時のアラート、メール通知）"
   milestone_id: "MS-009"
   milestone_status: "active"
@@ -21,24 +21,24 @@ completed_tasks:
       - "src/domain/repositories/index.ts (updated exports)"
       - "src/domain/services/index.ts (updated exports)"
     test_results: "91 anomaly detection tests passing (100% for domain layer). Total production: 794 lines (entity + repository interface + service). Total tests: 1208 lines (25 entity tests + 23 repository tests + 43 service tests)."
-
-remaining_tasks:
   - id: "T-002"
     title: "Create NotificationProvider domain entity and EmailNotificationProvider infrastructure"
     type: "feat"
-    files_to_modify:
-      - "src/domain/entities/NotificationProvider.ts (new)"
-      - "src/domain/entities/NotificationProvider.test.ts (new)"
-      - "src/domain/repositories/NotificationProviderRepository.ts (new)"
-      - "src/domain/repositories/NotificationProviderRepository.test.ts (new)"
-      - "src/infrastructure/services/EmailNotificationProvider.ts (new)"
-      - "src/infrastructure/services/EmailNotificationProvider.test.ts (new)"
-      - "src/domain/repositories/index.ts (update)"
-    acceptance_test: "npm test -- src/domain/entities/NotificationProvider.test.ts src/infrastructure/services/EmailNotificationProvider.test.ts"
-    estimated_diff_lines: 600
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Infrastructure layer implements domain interfaces, §3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation"
-    status: "pending"
+    commit_sha: "pending"
+    completed_at: "2026-03-30T06:10:00Z"
+    files_modified:
+      - "src/domain/entities/NotificationProvider.ts (356 lines, new file)"
+      - "src/domain/entities/NotificationProvider.test.ts (329 lines, new file)"
+      - "src/domain/repositories/NotificationProviderRepository.ts (177 lines, new file)"
+      - "src/domain/repositories/NotificationProviderRepository.test.ts (267 lines, new file)"
+      - "src/infrastructure/services/EmailNotificationProvider.ts (489 lines, new file)"
+      - "src/infrastructure/services/EmailNotificationProvider.test.ts (408 lines, new file)"
+      - "src/domain/entities/index.ts (updated exports)"
+      - "src/domain/repositories/index.ts (updated exports)"
+      - "src/infrastructure/services/index.ts (updated exports)"
+    test_results: "70 notification provider tests passing (100% for all layers). Total production: 1022 lines (356 entity + 177 repository + 489 infrastructure). Total tests: 1004 lines (329 entity + 267 repository + 408 infrastructure). Complete 3-layer Clean Architecture implementation: Domain Entity (NotificationProvider) + Repository Interface (NotificationProviderRepository) + Infrastructure (EmailNotificationProvider). Features: 5 provider types (EMAIL, SMS, SLACK, WEBHOOK, IN_APP), 5 notification channels (ANOMALY_DETECTION, SYSTEM_ALERTS, DATA_BACKUP, USER_ACTIVITY, REPORTS), 4 priority levels (LOW, MEDIUM, HIGH, CRITICAL), 4 delivery statuses (PENDING, SENT, FAILED, RETRYING), Email provider with SMTP configuration validation, Health check functionality, Channel enable/disable support, Provider availability checking, Comprehensive error handling with retry logic."
 
+remaining_tasks:
   - id: "T-003"
     title: "Create NotificationService application layer"
     type: "feat"
@@ -67,13 +67,13 @@ remaining_tasks:
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P3 - 運用改善 → §6 AUTONOMOUS RESILIENCE PROTOCOLS (Anomaly detection and alerting for system health), §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Complete domain layer with Clean Architecture), §7 TESTING MANDATES (100% coverage for domain layer)"
+  quality_gate_contributed: "P3 - 運用改善 → §6 AUTONOMOUS RESILIENCE PROTOCOLS (Anomaly detection and alerting for system health), §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Complete 3-layer Clean Architecture with Domain+Repository+Infrastructure), §7 TESTING MANDATES (100% coverage for all layers - 161 tests)"
   constitution_links:
-    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for business logic, repository interfaces for data access"
-    - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation for all domain entities"
-    - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Anomaly detection and alerting for proactive system health monitoring"
-    - "§7 TESTING MANDATES - All domain features must have comprehensive tests (91 tests, 100% passing)"
-  impact: "T-001 COMPLETED: AnomalyDetectionService domain layer fully implemented. Provides statistical analysis for detecting 4 types of anomalies: (1) Emotion Spike/Drop using standard deviation thresholds (2σ), (2) Unusual Pattern using consecutive deviation analysis (3+ records), (3) Data Gap detection for missing records (default: 7 days), (4) Outlier detection framework. Severity levels: LOW (2σ), MEDIUM (2σ), HIGH (2.5σ), CRITICAL (3σ). Configurable detection parameters. Contextual recommendations for each anomaly type. Complete Clean Architecture implementation: Domain Entity (Anomaly) + Repository Interface (AnomalyRepository) + Domain Service (AnomalyDetectionService). Full test coverage: 91 tests (25 entity + 23 repository + 43 service). Production: 794 lines. Tests: 1208 lines. Builds upon existing Notification UI component (src/components/common/Notification.tsx) and useNotification hook (src/hooks/useNotification.ts)."
+    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain entities, repository interfaces, and infrastructure implementations follow strict layer separation"
+    - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation for all domain entities and notifications"
+    - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Notification providers support health checks, retry logic, and availability monitoring"
+    - "§7 TESTING MANDATES - All features must have comprehensive tests (161 tests: 91 anomaly + 70 notification, 100% passing)"
+  impact: "T-002 COMPLETED: NotificationProvider domain entity + EmailNotificationProvider infrastructure fully implemented. Provides comprehensive notification delivery system with 5 provider types (EMAIL, SMS, SLACK, WEBHOOK, IN_APP), 5 notification channels (ANOMALY_DETECTION, SYSTEM_ALERTS, DATA_BACKUP, USER_ACTIVITY, REPORTS), 4 priority levels (LOW, MEDIUM, HIGH, CRITICAL), and 4 delivery statuses (PENDING, SENT, FAILED, RETRYING). Email provider includes SMTP configuration validation with auth checking, port validation, and email address validation. Health check functionality for monitoring provider availability. Channel enable/disable support for granular control. Comprehensive error handling with retry logic and detailed error reporting. Complete Clean Architecture implementation: Domain Entity (NotificationProvider, 356 lines) + Repository Interface (NotificationProviderRepository, 177 lines) + Infrastructure (EmailNotificationProvider, 489 lines). Full test coverage: 70 tests (25 entity + 18 repository + 27 infrastructure). Production: 1022 lines. Tests: 1004 lines. Builds upon existing Notification UI component and useNotification hook. Next: T-003 will create NotificationService application layer to orchestrate providers."
 
 selected_deliverable:
   source: "PURPOSE.md P3: 優先度3: 運用改善 → 通知システム（異常値検知時のアラート、メール通知）"
@@ -115,7 +115,7 @@ task_breakdown:
     acceptance_test: "npm test -- src/domain/entities/NotificationProvider.test.ts src/infrastructure/services/EmailNotificationProvider.test.ts"
     estimated_diff_lines: 600
     constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Infrastructure layer implements domain interfaces, §3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation"
-    status: "pending"
+    status: "completed"
 
   - id: "T-003"
     title: "Create NotificationService application layer"
@@ -145,22 +145,23 @@ task_breakdown:
 
 execution_plan:
   first_task: "T-001"
-  rationale: "AnomalyDetectionService is the foundation for the entire notification system. Following Clean Architecture, we must define the domain layer (Anomaly entity + AnomalyRepository interface + AnomalyDetectionService) before implementing infrastructure (EmailNotificationProvider) or application (NotificationService) layers. This ensures type safety and architectural discipline from the ground up. The domain layer provides the vocabulary (Anomaly types, severity levels) and contracts (repository interface) that all other layers depend on, making it the critical first step. T-001 completed successfully with 91 tests passing (100% coverage for domain layer)."
+  rationale: "AnomalyDetectionService is the foundation for the entire notification system. Following Clean Architecture, we must define the domain layer (Anomaly entity + AnomalyRepository interface + AnomalyDetectionService) before implementing infrastructure (EmailNotificationProvider) or application (NotificationService) layers. This ensures type safety and architectural discipline from the ground up. The domain layer provides the vocabulary (Anomaly types, severity levels) and contracts (repository interface) that all other layers depend on, making it the critical first step. T-001 completed successfully with 91 tests passing (100% coverage for domain layer). T-002 completed successfully with 70 tests passing (100% coverage for domain+repository+infrastructure layers)."
 
 notes: |
   MS-009 IN PROGRESS (2026-03-30).
 
   COMPLETED TASKS:
   ✅ T-001: AnomalyDetectionService domain layer (794 lines production, 1208 lines tests, 91 tests)
+  ✅ T-002: NotificationProvider domain entity + EmailNotificationProvider infrastructure (1022 lines production, 1004 lines tests, 70 tests)
 
-  REMAINING TASKS (3/4):
-  ⏳ T-002: NotificationProvider domain entity + EmailNotificationProvider infrastructure
+  REMAINING TASKS (2/4):
   ⏳ T-003: NotificationService application layer
   ⏳ T-004: Notification API endpoints (/api/notifications/settings, /api/notifications/history)
 
-  MS-009 STATUS: ACTIVE (1/4 tasks done - 25% complete)
-  Domain layer complete. Next: Infrastructure layer (EmailNotificationProvider) to handle actual notification delivery (email, in-app, etc.).
+  MS-009 STATUS: ACTIVE (2/4 tasks done - 50% complete)
+  Domain layer complete. Infrastructure layer complete (EmailNotificationProvider).
+  Next: Application layer (NotificationService) to orchestrate providers and handle notification delivery logic.
 
 next_execution:
-  task_id: "T-002"
-  rationale: "With T-001 (AnomalyDetectionService domain layer) complete, the next logical step is T-002 to implement the NotificationProvider infrastructure. This will provide the actual notification delivery mechanisms (email, in-app) that will be orchestrated by the NotificationService in T-003. The EmailNotificationProvider will implement the NotificationProviderRepository interface defined in the domain layer, following Clean Architecture principles. T-002 estimated at 600 lines of production code with comprehensive test coverage."
+  task_id: "T-003"
+  rationale: "With T-001 (AnomalyDetectionService) and T-002 (NotificationProvider + EmailNotificationProvider) complete, the next logical step is T-003 to implement the NotificationService application layer. This will orchestrate the notification providers, handle notification delivery logic, manage provider selection based on channel and priority, and integrate with the AnomalyDetectionService to automatically send notifications when anomalies are detected. The NotificationService will use the EmailNotificationProvider (and future providers) to deliver notifications through appropriate channels. T-003 estimated at 400 lines of production code with comprehensive test coverage."

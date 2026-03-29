@@ -18,3 +18,8 @@ export type {
   AnomalyFilterOptions,
   AnomalyStatistics,
 } from "./AnomalyRepository";
+export type {
+  NotificationProviderRepository,
+  NotificationProviderFilterOptions,
+  NotificationProviderStatistics,
+} from "./NotificationProviderRepository";

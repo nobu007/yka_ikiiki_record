@@ -43,3 +43,29 @@ export {
   calculateTrendDirection,
   calculateMovingAverage,
 } from "./TrendAnalysis";
+
+export type {
+  NotificationProvider,
+  Notification,
+  NotificationConfig,
+  ProviderConfig,
+  EmailProviderConfig,
+  WebhookProviderConfig,
+  SmsProviderConfig,
+  SlackProviderConfig,
+  InAppProviderConfig,
+  NotificationProviderDTO,
+  NotificationDTO,
+  NotificationConfigDTO,
+} from "./NotificationProvider";
+
+export {
+  NotificationProviderType,
+  NotificationProviderStatus,
+  NotificationChannel,
+  NotificationPriority,
+  NotificationDeliveryStatus,
+  NotificationProviderSchema,
+  NotificationSchema,
+  NotificationConfigSchema,
+} from "./NotificationProvider";

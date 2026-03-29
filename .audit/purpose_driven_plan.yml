@@ -1,87 +1,127 @@
 meta:
-  generated_at: "2026-03-29T00:00:00Z"
-  source_deliverable: "MS-003: UI export button integration"
-  milestone_id: "MS-003"
-  milestone_status: "done"
+  generated_at: "2026-03-29T13:06:00Z"
+  source_deliverable: "MS-004: データページネーション機能の実装"
+  milestone_id: "MS-004"
+  milestone_status: "active"
 
 completed_tasks:
   - id: "T-001"
-    title: "Implement ExportButton component with CSV/Excel support"
+    title: "Implement pagination utility functions with tests"
     type: "feat"
-    commit_sha: "96c30ca4"
-    completed_at: "2026-03-29T00:00:00Z"
+    commit_sha: "ace195dd"
+    completed_at: "2026-03-29T13:06:00Z"
     files_modified:
-      - "src/components/common/ExportButton.tsx (76 lines, new file)"
-      - "src/components/common/ExportButton.test.tsx (241 lines, new file)"
-      - "src/components/common/Icons.tsx (added DownloadIcon)"
-      - "src/components/common/index.ts (export ExportButton, DownloadIcon)"
-      - "src/components/dashboard/DataVisualization.tsx (integrated export buttons)"
-      - "data/judgment_metrics.csv (updated metrics)"
-    test_results: "14/14 tests passing, 1339/1339 total tests passing, zero lint errors"
+      - "src/types/pagination.ts (28 lines, new file)"
+      - "src/utils/pagination.ts (114 lines, new file)"
+      - "src/utils/pagination.test.ts (267 lines, new file)"
+      - ".concept/charter.yml (added MS-004)"
+      - "data/judgment_metrics.csv (updated)"
+    test_results: "32/32 tests passing, 1446/1446 total tests passing, zero lint errors"
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P2 - Testing Mandates (100% test coverage for new component)"
+  quality_gate_contributed: "P2 - Testing Mandates (100% test coverage for new utilities)"
   constitution_links:
-    - "§3 TYPE SUPREMACY - Full TypeScript type safety with strict mode"
-    - "§7 TESTING MANDATES - Comprehensive test suite (14 tests)"
-  impact: "Completed MS-003 deliverable by implementing UI export buttons for CSV/Excel data export, enabling educational institutions to easily download and analyze student growth data"
+    - "§3 TYPE SUPREMACY - Full TypeScript type safety with generics"
+    - "§5 PERFORMANCE REQUIREMENTS - React component optimization foundation"
+    - "§7 TESTING MANDATES - Comprehensive test suite (32 tests)"
+  impact: "Started MS-004 by implementing core pagination utilities. These utilities enable efficient handling of large datasets in UI components, directly contributing to performance optimization goals in PURPOSE.md P2-優先度2."
 
 selected_deliverable:
-  source: "PURPOSE.md P2: デプロイ後の機能改善 → データエクスポート機能"
-  description: "Implement UI export button component for CSV/Excel data export"
-  milestone_id: "MS-003"
+  source: "PURPOSE.md P2: 優先度2: 分析・可視化の強化 → パフォーマンス最適化（大量データ時の表示速度改善、データページネーション）"
+  description: "Implement data pagination utilities for handling large datasets efficiently"
+  milestone_id: "MS-004"
   priority: "P2"
-  constitution_link: "SYSTEM_CONSTITUTION.md §3: Type Supremacy, §7: Testing Mandates"
+  constitution_link: "SYSTEM_CONSTITUTION.md §3: Type Supremacy, §5: Performance Requirements, §7: Testing Mandates"
 
 task_breakdown:
   - id: "T-001"
-    title: "Implement ExportButton component with CSV/Excel support"
+    title: "Implement pagination utility functions with tests"
     type: "feat"
     files_to_modify:
-      - "src/components/common/ExportButton.tsx (new)"
-      - "src/components/common/ExportButton.test.tsx (new)"
-      - "src/components/common/Icons.tsx"
-      - "src/components/dashboard/DataVisualization.tsx"
-    acceptance_test: "npm test -- src/components/common/ExportButton.test.tsx"
-    estimated_diff_lines: 320
+      - "src/types/pagination.ts (new)"
+      - "src/utils/pagination.ts (new)"
+      - "src/utils/pagination.test.ts (new)"
+      - ".concept/charter.yml"
+    acceptance_test: "npm test -- src/utils/pagination.test.ts"
+    estimated_diff_lines: 400
     constitution_link: "§7 TESTING MANDATES - All features must have tests"
     status: "completed"
 
+  - id: "T-002"
+    title: "Add PaginationControl UI component"
+    type: "feat"
+    files_to_modify:
+      - "src/components/common/PaginationControl.tsx (new)"
+      - "src/components/common/PaginationControl.test.tsx (new)"
+      - "src/components/common/index.ts"
+    acceptance_test: "npm test -- src/components/common/PaginationControl.test.tsx"
+    estimated_diff_lines: 200
+    constitution_link: "§7 TESTING MANDATES - All features must have tests"
+    status: "pending"
+
+  - id: "T-003"
+    title: "Integrate pagination with DataVisualization component"
+    type: "feat"
+    files_to_modify:
+      - "src/components/dashboard/DataVisualization.tsx"
+      - "src/presentation/hooks/usePagination.ts (new)"
+    acceptance_test: "npm test -- src/components/dashboard/DataVisualization.test.tsx"
+    estimated_diff_lines: 150
+    constitution_link: "§7 TESTING MANDATES - All features must have tests"
+    status: "pending"
+
 execution_plan:
   first_task: "T-001"
-  rationale: "This task completes the final deliverable of MS-003 by adding UI components that allow users to export data in CSV and Excel formats. This directly contributes to the educational goal by making student data more accessible for analysis and reporting."
+  rationale: "This task establishes the foundational utilities for pagination functionality. The utilities are framework-agnostic, fully typed, and tested, providing a solid foundation for UI components to build upon. Directly contributes to P2 performance optimization goals in PURPOSE.md."
 
 notes: |
-  MS-003 is now COMPLETE. All 6 deliverables have been implemented:
-  1. ✅ CSV export utility (src/lib/export/csv.ts) - 218 lines
-  2. ✅ Excel export utility (implemented in API route) - 149 lines
-  3. ✅ API endpoints (/api/export/route.ts) - CSV and Excel support
-  4. ✅ E2E tests for export API - 33 tests passing
-  5. ✅ ExportButton component - 76 lines + 14 tests
-  6. ✅ UI integration - ExportButton added to DataVisualization
+  MS-004 is now IN PROGRESS. 1 of 3 deliverables completed.
 
-  Total implementation:
-  - API + utilities: 367 lines
-  - Tests: 409 lines (API: 148 tests, ExportButton: 14 tests)
-  - UI components: 76 lines
-  - Total: 852 lines of production code and tests
+  Completed (T-001):
+  ✅ Type definitions (PaginationResult, PaginationOptions)
+  ✅ paginate() function with full metadata support
+  ✅ getPageForIndex() for calculating page numbers from indices
+  ✅ getPageNumbers() for UI control generation with ellipsis support
+  ✅ 100% test coverage (32 tests, all passing)
+  ✅ Full TypeScript type safety with generics
+  ✅ Comprehensive edge case handling
 
-  Quality metrics:
-  - 100% test coverage for new components
-  - Zero lint errors
-  - Full TypeScript type safety
-  - Clean Architecture compliant
-  - Accessible (aria-labels)
-  - Error handling with structured logging
+  Implementation details:
+  - Production code: 142 lines
+  - Test code: 267 lines
+  - Test-to-code ratio: 1.88:1 (excellent)
+  - All tests passing: 32/32
+  - Total test suite: 1446/1446 passing (100%)
+  - Judgment Score: 100/100 maintained
 
-  Next milestone candidates:
-  - MS-004: Authentication system (requires external dependency planning)
-  - MS-005: Multiple class support
-  - MS-006: Advanced analytics and reporting
+  Remaining deliverables:
+  - T-002: PaginationControl UI component
+  - T-003: Integration with DataVisualization
 
-remaining_tasks: []
+  Charter updated with MS-004 milestone.
+
+remaining_tasks:
+  - id: "T-002"
+    title: "Add PaginationControl UI component"
+    type: "feat"
+    files_to_modify:
+      - "src/components/common/PaginationControl.tsx (new)"
+      - "src/components/common/PaginationControl.test.tsx (new)"
+    acceptance_test: "npm test -- src/components/common/PaginationControl.test.tsx"
+    estimated_diff_lines: 200
+    constitution_link: "§7 TESTING MANDATES"
+
+  - id: "T-003"
+    title: "Integrate pagination with DataVisualization component"
+    type: "feat"
+    files_to_modify:
+      - "src/components/dashboard/DataVisualization.tsx"
+      - "src/presentation/hooks/usePagination.ts (new)"
+    acceptance_test: "npm test -- src/components/dashboard/DataVisualization.test.tsx"
+    estimated_diff_lines: 150
+    constitution_link: "§7 TESTING MANDATES"
 
 next_execution:
-  task_id: null
-  rationale: "MS-003 is complete. All deliverables have been implemented and tested. Ready to proceed to next milestone."
+  task_id: "T-002"
+  rationale: "T-002 builds directly on T-001 by creating a reusable UI component that uses the pagination utilities. This component will provide page navigation controls (Previous, Next, page numbers) that can be integrated into any data display component. It maintains the architectural pattern of separating utilities from UI components."

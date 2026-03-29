@@ -1,5 +1,6 @@
 import { POST, GET } from "./route";
 import { globalCircuitBreaker } from "@/lib/resilience";
+import { NextRequest } from "next/server";
 
 jest.mock("@/lib/config/env", () => ({
   isPrismaProvider: jest.fn(() => false),
@@ -41,7 +42,7 @@ describe("POST /api/backup", () => {
   });
 
   test("creates a backup and returns backup metadata", async () => {
-    const request = new Request("http://localhost:3000/api/backup", {
+    const request = new NextRequest("http://localhost:3000/api/backup", {
       method: "POST",
       body: JSON.stringify({
         source: "manual",
@@ -64,7 +65,7 @@ describe("POST /api/backup", () => {
   });
 
   test("creates backup with default metadata when body is empty", async () => {
-    const request = new Request("http://localhost:3000/api/backup", {
+    const request = new NextRequest("http://localhost:3000/api/backup", {
       method: "POST",
       body: JSON.stringify({}),
     });
@@ -79,7 +80,7 @@ describe("POST /api/backup", () => {
   });
 
   test("returns 400 when request body is invalid JSON", async () => {
-    const request = new Request("http://localhost:3000/api/backup", {
+    const request = new NextRequest("http://localhost:3000/api/backup", {
       method: "POST",
       body: "invalid json",
     });
@@ -94,7 +95,7 @@ describe("POST /api/backup", () => {
       throw new Error("Database error");
     });
 
-    const request = new Request("http://localhost:3000/api/backup", {
+    const request = new NextRequest("http://localhost:3000/api/backup", {
       method: "POST",
       body: JSON.stringify({ source: "manual" }),
     });
@@ -130,7 +131,7 @@ describe("GET /api/backup", () => {
   });
 
   test("returns list of all backups", async () => {
-    const request = new Request("http://localhost:3000/api/backup", {
+    const request = new NextRequest("http://localhost:3000/api/backup", {
       method: "GET",
     });
 
@@ -147,7 +148,7 @@ describe("GET /api/backup", () => {
   });
 
   test("filters backups by status query parameter", async () => {
-    const request = new Request("http://localhost:3000/api/backup?status=completed", {
+    const request = new NextRequest("http://localhost:3000/api/backup?status=completed", {
       method: "GET",
     });
 
@@ -160,7 +161,7 @@ describe("GET /api/backup", () => {
   });
 
   test("filters backups by source query parameter", async () => {
-    const request = new Request("http://localhost:3000/api/backup?source=manual", {
+    const request = new NextRequest("http://localhost:3000/api/backup?source=manual", {
       method: "GET",
     });
 
@@ -173,7 +174,7 @@ describe("GET /api/backup", () => {
   });
 
   test("returns empty array when no backups match filter", async () => {
-    const request = new Request("http://localhost:3000/api/backup?source=scheduled", {
+    const request = new NextRequest("http://localhost:3000/api/backup?source=scheduled", {
       method: "GET",
     });
 
@@ -189,7 +190,7 @@ describe("GET /api/backup", () => {
     await backupService.createBackup({ source: "manual" }, "test-user");
     await backupService.createBackup({ source: "manual" }, "test-user");
 
-    const request = new Request("http://localhost:3000/api/backup?limit=2", {
+    const request = new NextRequest("http://localhost:3000/api/backup?limit=2", {
       method: "GET",
     });
 
@@ -205,13 +206,13 @@ describe("GET /api/backup", () => {
     await backupService.createBackup({ source: "manual" }, "test-user");
     await backupService.createBackup({ source: "manual" }, "test-user");
 
-    const firstRequest = new Request("http://localhost:3000/api/backup?limit=1", {
+    const firstRequest = new NextRequest("http://localhost:3000/api/backup?limit=1", {
       method: "GET",
     });
     const firstResponse = await GET(firstRequest);
     const firstData = await firstResponse.json();
 
-    const secondRequest = new Request("http://localhost:3000/api/backup?limit=1&offset=1", {
+    const secondRequest = new NextRequest("http://localhost:3000/api/backup?limit=1&offset=1", {
       method: "GET",
     });
     const secondResponse = await GET(secondRequest);

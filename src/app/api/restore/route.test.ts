@@ -1,5 +1,6 @@
 import { POST } from "./route";
 import { globalCircuitBreaker } from "@/lib/resilience";
+import { NextRequest } from "next/server";
 
 jest.mock("@/lib/config/env", () => ({
   isPrismaProvider: jest.fn(() => false),
@@ -43,7 +44,7 @@ describe("POST /api/restore", () => {
   test("restores from backup and returns restore result", async () => {
     const backup = await backupService.createBackup({ source: "manual" }, "test-user");
 
-    const request = new Request("http://localhost:3000/api/restore", {
+    const request = new NextRequest("http://localhost:3000/api/restore", {
       method: "POST",
       body: JSON.stringify({ backupId: backup.id }),
     });
@@ -60,7 +61,7 @@ describe("POST /api/restore", () => {
   });
 
   test("returns 400 when backupId is missing from request body", async () => {
-    const request = new Request("http://localhost:3000/api/restore", {
+    const request = new NextRequest("http://localhost:3000/api/restore", {
       method: "POST",
       body: JSON.stringify({}),
     });
@@ -74,7 +75,7 @@ describe("POST /api/restore", () => {
   });
 
   test("returns 400 when request body is invalid JSON", async () => {
-    const request = new Request("http://localhost:3000/api/restore", {
+    const request = new NextRequest("http://localhost:3000/api/restore", {
       method: "POST",
       body: "invalid json",
     });
@@ -85,7 +86,7 @@ describe("POST /api/restore", () => {
   });
 
   test("returns 404 when backup not found", async () => {
-    const request = new Request("http://localhost:3000/api/restore", {
+    const request = new NextRequest("http://localhost:3000/api/restore", {
       method: "POST",
       body: JSON.stringify({ backupId: "non-existent-backup-id" }),
     });
@@ -127,7 +128,7 @@ describe("POST /api/restore", () => {
 
     mockCreateBackupService.mockReturnValue(testService);
 
-    const request = new Request("http://localhost:3000/api/restore", {
+    const request = new NextRequest("http://localhost:3000/api/restore", {
       method: "POST",
       body: JSON.stringify({ backupId: "pending-backup" }),
     });
@@ -137,7 +138,7 @@ describe("POST /api/restore", () => {
 
     expect(response.status).toBe(400);
     expect(data.success).toBe(false);
-    expect(data.error.message).toContain("Cannot restore backup");
+    expect(data.error).toContain("Cannot restore backup");
   });
 
   test("returns 500 when restore operation fails", async () => {
@@ -145,14 +146,17 @@ describe("POST /api/restore", () => {
       throw new Error("Service error");
     });
 
-    const request = new Request("http://localhost:3000/api/restore", {
+    const request = new NextRequest("http://localhost:3000/api/restore", {
       method: "POST",
       body: JSON.stringify({ backupId: "some-backup-id" }),
     });
 
     const response = await POST(request);
+    const data = await response.json();
 
     expect(response.status).toBe(500);
+    expect(data.success).toBe(false);
+    expect(data.error).toBeDefined();
   });
 
   test("handles restore from failed backup", async () => {
@@ -184,7 +188,7 @@ describe("POST /api/restore", () => {
 
     mockCreateBackupService.mockReturnValue(testService);
 
-    const request = new Request("http://localhost:3000/api/restore", {
+    const request = new NextRequest("http://localhost:3000/api/restore", {
       method: "POST",
       body: JSON.stringify({ backupId: "failed-backup" }),
     });
@@ -194,6 +198,6 @@ describe("POST /api/restore", () => {
 
     expect(response.status).toBe(400);
     expect(data.success).toBe(false);
-    expect(data.error.message).toContain("Cannot restore backup");
+    expect(data.error).toContain("Cannot restore backup");
   });
 });

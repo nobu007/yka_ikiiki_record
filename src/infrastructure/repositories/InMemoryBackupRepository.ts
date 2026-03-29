@@ -28,7 +28,12 @@ export class InMemoryBackupRepository implements BackupRepository {
   private backups: Backup[] = [];
 
   async save(backup: Backup): Promise<void> {
-    this.backups.push(backup);
+    const existingIndex = this.backups.findIndex((b) => b.id === backup.id);
+    if (existingIndex >= 0) {
+      this.backups[existingIndex] = backup;
+    } else {
+      this.backups.push(backup);
+    }
   }
 
   async findById(id: string): Promise<Backup | null> {

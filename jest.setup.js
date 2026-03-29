@@ -48,12 +48,28 @@ jest.mock('next/server', () => {
     text: async () => JSON.stringify(data),
   }));
   return {
-    NextRequest: jest.fn().mockImplementation((url, init) => ({
-      url,
-      ...init,
-      json: jest.fn().mockResolvedValue(init?.body ? JSON.parse(init.body) : {}),
-      headers: new Map()
-    })),
+    NextRequest: jest.fn().mockImplementation((url, init) => {
+      const urlObj = new URL(url);
+      return {
+        url,
+        nextUrl: {
+          searchParams: urlObj.searchParams,
+        },
+        ...init,
+        json: jest.fn().mockImplementation(async () => {
+          if (!init?.body) return {};
+          if (typeof init.body === 'string') {
+            try {
+              return JSON.parse(init.body);
+            } catch (e) {
+              throw new SyntaxError('Unexpected token');
+            }
+          }
+          return init.body;
+        }),
+        headers: new Map()
+      };
+    }),
     NextResponse: NextResponseMock,
   };
 });

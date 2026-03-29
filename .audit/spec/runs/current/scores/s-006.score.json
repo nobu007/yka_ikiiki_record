@@ -1,7 +1,7 @@
 {
   "axis": "S-006",
   "name": "憲法準拠性",
-  "score": 9,
+  "score": 10,
   "max_score": 10,
   "pass": true,
   "details": [
@@ -20,9 +20,8 @@
     {
       "id": "S-006-3",
       "name": "技術スタック準拠",
-      "score": 1,
+      "score": 2,
       "max": 2
     }
-  ],
-  "violations": []
+  ]
 }

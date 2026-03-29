@@ -1,0 +1,59 @@
+id: "REV-S-005"
+axis: "S-005"
+axis_name: "テスト-SPEC対応率"
+type: "test_spec_mismatch"
+priority: "P0"
+current_score: 1
+required_score: 12
+gap: 11
+recommendation: |
+  テストとSPECの対応がほぼありません。これは最も深刻な課題です。
+
+  現状の問題点:
+  - テスト関数とSPECケースの対応: 0% (0/5点)
+    - 検出されたテストファイル: 0件
+    - 定義されたSPECケース: 8件
+  - 正常系テストカバレッジ: 0% (0/4点)
+  - 異常系テストカバレッジ: 0% (0/4点)
+  - test_matrix.ymlの普及: 50% (1/2点)
+
+  根本原因:
+  プロジェクトのテストが test/ ディレクトリではなく、各ソースファイルの
+  *.test.ts ファイルとして配置されている可能性があります。
+
+  改善アクション:
+  1. テストファイルの正しいパスを確認
+  2. テスト関数名にSPECケースIDを含める (TC-001, BV-001, ERR-001等)
+  3. 各SPECケースに対応するテストを実装
+  4. test_matrix.yml を作成し、テストとSPECの対応を明示
+  5. 正常系・異常系ともにカバレッジを向上
+detailed_analysis:
+  test_detection_issue: |
+    テストファイルが test/ ディレクトリで検出されませんでした。
+    実際のテストファイルの場所を確認してください:
+    - src/**/*.test.ts
+    - src/**/*.spec.ts
+    - または別のテストディレクトリ
+  spec_cases_found: 8
+  test_files_found: 0
+  estimated_actual_tests: "likely 100+ based on previous audit data"
+priority_roadmap:
+  phase_1:
+    title: "Test Discovery & Mapping"
+    tasks:
+      - "Locate all actual test files in the codebase"
+      - "Create test_matrix.yml for each SPEC"
+      - "Map existing tests to SPEC cases"
+  phase_2:
+    title: "Test Naming Convention"
+    tasks:
+      - "Rename test functions to include SPEC case IDs"
+      - "Example: test_TC_001_valid_input() instead of test_valid_input()"
+  phase_3:
+    title: "Coverage Expansion"
+    tasks:
+      - "Implement missing tests for normal cases (TC-*)"
+      - "Implement missing tests for boundary values (BV-*)"
+      - "Implement missing tests for error scenarios (ERR-*)"
+  estimated_effort: "4-6 hours for full coverage"
+  expected_impact: "+11 points (to reach 12/15)"

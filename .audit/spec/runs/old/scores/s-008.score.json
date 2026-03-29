@@ -1,14 +1,14 @@
 {
   "axis": "S-008",
   "name": "SPEC鮮度",
-  "score": 0,
+  "score": 6,
   "max_score": 10,
   "pass": false,
   "details": [
     {
       "id": "S-008-1",
       "name": "更新日妥当性",
-      "score": 0,
+      "score": 3,
       "max": 3
     },
     {
@@ -21,7 +21,7 @@
     {
       "id": "S-008-3",
       "name": "バージョン管理",
-      "score": 0,
+      "score": 3,
       "max": 3
     }
   ]

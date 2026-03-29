@@ -1,20 +1,20 @@
 {
   "consecutive_pass": 0,
-  "total_audits": 5,
+  "total_audits": 6,
   "last_audit": {
-    "timestamp": "2026-03-30T02:54:00.000Z",
+    "timestamp": "2026-03-30T03:29:48.871011",
     "passed": false,
-    "score": 54
+    "score": 70
   },
   "history": [
     {
       "timestamp": "2026-03-22T15:08:37.321803",
-      "passed": false,
+      "pass": false,
       "score": 3
     },
     {
       "timestamp": "2026-03-30T02:54:00.000Z",
-      "passed": false,
+      "pass": false,
       "score": 54
     },
     {
@@ -31,13 +31,22 @@
       "timestamp": "2026-03-30T03:01:43.096884",
       "pass": false,
       "score": 56
+    },
+    {
+      "timestamp": "2026-03-30T03:29:48.871011",
+      "pass": false,
+      "score": 70
     }
   ],
   "spec_stable": false,
   "improvement_trend": {
-    "previous_score": 3,
-    "current_score": 54,
-    "improvement": 51,
+    "previous_score": 56,
+    "current_score": 70,
+    "improvement": 14,
     "trend": "IMPROVING"
-  }
+  },
+  "score_progression": [3, 54, 48, 50, 56, 70],
+  "average_improvement": 13.4,
+  "projected_pass_score": 80,
+  "gap_to_pass": 10
 }

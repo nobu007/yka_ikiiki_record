@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-30T03:01:23.012574",
+  "timestamp": "2026-03-30T03:01:43.097258",
   "workdir": "/home/jinno/yka_ikiiki_record",
   "bootstrapped": false,
   "results": {
@@ -223,14 +223,14 @@
     "S-008": {
       "axis": "S-008",
       "name": "SPEC鮮度",
-      "score": 0,
+      "score": 6,
       "max_score": 10,
       "pass": false,
       "details": [
         {
           "id": "S-008-1",
           "name": "更新日妥当性",
-          "score": 0,
+          "score": 3,
           "max": 3
         },
         {
@@ -243,16 +243,16 @@
         {
           "id": "S-008-3",
           "name": "バージョン管理",
-          "score": 0,
+          "score": 3,
           "max": 3
         }
       ]
     }
   },
   "verdict": {
-    "total_score": 50,
+    "total_score": 56,
     "max_score": 100,
-    "percentage": 50.0,
+    "percentage": 56.0,
     "overall_pass": false,
     "s001_threshold_met": false,
     "all_thresholds_met": false,
@@ -409,15 +409,15 @@
       "id": "REV-S-008",
       "axis": "S-008",
       "axis_name": "SPEC鮮度",
-      "current_score": 0,
+      "current_score": 6,
       "required_score": 8,
-      "gap": 8,
+      "gap": 2,
       "type": "spec_stale",
       "details": [
         {
           "id": "S-008-1",
           "name": "更新日妥当性",
-          "score": 0,
+          "score": 3,
           "max": 3
         },
         {
@@ -430,7 +430,7 @@
         {
           "id": "S-008-3",
           "name": "バージョン管理",
-          "score": 0,
+          "score": 3,
           "max": 3
         }
       ],
@@ -439,7 +439,7 @@
   ],
   "streak": {
     "consecutive_pass": 0,
-    "total_audits": 4,
+    "total_audits": 5,
     "last_audit": {
       "timestamp": "2026-03-30T02:54:00.000Z",
       "passed": false,
@@ -465,6 +465,11 @@
         "timestamp": "2026-03-30T03:01:23.012166",
         "pass": false,
         "score": 50
+      },
+      {
+        "timestamp": "2026-03-30T03:01:43.096884",
+        "pass": false,
+        "score": 56
       }
     ],
     "spec_stable": false,

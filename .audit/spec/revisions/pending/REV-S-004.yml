@@ -1,0 +1,43 @@
+id: "REV-S-004"
+axis: "S-004"
+axis_name: "エラーシナリオ網羅性"
+type: "error_coverage_gap"
+priority: "P0"
+current_score: 8
+required_score: 12
+gap: 4
+recommendation: |
+  エラーシナリオの網羅性が不足しています。特に例外型の明示とエッジケースの検討が必要です。
+
+  現状の問題点:
+  - エラーセクションの存在率: 67% (2/3点)
+  - 例外型の明示: 50% (2/4点)
+  - error_scenarios.ymlの普及: 75% (3/4点)
+  - エッジケース品質: 25% (1/4点) - 特に課題
+
+  改善アクション:
+  1. 全SPECに「エラーシナリオ」セクションを追加
+  2. 各エラーケースに具体的な例外型を明示 (TypeError, ValueError等)
+  3. エッジケースを拡充:
+     - None/null 入力
+     - 空コレクション
+     - 並行実行・競合
+     - タイムアウト
+     - 権限エラー
+     - 大量データ
+  4. error_scenarios.yml を全SPECに作成
+gap_details:
+  s004_1_error_section: "67% of SPECs have error section"
+  s004_2_exception_types: "Only 50% have explicit exception types"
+  s004_3_yml_files: "75% have error_scenarios.yml"
+  s004_4_edge_cases: "Only 25% have comprehensive edge cases"
+priority_actions:
+  - action: "Add error scenarios to remaining 33% of specs"
+    effort: "Medium"
+    impact: "+1 point"
+  - action: "Explicitly document exception types for all error cases"
+    effort: "Low"
+    impact: "+2 points"
+  - action: "Expand edge case coverage (None, empty, concurrent, timeout)"
+    effort: "High"
+    impact: "+3 points"

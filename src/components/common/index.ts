@@ -9,3 +9,4 @@ export {
   DownloadIcon,
 } from "./Icons";
 export { ExportButton } from "./ExportButton";
+export { PaginationControl } from "./PaginationControl";

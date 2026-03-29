@@ -109,6 +109,17 @@ describe("TrendAnalysisService", () => {
 
       expect(result.metrics.volatility).toBeGreaterThan(0);
     });
+
+    it("should handle single record with stable trend direction", async () => {
+      const records = [{ date: new Date("2026-03-01"), emotion: 3.5 }];
+
+      const result = await trendService.analyzeStudentTrend("Alice", records);
+
+      expect(result.dataPoints).toHaveLength(1);
+      expect(result.metrics.trendDirection).toBe("stable");
+      expect(result.metrics.averageEmotion).toBe(3.5);
+      expect(result.metrics.totalRecords).toBe(1);
+    });
   });
 
   describe("analyzeClassTrend", () => {
@@ -280,6 +291,13 @@ describe("TrendAnalysisService", () => {
 
       expect(anomaliesStrict.length).toBeGreaterThan(anomaliesLenient.length);
     });
+
+    it("should return empty array for identical values (zero stdDev)", () => {
+      const values = [3.5, 3.5, 3.5, 3.5, 3.5];
+      const anomalies = trendService.detectAnomalies(values, 2);
+
+      expect(anomalies).toEqual([]);
+    });
   });
 
   describe("calculateTrendCorrelation", () => {
@@ -322,6 +340,31 @@ describe("TrendAnalysisService", () => {
     it("should handle empty arrays", () => {
       const series1: number[] = [];
       const series2: number[] = [];
+
+      expect(() =>
+        trendService.calculateTrendCorrelation(series1, series2),
+      ).toThrow("Arrays must have at least 2 elements");
+    });
+
+    it("should return exactly 1.0 for identical series", () => {
+      const series = [1, 2, 3, 4, 5];
+      const correlation = trendService.calculateTrendCorrelation(series, series);
+
+      expect(correlation).toBe(1.0);
+    });
+
+    it("should return exactly -1.0 for perfectly opposite series", () => {
+      const series1 = [1, 2, 3, 4, 5];
+      const series2 = [-1, -2, -3, -4, -5];
+
+      const correlation = trendService.calculateTrendCorrelation(series1, series2);
+
+      expect(correlation).toBeCloseTo(-1.0, 10);
+    });
+
+    it("should handle single element arrays", () => {
+      const series1 = [1];
+      const series2 = [2];
 
       expect(() =>
         trendService.calculateTrendCorrelation(series1, series2),

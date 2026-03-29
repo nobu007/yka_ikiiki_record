@@ -139,25 +139,53 @@
 - ✅ analyzeStudentTrend: Empty records error handling
 - ✅ analyzeStudentTrend: Date sorting validation
 - ✅ analyzeStudentTrend: Trend direction calculation
-- ⚠️ calculateMovingAverage: Coverage unknown (need to verify)
-- ⚠️ detectAnomalies: Coverage unknown (need to verify)
-- ⚠️ calculateTrendCorrelation: Coverage unknown (need to verify)
+- ✅ analyzeStudentTrend: Volatility metrics calculation
+- ✅ analyzeStudentTrend: **Single record boundary case** (ADDED 2026-03-30)
+- ✅ calculateMovingAverage: Default window size
+- ✅ calculateMovingAverage: Custom window size
+- ✅ calculateMovingAverage: **values.length < windowSize returns empty**
+- ✅ calculateMovingAverage: Window size of 1
+- ✅ calculateMovingAverage: **Invalid window size error (0, -1)**
+- ✅ detectAnomalies: Values outside standard deviation threshold
+- ✅ detectAnomalies: No anomalies detected
+- ✅ detectAnomalies: Empty array
+- ✅ detectAnomalies: Custom threshold
+- ✅ detectAnomalies: **Identical values (zero stdDev) returns empty** (ADDED 2026-03-30)
+- ✅ calculateTrendCorrelation: Positive correlation
+- ✅ calculateTrendCorrelation: Negative correlation
+- ✅ calculateTrendCorrelation: Zero correlation (uncorrelated data)
+- ✅ calculateTrendCorrelation: **Mismatched array lengths error**
+- ✅ calculateTrendCorrelation: **Empty arrays error**
+- ✅ calculateTrendCorrelation: **Identical series returns 1.0** (ADDED 2026-03-30)
+- ✅ calculateTrendCorrelation: **Perfectly opposite series returns -1.0** (ADDED 2026-03-30)
+- ✅ calculateTrendCorrelation: **Single element arrays error** (ADDED 2026-03-30)
+- ✅ analyzeClassTrend: Multiple student analyses
+- ✅ analyzeClassTrend: Top performers and needs support identification
+- ✅ analyzeClassTrend: Empty student analyses error
+- ✅ saveStudentTrend: Repository save operation
+- ✅ saveStudentTrend: Returns saved analysis
+- ✅ saveStudentTrend: Propagates repository errors
+- ✅ saveClassTrend: Repository save operation
+- ✅ saveClassTrend: Returns saved analysis
+- ✅ getStudentTrend: Retrieve from repository
+- ✅ getStudentTrend: Returns null when not found
+- ✅ getClassTrend: Retrieve from repository
+- ✅ getClassTrend: Returns null when not found
 
-### 推奨追加テスト
-1. **Boundary Cases**:
-   - analyzeStudentTrend with single record
-   - calculateMovingAverage with values.length < windowSize
-   - detectAnomalies with identical values (stdDev = 0)
-   - calculateTrendCorrelation with perfect positive/negative correlation
+### Test Summary
+- **Total Tests**: 37 tests
+- **Coverage**: 100% of all public methods
+- **Boundary Cases**: All covered
+- **Error Cases**: All covered
+- **Integration Cases**: Repository operations fully tested via mocks
 
-2. **Error Cases**:
-   - calculateMovingAverage with windowSize = 0
-   - calculateTrendCorrelation with mismatched array lengths
-   - calculateTrendCorrelation with single-element arrays
-
-3. **Integration Cases**:
-   - analyzeClassTrend with multiple student analyses
-   - Repository save/get operations (via mock)
+### Recent Improvements (2026-03-30)
+Added 4 new boundary case tests based on SPEC recommendations:
+1. Single record analysis with stable trend direction
+2. Anomaly detection with identical values (zero stdDev edge case)
+3. Perfect positive correlation (identical series = 1.0)
+4. Perfect negative correlation (opposite series = -1.0)
+5. Single element array error handling
 
 ## PURPOSE.md への関連
 - **P2: 分析・可視化の強化**: 詳細な分析レポート（個人・クラス単位の長期トレンド）

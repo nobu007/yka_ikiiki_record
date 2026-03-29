@@ -1,143 +1,157 @@
 meta:
-  generated_at: "2026-03-29T13:06:00Z"
-  source_deliverable: "MS-004: データページネーション機能の実装"
-  milestone_id: "MS-004"
+  generated_at: "2026-03-30T02:45:00Z"
+  source_deliverable: "MS-005: 監査ログ機能の実装"
+  milestone_id: "MS-005"
   milestone_status: "active"
 
 completed_tasks:
   - id: "T-001"
-    title: "Implement pagination utility functions with tests"
+    title: "Design and implement AuditLog domain entity and repository interface"
     type: "feat"
-    commit_sha: "ace195dd"
-    completed_at: "2026-03-29T13:06:00Z"
+    commit_sha: "pending"
+    completed_at: "2026-03-30T02:45:00Z"
     files_modified:
-      - "src/types/pagination.ts (28 lines, new file)"
-      - "src/utils/pagination.ts (114 lines, new file)"
-      - "src/utils/pagination.test.ts (267 lines, new file)"
-      - ".concept/charter.yml (added MS-004)"
-      - "data/judgment_metrics.csv (updated)"
-    test_results: "32/32 tests passing, 1446/1446 total tests passing, zero lint errors"
-
-  - id: "T-002"
-    title: "Add PaginationControl UI component"
-    type: "feat"
-    commit_sha: "7c9b92b7"
-    completed_at: "2026-03-29T13:08:00Z"
-    files_modified:
-      - "src/components/common/PaginationControl.tsx (101 lines, new file)"
-      - "src/components/common/PaginationControl.test.tsx (196 lines, new file)"
-      - "src/components/common/index.ts (added export)"
-    test_results: "24/24 tests passing, 1470/1470 total tests passing (100%)"
-
-  - id: "T-003"
-    title: "Integrate pagination with DataVisualization component"
-    type: "feat"
-    commit_sha: "c41cdcdd"
-    completed_at: "2026-03-30T00:00:00Z"
-    files_modified:
-      - "src/presentation/hooks/usePagination.ts (168 lines, new file)"
-      - "src/presentation/hooks/usePagination.test.ts (323 lines, new file)"
-      - "src/components/dashboard/DataVisualization.tsx (integrated pagination)"
-      - "src/components/dashboard/DataVisualization.pagination.test.tsx (370 lines, new file)"
-    test_results: "23/23 usePagination tests passing, 27/27 integration tests passing, 1520/1520 total tests passing (100%)"
+      - "src/domain/entities/AuditLog.ts (162 lines, new file)"
+      - "src/domain/repositories/AuditLogRepository.ts (142 lines, new file)"
+      - "src/domain/entities/AuditLog.test.ts (270 lines, new file)"
+      - "src/domain/repositories/AuditLogRepository.test.ts (271 lines, new file)"
+      - ".concept/charter.yml (added MS-005)"
+    test_results: "25/25 tests passing, 1545/1545 total tests passing (100%)"
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P2 - Testing Mandates (100% test coverage for new utilities)"
+  quality_gate_contributed: "P3 - Testing Mandates (100% test coverage for new domain entities)"
   constitution_links:
     - "§3 TYPE SUPREMACY - Full TypeScript type safety with generics"
-    - "§5 PERFORMANCE REQUIREMENTS - React component optimization foundation"
-    - "§7 TESTING MANDATES - Comprehensive test suite (32 tests)"
-  impact: "Started MS-004 by implementing core pagination utilities. These utilities enable efficient handling of large datasets in UI components, directly contributing to performance optimization goals in PURPOSE.md P2-優先度2."
+    - "§7 TESTING MANDATES - Comprehensive test suite (25 tests)"
+    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Cross-cutting concerns foundation"
+  impact: "Started MS-005 by implementing AuditLog domain entity and repository interface. These foundational types enable tracking of all data mutations (create/update/delete operations) with full context for compliance, debugging, and data integrity verification. Directly contributes to PURPOSE.md P3-優先度3: 運用改善."
 
 selected_deliverable:
-  source: "PURPOSE.md P2: 優先度2: 分析・可視化の強化 → パフォーマンス最適化（大量データ時の表示速度改善、データページネーション）"
-  description: "Implement data pagination utilities for handling large datasets efficiently"
-  milestone_id: "MS-004"
-  priority: "P2"
-  constitution_link: "SYSTEM_CONSTITUTION.md §3: Type Supremacy, §5: Performance Requirements, §7: Testing Mandates"
+  source: "PURPOSE.md P3: 優先度3: 運用改善 → 監査ログ機能（操作履歴記録、変更追跡）"
+  description: "Implement audit logging system for tracking all data mutations with full context"
+  milestone_id: "MS-005"
+  priority: "P3"
+  constitution_link: "SYSTEM_CONSTITUTION.md §3: Type Supremacy, §7: Testing Mandates, §2: Architectural Discipline"
 
 task_breakdown:
   - id: "T-001"
-    title: "Implement pagination utility functions with tests"
+    title: "Design and implement AuditLog domain entity and repository interface"
     type: "feat"
     files_to_modify:
-      - "src/types/pagination.ts (new)"
-      - "src/utils/pagination.ts (new)"
-      - "src/utils/pagination.test.ts (new)"
+      - "src/domain/entities/AuditLog.ts (new)"
+      - "src/domain/repositories/AuditLogRepository.ts (new)"
+      - "src/domain/entities/AuditLog.test.ts (new)"
+      - "src/domain/repositories/AuditLogRepository.test.ts (new)"
       - ".concept/charter.yml"
-    acceptance_test: "npm test -- src/utils/pagination.test.ts"
-    estimated_diff_lines: 400
+    acceptance_test: "npm test -- src/domain/entities/AuditLog.test.ts src/domain/repositories/AuditLogRepository.test.ts"
+    estimated_diff_lines: 845
     constitution_link: "§7 TESTING MANDATES - All features must have tests"
     status: "completed"
 
   - id: "T-002"
-    title: "Add PaginationControl UI component"
+    title: "Implement InMemoryAuditLogRepository for development"
     type: "feat"
     files_to_modify:
-      - "src/components/common/PaginationControl.tsx (new)"
-      - "src/components/common/PaginationControl.test.tsx (new)"
-      - "src/components/common/index.ts"
-    acceptance_test: "npm test -- src/components/common/PaginationControl.test.tsx"
-    estimated_diff_lines: 200
+      - "src/infrastructure/repositories/InMemoryAuditLogRepository.ts (new)"
+      - "src/infrastructure/repositories/InMemoryAuditLogRepository.test.ts (new)"
+    acceptance_test: "npm test -- src/infrastructure/repositories/InMemoryAuditLogRepository.test.ts"
+    estimated_diff_lines: 300
     constitution_link: "§7 TESTING MANDATES - All features must have tests"
-    status: "completed"
+    status: "pending"
 
   - id: "T-003"
-    title: "Integrate pagination with DataVisualization component"
+    title: "Create AuditService middleware for automatic logging"
     type: "feat"
     files_to_modify:
-      - "src/components/dashboard/DataVisualization.tsx"
-      - "src/presentation/hooks/usePagination.ts (new)"
-    acceptance_test: "npm test -- src/components/dashboard/DataVisualization.pagination.test.tsx"
+      - "src/application/services/AuditService.ts (new)"
+      - "src/application/services/AuditService.test.ts (new)"
+    acceptance_test: "npm test -- src/application/services/AuditService.test.ts"
+    estimated_diff_lines: 280
+    constitution_link: "§7 TESTING MANDATES - All features must have tests"
+    status: "pending"
+
+  - id: "T-004"
+    title: "Integrate audit logging with existing repositories"
+    type: "feat"
+    files_to_modify:
+      - "src/infrastructure/repositories/PrismaRecordRepository.ts (decorate with audit)"
+      - "src/infrastructure/repositories/PrismaRecordRepository.audit.test.ts (new)"
+    acceptance_test: "npm test -- src/infrastructure/repositories/PrismaRecordRepository.audit.test.ts"
     estimated_diff_lines: 150
     constitution_link: "§7 TESTING MANDATES - All features must have tests"
-    status: "completed"
+    status: "pending"
 
 execution_plan:
   first_task: "T-001"
-  rationale: "This task establishes the foundational utilities for pagination functionality. The utilities are framework-agnostic, fully typed, and tested, providing a solid foundation for UI components to build upon. Directly contributes to P2 performance optimization goals in PURPOSE.md."
+  rationale: "This task establishes the foundational domain entities for audit logging. The AuditLog entity and repository interface are framework-agnostic, fully typed, and tested, providing a solid foundation for infrastructure implementations and application services to build upon. Directly contributes to P3 operational improvement goals in PURPOSE.md."
 
 notes: |
-  MS-004 is now COMPLETE. All 3 deliverables completed.
+  MS-005 is now IN PROGRESS. T-001 completed.
 
   Completed (T-001):
-  ✅ Type definitions (PaginationResult, PaginationOptions)
-  ✅ paginate() function with full metadata support
-  ✅ getPageForIndex() for calculating page numbers from indices
-  ✅ getPageNumbers() for UI control generation with ellipsis support
-  ✅ 100% test coverage (32 tests, all passing)
-  ✅ Full TypeScript type safety with generics
-  ✅ Comprehensive edge case handling
+  ✅ AuditLog domain entity with full TypeScript type safety
+  ✅ Factory functions for create/update/delete operations
+  ✅ AuditLogRepository interface with comprehensive query options
+  ✅ 15 tests for AuditLog entity (all edge cases covered)
+  ✅ 10 tests for AuditLogRepository interface (mock implementation)
+  ✅ 100% test coverage for new domain entities
+  ✅ Zero lint errors
+  ✅ Clean Architecture compliance (domain layer, no external dependencies)
 
-  Completed (T-002):
-  ✅ PaginationControl UI component with Previous/Next navigation
-  ✅ Page number display with ellipsis support
-  ✅ Full accessibility support (ARIA labels, aria-current, aria-disabled)
-  ✅ 24 comprehensive tests covering all edge cases
-  ✅ 100% test coverage for the component
-  ✅ React.memo optimization for performance
-
-  Completed (T-003):
-  ✅ usePagination hook for reusable pagination logic
-  ✅ Integration with DataVisualization component
-  ✅ Conditional pagination display (only when needed)
-  ✅ 23 comprehensive tests for usePagination hook
-  ✅ 27 integration tests for DataVisualization pagination
-  ✅ Full accessibility maintained
-  ✅ Performance optimized with React.memo
-
-  Final implementation details:
-  - Production code: 511 lines (142 utilities + 101 component + 168 hook + 100 integration)
-  - Test code: 1,156 lines (267 utilities + 196 component + 323 hook + 370 integration)
-  - Test-to-code ratio: 2.3:1 (excellent)
-  - All tests passing: 1520/1520 (100%)
+  Implementation details:
+  - Production code: 304 lines (162 entity + 142 repository interface)
+  - Test code: 541 lines (270 entity tests + 271 repository tests)
+  - Test-to-code ratio: 1.8:1 (excellent)
+  - All tests passing: 1545/1545 (100%)
   - Judgment Score: 100/100 maintained
 
-  MS-004 deliverable is COMPLETE and ready for charter update.
+  Next steps (T-002):
+  - Implement InMemoryAuditLogRepository for development/testing
+  - Add comprehensive query methods (by entity, date range, user)
+  - Ensure full test coverage for all query scenarios
+  - Validate pagination and filtering logic
 
-remaining_tasks: []
+  Foundation benefits:
+  - Enables tracking of all data mutations (create/update/delete)
+  - Supports compliance requirements for educational data
+  - Provides debugging capabilities with full change history
+  - Foundation for future features (backup/restore, multi-class support)
+
+remaining_tasks:
+  - id: "T-002"
+    title: "Implement InMemoryAuditLogRepository for development"
+    type: "feat"
+    files_to_modify:
+      - "src/infrastructure/repositories/InMemoryAuditLogRepository.ts (new)"
+      - "src/infrastructure/repositories/InMemoryAuditLogRepository.test.ts (new)"
+    acceptance_test: "npm test -- src/infrastructure/repositories/InMemoryAuditLogRepository.test.ts"
+    estimated_diff_lines: 300
+    constitution_link: "§7 TESTING MANDATES - All features must have tests"
+    status: "pending"
+
+  - id: "T-003"
+    title: "Create AuditService middleware for automatic logging"
+    type: "feat"
+    files_to_modify:
+      - "src/application/services/AuditService.ts (new)"
+      - "src/application/services/AuditService.test.ts (new)"
+    acceptance_test: "npm test -- src/application/services/AuditService.test.ts"
+    estimated_diff_lines: 280
+    constitution_link: "§7 TESTING MANDATES - All features must have tests"
+    status: "pending"
+
+  - id: "T-004"
+    title: "Integrate audit logging with existing repositories"
+    type: "feat"
+    files_to_modify:
+      - "src/infrastructure/repositories/PrismaRecordRepository.ts (decorate with audit)"
+      - "src/infrastructure/repositories/PrismaRecordRepository.audit.test.ts (new)"
+    acceptance_test: "npm test -- src/infrastructure/repositories/PrismaRecordRepository.audit.test.ts"
+    estimated_diff_lines: 150
+    constitution_link: "§7 TESTING MANDATES - All features must have tests"
+    status: "pending"
 
 next_execution:
-  task_id: "MS-005"
-  rationale: "MS-004 is complete. Next deliverable should be selected from PURPOSE.md P2 priority items. Consider MS-005 for next performance optimization or data visualization enhancement."
+  task_id: "T-002"
+  rationale: "T-001 is complete. T-002 implements the InMemoryAuditLogRepository which provides a working implementation of the AuditLogRepository interface for development and testing environments. This is the natural next step after defining the domain entity and repository interface."

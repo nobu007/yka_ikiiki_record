@@ -91,6 +91,28 @@ milestones:
     status: "done"
     progress_note: "Completed 2026-03-30. All 7 deliverables implemented and validated. 1520/1520 tests passing (100%). Test coverage: 32 utility tests + 24 component tests + 23 hook tests + 27 integration tests = 106 pagination tests."
 
+  - id: "MS-005"
+    name: "監査ログ機能の実装"
+    intent: "データの変更履歴を記録する監査ログシステムを実装し、データ整合性とコンプライアンス要件を満たす"
+    deliverables:
+      - "AuditLogドメインエンティティ (src/domain/entities/AuditLog.ts)"
+      - "AuditLogRepositoryインターフェース (src/domain/repositories/AuditLogRepository.ts)"
+      - "AuditLogエンティティのテスト (src/domain/entities/AuditLog.test.ts)"
+      - "AuditLogRepositoryのテスト (src/domain/repositories/AuditLogRepository.test.ts)"
+      - "InMemoryAuditLogRepository実装 (T-002)"
+      - "AuditServiceミドルウェア (T-003)"
+      - "既存リポジトリとの統合 (T-004)"
+    acceptance:
+      - type: "quality_gate"
+        target: "全監査ログ機能のテストが通過し、カバレッジ100%を達成"
+    constitution_links:
+      - "§7 TESTING MANDATES - All features must have tests"
+      - "§3 TYPE SUPREMACY - Full TypeScript type safety"
+      - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Cross-cutting concerns"
+    priority: "P3"
+    status: "active"
+    progress_note: "T-001 completed (2026-03-30). Domain entity and repository interface implemented with 25 tests passing. 1545/1545 total tests passing."
+
 work_policy:
   default_mode: "commit"
   iteration_budget:

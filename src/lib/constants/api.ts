@@ -43,6 +43,7 @@ export const API_ENDPOINTS = {
   HEALTH: "/api/health",
   METRICS: "/api/metrics",
   ANALYTICS: "/api/analytics",
+  TRENDS: "/api/trends",
 } as const;
 
 export const API_OPERATIONS = {
@@ -53,4 +54,5 @@ export const API_OPERATIONS = {
   EXPORT_RECORDS: "GET /api/export",
   GET_METRICS: "GET /api/metrics",
   GET_ANALYTICS: "GET /api/analytics",
+  GET_TRENDS: "GET /api/trends",
 } as const;

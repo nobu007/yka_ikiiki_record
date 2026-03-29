@@ -1,9 +1,11 @@
 import { StatsRepository } from "@/domain/repositories/StatsRepository";
 import { IRecordRepository } from "@/domain/repositories/IRecordRepository";
+import { TrendAnalysisRepository } from "@/domain/repositories/TrendAnalysisRepository";
 import { StatsService } from "@/domain/services/StatsService";
 import { MockStatsRepository } from "@/infrastructure/storage/MockStatsRepository";
 import { PrismaStatsRepository } from "@/infrastructure/repositories/PrismaStatsRepository";
 import { PrismaRecordRepository } from "@/infrastructure/repositories/PrismaRecordRepository";
+import { InMemoryTrendAnalysisRepository } from "@/infrastructure/storage/InMemoryTrendAnalysisRepository";
 import { isPrismaProvider } from "@/lib/config/env";
 import { ValidationError } from "@/lib/error-handler";
 
@@ -78,4 +80,23 @@ export function createRecordRepository(): IRecordRepository {
 export function createStatsService(): StatsService {
   const repository = createStatsRepository();
   return new StatsService(repository);
+}
+
+/**
+ * Creates a TrendAnalysisRepository instance for trend analysis operations.
+ *
+ * Returns an InMemoryTrendAnalysisRepository with in-memory storage.
+ * Suitable for development environments and testing scenarios.
+ *
+ * @returns {TrendAnalysisRepository} A repository instance for trend analysis operations
+ *
+ * @example
+ * ```ts
+ * const repository = createTrendAnalysisRepository();
+ * await repository.saveStudentTrend(studentAnalysis);
+ * const retrieved = await repository.getStudentTrend("Alice");
+ * ```
+ */
+export function createTrendAnalysisRepository(): TrendAnalysisRepository {
+  return new InMemoryTrendAnalysisRepository();
 }

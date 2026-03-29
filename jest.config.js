@@ -21,6 +21,7 @@ module.exports = {
       testMatch: [
         '<rootDir>/src/infrastructure/repositories/**/*.test.ts',
         '<rootDir>/src/lib/resilience/**/*.test.ts',
+        '<rootDir>/scripts/**/*.test.ts',
       ],
       moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/src/$1',

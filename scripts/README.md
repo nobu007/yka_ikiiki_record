@@ -23,7 +23,13 @@ This directory contains automation scripts for deployment, verification, and qua
 
 ### Quality Assurance
 
-- **`test-e2e-local.sh`** (NEW - 175 lines)
+- **`validate-production-readiness.sh`** (NEW - 391 lines)
+  - Comprehensive production readiness validation
+  - Validates all prerequisites before deployment
+  - Checks: Environment, Dependencies, Type Safety, Linting, Tests, Database, Build, Architecture, Configuration, Scripts, Resilience
+  - Usage: `npm run validate:production`
+
+- **`test-e2e-local.sh`** (175 lines)
   - Local E2E integration testing
   - Serves as P2 alternative for production deployment verification
   - Automatically starts dev server if needed
@@ -40,8 +46,8 @@ This directory contains automation scripts for deployment, verification, and qua
 
 ## Total Automation Lines
 
-- **Total**: 954 lines of automation scripts
-- **Languages**: Bash (480 lines), Python (474 lines)
+- **Total**: 1345 lines of automation scripts
+- **Languages**: Bash (871 lines), Python (474 lines)
 
 ## CI/CD Integration
 
@@ -53,6 +59,7 @@ npm run lint
 npm run test
 
 # Pre-deployment checks
+npm run validate:production
 npm run test:coverage
 npm run build
 npm run test:e2e:local
@@ -77,6 +84,6 @@ These scripts implement the following constitutional requirements:
 
 These scripts support the following PURPOSE.md deliverables:
 
-- **P1: 本番デプロイ実行** - `deploy-production.sh`, `verify-deployment.sh`
+- **P1: 本番デプロイ実行** - `deploy-production.sh`, `verify-deployment.sh`, `validate-production-readiness.sh`
 - **P2: デプロイ後の機能改善（代替）** - `test-e2e-local.sh` as production proxy
 - **P3: 品質メトリクスの維持** - `meta_checker.py` autonomous monitoring

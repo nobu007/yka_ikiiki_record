@@ -24,7 +24,8 @@
     "db:migrate:deploy": "prisma migrate deploy",
     "deploy:production": "bash scripts/deploy-production.sh",
     "verify:deployment": "bash scripts/verify-deployment.sh",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "validate:production": "./scripts/validate-production-readiness.sh"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

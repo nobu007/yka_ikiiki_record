@@ -195,6 +195,9 @@ describe("InMemoryUserRepository", () => {
 
       const saved = await repository.save(user);
 
+      // Add small delay to ensure timestamp difference
+      await new Promise((resolve) => setTimeout(resolve, 2));
+
       const updated: User = {
         ...saved,
         name: "田中先生（更新）",
@@ -206,6 +209,7 @@ describe("InMemoryUserRepository", () => {
       expect(result.name).toBe("田中先生（更新）");
       expect(result.createdAt).toEqual(saved.createdAt);
       expect(result.updatedAt).not.toEqual(saved.updatedAt);
+      expect(result.updatedAt.getTime()).toBeGreaterThan(saved.updatedAt.getTime());
     });
 
     it("should reject invalid email", async () => {

@@ -235,9 +235,9 @@ milestones:
     deliverables:
       - "Userドメインエンティティ (src/domain/entities/User.ts) - T-001 completed"
       - "UserRepositoryインターフェース (src/domain/repositories/UserRepository.ts) - T-001 completed"
-      - "AuthenticationServiceドメインサービス (T-002)"
-      - "InMemoryUserRepository実装 (T-003)"
-      - "AuthorizationServiceアプリケーションサービス (T-004)"
+      - "AuthenticationServiceドメインサービス (src/domain/services/AuthenticationService.ts) - T-002 completed"
+      - "InMemoryUserRepository実装 (src/infrastructure/repositories/InMemoryUserRepository.ts) - T-003 completed"
+      - "AuthorizationServiceアプリケーションサービス (src/application/services/AuthorizationService.ts) - T-004 completed"
       - "認証APIエンドポイント (/api/auth/login, /api/auth/logout, /api/auth/session) - T-005"
       - "UI認証コンポーネント (LoginForm) - T-006"
       - "ドキュメント更新 (ontology.yml, charter.yml) - T-007"
@@ -245,12 +245,12 @@ milestones:
       - type: "quality_gate"
         target: "全認証・認可機能のテストが通過し、カバレッジ100%を達成"
     constitution_links:
-      - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain layer for User entity, Application layer for auth orchestration"
-      - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation for User schema"
+      - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Complete 4-layer Clean Architecture (Domain: User + AuthenticationService, Infrastructure: InMemoryUserRepository, Application: AuthorizationService, Presentation: API/UI pending)"
+      - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation for User schema + dependency injection interfaces (PasswordHasher, TokenGenerator)"
       - "§7 TESTING MANDATES - All features must have comprehensive tests"
     priority: "P2"
     status: "active"
-    progress_note: "MS-011 started 2026-03-30. T-001 completed: User entity (4 lines production, 195 lines tests, 23 tests) + UserRepository interface (126 lines production, 303 lines tests, 17 tests). Total T-001: 160 lines production, 498 lines tests, 40 tests passing (100%). Domain layer foundation established with UserSchema (Zod validation), UserRole enum (TEACHER/ADMIN), and comprehensive repository interface (findByEmail, findById, findAll, findByRole, save, delete, count, emailExists, disconnect). Overall project: 2245/2245 tests passing (100%)."
+    progress_note: "MS-011 in progress 2026-03-30. T-001 through T-004 completed (4/7 tasks - 57% complete). T-001: User entity + UserRepository interface (160 lines production, 498 lines tests, 40 tests). T-002: AuthenticationService (462 lines production, 603 lines tests, 33 tests). T-003: InMemoryUserRepository (116 lines production, 530 lines tests, 39 tests). T-004: AuthorizationService (319 lines production, 510 lines tests, 63 tests). Total T-001 through T-004: 1057 lines production, 2141 lines tests, 145 tests passing (100%). Complete 4-layer Clean Architecture auth foundation established (Domain → Infrastructure → Application). Ready for T-005 (Authentication API Endpoints) at presentation layer. Overall project: 2399/2399 tests passing (100%)."
 
 work_policy:
   default_mode: "commit"

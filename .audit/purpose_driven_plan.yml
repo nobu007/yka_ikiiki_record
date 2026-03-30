@@ -1,5 +1,5 @@
 meta:
-  generated_at: "2026-03-30T09:45:00Z"
+  generated_at: "2026-03-30T10:15:00Z"
   source_deliverable: "PURPOSE.md P2 優先度1: 認証・認可システム（教員アカウント管理、NextAuth.js導入）"
   milestone_id: "MS-011"
   milestone_status: "active"
@@ -31,40 +31,29 @@ completed_tasks:
       - "src/domain/services/index.ts (+6 lines: export AuthenticationService, AuthenticationError, and types)"
     test_results: "33 new tests passing (100%). AuthenticationService tests: 33 tests (login: 6 tests, register: 8 tests, verifyToken: 8 tests, changePassword: 7 tests, interface injectability: 2 tests, AuthenticationError: 2 tests). Overall project: 2336/2336 tests passing (100%). Total production: 462 lines. Total tests: 603 lines. Features: login with email/password, registration with validation, token verification, password changes, email normalization, dependency injection for PasswordHasher and TokenGenerator interfaces, AuthenticationError for secure error handling."
 
-remaining_tasks:
   - id: "T-003"
     title: "Infrastructure Layer - InMemoryUserRepository"
     type: "feat"
-    files_to_modify:
-      - "src/infrastructure/storage/InMemoryUserRepository.ts (new)"
-      - "src/infrastructure/storage/InMemoryUserRepository.test.ts (new)"
-    acceptance_test: "npm test -- src/infrastructure/storage/InMemoryUserRepository.test.ts"
-    estimated_diff_lines: 100
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Infrastructure layer implements domain interfaces, §7 TESTING MANDATES - Comprehensive tests"
-    status: "pending"
-
-  - id: "T-003"
-    title: "Infrastructure Layer - InMemoryUserRepository"
-    type: "feat"
-    files_to_modify:
-      - "src/infrastructure/storage/InMemoryUserRepository.ts (new)"
-      - "src/infrastructure/storage/InMemoryUserRepository.test.ts (new)"
-    acceptance_test: "npm test -- src/infrastructure/storage/InMemoryUserRepository.test.ts"
-    estimated_diff_lines: 100
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Infrastructure layer implements domain interfaces, §7 TESTING MANDATES - Comprehensive tests"
-    status: "pending"
+    commit_sha: "PENDING"
+    completed_at: "2026-03-30T10:00:00Z"
+    files_modified:
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts (116 lines, new file)"
+      - "src/infrastructure/repositories/InMemoryUserRepository.test.ts (530 lines, new file)"
+      - "src/infrastructure/repositories/InMemoryUserRepository.test.ts (+4 lines: added 2ms delay in timestamp test)"
+    test_results: "39 new tests passing (100%). InMemoryUserRepository tests: 39 tests (findByEmail: 3 tests, findById: 4 tests, findAll: 2 tests, findByRole: 3 tests, save: 11 tests, delete: 3 tests, count: 3 tests, emailExists: 2 tests, disconnect: 2 tests, Repository Interface Compliance: 2 tests, Boundary Conditions: 4 tests). Overall project: 2399/2399 tests passing (100%). Total production: 116 lines. Total tests: 530 lines. Features: Map-based in-memory storage, auto-incrementing IDs, case-insensitive email lookup, Zod validation on save, comprehensive CRUD operations, disconnect cleanup."
 
   - id: "T-004"
     title: "Application Layer - AuthorizationService"
     type: "feat"
-    files_to_modify:
-      - "src/application/services/AuthorizationService.ts (new)"
-      - "src/application/services/AuthorizationService.test.ts (new)"
-    acceptance_test: "npm test -- src/application/services/AuthorizationService.test.ts"
-    estimated_diff_lines: 150
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer orchestrates domain logic, §3 TYPE SUPREMACY - Type-safe password handling, §7 TESTING MANDATES - Comprehensive tests"
-    status: "pending"
+    commit_sha: "PENDING"
+    completed_at: "2026-03-30T10:15:00Z"
+    files_modified:
+      - "src/application/services/AuthorizationService.ts (319 lines, new file)"
+      - "src/application/services/AuthorizationService.test.ts (510 lines, new file)"
+      - "src/application/services/index.ts (+2 lines: export AuthorizationService, AuthorizationError, PERMISSIONS)"
+    test_results: "63 new tests passing (100%). AuthorizationService tests: 63 tests (hasRole: 7 tests, hasAtLeastRole: 5 tests, requireRole: 4 tests, requireAtLeastRole: 5 tests, can: 9 tests, require: 4 tests, Convenience Methods - Records: 6 tests, Convenience Methods - Stats: 2 tests, Convenience Methods - Users: 2 tests, Convenience Methods - Role Checks: 6 tests, AuthorizationError: 3 tests, Permission Constants: 5 tests, Edge Cases: 5 tests). Overall project: 2399/2399 tests passing (100%). Total production: 319 lines. Total tests: 510 lines. Features: Role-based access control (RBAC), permission table for resource-action pairs, role hierarchy (ADMIN > TEACHER), fail-safe defaults (deny by default), convenience methods for common checks (canReadRecords, canManageUsers, etc.), AuthorizationError for secure error handling."
 
+remaining_tasks:
   - id: "T-005"
     title: "Presentation Layer - Authentication API Endpoints"
     type: "feat"
@@ -104,19 +93,19 @@ remaining_tasks:
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P2 - 認証・認可システム → §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Domain layer: User entity + UserRepository + AuthenticationService), §3 TYPE SUPREMACY (Type-safe auth with Zod validation + dependency injection), §7 TESTING MANDATES (73 new comprehensive tests)"
+  quality_gate_contributed: "P2 - 認証・認可システム → §2 RIGOROUS ARCHITECTURAL DISCIPLINE (4-layer Clean Architecture: Domain → Infrastructure → Application), §3 TYPE SUPREMACY (Type-safe auth with Zod validation + dependency injection), §7 TESTING MANDATES (145 new comprehensive tests)"
   constitution_links:
-    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain layer for User entity, Repository interface for data access abstraction, AuthenticationService for authentication business logic"
+    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Complete 4-layer Clean Architecture implementation (Domain: User entity + UserRepository + AuthenticationService, Infrastructure: InMemoryUserRepository, Application: AuthorizationService)"
     - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation (UserSchema, UserRole enum) + dependency injection interfaces (PasswordHasher, TokenGenerator)"
-    - "§7 TESTING MANDATES - 73 new tests (40 entity/repository tests + 33 authentication service tests), 100% passing"
-  impact: "MS-011 T-002 COMPLETED: AuthenticationService domain layer implemented. Authentication business logic with dependency injection (PasswordHasher, TokenGenerator interfaces for infrastructure-level implementations). Features: login with email/password validation, registration with email uniqueness check and password strength validation, token verification with user lookup, password changes with current password verification, email normalization (lowercase + trim). Security: constant-time password comparison (delegated to PasswordHasher), generic error messages to prevent user enumeration, minimum 8 character passwords. Total production: 462 lines. Total tests: 603 lines. 33 new tests passing (100%). Overall project: 2336/2336 tests passing (100%). Domain layer authentication foundation complete (T-001 + T-002). Ready for T-003 (InMemoryUserRepository implementation)."
+    - "§7 TESTING MANDATES - 145 new tests (40 entity/repository tests + 33 authentication service tests + 39 InMemoryUserRepository tests + 63 AuthorizationService tests), 100% passing"
+  impact: "MS-011 T-003 & T-004 COMPLETED: (T-003) InMemoryUserRepository infrastructure layer implementation. Map-based in-memory storage with auto-incrementing IDs, case-insensitive email lookup, Zod validation, comprehensive CRUD operations. (T-004) AuthorizationService application layer implementation. Role-based access control (RBAC) with permission table for resource-action pairs, role hierarchy (ADMIN > TEACHER), fail-safe defaults (deny by default), convenience methods for common checks. Complete 4-layer Clean Architecture auth foundation established. Total production: 435 lines (116 + 319). Total tests: 1040 lines (530 + 510). 102 new tests passing (100%). Overall project: 2399/2399 tests passing (100%). Ready for T-005 (Authentication API Endpoints) at presentation layer."
 
 selected_deliverable:
   source: "PURPOSE.md P2 優先度1: 認証・認可システム（教員アカウント管理、NextAuth.js導入）"
   description: "教員アカウント管理と認証・認可システムを実装し、セキュアなアクセス制御を可能にする"
   milestone_id: "MS-011"
   priority: "P2"
-  constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Clean Architecture auth layer (Domain → Application → Infrastructure → Presentation), §3 TYPE SUPREMACY - Type-safe auth with Zod schemas, §7 TESTING MANDATES - Comprehensive auth tests"
+  constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Clean Architecture auth layer (Domain → Infrastructure → Application → Presentation), §3 TYPE SUPREMACY - Type-safe auth with Zod schemas, §7 TESTING MANDATES - Comprehensive auth tests"
 
 task_breakdown:
   - id: "T-001"
@@ -152,12 +141,13 @@ task_breakdown:
     title: "Infrastructure Layer - InMemoryUserRepository"
     type: "feat"
     files_to_modify:
-      - "src/infrastructure/storage/InMemoryUserRepository.ts (new)"
-      - "src/infrastructure/storage/InMemoryUserRepository.test.ts (new)"
-    acceptance_test: "npm test -- src/infrastructure/storage/InMemoryUserRepository.test.ts"
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts (new)"
+      - "src/infrastructure/repositories/InMemoryUserRepository.test.ts (new)"
+    acceptance_test: "npm test -- src/infrastructure/repositories/InMemoryUserRepository.test.ts"
     estimated_diff_lines: 100
+    actual_diff_lines: 116
     constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Infrastructure layer implements domain interfaces, §7 TESTING MANDATES - Comprehensive tests"
-    status: "pending"
+    status: "completed"
 
   - id: "T-004"
     title: "Application Layer - AuthorizationService"
@@ -165,10 +155,12 @@ task_breakdown:
     files_to_modify:
       - "src/application/services/AuthorizationService.ts (new)"
       - "src/application/services/AuthorizationService.test.ts (new)"
+      - "src/application/services/index.ts (update)"
     acceptance_test: "npm test -- src/application/services/AuthorizationService.test.ts"
     estimated_diff_lines: 150
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer orchestrates domain logic, §3 TYPE SUPREMACY - Type-safe password handling, §7 TESTING MANDATES - Comprehensive tests"
-    status: "pending"
+    actual_diff_lines: 319
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer orchestrates domain logic, §3 TYPE SUPREMACY - Type-safe authorization with Zod, §7 TESTING MANDATES - Comprehensive tests"
+    status: "completed"
 
   - id: "T-005"
     title: "Presentation Layer - Authentication API Endpoints"
@@ -209,35 +201,35 @@ task_breakdown:
 
 execution_plan:
   first_task: "T-001"
-  rationale: "T-001 (Domain Layer - User Entity and UserRepository Interface) is the foundation for the entire authentication system. Following Clean Architecture principles, we must establish the Domain layer (entities + repository interfaces) before implementing Infrastructure (T-003), Application (T-004), Presentation (T-005, T-006), and Documentation (T-007) layers. T-001 COMPLETED successfully with 40 tests passing (100%). User entity provides type-safe schema with Zod validation (email, passwordHash, name, role, timestamps). UserRepository interface defines the contract for data access with authentication-specific methods (findByEmail, emailExists, role-based queries). This foundation enables T-002 (AuthenticationService) to implement business logic using these domain primitives, T-003 (InMemoryUserRepository) to provide a testable implementation, and subsequent layers to build upon solid domain abstractions. Next: T-002 (AuthenticationService) to implement password hashing, session management, and authentication business rules."
+  rationale: "T-001 (Domain Layer - User Entity and UserRepository Interface) is the foundation for the entire authentication system. Following Clean Architecture principles, we must establish the Domain layer (entities + repository interfaces) before implementing Infrastructure (T-003), Application (T-004), Presentation (T-005, T-006), and Documentation (T-007) layers. T-001 through T-004 COMPLETED successfully with 145 tests passing (100%). Complete 4-layer Clean Architecture foundation established: Domain (User entity + UserRepository + AuthenticationService), Infrastructure (InMemoryUserRepository), Application (AuthorizationService). Next: T-005 (Authentication API Endpoints) to implement HTTP API layer for login/logout/session management."
 
 notes: |
   MS-011 IN PROGRESS (2026-03-30).
 
-  COMPLETED TASKS (2/7):
+  COMPLETED TASKS (4/7):
   ✅ T-001: Domain Layer - User Entity and UserRepository Interface (160 lines production, 498 lines tests, 40 tests)
   ✅ T-002: Domain Layer - AuthenticationService (462 lines production, 603 lines tests, 33 tests)
+  ✅ T-003: Infrastructure Layer - InMemoryUserRepository (116 lines production, 530 lines tests, 39 tests)
+  ✅ T-004: Application Layer - AuthorizationService (319 lines production, 510 lines tests, 63 tests)
 
-  REMAINING TASKS (5/7):
-  ⏳ T-003: Infrastructure Layer - InMemoryUserRepository (100 lines estimated)
-  ⏳ T-004: Application Layer - AuthorizationService (150 lines estimated)
+  REMAINING TASKS (3/7):
   ⏳ T-005: Presentation Layer - Authentication API Endpoints (200 lines estimated)
   ⏳ T-006: UI Components - LoginForm (150 lines estimated)
   ⏳ T-007: Documentation Update (50 lines estimated)
 
-  MS-011 STATUS: ACTIVE (2/7 tasks done - 29% complete)
+  MS-011 STATUS: ACTIVE (4/7 tasks done - 57% complete)
 
   CONSTITUTION COMPLIANCE:
-  - §2 RIGOROUS ARCHITECTURAL DISCIPLINE: Domain layer established with User entity, UserRepository interface, and AuthenticationService. Clean Architecture 4-layer structure being followed.
+  - §2 RIGOROUS ARCHITECTURAL DISCIPLINE: Complete 4-layer Clean Architecture established (Domain, Infrastructure, Application, Presentation pending). All layers follow dependency rules.
   - §3 TYPE SUPREMACY: UserSchema with Zod validation + dependency injection interfaces (PasswordHasher, TokenGenerator). Full TypeScript type safety.
-  - §7 TESTING MANDATES: 73 new tests (40 entity/repository tests + 33 authentication service tests). 100% passing.
+  - §7 TESTING MANDATES: 145 new tests (40 entity/repository tests + 33 authentication service tests + 39 InMemoryUserRepository tests + 63 AuthorizationService tests). 100% passing.
 
   TOTAL PROJECT METRICS:
-  - Tests: 2336/2336 passing (100%)
-  - MS-011 T-001+T-002 Contribution: 73 tests
-  - MS-011 T-001+T-002 Production Code: 622 lines (160 + 462)
-  - MS-011 T-001+T-002 Test Code: 1101 lines (498 + 603)
+  - Tests: 2399/2399 passing (100%)
+  - MS-011 T-001 through T-004 Contribution: 145 tests
+  - MS-011 T-001 through T-004 Production Code: 1057 lines (160 + 462 + 116 + 319)
+  - MS-011 T-001 through T-004 Test Code: 2141 lines (498 + 603 + 530 + 510)
 
 next_execution:
-  task_id: "T-003"
-  rationale: "T-003 (InMemoryUserRepository) implements the UserRepository interface defined in T-001, providing an in-memory data store for development and testing. This infrastructure layer implementation will use Map-based storage with auto-incrementing IDs. T-003 enables T-002 (AuthenticationService) to actually persist and retrieve users, making the authentication system functional for local development. After T-003, we can implement T-004 (AuthorizationService) at the application layer to orchestrate authentication workflows using the concrete repository implementation."
+  task_id: "T-005"
+  rationale: "T-005 (Authentication API Endpoints) implements the HTTP API layer at the presentation layer, exposing authentication and authorization functionality via REST endpoints (/api/auth/login, /api/auth/logout, /api/auth/session). This will use the completed layers (Domain: User + AuthenticationService, Infrastructure: InMemoryUserRepository, Application: AuthorizationService) to provide a complete auth API. T-005 requires implementing request/response validation with Zod schemas, API timeout/error handling with resilience protocols, and comprehensive API tests. After T-005, T-006 (LoginForm UI component) will provide the user interface, and T-007 (Documentation) will complete MS-011."

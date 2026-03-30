@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import { withResilientHandler } from "@/lib/api/error-handler";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { HTTP_STATUS } from "@/lib/constants/api";
-import { UserSchema } from "@/schemas/api";
 import { InMemoryUserRepository } from "@/infrastructure/repositories/InMemoryUserRepository";
-
-const SafeUserSchema = UserSchema.omit({ passwordHash: true });
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   return withResilientHandler(

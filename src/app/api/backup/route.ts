@@ -4,7 +4,8 @@ import { createSuccessResponse } from "@/lib/api/response";
 import { createBackupService } from "@/infrastructure/factories/repositoryFactory";
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { API_OPERATIONS } from "@/lib/constants/api";
-import type { BackupMetadata } from "@/domain/entities/Backup";
+import type { Backup, BackupStatus } from "@/domain/entities/Backup";
+import type { BackupQuery } from "@/domain/repositories/BackupRepository";
 
 interface CreateBackupRequest {
   source?: string;
@@ -23,10 +24,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         throw createError.badRequest("Invalid request body");
       }
 
-      const metadata: BackupMetadata = {
+      const metadata: Backup["metadata"] = {
         source: body.source ?? "manual",
+        triggeredBy: "api-user",
+        formatVersion: "1.0",
         entities: body.entities ?? ["Record", "Stats", "AuditLog"],
-        correlationId: body.correlationId,
+        ...(body.correlationId !== undefined && { correlationId: body.correlationId }),
       };
 
       const backupService = createBackupService();
@@ -47,21 +50,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   );
 }
 
-interface BackupQuery {
-  status?: string;
-  source?: string;
-  limit?: number;
-  offset?: number;
-}
-
 export async function GET(request: NextRequest): Promise<NextResponse> {
   return withResilientHandler(
     async () => {
       const searchParams = request.nextUrl.searchParams;
 
-      const query: BackupQuery = {};
+      const query: Partial<BackupQuery> = {};
       if (searchParams.get("status")) {
-        query.status = searchParams.get("status")!;
+        query.status = searchParams.get("status")! as BackupStatus;
       }
       if (searchParams.get("source")) {
         query.source = searchParams.get("source")!;

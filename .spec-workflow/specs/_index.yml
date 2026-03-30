@@ -15,6 +15,10 @@ specs:
     created: '2026-03-30T03:35:54.308809'
     name: AsyncState
     path: .spec-workflow/specs/AsyncState/AsyncState_spec.md
+  AuthorizationService:
+    created: '2026-03-30T10:35:00.000000'
+    name: AuthorizationService
+    path: .spec-workflow/specs/AuthorizationService/AuthorizationService_spec.md
   ChartData:
     created: '2026-03-30T03:35:54.312393'
     name: ChartData
@@ -739,4 +743,4 @@ specs:
     created: '2026-03-30T06:22:00.000000'
     name: AnomalyDetectionService
     path: .spec-workflow/specs/AnomalyDetectionService/AnomalyDetectionService_spec.md
-total: 179
+total: 180

@@ -175,6 +175,18 @@ specs:
     created: '2026-03-30T03:35:54.311232'
     name: LoadingSpinner
     path: .spec-workflow/specs/LoadingSpinner/LoadingSpinner_spec.md
+  LoginAPI:
+    created: '2026-03-30T10:40:00.000000'
+    name: LoginAPI
+    path: .spec-workflow/specs/LoginAPI/LoginAPI_spec.md
+  LogEntry:
+    created: '2026-03-30T03:35:54.313718'
+    name: LoadingOverlay
+    path: .spec-workflow/specs/LoadingOverlay/LoadingOverlay_spec.md
+  LoadingSpinner:
+    created: '2026-03-30T03:35:54.311232'
+    name: LoadingSpinner
+    path: .spec-workflow/specs/LoadingSpinner/LoadingSpinner_spec.md
   LogEntry:
     created: '2026-03-30T03:35:54.305516'
     name: LogEntry

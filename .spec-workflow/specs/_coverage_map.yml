@@ -121,6 +121,9 @@ LoadingOverlay:
 LoadingSpinner:
   covered: true
   last_updated: '2026-03-30T04:33:52.414005'
+LoginAPI:
+  covered: true
+  last_updated: '2026-03-30T10:40:00.000000'
 LogEntry:
   covered: true
   last_updated: '2026-03-30T04:33:52.414053'

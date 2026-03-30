@@ -1,0 +1,28 @@
+{
+  "axis": "S-006",
+  "name": "Constitution Compliance",
+  "score": 9,
+  "max_score": 10,
+  "pass": true,
+  "details": [
+    {
+      "id": "S-006-1",
+      "name": "Within scope",
+      "score": 5,
+      "max": 5
+    },
+    {
+      "id": "S-006-2",
+      "name": "No violations",
+      "score": 3,
+      "max": 3
+    },
+    {
+      "id": "S-006-3",
+      "name": "Tech stack",
+      "score": 1,
+      "max": 2
+    }
+  ],
+  "violations": []
+}

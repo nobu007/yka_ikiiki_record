@@ -1,0 +1,29 @@
+{
+  "axis": "S-001",
+  "name": "SPEC Existence",
+  "score": 6,
+  "max_score": 15,
+  "pass": false,
+  "details": [
+    {
+      "id": "S-001-1",
+      "name": "SPEC Directory",
+      "score": 3,
+      "max": 3,
+      "evidence": "exists=True"
+    },
+    {
+      "id": "S-001-2",
+      "name": "_index.yml consistency",
+      "score": 3,
+      "max": 3
+    },
+    {
+      "id": "S-001-3",
+      "name": "Public symbol coverage",
+      "score": 0,
+      "max": 9,
+      "evidence": "covered=0/0 (0%)"
+    }
+  ]
+}

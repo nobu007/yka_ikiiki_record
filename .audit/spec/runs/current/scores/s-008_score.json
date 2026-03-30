@@ -1,0 +1,28 @@
+{
+  "axis": "S-008",
+  "name": "SPEC Freshness",
+  "score": 4,
+  "max_score": 10,
+  "pass": false,
+  "details": [
+    {
+      "id": "S-008-1",
+      "name": "Freshness",
+      "score": 2,
+      "max": 3
+    },
+    {
+      "id": "S-008-2",
+      "name": "Signature match",
+      "score": 0,
+      "max": 4,
+      "evidence": "matched=0/0"
+    },
+    {
+      "id": "S-008-3",
+      "name": "Version management",
+      "score": 2,
+      "max": 3
+    }
+  ]
+}

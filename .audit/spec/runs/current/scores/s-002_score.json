@@ -1,0 +1,33 @@
+{
+  "axis": "S-002",
+  "name": "I/O Strictness",
+  "score": 2,
+  "max_score": 15,
+  "pass": false,
+  "details": [
+    {
+      "id": "S-002-1",
+      "name": "Input type definitions",
+      "score": 0,
+      "max": 4
+    },
+    {
+      "id": "S-002-2",
+      "name": "Input constraints",
+      "score": 0,
+      "max": 4
+    },
+    {
+      "id": "S-002-3",
+      "name": "Output type/constraints",
+      "score": 0,
+      "max": 4
+    },
+    {
+      "id": "S-002-4",
+      "name": "Pre/Post conditions",
+      "score": 2,
+      "max": 3
+    }
+  ]
+}

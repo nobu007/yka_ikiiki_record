@@ -1,0 +1,33 @@
+{
+  "axis": "S-003",
+  "name": "Boundary Analysis",
+  "score": 5,
+  "max_score": 15,
+  "pass": false,
+  "details": [
+    {
+      "id": "S-003-1",
+      "name": "Boundary section exists",
+      "score": 2,
+      "max": 3
+    },
+    {
+      "id": "S-003-2",
+      "name": "Boundary coverage",
+      "score": 0,
+      "max": 5
+    },
+    {
+      "id": "S-003-3",
+      "name": "boundary_values.yml",
+      "score": 3,
+      "max": 4
+    },
+    {
+      "id": "S-003-4",
+      "name": "Boundary rationale",
+      "score": 0,
+      "max": 3
+    }
+  ]
+}

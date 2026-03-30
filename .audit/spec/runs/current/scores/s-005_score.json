@@ -1,0 +1,34 @@
+{
+  "axis": "S-005",
+  "name": "Test-SPEC Mapping",
+  "score": 1,
+  "max_score": 15,
+  "pass": false,
+  "details": [
+    {
+      "id": "S-005-1",
+      "name": "Test-SPEC correspondence",
+      "score": 0,
+      "max": 5,
+      "evidence": "referenced=0/15"
+    },
+    {
+      "id": "S-005-2",
+      "name": "Normal test coverage",
+      "score": 0,
+      "max": 4
+    },
+    {
+      "id": "S-005-3",
+      "name": "Error test coverage",
+      "score": 0,
+      "max": 4
+    },
+    {
+      "id": "S-005-4",
+      "name": "test_matrix.yml",
+      "score": 1,
+      "max": 2
+    }
+  ]
+}

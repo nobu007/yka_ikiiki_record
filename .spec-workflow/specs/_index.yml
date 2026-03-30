@@ -359,6 +359,14 @@ specs:
     created: '2026-03-30T03:35:54.310576'
     name: UsageInstructions
     path: .spec-workflow/specs/UsageInstructions/UsageInstructions_spec.md
+  User:
+    created: '2026-03-30T09:35:00.000000'
+    name: User
+    path: .spec-workflow/specs/User/User_spec.md
+  UserRepository:
+    created: '2026-03-30T09:35:00.000000'
+    name: UserRepository
+    path: .spec-workflow/specs/UserRepository/UserRepository_spec.md
   UseAsyncOptions:
     created: '2026-03-30T03:35:54.311962'
     name: UseAsyncOptions
@@ -711,4 +719,4 @@ specs:
     created: '2026-03-30T06:22:00.000000'
     name: AnomalyDetectionService
     path: .spec-workflow/specs/AnomalyDetectionService/AnomalyDetectionService_spec.md
-total: 177
+total: 179

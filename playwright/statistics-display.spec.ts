@@ -9,7 +9,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     await expect(page.getByText('データ概要')).toBeVisible();
     await expect(page.getByText('総記録数')).toBeVisible();
@@ -20,7 +22,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     const countElement = page.locator('.bg-blue-50').filter({ hasText: '総記録数' });
     await expect(countElement).toBeVisible();
@@ -42,7 +46,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     await expect(page.locator('text=/月別/i')).toBeVisible({ timeout: 5000 });
   });
@@ -51,7 +57,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     await expect(page.locator('text=/曜日/i')).toBeVisible({ timeout: 5000 });
   });
@@ -60,7 +68,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     await expect(page.locator('text=/分布/i')).toBeVisible({ timeout: 5000 });
   });
@@ -69,7 +79,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     await expect(page.locator('text=/時間帯/i')).toBeVisible({ timeout: 5000 });
   });
@@ -78,7 +90,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     await expect(page.locator('text=/生徒/i')).toBeVisible({ timeout: 5000 });
   });
@@ -87,7 +101,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     await expect(page.locator('text=/トレンド/i')).toBeVisible({ timeout: 5000 });
   });
@@ -96,7 +112,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     await expect(page.getByText('詳細統計')).toBeVisible();
 
@@ -110,7 +128,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     const tableRows = page.locator('tbody tr');
     await expect(tableRows.first()).toBeVisible();
@@ -131,7 +151,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     const chartSections = page.locator('section.bg-white.rounded-lg').filter({ hasText: /^$/ });
     const sectionCount = await chartSections.count();
@@ -144,7 +166,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
 
     await expect(page.getByText('データ概要')).toBeVisible();
 
@@ -156,7 +180,9 @@ test.describe('統計データ表示 - E2Eテスト', () => {
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
 
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
     await expect(page.getByText('データ概要')).toBeVisible();
 
     await page.reload();

@@ -30,10 +30,12 @@ test.describe('イキイキレコード デモ - E2Eテスト', () => {
     // ローディング状態の確認
     await expect(page.getByText('データ生成中...')).toBeVisible();
     
-    // 成功通知の確認
+    // 成功通知の確認 (data-testidを使用したより信頼性の高いセレクタ)
     // NOTE: 30s timeout accounts for database seed operations (10-15s in E2E environment),
     // statistical calculations for 30 days × 20 students, and network latency in test environment
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
     
     // ローディング完了の確認
     await expect(page.getByText('データ生成中...')).toBeHidden();
@@ -63,7 +65,9 @@ test.describe('イキイキレコード デモ - E2Eテスト', () => {
     await expect(generateButton).toHaveText('データ生成中...');
     
     // 完了後に再度有効化を確認
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
     await expect(generateButton).toBeEnabled();
     await expect(generateButton).toHaveText('初期データを生成');
   });
@@ -101,7 +105,9 @@ test.describe('イキイキレコード デモ - E2Eテスト', () => {
     
     // データを生成
     await page.getByRole('button', { name: '初期データを生成' }).click();
-    await expect(page.getByText('テストデータの生成が完了しました')).toBeVisible({ timeout: 30000 });
+    const notification = page.getByTestId('notification-banner');
+    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toHaveAttribute('data-notification-type', 'success');
     
     // ページをリロード
     await page.reload();

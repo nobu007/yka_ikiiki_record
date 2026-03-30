@@ -199,6 +199,10 @@ specs:
     created: '2026-03-30T03:35:54.315121'
     name: LogVisibility
     path: .spec-workflow/specs/LogVisibility/LogVisibility_spec.md
+  LogoutAPI:
+    created: '2026-03-30T10:45:00.000000'
+    name: LogoutAPI
+    path: .spec-workflow/specs/LogoutAPI/LogoutAPI_spec.md
   LoopDetector:
     created: '2026-03-30T03:35:54.313261'
     name: LoopDetector
@@ -691,6 +695,10 @@ specs:
     created: '2026-03-30T03:35:54.310073'
     name: useSidebar
     path: .spec-workflow/specs/useSidebar/useSidebar_spec.md
+  SessionAPI:
+    created: '2026-03-30T10:45:00.000000'
+    name: SessionAPI
+    path: .spec-workflow/specs/SessionAPI/SessionAPI_spec.md
   useStats:
     created: '2026-03-30T03:35:54.308736'
     name: useStats

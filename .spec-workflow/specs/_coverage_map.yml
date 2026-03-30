@@ -133,6 +133,9 @@ LogLevel:
 LogVisibility:
   covered: true
   last_updated: '2026-03-30T04:33:52.413974'
+LogoutAPI:
+  covered: true
+  last_updated: '2026-03-30T10:45:00.000000'
 LoopDetector:
   covered: true
   last_updated: '2026-03-30T04:33:52.414204'
@@ -847,6 +850,9 @@ useSeedGeneration:
 useSidebar:
   covered: true
   last_updated: '2026-03-30T04:33:52.413959'
+SessionAPI:
+  covered: true
+  last_updated: '2026-03-30T10:45:00.000000'
 useStats:
   covered: true
   last_updated: '2026-03-30T04:33:52.414249'

@@ -1,0 +1,19 @@
+{
+  "key": "S-006_CONSTITUTION_COMPLIANCE",
+  "value": {
+    "name": "Constitution Compliance",
+    "weight": 10,
+    "score": {
+      "raw": 8,
+      "breakdown": {
+        "cleanArchitectureViolations": 0,
+        "typeSafetyViolations": 3,
+        "overallCompliance": 80
+      }
+    },
+    "status": "PASS",
+    "gaps": [
+      "Minor violations: some 'as any' type assertions in NotificationService"
+    ]
+  }
+}

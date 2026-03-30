@@ -1,0 +1,20 @@
+{
+  "key": "S-005_TEST_SPEC_MAPPING",
+  "value": {
+    "name": "Test-SPEC Mapping",
+    "weight": 15,
+    "score": {
+      "raw": 0,
+      "breakdown": {
+        "totalTestFiles": 222,
+        "testsWithCaseIdReferences": 0,
+        "mappingRate": 0.0
+      }
+    },
+    "status": "FAIL",
+    "gaps": [
+      "No test files reference SPEC case IDs (TC-*, BV-*, ERR-*)",
+      "Tests not traceable to SPECs"
+    ]
+  }
+}

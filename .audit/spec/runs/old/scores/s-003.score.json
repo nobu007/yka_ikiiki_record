@@ -1,19 +1,20 @@
 {
   "axis": "S-003",
-  "name": "境界値分析",
+  "name": "Boundary Analysis",
   "score": 13,
   "max_score": 15,
-  "pass": true,
+  "pass_threshold": 12,
+  "pass_status": true,
   "details": [
     {
       "id": "S-003-1",
-      "name": "境界値セクション存在",
+      "name": "Boundary Section",
       "score": 3,
       "max": 3
     },
     {
       "id": "S-003-2",
-      "name": "境界値網羅性",
+      "name": "Boundary Coverage",
       "score": 5,
       "max": 5
     },
@@ -25,7 +26,7 @@
     },
     {
       "id": "S-003-4",
-      "name": "境界値根拠",
+      "name": "Rationale",
       "score": 2,
       "max": 3
     }

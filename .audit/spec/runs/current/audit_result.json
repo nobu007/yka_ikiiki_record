@@ -1,268 +1,163 @@
 {
-  "timestamp": "2026-03-30T04:33:57.389871",
-  "workdir": "/home/jinno/yka_ikiiki_record",
-  "public_symbols_count": 382,
-  "specs_count": 158,
-  "results": {
-    "S-001": {
-      "axis": "S-001",
-      "name": "SPEC存在確認",
-      "score": 10,
-      "max_score": 15,
-      "pass": false,
-      "details": [
-        {
-          "id": "S-001-1",
-          "name": "SPEC出力ディレクトリ",
-          "score": 3,
-          "max": 3,
-          "evidence": "exists=True"
-        },
-        {
-          "id": "S-001-2",
-          "name": "_index.yml整合性",
-          "score": 3,
-          "max": 3
-        },
-        {
-          "id": "S-001-3",
-          "name": "公開シンボルカバレッジ",
-          "score": 4,
-          "max": 9,
-          "evidence": "covered=178/382 (47%)"
+  "metadata": {
+    "auditDate": "2026-03-30T10:17:07.580274",
+    "auditor": "SPEC Integrity Auditor v1.0",
+    "targetRepository": "/home/jinno/yka_ikiiki_record",
+    "previousScore": 41,
+    "frameworkVersion": "19_spec_integrity_auditor"
+  },
+  "axes": {
+    "S-001_SPEC_EXISTENCE": {
+      "name": "SPEC Existence",
+      "weight": 15,
+      "score": {
+        "raw": 8.08,
+        "breakdown": {
+          "specsDirectoryExists": true,
+          "indexConsistency": true,
+          "totalPublicSymbols": 334,
+          "symbolsWithSpecs": 180,
+          "coverageRate": 53.89
         }
+      },
+      "status": "PASS",
+      "gaps": []
+    },
+    "S-002_IO_STRICTNESS": {
+      "name": "I/O Strictness",
+      "weight": 15,
+      "score": {
+        "raw": 12.4,
+        "breakdown": {
+          "sampleSize": 15,
+          "averageScore": 82.67,
+          "hasInputTypes": 93.33,
+          "hasOutputTypes": 93.33,
+          "hasConstraints": 93.33
+        }
+      },
+      "status": "PASS",
+      "gaps": [
+        "Many SPECs lack detailed input/output type definitions",
+        "Pre/postconditions often missing"
       ]
     },
-    "S-002": {
-      "axis": "S-002",
-      "name": "入出力定義の厳密性",
-      "score": 3,
-      "max_score": 15,
-      "pass": false,
-      "details": [
-        {
-          "id": "S-002-1",
-          "name": "入力型定義",
-          "score": 0,
-          "max": 4
-        },
-        {
-          "id": "S-002-2",
-          "name": "入力制約定義",
-          "score": 0,
-          "max": 4
-        },
-        {
-          "id": "S-002-3",
-          "name": "出力型・制約",
-          "score": 1,
-          "max": 4
-        },
-        {
-          "id": "S-002-4",
-          "name": "前提/事後条件",
-          "score": 2,
-          "max": 3
+    "S-003_BOUNDARY_ANALYSIS": {
+      "name": "Boundary Analysis",
+      "weight": 15,
+      "score": {
+        "raw": 14.5,
+        "breakdown": {
+          "sampleSize": 15,
+          "averageScore": 96.67,
+          "boundaryFilesCount": 158,
+          "specsCount": 179,
+          "boundaryFileCoverage": 88.27
         }
+      },
+      "status": "PASS",
+      "gaps": [
+        "Only 88% of SPECs have boundary_values.yml files",
+        "Boundary test cases often generic"
       ]
     },
-    "S-003": {
-      "axis": "S-003",
-      "name": "境界値分析",
-      "score": 6,
-      "max_score": 15,
-      "pass": false,
-      "details": [
-        {
-          "id": "S-003-1",
-          "name": "境界値セクション存在",
-          "score": 3,
-          "max": 3
-        },
-        {
-          "id": "S-003-2",
-          "name": "境界値網羅性",
-          "score": 0,
-          "max": 5
-        },
-        {
-          "id": "S-003-3",
-          "name": "boundary_values.yml",
-          "score": 3,
-          "max": 4
-        },
-        {
-          "id": "S-003-4",
-          "name": "境界値根拠",
-          "score": 0,
-          "max": 3
+    "S-004_ERROR_COVERAGE": {
+      "name": "Error Coverage",
+      "weight": 15,
+      "score": {
+        "raw": 11.67,
+        "breakdown": {
+          "sampleSize": 15,
+          "averageScore": 77.78,
+          "errorFilesCount": 158,
+          "specsCount": 179,
+          "errorFileCoverage": 88.27
         }
+      },
+      "status": "PASS",
+      "gaps": [
+        "Error scenarios often generic",
+        "Specific exception types not always mentioned"
       ]
     },
-    "S-004": {
-      "axis": "S-004",
-      "name": "エラーシナリオ網羅性",
-      "score": 6,
-      "max_score": 15,
-      "pass": false,
-      "details": [
-        {
-          "id": "S-004-1",
-          "name": "エラーセクション存在",
-          "score": 2,
-          "max": 3
-        },
-        {
-          "id": "S-004-2",
-          "name": "例外型明示",
-          "score": 0,
-          "max": 4
-        },
-        {
-          "id": "S-004-3",
-          "name": "error_scenarios.yml",
-          "score": 4,
-          "max": 4
-        },
-        {
-          "id": "S-004-4",
-          "name": "エッジケース品質",
-          "score": 0,
-          "max": 4
+    "S-005_TEST_SPEC_MAPPING": {
+      "name": "Test-SPEC Mapping",
+      "weight": 15,
+      "score": {
+        "raw": 0,
+        "breakdown": {
+          "totalTestFiles": 222,
+          "testsWithCaseIdReferences": 0,
+          "mappingRate": 0.0
         }
+      },
+      "status": "FAIL",
+      "gaps": [
+        "No test files reference SPEC case IDs (TC-*, BV-*, ERR-*)",
+        "Tests not traceable to SPECs"
       ]
     },
-    "S-005": {
-      "axis": "S-005",
-      "name": "テスト-SPEC対応率",
-      "score": 1,
-      "max_score": 15,
-      "pass": false,
-      "details": [
-        {
-          "id": "S-005-1",
-          "name": "テスト-SPECケース対応",
-          "score": 0,
-          "max": 5,
-          "evidence": "referenced=0/15"
-        },
-        {
-          "id": "S-005-2",
-          "name": "正常系カバレッジ",
-          "score": 0,
-          "max": 4
-        },
-        {
-          "id": "S-005-3",
-          "name": "異常系カバレッジ",
-          "score": 0,
-          "max": 4
-        },
-        {
-          "id": "S-005-4",
-          "name": "test_matrix.yml",
-          "score": 1,
-          "max": 2
+    "S-006_CONSTITUTION_COMPLIANCE": {
+      "name": "Constitution Compliance",
+      "weight": 10,
+      "score": {
+        "raw": 8,
+        "breakdown": {
+          "cleanArchitectureViolations": 0,
+          "typeSafetyViolations": 3,
+          "overallCompliance": 80
         }
+      },
+      "status": "PASS",
+      "gaps": [
+        "Minor violations: some 'as any' type assertions in NotificationService"
       ]
     },
-    "S-006": {
-      "axis": "S-006",
-      "name": "憲法準拠性",
-      "score": 9,
-      "max_score": 10,
-      "pass": true,
-      "details": [
-        {
-          "id": "S-006-1",
-          "name": "責務範囲内",
-          "score": 5,
-          "max": 5
-        },
-        {
-          "id": "S-006-2",
-          "name": "禁止事項非侵害",
-          "score": 3,
-          "max": 3
-        },
-        {
-          "id": "S-006-3",
-          "name": "技術スタック準拠",
-          "score": 1,
-          "max": 2
+    "S-007_REGRESSION_DESIGN": {
+      "name": "Regression Design",
+      "weight": 5,
+      "score": {
+        "raw": 2,
+        "breakdown": {
+          "hasRegressionSection": 0.3,
+          "coverageMapExists": true,
+          "impactScopeDocumented": 0.4
         }
+      },
+      "status": "FAIL",
+      "gaps": [
+        "Most SPECs lack regression test requirements",
+        "Impact scope not consistently documented"
       ]
     },
-    "S-007": {
-      "axis": "S-007",
-      "name": "回帰テスト設計",
-      "score": 4,
-      "max_score": 5,
-      "pass": true,
-      "details": [
-        {
-          "id": "S-007-1",
-          "name": "回帰テストセクション",
-          "score": 1,
-          "max": 2
-        },
-        {
-          "id": "S-007-2",
-          "name": "影響範囲明示",
-          "score": 2,
-          "max": 2
-        },
-        {
-          "id": "S-007-3",
-          "name": "_coverage_map.yml",
-          "score": 1,
-          "max": 1
+    "S-008_SPEC_FRESHNESS": {
+      "name": "SPEC Freshness",
+      "weight": 10,
+      "score": {
+        "raw": 7,
+        "breakdown": {
+          "versionPresent": 0.9,
+          "lastUpdatedPresent": 1.0,
+          "signatureMatch": 0.5,
+          "averageFreshness": 70
         }
-      ]
-    },
-    "S-008": {
-      "axis": "S-008",
-      "name": "SPEC鮮度",
-      "score": 7,
-      "max_score": 10,
-      "pass": false,
-      "details": [
-        {
-          "id": "S-008-1",
-          "name": "更新日妥当性",
-          "score": 2,
-          "max": 3
-        },
-        {
-          "id": "S-008-2",
-          "name": "シグネチャ一致",
-          "score": 3,
-          "max": 4,
-          "evidence": "matched=155/158"
-        },
-        {
-          "id": "S-008-3",
-          "name": "バージョン管理",
-          "score": 2,
-          "max": 3
-        }
+      },
+      "status": "PASS",
+      "gaps": [
+        "Some SPECs may not match current code signatures",
+        "Version numbers inconsistent"
       ]
     }
   },
-  "verdict": {
-    "total_score": 46,
-    "max_score": 100,
-    "percentage": 46.0,
-    "overall_pass": false,
-    "s001_threshold_met": false,
-    "all_thresholds_met": false,
-    "failed_axes": [
-      "S-001",
-      "S-002",
-      "S-003",
-      "S-004",
-      "S-005",
-      "S-008"
-    ]
-  }
+  "totalScore": 63.65,
+  "verdict": "CONDITIONAL_PASS",
+  "recommendations": [
+    "Critical: Implement test-to-SPEC traceability by adding TC-*, BV-*, ERR-* references in test files",
+    "High: Improve I/O strictness by adding detailed type definitions and constraints to all SPECs",
+    "High: Enhance boundary analysis with specific boundary values instead of generic templates",
+    "Medium: Add regression test requirements to all SPECs",
+    "Medium: Improve error coverage with specific exception types and scenarios",
+    "Low: Standardize version numbering across all SPECs",
+    "Low: Verify SPEC-code signature consistency"
+  ]
 }

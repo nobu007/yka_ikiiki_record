@@ -1,0 +1,22 @@
+{
+  "key": "S-003_BOUNDARY_ANALYSIS",
+  "value": {
+    "name": "Boundary Analysis",
+    "weight": 15,
+    "score": {
+      "raw": 14.5,
+      "breakdown": {
+        "sampleSize": 15,
+        "averageScore": 96.67,
+        "boundaryFilesCount": 158,
+        "specsCount": 179,
+        "boundaryFileCoverage": 88.27
+      }
+    },
+    "status": "PASS",
+    "gaps": [
+      "Only 88% of SPECs have boundary_values.yml files",
+      "Boundary test cases often generic"
+    ]
+  }
+}

@@ -1,30 +1,28 @@
 {
   "axis": "S-005",
-  "name": "テスト-SPEC対応率",
-  "score": 14,
+  "name": "Test Mapping",
+  "score": 5,
   "max_score": 15,
-  "pass": true,
+  "pass_threshold": 12,
+  "pass_status": false,
   "details": [
     {
       "id": "S-005-1",
-      "name": "テスト-SPECケース対応",
-      "score": 5,
-      "max": 5,
-      "evidence": "tests=313, specs=137, ratio=2.3 tests/spec"
+      "name": "Case References",
+      "score": 0,
+      "max": 5
     },
     {
       "id": "S-005-2",
-      "name": "正常系カバレッジ",
+      "name": "Normal Coverage",
       "score": 4,
-      "max": 4,
-      "evidence": "estimated normal tests ~100, defined TC cases=120"
+      "max": 4
     },
     {
       "id": "S-005-3",
-      "name": "異常系カバレッジ",
-      "score": 4,
-      "max": 4,
-      "evidence": "estimated error tests ~60, defined ERR cases=371"
+      "name": "Error Coverage",
+      "score": 0,
+      "max": 4
     },
     {
       "id": "S-005-4",

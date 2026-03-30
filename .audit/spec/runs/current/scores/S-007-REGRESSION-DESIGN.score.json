@@ -1,0 +1,20 @@
+{
+  "key": "S-007_REGRESSION_DESIGN",
+  "value": {
+    "name": "Regression Design",
+    "weight": 5,
+    "score": {
+      "raw": 2,
+      "breakdown": {
+        "hasRegressionSection": 0.3,
+        "coverageMapExists": true,
+        "impactScopeDocumented": 0.4
+      }
+    },
+    "status": "FAIL",
+    "gaps": [
+      "Most SPECs lack regression test requirements",
+      "Impact scope not consistently documented"
+    ]
+  }
+}

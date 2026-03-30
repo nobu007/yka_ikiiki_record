@@ -1,0 +1,49 @@
+id: "REV-S-007"
+axis: "S-007"
+axis_name: "Regression Design"
+type: "regression_design_missing"
+priority: "P1"
+current_score: 2
+required_score: 4
+gap: 2
+recommendation: |
+  HIGH PRIORITY: Most SPECs lack regression test requirements.
+
+  Current State:
+  - SPECs with regression sections: 30%
+  - SPECs with documented impact scope: 40%
+  - _coverage_map.yml exists: true
+
+  Required Actions:
+  1. Add "回帰テスト要件" (Regression Test Requirements) section to all SPECs
+  2. Document "影響範囲" (Impact Scope) for each symbol
+  3. List dependent modules that need regression testing
+  4. Define regression test scenarios
+
+  Template to add to each SPEC:
+  ## 10. 回帰テスト要件
+  - 変更時に確認すべき既存機能: <list dependent modules>
+  - 影響範囲: <list importers>
+  - 回帰テストケース: <TC-XXX, TC-YYY>
+
+  Examples:
+  - For StatsService.getStats:
+    * 変更時の確認: StatsData, ApiResponse, trends/API
+    * 影響範囲: Dashboard, DataVisualization, export/API
+    * 回帰テスト: TC-001, TC-002, TC-005
+
+  Impact:
+  - Cannot ensure changes don't break existing functionality
+  - No systematic regression testing approach
+  - Risk of introducing bugs during refactoring
+
+  Estimated Effort: 20-30 hours
+  Target Score: 4/5 (80% coverage)
+
+affected_specs:
+  - All 180 SPECs need regression requirements
+  - Priority: Domain services, repositories, API routes
+
+references:
+  - ".audit/spec/runs/current/scores/S-007-REGRESSION-DESIGN.score.json"
+  - ".spec-workflow/specs/_coverage_map.yml"

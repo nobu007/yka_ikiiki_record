@@ -1,0 +1,75 @@
+{
+  "diagnosis": "HEALTHY",
+  "substantive_ratio": 0.5,
+  "instruction_effectiveness": {
+    "purpose_driven_executor": {
+      "runs": 13,
+      "commits": 11,
+      "quality": "medium"
+    },
+    "spec_driven_dev": {
+      "runs": 7,
+      "commits": 7,
+      "quality": "high"
+    }
+  },
+  "agents_md_stale": true,
+  "agents_md_issues": [
+    "AGENTS.md excerpt focuses on SDEC×2SCV×ACR process but does not encode the repo’s current operational SSOT targets (Vercel URL, Postgres persistence checks, meta_checker metrics) as concrete mandatory steps.",
+    "No explicit “spin/stagnation” detection + automatic pause criteria is present in AGENTS.md guidance, even though the system already tracks commit types and run statuses.",
+    "Instruction effectiveness feedback loop is not specified (how to measure, where to record, how to update policy weights), so learning is implicit rather than enforced."
+  ],
+  "improvements": [
+    {
+      "priority": 1,
+      "action": "Add spin/stagnation guardrails that automatically pause or re-route the planner when output becomes low-signal.",
+      "file": "tools/meta_checker.py (or equivalent metrics runner) + planner entrypoint (DynamicPlanner)",
+      "detail": "Implement substantive_ratio computation from last N commits (same formula as in this task). If <0.3 => set should_pause=true and force a recovery instruction (e.g., ship/deploy/bugfix). Persist the computed ratio and decision to .audit/health.json each run."
+    },
+    {
+      "priority": 2,
+      "action": "Make instruction effectiveness measurable and self-adjusting (closed-loop policy weighting).",
+      "file": ".audit/instruction_effectiveness.json + planner policy config (e.g., hub/policy/policy.current.md or equivalent)",
+      "detail": "On each run, log {instruction_id, run_id, commits, substantive_commits, status}. Compute commits-per-run and substantive-commits-per-run over a rolling window. Update weights using a bounded rule (e.g., +0.05/-0.05) with min/max caps, and write a human-readable diff summary to .audit/policy_weight_changes.log."
+    },
+    {
+      "priority": 3,
+      "action": "Bring PURPOSE.md from “production-ready claim” to “production-ready proof” with live links and verification commands.",
+      "file": "PURPOSE.md",
+      "detail": "Add a small “Production Proof (SSOT)” section with: current Vercel URL, last successful deploy timestamp, last migration applied, and the exact commands/CI job name that verifies (1) DB write/read (2) auth flows (3) meta_checker metrics run. Require that updates are generated from CI artifacts rather than manual edits."
+    },
+    {
+      "priority": 4,
+      "action": "Codify AGENTS.md into an executable checklist so agents stop relying on prose interpretation.",
+      "file": "AGENTS.md + scripts/checklist_runner.(py|ts)",
+      "detail": "Add a mandatory ‘Before Change / After Change’ checklist referencing concrete scripts (tests, lint, production-readiness validation). Provide a single command (e.g., scripts/run_ci_local.sh) that runs the same gates as CI and emits a machine-readable report consumed by meta_checker."
+    },
+    {
+      "priority": 5,
+      "action": "Reduce docs/audit noise by batching and gating documentation-only commits.",
+      "file": "commit policy doc (e.g., AGENTS.md or contributing guide) + CI check",
+      "detail": "Add a CI rule: if a PR/run produces only docs/audit/chore changes for K consecutive runs, force a substantive task selection next (feat/fix/test). Alternatively, require docs(audit) to include a linked metric delta (JudgmentScore/test/coverage) to justify the commit."
+    }
+  ],
+  "policy_weight_suggestions": {
+    "purpose_driven_executor": {
+      "current_weight": 0.5,
+      "suggested_weight": 0.4,
+      "reason": "Strong success rate, but commit mix suggests it can drift into docs/audit updates; slightly down-weight to prioritize feature-bearing loops while keeping it available for roadmap alignment."
+    },
+    "spec_driven_dev": {
+      "current_weight": 0.5,
+      "suggested_weight": 0.6,
+      "reason": "Highest commits-per-run (1.0) with consistently successful outcomes and a higher likelihood of substantive implementation; up-weight to maximize real product change when already production-ready."
+    }
+  },
+  "should_pause": false,
+  "reasoning": "Substantive work is exactly at the HEALTHY threshold (0.50). The system is not spinning (runs succeed; meaningful feats exist), but it lacks explicit, automated guardrails and a measurable learning loop (instruction → substantive output → weight update). Converting PURPOSE/AGENTS from prose to executable, audited checks will increase durability and prevent regression into audit-only churn.",
+  "_meta": {
+    "timestamp": "2026-03-30T10:12:33.709023",
+    "model": "gpt-5.2",
+    "backend": "copilot-cli",
+    "repo": "yka_ikiiki_record",
+    "prompt_length": 6647
+  }
+}

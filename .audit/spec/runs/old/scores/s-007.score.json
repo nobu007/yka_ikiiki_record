@@ -1,25 +1,26 @@
 {
   "axis": "S-007",
-  "name": "回帰テスト設計",
+  "name": "Regression Design",
   "score": 5,
   "max_score": 5,
-  "pass": true,
+  "pass_threshold": 4,
+  "pass_status": true,
   "details": [
     {
       "id": "S-007-1",
-      "name": "回帰テストセクション",
+      "name": "Regression Section",
       "score": 2,
       "max": 2
     },
     {
       "id": "S-007-2",
-      "name": "影響範囲明示",
+      "name": "Impact Scope",
       "score": 2,
       "max": 2
     },
     {
       "id": "S-007-3",
-      "name": "_coverage_map.yml",
+      "name": "Coverage Map",
       "score": 1,
       "max": 1
     }

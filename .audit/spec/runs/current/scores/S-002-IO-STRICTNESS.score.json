@@ -1,0 +1,22 @@
+{
+  "key": "S-002_IO_STRICTNESS",
+  "value": {
+    "name": "I/O Strictness",
+    "weight": 15,
+    "score": {
+      "raw": 12.4,
+      "breakdown": {
+        "sampleSize": 15,
+        "averageScore": 82.67,
+        "hasInputTypes": 93.33,
+        "hasOutputTypes": 93.33,
+        "hasConstraints": 93.33
+      }
+    },
+    "status": "PASS",
+    "gaps": [
+      "Many SPECs lack detailed input/output type definitions",
+      "Pre/postconditions often missing"
+    ]
+  }
+}

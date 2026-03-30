@@ -1,31 +1,32 @@
 {
   "axis": "S-002",
-  "name": "入出力定義の厳密性",
-  "score": 14,
+  "name": "I/O Definition",
+  "score": 11,
   "max_score": 15,
-  "pass": true,
+  "pass_threshold": 12,
+  "pass_status": false,
   "details": [
     {
       "id": "S-002-1",
-      "name": "入力型定義",
-      "score": 4,
+      "name": "Input Types",
+      "score": 3,
       "max": 4
     },
     {
       "id": "S-002-2",
-      "name": "入力制約定義",
-      "score": 4,
+      "name": "Input Constraints",
+      "score": 3,
       "max": 4
     },
     {
       "id": "S-002-3",
-      "name": "出力型・制約",
-      "score": 4,
+      "name": "Output Definitions",
+      "score": 3,
       "max": 4
     },
     {
       "id": "S-002-4",
-      "name": "前提/事後条件",
+      "name": "Pre/Post Conditions",
       "score": 2,
       "max": 3
     }

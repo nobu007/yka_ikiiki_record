@@ -1,0 +1,19 @@
+{
+  "key": "S-001_SPEC_EXISTENCE",
+  "value": {
+    "name": "SPEC Existence",
+    "weight": 15,
+    "score": {
+      "raw": 8.08,
+      "breakdown": {
+        "specsDirectoryExists": true,
+        "indexConsistency": true,
+        "totalPublicSymbols": 334,
+        "symbolsWithSpecs": 180,
+        "coverageRate": 53.89
+      }
+    },
+    "status": "PASS",
+    "gaps": []
+  }
+}

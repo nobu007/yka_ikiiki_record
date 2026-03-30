@@ -1,0 +1,21 @@
+{
+  "key": "S-008_SPEC_FRESHNESS",
+  "value": {
+    "name": "SPEC Freshness",
+    "weight": 10,
+    "score": {
+      "raw": 7,
+      "breakdown": {
+        "versionPresent": 0.9,
+        "lastUpdatedPresent": 1.0,
+        "signatureMatch": 0.5,
+        "averageFreshness": 70
+      }
+    },
+    "status": "PASS",
+    "gaps": [
+      "Some SPECs may not match current code signatures",
+      "Version numbers inconsistent"
+    ]
+  }
+}

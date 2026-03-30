@@ -1,9 +1,16 @@
 {
-  "total_score": 90,
+  "total_score": 46,
   "max_score": 100,
-  "percentage": 90.0,
-  "overall_pass": true,
-  "s001_threshold_met": true,
-  "all_thresholds_met": true,
-  "failed_axes": []
+  "percentage": 46.0,
+  "overall_pass": false,
+  "s001_threshold_met": false,
+  "all_thresholds_met": false,
+  "failed_axes": [
+    "S-001",
+    "S-002",
+    "S-003",
+    "S-004",
+    "S-005",
+    "S-008"
+  ]
 }

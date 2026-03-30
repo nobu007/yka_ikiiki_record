@@ -1,0 +1,22 @@
+{
+  "key": "S-004_ERROR_COVERAGE",
+  "value": {
+    "name": "Error Coverage",
+    "weight": 15,
+    "score": {
+      "raw": 11.67,
+      "breakdown": {
+        "sampleSize": 15,
+        "averageScore": 77.78,
+        "errorFilesCount": 158,
+        "specsCount": 179,
+        "errorFileCoverage": 88.27
+      }
+    },
+    "status": "PASS",
+    "gaps": [
+      "Error scenarios often generic",
+      "Specific exception types not always mentioned"
+    ]
+  }
+}

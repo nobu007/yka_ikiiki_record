@@ -2,13 +2,6 @@ import { memo, useState, useCallback } from "react";
 import { LoadingSpinner } from "@/components/common";
 import { z } from "zod";
 
-const LoginFormDataSchema = z.object({
-  email: z.string().email("Invalid email format"),
-  password: z.string().min(1, "Password is required"),
-});
-
-type LoginFormData = z.infer<typeof LoginFormDataSchema>;
-
 interface LoginResponse {
   success: boolean;
   token?: string;
@@ -105,16 +98,14 @@ const LoginFormComponent = memo<LoginFormProps>(function LoginForm({
 
   const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    if (error) setError("");
-  }, [error]);
+  }, []);
 
   const handlePasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    if (error) setError("");
-  }, [error]);
+  }, []);
 
   return (
-    <form onSubmit={handleSubmit} className={className}>
+    <form onSubmit={handleSubmit} className={className} noValidate>
       <div style={{ marginBottom: "1rem" }}>
         <label htmlFor="email">Email</label>
         <input

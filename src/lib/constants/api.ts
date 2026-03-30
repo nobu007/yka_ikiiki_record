@@ -46,6 +46,9 @@ export const API_ENDPOINTS = {
   TRENDS: "/api/trends",
   NOTIFICATIONS_SETTINGS: "/api/notifications/settings",
   NOTIFICATIONS_HISTORY: "/api/notifications/history",
+  AUTH_LOGIN: "/api/auth/login",
+  AUTH_LOGOUT: "/api/auth/logout",
+  AUTH_SESSION: "/api/auth/session",
 } as const;
 
 export const API_OPERATIONS = {
@@ -63,4 +66,7 @@ export const API_OPERATIONS = {
   GET_NOTIFICATION_SETTINGS: "GET /api/notifications/settings",
   UPDATE_NOTIFICATION_SETTINGS: "POST /api/notifications/settings",
   GET_NOTIFICATION_HISTORY: "GET /api/notifications/history",
+  POST_AUTH_LOGIN: "POST /api/auth/login",
+  POST_AUTH_LOGOUT: "POST /api/auth/logout",
+  GET_AUTH_SESSION: "GET /api/auth/session",
 } as const;

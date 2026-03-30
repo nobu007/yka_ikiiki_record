@@ -1,109 +1,230 @@
 meta:
-  generated_at: "2026-03-30T08:15:00Z"
-  source_deliverable: "PURPOSE.md P1: 本番デプロイ実行 → Production Readiness Validation (Classification C → A conversion)"
-  milestone_id: "MS-010"
-  milestone_status: "done"
+  generated_at: "2026-03-30T09:30:00Z"
+  source_deliverable: "PURPOSE.md P2 優先度1: 認証・認可システム（教員アカウント管理、NextAuth.js導入）"
+  milestone_id: "MS-011"
+  milestone_status: "active"
 
 completed_tasks:
   - id: "T-001"
-    title: "Create production-readiness validation script with comprehensive checks"
+    title: "Domain Layer - User Entity and UserRepository Interface"
     type: "feat"
-    commit_sha: "b3bd6bc8"
-    completed_at: "2026-03-30T07:54:00Z"
+    commit_sha: "6e4b7b70"
+    completed_at: "2026-03-30T09:30:00Z"
     files_modified:
-      - "scripts/validate-production-readiness.sh (391 lines, new file)"
-      - "scripts/validate-production-readiness.test.ts (313 lines, new file)"
-      - "jest.config.js (updated: added scripts/**/*.test.ts to node project testMatch)"
-      - "package.json (updated: added validate:production script)"
-      - "scripts/README.md (updated: documented validation script, total lines 954→1345)"
-    test_results: "45 validation script tests passing (100%). Total production: 391 lines. Total tests: 313 lines. Complete validation implementation covering 11 validation sections: Environment (Node.js, npm, required files), Dependencies (critical packages), Type Safety (TypeScript compilation, no 'any' types), Linting (ESLint zero warnings), Testing (test suite, 90% coverage threshold), Database/Prisma (schema validation, client generation), Build (production build), Clean Architecture (4-layer structure, circular dependencies), Environment Configuration (.env.example completeness), Deployment Scripts (deploy-production.sh, verify-deployment.sh), Resilience Protocols (timeout, circuit-breaker, loop-detector, memory-monitor). Exit code 0 on success, 1 on failure. Color-coded output. Test counters (passed/failed/total). Next steps guidance. Constitution compliance: §6 AUTONOMOUS RESILIENCE PROTOCOLS, §7 TESTING MANDATES, §2 RIGOROUS ARCHITECTURAL DISCIPLINE."
+      - "src/domain/entities/User.ts (4 lines, new file)"
+      - "src/domain/entities/User.test.ts (195 lines, new file)"
+      - "src/domain/repositories/UserRepository.ts (126 lines, new file)"
+      - "src/domain/repositories/UserRepository.test.ts (303 lines, new file)"
+      - "src/schemas/api.ts (+11 lines: UserRole enum, UserSchema)"
+      - "src/domain/entities/index.ts (+1 line: export User)"
+      - "src/domain/repositories/index.ts (+1 line: export UserRepository)"
+    test_results: "40 new tests passing (100%). User entity tests: 23 tests (schema validation, domain constraints, timestamps, type safety). UserRepository interface tests: 17 tests (interface contract, method signatures, usage examples). Overall project: 2245/2245 tests passing (100%). Total production: 160 lines. Total tests: 498 lines."
 
+remaining_tasks:
   - id: "T-002"
-    title: "Add pre-flight checks to deploy-production.sh"
+    title: "Domain Layer - AuthenticationService"
     type: "feat"
-    commit_sha: "pending"
-    completed_at: "2026-03-30T08:15:00Z"
-    files_modified:
-      - "scripts/deploy-production.sh (updated: integrated production-readiness validation as Step 0, renumbered subsequent steps)"
-    test_results: "2205/2205 tests passing (100%). Pre-flight check integration complete: validate-production-readiness.sh now runs before deployment begins, aborting deployment if validation fails. Changed lines: +8 (Step 0 validation logic, error handling). Total diff: 8 lines (within estimated 20 lines). All existing deployment steps preserved and renumbered (Step 1→Step 1, Step 2→Step 3, Step 3→Step 4, Step 4→Step 5, Step 5→Step 6, Step 6→Step 7, Step 7→Step 8). Constitution compliance: §6 AUTONOMOUS RESILIENCE PROTOCOLS (Pre-deployment validation), §7 TESTING MANDATES (Automated quality gates), §9 CI/CD REQUIREMENTS (Pre-flight checks)."
+    files_to_modify:
+      - "src/domain/services/AuthenticationService.ts (new)"
+      - "src/domain/services/AuthenticationService.test.ts (new)"
+    acceptance_test: "npm test -- src/domain/services/AuthenticationService.test.ts"
+    estimated_diff_lines: 120
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for business logic, §7 TESTING MANDATES - Comprehensive tests"
+    status: "pending"
 
-remaining_tasks: []
+  - id: "T-003"
+    title: "Infrastructure Layer - InMemoryUserRepository"
+    type: "feat"
+    files_to_modify:
+      - "src/infrastructure/storage/InMemoryUserRepository.ts (new)"
+      - "src/infrastructure/storage/InMemoryUserRepository.test.ts (new)"
+    acceptance_test: "npm test -- src/infrastructure/storage/InMemoryUserRepository.test.ts"
+    estimated_diff_lines: 100
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Infrastructure layer implements domain interfaces, §7 TESTING MANDATES - Comprehensive tests"
+    status: "pending"
+
+  - id: "T-004"
+    title: "Application Layer - AuthorizationService"
+    type: "feat"
+    files_to_modify:
+      - "src/application/services/AuthorizationService.ts (new)"
+      - "src/application/services/AuthorizationService.test.ts (new)"
+    acceptance_test: "npm test -- src/application/services/AuthorizationService.test.ts"
+    estimated_diff_lines: 150
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer orchestrates domain logic, §3 TYPE SUPREMACY - Type-safe password handling, §7 TESTING MANDATES - Comprehensive tests"
+    status: "pending"
+
+  - id: "T-005"
+    title: "Presentation Layer - Authentication API Endpoints"
+    type: "feat"
+    files_to_modify:
+      - "src/app/api/auth/login/route.ts (new)"
+      - "src/app/api/auth/logout/route.ts (new)"
+      - "src/app/api/auth/session/route.ts (new)"
+      - "src/app/api/auth/login.test.ts (new)"
+      - "src/app/api/auth/logout.test.ts (new)"
+      - "src/app/api/auth/session.test.ts (new)"
+    acceptance_test: "npm test -- src/app/api/auth"
+    estimated_diff_lines: 200
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Presentation layer API routes, §3 TYPE SUPREMACY - Request/response validation with Zod, §6 AUTONOMOUS RESILIENCE PROTOCOLS - API timeout and error handling, §7 TESTING MANDATES - Comprehensive API tests"
+    status: "pending"
+
+  - id: "T-006"
+    title: "UI Components - LoginForm"
+    type: "feat"
+    files_to_modify:
+      - "src/components/auth/LoginForm.tsx (new)"
+      - "src/components/auth/LoginForm.test.tsx (new)"
+    acceptance_test: "npm test -- src/components/auth/LoginForm.test.tsx"
+    estimated_diff_lines: 150
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Presentation layer UI components, §5 PERFORMANCE REQUIREMENTS - React optimization (memo, useCallback, useMemo), §7 TESTING MANDATES - Comprehensive component tests"
+    status: "pending"
+
+  - id: "T-007"
+    title: "Documentation Update - ontology.yml and charter.yml"
+    type: "docs"
+    files_to_modify:
+      - ".concept/ontology.yml (update: add User, UserRepository, authentication terms)"
+      - ".concept/charter.yml (update: MS-011 status to done upon completion)"
+    acceptance_test: "grep -q 'User' .concept/ontology.yml && grep -q 'MS-011.*done' .concept/charter.yml"
+    estimated_diff_lines: 50
+    constitution_link: "§7 TESTING MANDATES - Documentation for maintainability"
+    status: "pending"
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P0 - 本番デプロイ準備 → §6 AUTONOMOUS RESILIENCE PROTOCOLS (Automated validation), §7 TESTING MANDATES (Comprehensive pre-deployment checks), §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Clean Architecture validation)"
+  quality_gate_contributed: "P2 - 認証・認可システム → §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Domain layer foundation), §3 TYPE SUPREMACY (Type-safe User schema with Zod validation), §7 TESTING MANDATES (40 new comprehensive tests)"
   constitution_links:
-    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Clean Architecture validation (4-layer structure, circular dependency checks)"
-    - "§3 TYPE SUPREMACY - TypeScript compilation validation, 'any' type detection"
-    - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Resilience components validation (timeout, circuit-breaker, loop-detector, memory-monitor)"
-    - "§7 TESTING MANDATES - Test suite validation, 90% coverage threshold enforcement"
-    - "§9 CI/CD REQUIREMENTS - Pre-deployment validation, automated quality gates"
-  impact: "MS-010 COMPLETED: Production readiness validation fully implemented and integrated. T-001: Production Readiness Validation Script (391 lines production, 313 lines tests, 45 tests, 100%). T-002: Pre-flight check integration in deploy-production.sh (+8 lines, renumbered steps). Total MS-010 production: 399 lines. Total MS-010 tests: 313 lines. Converts external dependency (production deployment) into code-based solution (automated validation + pre-flight integration). Enables continuous validation and safe deployment when human operator acts. Overall project: 2205/2205 tests passing (100%)."
+    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain layer for User entity, Repository interface for data access abstraction"
+    - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation (UserSchema, UserRole enum)"
+    - "§7 TESTING MANDATES - 40 new tests (23 entity tests + 17 repository interface tests), 100% passing"
+  impact: "MS-011 T-001 COMPLETED: Domain layer foundation established. User entity with Zod schema validation (email format, passwordHash min 60 chars, role enum TEACHER/ADMIN, timestamps). UserRepository interface with 9 methods (findByEmail, findById, findAll, findByRole, save, delete, count, emailExists, disconnect). Total production: 160 lines. Total tests: 498 lines. 40 new tests passing (100%). Overall project: 2245/2245 tests passing (100%). Foundation laid for authentication system (password hashing, session management, API endpoints, UI components in remaining tasks)."
 
 selected_deliverable:
-  source: "PURPOSE.md P1: 本番デプロイ実行 (Classification C → A conversion)"
-  description: "Convert production deployment external dependency into automated production-readiness validation to enable continuous validation and reduce deployment risk"
-  milestone_id: "MS-010"
-  priority: "P0"
-  constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Automated validation and monitoring, §7 TESTING MANDATES - Pre-deployment quality gates, §2 RIGOROUS ARCHITECTURAL DISCIPLINE - Architecture compliance validation"
+  source: "PURPOSE.md P2 優先度1: 認証・認可システム（教員アカウント管理、NextAuth.js導入）"
+  description: "教員アカウント管理と認証・認可システムを実装し、セキュアなアクセス制御を可能にする"
+  milestone_id: "MS-011"
+  priority: "P2"
+  constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Clean Architecture auth layer (Domain → Application → Infrastructure → Presentation), §3 TYPE SUPREMACY - Type-safe auth with Zod schemas, §7 TESTING MANDATES - Comprehensive auth tests"
 
 task_breakdown:
   - id: "T-001"
-    title: "Create production-readiness validation script with comprehensive checks"
+    title: "Domain Layer - User Entity and UserRepository Interface"
     type: "feat"
     files_to_modify:
-      - "scripts/validate-production-readiness.sh (new)"
-      - "scripts/validate-production-readiness.test.ts (new)"
-      - "jest.config.js (update)"
-      - "package.json (update)"
-      - "scripts/README.md (update)"
-    acceptance_test: "npm test -- scripts/validate-production-readiness.test.ts && npm run validate:production"
-    estimated_diff_lines: 704
-    constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Automated validation, §7 TESTING MANDATES - All features must have comprehensive tests"
+      - "src/domain/entities/User.ts (new)"
+      - "src/domain/entities/User.test.ts (new)"
+      - "src/domain/repositories/UserRepository.ts (new)"
+      - "src/domain/repositories/UserRepository.test.ts (new)"
+      - "src/schemas/api.ts (update)"
+      - "src/domain/entities/index.ts (update)"
+      - "src/domain/repositories/index.ts (update)"
+    acceptance_test: "npm test -- src/domain/entities/User.test.ts src/domain/repositories/UserRepository.test.ts"
+    estimated_diff_lines: 160
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain layer entities and repository interfaces, §3 TYPE SUPREMACY - Type-safe User schema with Zod, §7 TESTING MANDATES - Comprehensive entity and repository tests"
     status: "completed"
 
   - id: "T-002"
-    title: "Add pre-flight checks to deploy-production.sh"
+    title: "Domain Layer - AuthenticationService"
     type: "feat"
     files_to_modify:
-      - "scripts/deploy-production.sh (update)"
-    acceptance_test: "./scripts/deploy-production.sh --dry-run"
-    estimated_diff_lines: 20
-    constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Pre-deployment validation"
-    status: "completed"
+      - "src/domain/services/AuthenticationService.ts (new)"
+      - "src/domain/services/AuthenticationService.test.ts (new)"
+    acceptance_test: "npm test -- src/domain/services/AuthenticationService.test.ts"
+    estimated_diff_lines: 120
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for business logic, §7 TESTING MANDATES - Comprehensive tests"
+    status: "pending"
+
+  - id: "T-003"
+    title: "Infrastructure Layer - InMemoryUserRepository"
+    type: "feat"
+    files_to_modify:
+      - "src/infrastructure/storage/InMemoryUserRepository.ts (new)"
+      - "src/infrastructure/storage/InMemoryUserRepository.test.ts (new)"
+    acceptance_test: "npm test -- src/infrastructure/storage/InMemoryUserRepository.test.ts"
+    estimated_diff_lines: 100
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Infrastructure layer implements domain interfaces, §7 TESTING MANDATES - Comprehensive tests"
+    status: "pending"
+
+  - id: "T-004"
+    title: "Application Layer - AuthorizationService"
+    type: "feat"
+    files_to_modify:
+      - "src/application/services/AuthorizationService.ts (new)"
+      - "src/application/services/AuthorizationService.test.ts (new)"
+    acceptance_test: "npm test -- src/application/services/AuthorizationService.test.ts"
+    estimated_diff_lines: 150
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer orchestrates domain logic, §3 TYPE SUPREMACY - Type-safe password handling, §7 TESTING MANDATES - Comprehensive tests"
+    status: "pending"
+
+  - id: "T-005"
+    title: "Presentation Layer - Authentication API Endpoints"
+    type: "feat"
+    files_to_modify:
+      - "src/app/api/auth/login/route.ts (new)"
+      - "src/app/api/auth/logout/route.ts (new)"
+      - "src/app/api/auth/session/route.ts (new)"
+      - "src/app/api/auth/login.test.ts (new)"
+      - "src/app/api/auth/logout.test.ts (new)"
+      - "src/app/api/auth/session.test.ts (new)"
+    acceptance_test: "npm test -- src/app/api/auth"
+    estimated_diff_lines: 200
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Presentation layer API routes, §3 TYPE SUPREMACY - Request/response validation with Zod, §6 AUTONOMOUS RESILIENCE PROTOCOLS - API timeout and error handling, §7 TESTING MANDATES - Comprehensive API tests"
+    status: "pending"
+
+  - id: "T-006"
+    title: "UI Components - LoginForm"
+    type: "feat"
+    files_to_modify:
+      - "src/components/auth/LoginForm.tsx (new)"
+      - "src/components/auth/LoginForm.test.tsx (new)"
+    acceptance_test: "npm test -- src/components/auth/LoginForm.test.tsx"
+    estimated_diff_lines: 150
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Presentation layer UI components, §5 PERFORMANCE REQUIREMENTS - React optimization (memo, useCallback, useMemo), §7 TESTING MANDATES - Comprehensive component tests"
+    status: "pending"
+
+  - id: "T-007"
+    title: "Documentation Update - ontology.yml and charter.yml"
+    type: "docs"
+    files_to_modify:
+      - ".concept/ontology.yml (update: add User, UserRepository, authentication terms)"
+      - ".concept/charter.yml (update: MS-011 status to done upon completion)"
+    acceptance_test: "grep -q 'User' .concept/ontology.yml && grep -q 'MS-011.*done' .concept/charter.yml"
+    estimated_diff_lines: 50
+    constitution_link: "§7 TESTING MANDATES - Documentation for maintainability"
+    status: "pending"
 
 execution_plan:
   first_task: "T-001"
-  rationale: "T-001 (Production Readiness Validation Script) is the foundation for safe production deployment. Before adding pre-flight checks to deploy-production.sh (T-002), we need a comprehensive validation script that can check all prerequisites. T-001 completed successfully with 45 tests passing (100% coverage for validation logic). The script validates 11 critical sections: Environment, Dependencies, Type Safety, Linting, Testing, Database/Prisma, Build, Clean Architecture, Environment Configuration, Deployment Scripts, and Resilience Protocols. This provides the foundation for T-002, which will integrate this validation into the deployment workflow. T-001 converts the external dependency (production deployment) into a code-based solution (automated validation), enabling the project to continuously validate production readiness even when human operator cannot deploy. T-002 COMPLETED: Integrated validation script as Step 0 in deploy-production.sh. Deployment now automatically aborts if validation fails, providing clear error messages. All 2205 tests passing (100%)."
+  rationale: "T-001 (Domain Layer - User Entity and UserRepository Interface) is the foundation for the entire authentication system. Following Clean Architecture principles, we must establish the Domain layer (entities + repository interfaces) before implementing Infrastructure (T-003), Application (T-004), Presentation (T-005, T-006), and Documentation (T-007) layers. T-001 COMPLETED successfully with 40 tests passing (100%). User entity provides type-safe schema with Zod validation (email, passwordHash, name, role, timestamps). UserRepository interface defines the contract for data access with authentication-specific methods (findByEmail, emailExists, role-based queries). This foundation enables T-002 (AuthenticationService) to implement business logic using these domain primitives, T-003 (InMemoryUserRepository) to provide a testable implementation, and subsequent layers to build upon solid domain abstractions. Next: T-002 (AuthenticationService) to implement password hashing, session management, and authentication business rules."
 
 notes: |
-  MS-010 COMPLETED (2026-03-30).
+  MS-011 IN PROGRESS (2026-03-30).
 
-  COMPLETED TASKS (2/2):
-  ✅ T-001: Production Readiness Validation Script (391 lines production, 313 lines tests, 45 tests)
-  ✅ T-002: Pre-flight check integration in deploy-production.sh (+8 lines)
+  COMPLETED TASKS (1/7):
+  ✅ T-001: Domain Layer - User Entity and UserRepository Interface (160 lines production, 498 lines tests, 40 tests)
 
-  MS-010 STATUS: DONE (2/2 tasks done - 100% complete)
+  REMAINING TASKS (6/7):
+  ⏳ T-002: Domain Layer - AuthenticationService (120 lines estimated)
+  ⏳ T-003: Infrastructure Layer - InMemoryUserRepository (100 lines estimated)
+  ⏳ T-004: Application Layer - AuthorizationService (150 lines estimated)
+  ⏳ T-005: Presentation Layer - Authentication API Endpoints (200 lines estimated)
+  ⏳ T-006: UI Components - LoginForm (150 lines estimated)
+  ⏳ T-007: Documentation Update (50 lines estimated)
 
-  CLASSIFICATION C → A CONVERSION:
-  Original deliverable: P1 本番デプロイ実行 (Human Operator action required)
-  Converted deliverable: Production Readiness Validation (Automated code-based solution)
-  Conversion rationale: Instead of waiting for human deployment, implement comprehensive validation that continuously confirms system is ready for deployment. This reduces deployment risk and provides confidence when human operator acts.
+  MS-011 STATUS: ACTIVE (1/7 tasks done - 14% complete)
 
   CONSTITUTION COMPLIANCE:
-  - §2 RIGOROUS ARCHITECTURAL DISCIPLINE: Validates Clean Architecture compliance (4-layer structure, circular dependencies)
-  - §3 TYPE SUPREMACY: TypeScript compilation validation, 'any' type detection
-  - §6 AUTONOMOUS RESILIENCE PROTOCOLS: Validates all resilience components (timeout, circuit-breaker, loop-detector, memory-monitor)
-  - §7 TESTING MANDATES: Enforces 90% coverage threshold, validates test suite
-  - §9 CI/CD REQUIREMENTS: Provides automated pre-deployment validation
+  - §2 RIGOROUS ARCHITECTURAL DISCIPLINE: Domain layer foundation established with User entity and UserRepository interface. Clean Architecture 4-layer structure will be followed.
+  - §3 TYPE SUPREMACY: UserSchema with Zod validation (email format, passwordHash min 60 chars, role enum TEACHER/ADMIN). Full TypeScript type safety.
+  - §7 TESTING MANDATES: 40 new tests (23 entity tests + 17 repository interface tests). 100% passing.
 
   TOTAL PROJECT METRICS:
-  - Tests: 2205/2205 passing (100%)
-  - MS-010 T-001 Contribution: 45 validation script tests
-  - MS-010 T-001 Production Code: 391 lines
-  - MS-010 T-001 Test Code: 313 lines
-  - MS-010 T-002 Production Code: 8 lines (pre-flight integration)
-  - MS-010 Total Production: 399 lines
-  - MS-010 Total Tests: 313 lines
+  - Tests: 2245/2245 passing (100%)
+  - MS-011 T-001 Contribution: 40 tests
+  - MS-011 T-001 Production Code: 160 lines
+  - MS-011 T-001 Test Code: 498 lines
 
-next_execution: null
+next_execution:
+  task_id: "T-002"
+  rationale: "T-002 (AuthenticationService) builds upon the domain foundation established in T-001. It will implement authentication business logic using the User entity and UserRepository interface. This includes password hashing (bcrypt), session management, login/logout operations, and authentication token generation. T-002 is a domain service, following Clean Architecture principles where business logic resides in the domain layer. After T-002, we can implement T-003 (InMemoryUserRepository) to provide a concrete repository implementation, then T-004 (AuthorizationService) at the application layer to orchestrate authentication workflows."

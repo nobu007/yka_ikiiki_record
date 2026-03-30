@@ -1,5 +1,6 @@
 import { StatsRepository } from "@/domain/repositories/StatsRepository";
 import { IRecordRepository } from "@/domain/repositories/IRecordRepository";
+import { UserRepository } from "@/domain/repositories/UserRepository";
 import { TrendAnalysisRepository } from "@/domain/repositories/TrendAnalysisRepository";
 import { BackupRepository } from "@/domain/repositories/BackupRepository";
 import { AuditLogRepository } from "@/domain/repositories/AuditLogRepository";
@@ -10,10 +11,12 @@ import { AnomalyDetectionService } from "@/domain/services/AnomalyDetectionServi
 import { MockStatsRepository } from "@/infrastructure/storage/MockStatsRepository";
 import { PrismaStatsRepository } from "@/infrastructure/repositories/PrismaStatsRepository";
 import { PrismaRecordRepository } from "@/infrastructure/repositories/PrismaRecordRepository";
+import { PrismaUserRepository } from "@/infrastructure/repositories/PrismaUserRepository";
 import { InMemoryTrendAnalysisRepository } from "@/infrastructure/storage/InMemoryTrendAnalysisRepository";
 import { InMemoryBackupRepository } from "@/infrastructure/repositories/InMemoryBackupRepository";
 import { InMemoryAuditLogRepository } from "@/infrastructure/repositories/InMemoryAuditLogRepository";
 import { InMemoryRecordRepository } from "@/infrastructure/storage/InMemoryRecordRepository";
+import { InMemoryUserRepository } from "@/infrastructure/repositories/InMemoryUserRepository";
 import { InMemoryNotificationProviderRepository } from "@/infrastructure/storage/InMemoryNotificationProviderRepository";
 import { InMemoryAnomalyRepository } from "@/infrastructure/storage/InMemoryAnomalyRepository";
 import { BackupService } from "@/application/services/BackupService";
@@ -249,3 +252,25 @@ export function createNotificationService(): NotificationService {
   );
 }
 
+/**
+ * Creates a UserRepository instance based on the current environment configuration.
+ *
+ * In production mode (DATABASE_PROVIDER=prisma), returns a PrismaUserRepository
+ * backed by PostgreSQL. In development mode (DATABASE_PROVIDER=mirage), returns
+ * an InMemoryUserRepository with in-memory storage.
+ *
+ * @returns {UserRepository} A repository instance for user management operations
+ *
+ * @example
+ * ```ts
+ * const repository = createUserRepository();
+ * const user = await repository.findByEmail("teacher@example.com");
+ * ```
+ */
+export function createUserRepository(): UserRepository {
+  if (isPrismaProvider()) {
+    return new PrismaUserRepository();
+  }
+
+  return new InMemoryUserRepository();
+}

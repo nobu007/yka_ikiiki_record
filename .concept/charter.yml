@@ -257,11 +257,12 @@ milestones:
     name: "E2E Data Generation Success Message Fix (ISS-003 / PR-003)"
     intent: "E2Eテストでデータ生成成功メッセージが表示されない問題を修正し、E2Eテストの信頼性を回復する。診断ログを追加して根本原因を特定し、data-testid属性を追加してE2Eテストの安定性を向上させる。"
     deliverables:
-      - "診断ログをNotificationコンポーネントに追加 (src/components/common/Notification.tsx) - T-001"
-      - "data-testid属性をNotificationコンポーネントに追加 (data-testid=\"notification-banner\") - T-001"
-      - "診断ログをuseDashboardフックに追加 (src/hooks/useApp.ts) - T-001"
-      - "診断ログをseed APIに追加 (src/app/api/seed/route.ts) - T-001"
-      - "E2Eテストが成功メッセージを検出できることを確認 - T-002 (future)"
+      - "診断ログをNotificationコンポーネントに追加 (src/components/common/Notification.tsx) - T-001 completed"
+      - "data-testid属性をNotificationコンポーネントに追加 (data-testid=\"notification-banner\") - T-001 completed"
+      - "診断ログをuseDashboardフックに追加 (src/hooks/useApp.ts) - T-001 completed"
+      - "診断ログをseed APIに追加 (src/app/api/seed/route.ts) - T-001 completed"
+      - "E2Eテストをdata-testidセレクタに更新 (playwright/*.spec.ts) - T-002 completed"
+      - "E2Eテスト実行と検証 - T-003 (future)"
     acceptance:
       - type: "quality_gate"
         target: "診断ログが動作していることを確認し、E2Eテストで成功メッセージが検出できること"
@@ -270,7 +271,7 @@ milestones:
       - "§7 TESTING MANDATES - E2E tests must be reliable and reproducible"
     priority: "P0"
     status: "active"
-    progress_note: "MS-012 started 2026-03-30. T-001 in progress: Adding diagnostic logging and data-testid attributes to Notification component, useDashboard hook, and seed API route. This will enable E2E tests to reliably detect the success message and help diagnose why it's not appearing. Related: ISS-003, PR-003."
+    progress_note: "MS-012 progress update 2026-03-30. T-001 completed: Added diagnostic logging and data-testid attributes to Notification component, useDashboard hook, and seed API route. T-002 completed: Updated all E2E tests (data-flow.spec.ts, chart-interactions.spec.ts, statistics-display.spec.ts) to use data-testid='notification-banner' selector instead of fragile text-based selectors. Total changes: 13 test assertions updated across 3 files. TypeScript compilation: PASSED. Next: T-003 (Run E2E tests and verify all 39 tests pass). Related: ISS-003, PR-003."
 
 work_policy:
   default_mode: "commit"

@@ -1,5 +1,5 @@
 import type { UserRepository } from "@/domain/repositories/UserRepository";
-import type { User, UserRole } from "@/schemas/api";
+import type { UserRole } from "@/schemas/api";
 
 /**
  * Error thrown when authorization fails.

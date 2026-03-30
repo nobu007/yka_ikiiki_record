@@ -107,7 +107,7 @@ describe("GET /api/auth/session", () => {
   test("returns authenticated:false when no authorization header", async () => {
     const request = {
       headers: {
-        get: (name: string) => null,
+        get: (_name: string) => null,
       },
     } as any;
 
@@ -304,7 +304,7 @@ describe("GET /api/auth/session", () => {
   test("returns consistent response structure for unauthenticated request", async () => {
     const request = {
       headers: {
-        get: (name: string) => null,
+        get: (_name: string) => null,
       },
     } as any;
 

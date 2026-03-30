@@ -41,6 +41,7 @@ describe("DashboardPage", () => {
       notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
       isLoadingMessage: null,
+      clearNotification: jest.fn(),
     });
   });
 
@@ -55,6 +56,7 @@ describe("DashboardPage", () => {
       notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
       isLoadingMessage: LOADING_MESSAGES.GENERATING_DATA,
+      clearNotification: jest.fn(),
     });
 
     render(<DashboardPage />);
@@ -73,6 +75,7 @@ describe("DashboardPage", () => {
       notification,
       handleGenerate: jest.fn(),
       isLoadingMessage: null,
+      clearNotification: jest.fn(),
     });
 
     render(<DashboardPage />);
@@ -87,6 +90,7 @@ describe("DashboardPage", () => {
       notification: { show: false, type: "info", message: "" },
       handleGenerate,
       isLoadingMessage: null,
+      clearNotification: jest.fn(),
     });
 
     render(<DashboardPage />);
@@ -99,6 +103,7 @@ describe("DashboardPage", () => {
       notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
       isLoadingMessage: LOADING_MESSAGES.GENERATING_DATA,
+      clearNotification: jest.fn(),
     });
 
     render(<DashboardPage />);
@@ -111,6 +116,7 @@ describe("DashboardPage", () => {
       notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
       isLoadingMessage: null,
+      clearNotification: jest.fn(),
     });
 
     render(<DashboardPage />);
@@ -129,6 +135,7 @@ describe("DashboardPage", () => {
       notification,
       handleGenerate: jest.fn(),
       isLoadingMessage: null,
+      clearNotification: jest.fn(),
     });
 
     render(<DashboardPage />);
@@ -147,6 +154,7 @@ describe("DashboardPage", () => {
       notification,
       handleGenerate: jest.fn(),
       isLoadingMessage: null,
+      clearNotification: jest.fn(),
     });
 
     render(<DashboardPage />);
@@ -164,6 +172,7 @@ describe("DashboardPage", () => {
       notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
       isLoadingMessage: null,
+      clearNotification: jest.fn(),
     });
 
     render(<DashboardPage />);
@@ -182,6 +191,7 @@ describe("DashboardPage", () => {
       notification: { show: false, type: "info", message: "" },
       handleGenerate: jest.fn(),
       isLoadingMessage: LOADING_MESSAGES.GENERATING_DATA,
+      clearNotification: jest.fn(),
     });
 
     rerender(<DashboardPage />);

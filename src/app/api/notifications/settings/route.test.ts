@@ -14,8 +14,6 @@ import { InMemoryAnomalyRepository } from "@/infrastructure/storage/InMemoryAnom
 import {
   NotificationChannel,
   NotificationPriority,
-  NotificationProviderType,
-  NotificationProviderStatus,
 } from "@/domain/entities/NotificationProvider";
 
 const mockCreateNotificationService = createNotificationService as jest.Mock;

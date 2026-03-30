@@ -1,6 +1,5 @@
 import { POST } from "./route";
 import { UserSchema } from "@/schemas/api";
-import { z } from "zod";
 
 const SafeUserSchema = UserSchema.omit({ passwordHash: true });
 const mockFindByEmail = jest.fn();

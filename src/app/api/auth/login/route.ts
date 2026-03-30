@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { withResilientHandler } from "@/lib/api/error-handler";
-import { globalCircuitBreaker, DEFAULT_TIMEOUTS } from "@/lib/resilience";
+import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { API_ERROR_MESSAGES, HTTP_STATUS, API_OPERATIONS } from "@/lib/constants/api";
 import { UserSchema } from "@/schemas/api";
 import {
@@ -12,27 +12,15 @@ import {
 } from "@/domain/services/AuthenticationService";
 import { InMemoryUserRepository } from "@/infrastructure/repositories/InMemoryUserRepository";
 import { ValidationError } from "@/lib/error-handler";
+import * as crypto from "node:crypto";
 
 const LoginRequestSchema = z.object({
   email: z.string().email("Invalid email format"),
   password: z.string().min(1, "Password is required"),
 });
 
-const SafeUserSchema = UserSchema.omit({ passwordHash: true });
-
-const LoginResponseSchema = z.object({
-  success: z.boolean(),
-  token: z.string().optional(),
-  user: SafeUserSchema.optional(),
-  error: z.string().optional(),
-});
-
-type LoginRequest = z.infer<typeof LoginRequestSchema>;
-type LoginResponse = z.infer<typeof LoginResponseSchema>;
-
 class BcryptPasswordHasher implements PasswordHasher {
   async hash(password: string): Promise<string> {
-    const crypto = require("crypto");
     const salt = crypto.randomBytes(16).toString("hex");
     const hash = crypto
       .createHmac("sha256", salt)
@@ -45,7 +33,6 @@ class BcryptPasswordHasher implements PasswordHasher {
     const [salt, originalHash] = hash.split("$");
     if (!salt || !originalHash) return false;
 
-    const crypto = require("crypto");
     const computedHash = crypto
       .createHmac("sha256", salt)
       .update(password)
@@ -70,12 +57,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
       try {
         requestBody = await request.json();
-      } catch (error) {
+      } catch {
         return NextResponse.json(
           {
             success: false,
             error: API_ERROR_MESSAGES.VALIDATION.REQUEST,
-          } satisfies LoginResponse,
+          },
           { status: HTTP_STATUS.BAD_REQUEST }
         );
       }
@@ -108,14 +95,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           password
         );
 
-        const { passwordHash: _, ...safeUser } = result.user;
+        const { passwordHash: _passwordHash, ...safeUser } = result.user;
 
         return NextResponse.json(
           {
             success: true,
             token: result.token,
             user: safeUser,
-          } satisfies LoginResponse,
+          },
           { status: HTTP_STATUS.OK }
         );
       } catch (error) {
@@ -126,7 +113,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           {
             success: false,
             error: errorMessage,
-          } satisfies LoginResponse,
+          },
           { status: HTTP_STATUS.UNAUTHORIZED }
         );
       }

@@ -23,7 +23,7 @@ describe("POST /api/auth/logout", () => {
   test("returns 401 when authorization header is missing", async () => {
     const request = {
       headers: {
-        get: (name: string) => null,
+        get: (_name: string) => null,
       },
     } as any;
 

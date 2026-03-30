@@ -612,3 +612,87 @@ canonical_terms:
     evidence:
       - source: "src/test-utils/"
         quote: "export type MockFetchResponse, export function setupMockFetch, isNotNullOrUndefined, getFirstMockCallArg, expectClasses, mockProcessEnv"
+
+  User:
+    id: "TERM-119"
+    layer: "core"
+    status: "stable"
+    definition: "ユーザードメインエンティティ。教員アカウントを表し、ID、メールアドレス、パスワードハッシュ、ロール、タイムスタンプを含む"
+    synonyms: ["TeacherAccount", "StaffAccount"]
+    boundaries:
+      includes: ["ユーザーID", "メールアドレス", "パスワードハッシュ", "ロール（管理者/教員）", "作成日時", "更新日時"]
+      excludes: ["認証ロジック", "認可ロジック"]
+    related_terms: ["UserRepository", "AuthenticationService", "AuthorizationService"]
+    evidence:
+      - source: "src/domain/entities/User.ts"
+        quote: "export interface User { id: number; email: string; passwordHash: string; role: UserRole; createdAt: Date; updatedAt: Date; }"
+
+  UserRepository:
+    id: "TERM-120"
+    layer: "domain"
+    status: "stable"
+    definition: "ユーザードメインエンティティの永続化と取得を行うリポジトリインターフェース"
+    synonyms: []
+    boundaries:
+      includes: ["ユーザー保存", "メールアドレス検索", "ID検索", "全ユーザー取得", "ロール検索", "ユーザー削除", "ユーザー数取得", "メール存在確認"]
+      excludes: ["認証ロジック", "パスワード検証"]
+    related_terms: ["User", "InMemoryUserRepository"]
+    evidence:
+      - source: "src/domain/repositories/UserRepository.ts"
+        quote: "export interface UserRepository { save(user: User): Promise<User>; findByEmail(email: string): Promise<User | null>; findById(id: number): Promise<User | null>; }"
+
+  AuthenticationService:
+    id: "TERM-121"
+    layer: "domain"
+    status: "stable"
+    definition: "認証を行うドメインサービス。ログイン、登録、トークン検証、パスワード変更を担当"
+    synonyms: []
+    boundaries:
+      includes: ["ログイン処理", "ユーザー登録", "トークン検証", "パスワード変更", "メール正規化"]
+      excludes: ["ユーザー永続化", "HTTPリクエスト処理"]
+    related_terms: ["User", "UserRepository", "AuthorizationService"]
+    evidence:
+      - source: "src/domain/services/AuthenticationService.ts"
+        quote: "export class AuthenticationService { async login(email: string, password: string): Promise<{ user: User; token: string; }>; }"
+
+  AuthorizationService:
+    id: "TERM-122"
+    layer: "application"
+    status: "stable"
+    definition: "認可を行うアプリケーションサービス。ロールベースアクセス制御（RBAC）と権限チェックを担当"
+    synonyms: ["RBAC", "PermissionChecker"]
+    boundaries:
+      includes: ["ロールチェック", "権限チェック", "リソースアクション権限", "ロール階層（管理者>教員）"]
+      excludes: ["認証ロジック", "ユーザー永続化"]
+    related_terms: ["User", "AuthenticationService"]
+    evidence:
+      - source: "src/application/services/AuthorizationService.ts"
+        quote: "export class AuthorizationService { hasRole(user: User, role: UserRole): boolean; can(user: User, resource: string, action: string): boolean; }"
+
+  InMemoryUserRepository:
+    id: "TERM-123"
+    layer: "aux"
+    status: "stable"
+    definition: "UserRepositoryのインメモリ実装。開発・テスト用のMapベースストレージ"
+    synonyms: []
+    boundaries:
+      includes: ["Mapベースストレージ", "自動ID生成", "大文字小文字無視メール検索", "Zod検証"]
+      excludes: ["永続化"]
+    related_terms: ["UserRepository", "User"]
+    evidence:
+      - source: "src/infrastructure/repositories/InMemoryUserRepository.ts"
+        quote: "export class InMemoryUserRepository implements UserRepository"
+
+  LoginForm:
+    id: "TERM-124"
+    layer: "aux"
+    status: "stable"
+    definition: "ログインフォームUIコンポーネント。メールアドレスとパスワード入力、フォーム送信、ローディング状態、エラー表示を担当"
+    synonyms: ["LoginComponent", "AuthForm"]
+    boundaries:
+      includes: ["メール入力", "パスワード入力", "フォーム送信", "ローディング表示", "エラー表示", "React最適化（memo, useCallback）"]
+      excludes: ["認証ロジック", "API呼び出し"]
+    related_terms: ["AuthenticationService"]
+    evidence:
+      - source: "src/components/auth/LoginForm.tsx"
+        quote: "const LoginForm = memo(function LoginForm({ onSubmit, isLoading, error }: LoginFormProps)"

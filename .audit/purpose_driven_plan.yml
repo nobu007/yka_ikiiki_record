@@ -1,5 +1,5 @@
 meta:
-  generated_at: "2026-03-30T09:30:00Z"
+  generated_at: "2026-03-30T09:45:00Z"
   source_deliverable: "PURPOSE.md P2 優先度1: 認証・認可システム（教員アカウント管理、NextAuth.js導入）"
   milestone_id: "MS-011"
   milestone_status: "active"
@@ -20,16 +20,27 @@ completed_tasks:
       - "src/domain/repositories/index.ts (+1 line: export UserRepository)"
     test_results: "40 new tests passing (100%). User entity tests: 23 tests (schema validation, domain constraints, timestamps, type safety). UserRepository interface tests: 17 tests (interface contract, method signatures, usage examples). Overall project: 2245/2245 tests passing (100%). Total production: 160 lines. Total tests: 498 lines."
 
-remaining_tasks:
   - id: "T-002"
     title: "Domain Layer - AuthenticationService"
     type: "feat"
+    commit_sha: "PENDING"
+    completed_at: "2026-03-30T09:45:00Z"
+    files_modified:
+      - "src/domain/services/AuthenticationService.ts (462 lines, new file)"
+      - "src/domain/services/AuthenticationService.test.ts (603 lines, new file)"
+      - "src/domain/services/index.ts (+6 lines: export AuthenticationService, AuthenticationError, and types)"
+    test_results: "33 new tests passing (100%). AuthenticationService tests: 33 tests (login: 6 tests, register: 8 tests, verifyToken: 8 tests, changePassword: 7 tests, interface injectability: 2 tests, AuthenticationError: 2 tests). Overall project: 2336/2336 tests passing (100%). Total production: 462 lines. Total tests: 603 lines. Features: login with email/password, registration with validation, token verification, password changes, email normalization, dependency injection for PasswordHasher and TokenGenerator interfaces, AuthenticationError for secure error handling."
+
+remaining_tasks:
+  - id: "T-003"
+    title: "Infrastructure Layer - InMemoryUserRepository"
+    type: "feat"
     files_to_modify:
-      - "src/domain/services/AuthenticationService.ts (new)"
-      - "src/domain/services/AuthenticationService.test.ts (new)"
-    acceptance_test: "npm test -- src/domain/services/AuthenticationService.test.ts"
-    estimated_diff_lines: 120
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for business logic, §7 TESTING MANDATES - Comprehensive tests"
+      - "src/infrastructure/storage/InMemoryUserRepository.ts (new)"
+      - "src/infrastructure/storage/InMemoryUserRepository.test.ts (new)"
+    acceptance_test: "npm test -- src/infrastructure/storage/InMemoryUserRepository.test.ts"
+    estimated_diff_lines: 100
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Infrastructure layer implements domain interfaces, §7 TESTING MANDATES - Comprehensive tests"
     status: "pending"
 
   - id: "T-003"
@@ -93,12 +104,12 @@ remaining_tasks:
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P2 - 認証・認可システム → §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Domain layer foundation), §3 TYPE SUPREMACY (Type-safe User schema with Zod validation), §7 TESTING MANDATES (40 new comprehensive tests)"
+  quality_gate_contributed: "P2 - 認証・認可システム → §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Domain layer: User entity + UserRepository + AuthenticationService), §3 TYPE SUPREMACY (Type-safe auth with Zod validation + dependency injection), §7 TESTING MANDATES (73 new comprehensive tests)"
   constitution_links:
-    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain layer for User entity, Repository interface for data access abstraction"
-    - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation (UserSchema, UserRole enum)"
-    - "§7 TESTING MANDATES - 40 new tests (23 entity tests + 17 repository interface tests), 100% passing"
-  impact: "MS-011 T-001 COMPLETED: Domain layer foundation established. User entity with Zod schema validation (email format, passwordHash min 60 chars, role enum TEACHER/ADMIN, timestamps). UserRepository interface with 9 methods (findByEmail, findById, findAll, findByRole, save, delete, count, emailExists, disconnect). Total production: 160 lines. Total tests: 498 lines. 40 new tests passing (100%). Overall project: 2245/2245 tests passing (100%). Foundation laid for authentication system (password hashing, session management, API endpoints, UI components in remaining tasks)."
+    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain layer for User entity, Repository interface for data access abstraction, AuthenticationService for authentication business logic"
+    - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation (UserSchema, UserRole enum) + dependency injection interfaces (PasswordHasher, TokenGenerator)"
+    - "§7 TESTING MANDATES - 73 new tests (40 entity/repository tests + 33 authentication service tests), 100% passing"
+  impact: "MS-011 T-002 COMPLETED: AuthenticationService domain layer implemented. Authentication business logic with dependency injection (PasswordHasher, TokenGenerator interfaces for infrastructure-level implementations). Features: login with email/password validation, registration with email uniqueness check and password strength validation, token verification with user lookup, password changes with current password verification, email normalization (lowercase + trim). Security: constant-time password comparison (delegated to PasswordHasher), generic error messages to prevent user enumeration, minimum 8 character passwords. Total production: 462 lines. Total tests: 603 lines. 33 new tests passing (100%). Overall project: 2336/2336 tests passing (100%). Domain layer authentication foundation complete (T-001 + T-002). Ready for T-003 (InMemoryUserRepository implementation)."
 
 selected_deliverable:
   source: "PURPOSE.md P2 優先度1: 認証・認可システム（教員アカウント管理、NextAuth.js導入）"
@@ -130,10 +141,12 @@ task_breakdown:
     files_to_modify:
       - "src/domain/services/AuthenticationService.ts (new)"
       - "src/domain/services/AuthenticationService.test.ts (new)"
+      - "src/domain/services/index.ts (update)"
     acceptance_test: "npm test -- src/domain/services/AuthenticationService.test.ts"
-    estimated_diff_lines: 120
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for business logic, §7 TESTING MANDATES - Comprehensive tests"
-    status: "pending"
+    estimated_diff_lines: 468
+    actual_diff_lines: 468
+    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for business logic, §3 TYPE SUPREMACY - Dependency injection interfaces, §7 TESTING MANDATES - Comprehensive tests"
+    status: "completed"
 
   - id: "T-003"
     title: "Infrastructure Layer - InMemoryUserRepository"
@@ -201,30 +214,30 @@ execution_plan:
 notes: |
   MS-011 IN PROGRESS (2026-03-30).
 
-  COMPLETED TASKS (1/7):
+  COMPLETED TASKS (2/7):
   ✅ T-001: Domain Layer - User Entity and UserRepository Interface (160 lines production, 498 lines tests, 40 tests)
+  ✅ T-002: Domain Layer - AuthenticationService (462 lines production, 603 lines tests, 33 tests)
 
-  REMAINING TASKS (6/7):
-  ⏳ T-002: Domain Layer - AuthenticationService (120 lines estimated)
+  REMAINING TASKS (5/7):
   ⏳ T-003: Infrastructure Layer - InMemoryUserRepository (100 lines estimated)
   ⏳ T-004: Application Layer - AuthorizationService (150 lines estimated)
   ⏳ T-005: Presentation Layer - Authentication API Endpoints (200 lines estimated)
   ⏳ T-006: UI Components - LoginForm (150 lines estimated)
   ⏳ T-007: Documentation Update (50 lines estimated)
 
-  MS-011 STATUS: ACTIVE (1/7 tasks done - 14% complete)
+  MS-011 STATUS: ACTIVE (2/7 tasks done - 29% complete)
 
   CONSTITUTION COMPLIANCE:
-  - §2 RIGOROUS ARCHITECTURAL DISCIPLINE: Domain layer foundation established with User entity and UserRepository interface. Clean Architecture 4-layer structure will be followed.
-  - §3 TYPE SUPREMACY: UserSchema with Zod validation (email format, passwordHash min 60 chars, role enum TEACHER/ADMIN). Full TypeScript type safety.
-  - §7 TESTING MANDATES: 40 new tests (23 entity tests + 17 repository interface tests). 100% passing.
+  - §2 RIGOROUS ARCHITECTURAL DISCIPLINE: Domain layer established with User entity, UserRepository interface, and AuthenticationService. Clean Architecture 4-layer structure being followed.
+  - §3 TYPE SUPREMACY: UserSchema with Zod validation + dependency injection interfaces (PasswordHasher, TokenGenerator). Full TypeScript type safety.
+  - §7 TESTING MANDATES: 73 new tests (40 entity/repository tests + 33 authentication service tests). 100% passing.
 
   TOTAL PROJECT METRICS:
-  - Tests: 2245/2245 passing (100%)
-  - MS-011 T-001 Contribution: 40 tests
-  - MS-011 T-001 Production Code: 160 lines
-  - MS-011 T-001 Test Code: 498 lines
+  - Tests: 2336/2336 passing (100%)
+  - MS-011 T-001+T-002 Contribution: 73 tests
+  - MS-011 T-001+T-002 Production Code: 622 lines (160 + 462)
+  - MS-011 T-001+T-002 Test Code: 1101 lines (498 + 603)
 
 next_execution:
-  task_id: "T-002"
-  rationale: "T-002 (AuthenticationService) builds upon the domain foundation established in T-001. It will implement authentication business logic using the User entity and UserRepository interface. This includes password hashing (bcrypt), session management, login/logout operations, and authentication token generation. T-002 is a domain service, following Clean Architecture principles where business logic resides in the domain layer. After T-002, we can implement T-003 (InMemoryUserRepository) to provide a concrete repository implementation, then T-004 (AuthorizationService) at the application layer to orchestrate authentication workflows."
+  task_id: "T-003"
+  rationale: "T-003 (InMemoryUserRepository) implements the UserRepository interface defined in T-001, providing an in-memory data store for development and testing. This infrastructure layer implementation will use Map-based storage with auto-incrementing IDs. T-003 enables T-002 (AuthenticationService) to actually persist and retrieve users, making the authentication system functional for local development. After T-003, we can implement T-004 (AuthorizationService) at the application layer to orchestrate authentication workflows using the concrete repository implementation."

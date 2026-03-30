@@ -22,6 +22,20 @@ export const RecordSchema = z.object({
 
 export type Record = z.infer<typeof RecordSchema>;
 
+export const UserRole = z.enum(["TEACHER", "ADMIN"]);
+
+export const UserSchema = z.object({
+  id: z.number().int().positive().optional(),
+  email: z.string().email().min(1).max(255),
+  passwordHash: z.string().min(60).max(255),
+  name: z.string().min(1).max(100),
+  role: UserRole,
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
+});
+
+export type User = z.infer<typeof UserSchema>;
+
 export const EmotionDistributionPatternSchema = z.enum([
   "normal",
   "bimodal",

@@ -1,4 +1,5 @@
 export type { Record } from "./Record";
+export type { User } from "./User";
 
 export type {
   Stats,

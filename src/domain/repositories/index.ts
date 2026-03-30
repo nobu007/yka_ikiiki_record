@@ -1,6 +1,7 @@
 export type { IRecordRepository } from "./IRecordRepository";
 export type { StatsRepository } from "./StatsRepository";
 export type { AuditLogRepository } from "./AuditLogRepository";
+export type { UserRepository } from "./UserRepository";
 export type {
   TrendAnalysisRepository,
   TrendAnalysisQuery,

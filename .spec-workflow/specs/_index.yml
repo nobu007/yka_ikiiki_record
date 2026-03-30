@@ -183,6 +183,10 @@ specs:
     created: '2026-03-30T10:40:00.000000'
     name: LoginAPI
     path: .spec-workflow/specs/LoginAPI/LoginAPI_spec.md
+  LoginForm:
+    created: '2026-03-30T11:35:00.000000'
+    name: LoginForm
+    path: .spec-workflow/specs/LoginForm/LoginForm_spec.md
   LogEntry:
     created: '2026-03-30T03:35:54.313718'
     name: LoadingOverlay
@@ -743,4 +747,4 @@ specs:
     created: '2026-03-30T06:22:00.000000'
     name: AnomalyDetectionService
     path: .spec-workflow/specs/AnomalyDetectionService/AnomalyDetectionService_spec.md
-total: 180
+total: 181

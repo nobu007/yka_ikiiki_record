@@ -94,6 +94,66 @@ describe("User Entity", () => {
       expect(result.success).toBe(false);
     });
 
+    it("should accept minimum valid email format", () => {
+      const user = { ...validUser, email: "a@b.co" };
+      const result = UserSchema.safeParse(user);
+      expect(result.success).toBe(true);
+    });
+
+    it("should enforce minimum password hash length (59 chars)", () => {
+      const invalidUser = {
+        ...validUser,
+        passwordHash: "x".repeat(59),
+      };
+      const result = UserSchema.safeParse(invalidUser);
+      expect(result.success).toBe(false);
+    });
+
+    it("should accept minimum valid password hash length (60 chars)", () => {
+      const user = {
+        ...validUser,
+        passwordHash: "x".repeat(60),
+      };
+      const result = UserSchema.safeParse(user);
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept maximum valid password hash length (255 chars)", () => {
+      const user = {
+        ...validUser,
+        passwordHash: "x".repeat(255),
+      };
+      const result = UserSchema.safeParse(user);
+      expect(result.success).toBe(true);
+    });
+
+    it("should enforce maximum password hash length (256 chars)", () => {
+      const invalidUser = {
+        ...validUser,
+        passwordHash: "x".repeat(256),
+      };
+      const result = UserSchema.safeParse(invalidUser);
+      expect(result.success).toBe(false);
+    });
+
+    it("should accept minimum valid name length (1 char)", () => {
+      const user = { ...validUser, name: "a" };
+      const result = UserSchema.safeParse(user);
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept maximum valid name length (100 chars)", () => {
+      const user = { ...validUser, name: "a".repeat(100) };
+      const result = UserSchema.safeParse(user);
+      expect(result.success).toBe(true);
+    });
+
+    it("should enforce maximum name length (101 chars)", () => {
+      const invalidUser = { ...validUser, name: "a".repeat(101) };
+      const result = UserSchema.safeParse(invalidUser);
+      expect(result.success).toBe(false);
+    });
+
     it("should accept all valid user roles", () => {
       const teacher = { ...validUser, role: "TEACHER" as const };
       const admin = { ...validUser, role: "ADMIN" as const };

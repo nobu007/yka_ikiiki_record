@@ -73,6 +73,11 @@ export function useDashboard() {
         distributionPattern: APP_CONFIG.generation.defaultPattern,
       };
 
+      // Diagnostic logging for E2E test debugging (ISS-003 / PR-003)
+      if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+        console.log('[DEBUG] useDashboard: Starting data generation with config:', config);
+      }
+
       const response = await withApiTimeout(
         fetch(`${APP_CONFIG.api.baseUrl}${APP_CONFIG.api.endpoints.seed}`, {
           method: HTTP_METHODS.POST,
@@ -83,6 +88,11 @@ export function useDashboard() {
         }),
       );
 
+      // Diagnostic logging for E2E test debugging (ISS-003 / PR-003)
+      if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+        console.log('[DEBUG] useDashboard: Seed API response status:', response.status);
+      }
+
       if (!response.ok) {
         throw new NetworkError(
           ERROR_MESSAGES.API_ERROR(response.status, response.statusText),
@@ -91,6 +101,11 @@ export function useDashboard() {
       }
 
       const rawData = await response.json();
+
+      // Diagnostic logging for E2E test debugging (ISS-003 / PR-003)
+      if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+        console.log('[DEBUG] useDashboard: Seed API response data:', rawData);
+      }
 
       const [validated, validationError] = validateDataSafe(
         rawData,
@@ -109,9 +124,20 @@ export function useDashboard() {
         );
       }
 
+      // Diagnostic logging for E2E test debugging (ISS-003 / PR-003)
+      if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+        console.log('[DEBUG] useDashboard: Validation successful, showing success notification');
+        console.log('[DEBUG] useDashboard: Success message:', SUCCESS_MESSAGES.DATA_GENERATION_COMPLETE);
+      }
+
       // Disable auto-close for data generation success notification
       // This ensures E2E tests can reliably detect the success message
       showSuccess(SUCCESS_MESSAGES.DATA_GENERATION_COMPLETE, false);
+
+      // Diagnostic logging for E2E test debugging (ISS-003 / PR-003)
+      if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+        console.log('[DEBUG] useDashboard: Success notification displayed');
+      }
     } catch (error) {
       const appError = normalizeError(error);
       logError(appError, "useDashboard.handleGenerate");

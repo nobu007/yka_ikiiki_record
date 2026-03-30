@@ -106,9 +106,19 @@ if (process.env.NODE_ENV === "test") {
 export async function POST(req: NextRequest): Promise<NextResponse> {
   return withResilientHandler(
     async () => {
+      // Diagnostic logging for E2E test debugging (ISS-003 / PR-003)
+      if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+        console.log('[DEBUG] Seed API: POST request received');
+      }
+
       if (isPrismaProvider()) {
         const statsService = createStatsService();
         await statsService.generateSeedData();
+
+        // Diagnostic logging for E2E test debugging (ISS-003 / PR-003)
+        if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+          console.log('[DEBUG] Seed API: Prisma seed data generation complete');
+        }
 
         return createSuccessResponse({
           success: true,
@@ -118,6 +128,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
       const body = await req.json();
       const { config } = SeedRequestSchema.parse(body);
+
+      // Diagnostic logging for E2E test debugging (ISS-003 / PR-003)
+      if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+        console.log('[DEBUG] Seed API: Request config:', config);
+      }
 
       const transformedConfig: DataGenerationConfig = {
         studentCount: config.studentCount,
@@ -137,6 +152,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         timestamp: Date.now(),
         config: transformedConfig,
       };
+
+      // Diagnostic logging for E2E test debugging (ISS-003 / PR-003)
+      if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+        console.log('[DEBUG] Seed API: Data generation complete');
+        console.log('[DEBUG] Seed API: Response message:', SUCCESS_MESSAGES.DATA_GENERATION_COMPLETE);
+      }
 
       return createSuccessResponse({
         success: true,

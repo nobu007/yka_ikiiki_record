@@ -253,10 +253,32 @@ milestones:
     status: "done"
     progress_note: "MS-011 completed 2026-03-30. All 7 tasks completed: (T-001) Domain layer (User entity + UserRepository interface), (T-002) Domain layer (AuthenticationService), (T-003) Infrastructure layer (InMemoryUserRepository), (T-004) Application layer (AuthorizationService), (T-005) Presentation layer (Authentication API endpoints /api/auth/login, /api/auth/logout, /api/auth/session), (T-006) Presentation layer (LoginForm UI component), (T-007) Documentation (ontology.yml + charter.yml). Total production: 1607 lines (160 + 462 + 116 + 319 + 260 + 145). Total tests: 3698 lines (498 + 603 + 530 + 510 + 791 + 551). 233 auth-specific tests passing (100% for core functionality, 2 LoginForm tests failing due to userEvent issue - non-blocking). Complete 4-layer Clean Architecture auth system: Domain → Infrastructure → Application → Presentation (API + UI). Features: HMAC-SHA256 password verification with salt, session token generation (format: session_{userId}_{timestamp}_{random}), RBAC with role hierarchy (ADMIN > TEACHER), permission table for resource-action pairs, Zod validation for User schema, dependency injection for PasswordHasher and TokenGenerator interfaces, SafeUserSchema excludes passwordHash from API responses. Overall project: 2470/2472 tests passing (99.92%). Documentation: Added 6 new terms to ontology.yml (User, UserRepository, AuthenticationService, AuthorizationService, InMemoryUserRepository, LoginForm)."
 
+  - id: "MS-012"
+    name: "E2E Data Generation Success Message Fix (ISS-003 / PR-003)"
+    intent: "E2Eテストでデータ生成成功メッセージが表示されない問題を修正し、E2Eテストの信頼性を回復する。診断ログを追加して根本原因を特定し、data-testid属性を追加してE2Eテストの安定性を向上させる。"
+    deliverables:
+      - "診断ログをNotificationコンポーネントに追加 (src/components/common/Notification.tsx) - T-001"
+      - "data-testid属性をNotificationコンポーネントに追加 (data-testid=\"notification-banner\") - T-001"
+      - "診断ログをuseDashboardフックに追加 (src/hooks/useApp.ts) - T-001"
+      - "診断ログをseed APIに追加 (src/app/api/seed/route.ts) - T-001"
+      - "E2Eテストが成功メッセージを検出できることを確認 - T-002 (future)"
+    acceptance:
+      - type: "quality_gate"
+        target: "診断ログが動作していることを確認し、E2Eテストで成功メッセージが検出できること"
+    constitution_links:
+      - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness"
+      - "§7 TESTING MANDATES - E2E tests must be reliable and reproducible"
+    priority: "P0"
+    status: "active"
+    progress_note: "MS-012 started 2026-03-30. T-001 in progress: Adding diagnostic logging and data-testid attributes to Notification component, useDashboard hook, and seed API route. This will enable E2E tests to reliably detect the success message and help diagnose why it's not appearing. Related: ISS-003, PR-003."
+
 work_policy:
   default_mode: "commit"
   iteration_budget:
     max_cycles: 5
+  quality_gates:
+    must_pass: ["lint", "test"]
+
     max_files_changed: 25
   quality_gates:
     must_pass: ["lint", "test"]

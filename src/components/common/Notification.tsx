@@ -69,11 +69,18 @@ export const Notification = memo<NotificationProps>(
 
     if (!show) return null;
 
+    // Diagnostic logging for E2E test debugging (ISS-003 / PR-003)
+    if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+      console.log(`[NOTIFICATION] Displaying ${type} notification: "${message}"`);
+    }
+
     return (
       <div
         className={`${UI_CONSTANTS.NOTIFICATION.BASE_CLASSES} ${UI_CONSTANTS.NOTIFICATION.STYLES[type]}`}
         role="alert"
         aria-live="polite"
+        data-testid="notification-banner"
+        data-notification-type={type}
       >
         <div className="flex items-start justify-between">
           <div className="flex items-start flex-1">

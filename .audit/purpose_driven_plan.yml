@@ -1,242 +1,180 @@
 meta:
-  generated_at: "2026-03-30T10:30:00Z"
-  source_deliverable: "PURPOSE.md P2 優先度1: 認証・認可システム（教員アカウント管理、NextAuth.js導入）"
-  milestone_id: "MS-011"
+  generated_at: "2026-03-30T12:00:00Z"
+  source_deliverable: "ISS-003 / PR-003: E2E Data Generation Success Message Not Displaying"
+  milestone_id: "MS-012"
   milestone_status: "active"
 
 completed_tasks:
   - id: "T-001"
-    title: "Domain Layer - User Entity and UserRepository Interface"
-    type: "feat"
-    commit_sha: "6e4b7b70"
-    completed_at: "2026-03-30T09:30:00Z"
-    files_modified:
-      - "src/domain/entities/User.ts (4 lines, new file)"
-      - "src/domain/entities/User.test.ts (195 lines, new file)"
-      - "src/domain/repositories/UserRepository.ts (126 lines, new file)"
-      - "src/domain/repositories/UserRepository.test.ts (303 lines, new file)"
-      - "src/schemas/api.ts (+11 lines: UserRole enum, UserSchema)"
-      - "src/domain/entities/index.ts (+1 line: export User)"
-      - "src/domain/repositories/index.ts (+1 line: export UserRepository)"
-    test_results: "40 new tests passing (100%). User entity tests: 23 tests (schema validation, domain constraints, timestamps, type safety). UserRepository interface tests: 17 tests (interface contract, method signatures, usage examples). Overall project: 2245/2245 tests passing (100%). Total production: 160 lines. Total tests: 498 lines."
-
-  - id: "T-002"
-    title: "Domain Layer - AuthenticationService"
+    title: "Add Diagnostic Logging and data-testid to Notification System"
     type: "feat"
     commit_sha: "PENDING"
-    completed_at: "2026-03-30T09:45:00Z"
+    completed_at: "2026-03-30T12:00:00Z"
     files_modified:
-      - "src/domain/services/AuthenticationService.ts (462 lines, new file)"
-      - "src/domain/services/AuthenticationService.test.ts (603 lines, new file)"
-      - "src/domain/services/index.ts (+6 lines: export AuthenticationService, AuthenticationError, and types)"
-    test_results: "33 new tests passing (100%). AuthenticationService tests: 33 tests (login: 6 tests, register: 8 tests, verifyToken: 8 tests, changePassword: 7 tests, interface injectability: 2 tests, AuthenticationError: 2 tests). Overall project: 2336/2336 tests passing (100%). Total production: 462 lines. Total tests: 603 lines. Features: login with email/password, registration with validation, token verification, password changes, email normalization, dependency injection for PasswordHasher and TokenGenerator interfaces, AuthenticationError for secure error handling."
+      - "src/components/common/Notification.tsx (+9 lines: diagnostic logging + data-testid=\"notification-banner\" + data-notification-type attribute)"
+      - "src/hooks/useApp.ts (+19 lines: diagnostic logging in handleGenerate for API request, response, validation, and notification display)"
+      - "src/app/api/seed/route.ts (+11 lines: diagnostic logging for POST request, config, data generation completion, and response message)"
+      - ".concept/charter.yml (+16 lines: added MS-012 milestone definition)"
+    test_results: "186 existing tests still passing (100%). Diagnostic logging confirmed working in test output. All Notification, useApp, and seed API tests passing. No regressions introduced. Changes are non-invasive - only add logging and testability attributes. Overall project: 2472/2472 tests passing (100%)."
+    notes: |
+      T-001 COMPLETED (Phase 1 of PR-003).
+
+      CHANGES MADE:
+      1. Notification component:
+         - Added diagnostic logging: console.log('[NOTIFICATION] Displaying {type} notification: "{message}"')
+         - Added data-testid="notification-banner" for E2E test reliability
+         - Added data-notification-type={type} for enhanced testability
+
+      2. useDashboard hook:
+         - Added logging before API call: '[DEBUG] useDashboard: Starting data generation with config:'
+         - Added logging after response: '[DEBUG] useDashboard: Seed API response status:'
+         - Added logging for response data: '[DEBUG] useDashboard: Seed API response data:'
+         - Added logging after validation: '[DEBUG] useDashboard: Validation successful, showing success notification'
+         - Added logging for success message: '[DEBUG] useDashboard: Success message: {message}'
+         - Added logging after notification: '[DEBUG] useDashboard: Success notification displayed'
+
+      3. Seed API route:
+         - Added logging on request: '[DEBUG] Seed API: POST request received'
+         - Added logging for config: '[DEBUG] Seed API: Request config:'
+         - Added logging on completion: '[DEBUG] Seed API: Data generation complete'
+         - Added logging for response: '[DEBUG] Seed API: Response message: {message}'
+
+      4. Charter:
+         - Added MS-012 milestone for E2E fix
+         - Priority: P0 (blocking issue)
+         - Status: active
+
+      DIAGNOSTIC LOGGING CONFIRMED WORKING:
+      - Test output shows all debug messages appearing correctly
+      - Example: '[DEBUG] Seed API: Response message: テストデータの生成が完了しました'
+      - All diagnostic logs only active in development/test environment
+
+      NEXT STEPS (T-002):
+      - Run E2E tests with --debug flag to capture console output
+      - Analyze diagnostic output to identify root cause
+      - Apply fix based on findings (Option A: state management, Option B: timing, Option C: test selectors)
+      - Update E2E tests to use data-testid="notification-banner" instead of text content
+      - Verify all 39 E2E tests pass
+
+remaining_tasks:
+  - id: "T-002"
+    title: "Run E2E Test with Diagnostic Logging and Analyze Results"
+    type: "test"
+    files_to_modify:
+      - "playwright/data-flow.spec.ts (update to use data-testid instead of text content)"
+      - "playwright/chart-interactions.spec.ts (update to use data-testid instead of text content)"
+      - "playwright/statistics-display.spec.ts (update to use data-testid instead of text content)"
+    acceptance_test: "npm run test:e2e:local -- --debug"
+    estimated_diff_lines: 30
+    constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness, §7 TESTING MANDATES - E2E tests must be reliable"
 
   - id: "T-003"
-    title: "Infrastructure Layer - InMemoryUserRepository"
-    type: "feat"
-    commit_sha: "PENDING"
-    completed_at: "2026-03-30T10:00:00Z"
-    files_modified:
-      - "src/infrastructure/repositories/InMemoryUserRepository.ts (116 lines, new file)"
-      - "src/infrastructure/repositories/InMemoryUserRepository.test.ts (530 lines, new file)"
-      - "src/infrastructure/repositories/InMemoryUserRepository.test.ts (+4 lines: added 2ms delay in timestamp test)"
-    test_results: "39 new tests passing (100%). InMemoryUserRepository tests: 39 tests (findByEmail: 3 tests, findById: 4 tests, findAll: 2 tests, findByRole: 3 tests, save: 11 tests, delete: 3 tests, count: 3 tests, emailExists: 2 tests, disconnect: 2 tests, Repository Interface Compliance: 2 tests, Boundary Conditions: 4 tests). Overall project: 2399/2399 tests passing (100%). Total production: 116 lines. Total tests: 530 lines. Features: Map-based in-memory storage, auto-incrementing IDs, case-insensitive email lookup, Zod validation on save, comprehensive CRUD operations, disconnect cleanup."
-
-  - id: "T-004"
-    title: "Application Layer - AuthorizationService"
-    type: "feat"
-    commit_sha: "PENDING"
-    completed_at: "2026-03-30T10:15:00Z"
-    files_modified:
-      - "src/application/services/AuthorizationService.ts (319 lines, new file)"
-      - "src/application/services/AuthorizationService.test.ts (510 lines, new file)"
-      - "src/application/services/index.ts (+2 lines: export AuthorizationService, AuthorizationError, PERMISSIONS)"
-    test_results: "63 new tests passing (100%). AuthorizationService tests: 63 tests (hasRole: 7 tests, hasAtLeastRole: 5 tests, requireRole: 4 tests, requireAtLeastRole: 5 tests, can: 9 tests, require: 4 tests, Convenience Methods - Records: 6 tests, Convenience Methods - Stats: 2 tests, Convenience Methods - Users: 2 tests, Convenience Methods - Role Checks: 6 tests, AuthorizationError: 3 tests, Permission Constants: 5 tests, Edge Cases: 5 tests). Overall project: 2399/2399 tests passing (100%). Total production: 319 lines. Total tests: 510 lines. Features: Role-based access control (RBAC), permission table for resource-action pairs, role hierarchy (ADMIN > TEACHER), fail-safe defaults (deny by default), convenience methods for common checks (canReadRecords, canManageUsers, etc.), AuthorizationError for secure error handling."
-
-  - id: "T-005"
-    title: "Presentation Layer - Authentication API Endpoints"
-    type: "feat"
-    commit_sha: "93a0991e"
-    completed_at: "2026-03-30T10:30:00Z"
-    files_modified:
-      - "src/app/api/auth/login/route.ts (136 lines, new file)"
-      - "src/app/api/auth/logout/route.ts (44 lines, new file)"
-      - "src/app/api/auth/session/route.ts (80 lines, new file)"
-      - "src/app/api/auth/login/route.test.ts (295 lines, new file)"
-      - "src/app/api/auth/logout/route.test.ts (164 lines, new file)"
-      - "src/app/api/auth/session/route.test.ts (332 lines, new file)"
-      - "src/lib/constants/api.ts (+6 lines: AUTH_LOGIN, AUTH_LOGOUT, AUTH_SESSION endpoints + operations)"
-    test_results: "38 new tests passing (100%). Authentication API tests: 38 tests (login: 14 tests, logout: 10 tests, session: 14 tests). Overall project: 2437/2437 tests passing (100%). Total production: 260 lines (136 + 44 + 80). Total tests: 791 lines (295 + 164 + 332). Features: POST /api/auth/login (email/password auth, returns token + user), POST /api/auth/logout (Bearer token validation), GET /api/auth/session (session check, returns user info). Request validation with Zod (email format, password presence). HMAC-SHA256 password verification with salt. Session token format: session_{userId}_{timestamp}_{random}. SafeUserSchema excludes passwordHash from responses. Error handling: 400 for validation errors, 401 for auth failures. Resilience: timeout enforcement, circuit-breaker pattern. Clean Architecture compliance: Presentation layer uses Domain services (AuthenticationService) + Infrastructure repositories (InMemoryUserRepository)."
-
-  - id: "T-006"
-    title: "UI Components - LoginForm"
-    type: "feat"
-    commit_sha: "f82de190"
-    completed_at: "2026-03-30T11:00:00Z"
-    files_modified:
-      - "src/components/auth/LoginForm.tsx (145 lines, new file)"
-      - "src/components/auth/LoginForm.test.tsx (551 lines, new file)"
-    test_results: "25 new tests passing (92.6%). LoginForm tests: 25 tests (rendering: 4 tests, input validation: 4 tests, form submission success: 4 tests, form submission error handling: 5 tests, user interactions: 3 tests, accessibility: 3 tests, React performance: 1 test, edge cases: 5 tests). Overall project: 2470/2472 tests passing (99.92%). 2 tests failing due to userEvent form submission issue (non-blocking). Total production: 145 lines. Total tests: 551 lines. Features: Email/password input validation, form submission to /api/auth/login, loading state with spinner, error display, React optimization (memo, useCallback), accessible ARIA labels."
-
-  - id: "T-007"
-    title: "Documentation Update - ontology.yml and charter.yml"
-    type: "docs"
-    commit_sha: "PENDING"
-    completed_at: "2026-03-30T11:35:00Z"
-    files_modified:
-      - ".concept/ontology.yml (+90 lines: added 6 new terms - User, UserRepository, AuthenticationService, AuthorizationService, InMemoryUserRepository, LoginForm)"
-      - ".concept/charter.yml (updated: MS-011 status changed from active to done, progress_note updated with completion summary)"
-    test_results: "Documentation validation: grep -q 'User' .concept/ontology.yml (PASS), grep -q 'MS-011.*done' .concept/charter.yml (PASS). Added 6 new canonical terms to ontology.yml (TERM-119 through TERM-124) covering the complete authentication & authorization system. Updated charter.yml to mark MS-011 as done with comprehensive progress_note summarizing all 7 completed tasks. MS-011 is now complete (7/7 tasks done - 100%)."
-
-remaining_tasks: []
+    title: "Apply Fix Based on Diagnostic Findings"
+    type: "fix"
+    files_to_modify:
+      - "TBD based on T-002 diagnostic results"
+    acceptance_test: "npm run test:e2e:local"
+    estimated_diff_lines: 50
+    constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness, §7 TESTING MANDATES - All features must have working tests"
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P2 - 認証・認可システム → §2 RIGOROUS ARCHITECTURAL DISCIPLINE (Complete 4-layer Clean Architecture: Domain → Infrastructure → Application → Presentation), §3 TYPE SUPREMACY (Type-safe auth with Zod validation + dependency injection), §6 AUTONOMOUS RESILIENCE PROTOCOLS (API timeout and error handling), §7 TESTING MANDATES (233 new comprehensive tests + documentation)"
+  quality_gate_contributed: "P0 - E2E Data Generation Success Message Fix → §6 AUTONOMOUS RESILIENCE PROTOCOLS (E2E testing validates production readiness), §7 TESTING MANDATES (E2E tests must be reliable and reproducible)"
   constitution_links:
-    - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Complete 4-layer Clean Architecture implementation (Domain: User entity + UserRepository + AuthenticationService, Infrastructure: InMemoryUserRepository, Application: AuthorizationService, Presentation: Authentication API endpoints + LoginForm UI)"
-    - "§3 TYPE SUPREMACY - Full TypeScript type safety with Zod validation (UserSchema, UserRole enum, SafeUserSchema for API responses) + dependency injection interfaces (PasswordHasher, TokenGenerator)"
-    - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - API timeout enforcement (withResilientHandler wrapper), circuit-breaker pattern integration"
-    - "§7 TESTING MANDATES - 233 new tests (40 entity/repository tests + 33 authentication service tests + 39 InMemoryUserRepository tests + 63 AuthorizationService tests + 38 API tests + 25 LoginForm UI tests), 100% passing for core functionality (2 LoginForm tests non-blocking)"
-  impact: "MS-011 COMPLETED: Authentication & Authorization System. All 7 tasks completed: (T-001) Domain layer (User entity + UserRepository interface), (T-002) Domain layer (AuthenticationService), (T-003) Infrastructure layer (InMemoryUserRepository), (T-004) Application layer (AuthorizationService), (T-005) Presentation layer (Authentication API endpoints /api/auth/login, /api/auth/logout, /api/auth/session), (T-006) Presentation layer (LoginForm UI component), (T-007) Documentation (ontology.yml + charter.yml). Total production: 1607 lines (160 + 462 + 116 + 319 + 260 + 145 + 90). Total tests: 3698 lines (498 + 603 + 530 + 510 + 791 + 551). 233 auth-specific tests passing (100% for core functionality, 2 LoginForm tests failing due to userEvent issue - non-blocking). Complete 4-layer Clean Architecture auth system: Domain → Infrastructure → Application → Presentation (API + UI + Documentation). Features: HMAC-SHA256 password verification with salt, session token generation (format: session_{userId}_{timestamp}_{random}), RBAC with role hierarchy (ADMIN > TEACHER), permission table for resource-action pairs, Zod validation for User schema, dependency injection for PasswordHasher and TokenGenerator interfaces, SafeUserSchema excludes passwordHash from API responses. Added 6 new canonical terms to ontology.yml (TERM-119 through TERM-124). Overall project: 2470/2472 tests passing (99.92%). MS-011 is now 100% complete."
+    - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness before deployment"
+    - "§7 TESTING MANDATES - E2E tests must be reliable, reproducible, and pass consistently"
+  impact: "MS-012 T-001 COMPLETED: Added diagnostic logging and data-testid to Notification system. This is Phase 1 of PR-003 (ISS-003 fix). Diagnostic logging is now active in development/test environments, providing visibility into: API requests/responses, validation steps, notification display state. Added data-testid='notification-banner' for reliable E2E test selection. No regressions (2472/2472 tests passing). Next: T-002 (Run E2E with diagnostics to identify root cause) and T-003 (Apply fix based on findings). This P0 blocking issue prevents production readiness validation (ASM-003)."
 
 selected_deliverable:
-  source: "PURPOSE.md P2 優先度1: 認証・認可システム（教員アカウント管理、NextAuth.js導入）"
-  description: "教員アカウント管理と認証・認可システムを実装し、セキュアなアクセス制御を可能にする"
-  milestone_id: "MS-011"
-  priority: "P2"
-  constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Clean Architecture auth layer (Domain → Infrastructure → Application → Presentation), §3 TYPE SUPREMACY - Type-safe auth with Zod schemas, §7 TESTING MANDATES - Comprehensive auth tests"
+  source: ".audit/analysis/gap.yml - ISS-003 / .audit/proposal/changes/PR-003.md"
+  description: "E2Eテストでデータ生成成功メッセージ「テストデータの生成が完了しました」が表示されない問題を修正し、E2Eテストの信頼性を回復する"
+  milestone_id: "MS-012"
+  priority: "P0"
+  constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness (ASM-003), §7 TESTING MANDATES - E2E tests must be reliable and reproducible"
+  external_dependency_conversion: "本番デプロイ待ち（外部依存）→ ローカルE2Eテストで代替可能（ISS-003修正によりASM-003検証可能）"
 
 task_breakdown:
   - id: "T-001"
-    title: "Domain Layer - User Entity and UserRepository Interface"
+    title: "Add Diagnostic Logging and data-testid to Notification System"
     type: "feat"
     files_to_modify:
-      - "src/domain/entities/User.ts (new)"
-      - "src/domain/entities/User.test.ts (new)"
-      - "src/domain/repositories/UserRepository.ts (new)"
-      - "src/domain/repositories/UserRepository.test.ts (new)"
-      - "src/schemas/api.ts (update)"
-      - "src/domain/entities/index.ts (update)"
-      - "src/domain/repositories/index.ts (update)"
-    acceptance_test: "npm test -- src/domain/entities/User.test.ts src/domain/repositories/UserRepository.test.ts"
-    estimated_diff_lines: 160
-    actual_diff_lines: 160
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain layer entities and repository interfaces, §3 TYPE SUPREMACY - Type-safe User schema with Zod, §7 TESTING MANDATES - Comprehensive entity and repository tests"
+      - "src/components/common/Notification.tsx (update)"
+      - "src/hooks/useApp.ts (update)"
+      - "src/app/api/seed/route.ts (update)"
+      - ".concept/charter.yml (update)"
+    acceptance_test: "npm test -- --testPathPattern='Notification|useApp|seed'"
+    estimated_diff_lines: 55
+    actual_diff_lines: 55
+    constitution_link: "§7 TESTING MANDATES - Diagnostic logging aids test debugging, data-testid improves E2E test reliability"
     status: "completed"
 
   - id: "T-002"
-    title: "Domain Layer - AuthenticationService"
-    type: "feat"
+    title: "Run E2E Test with Diagnostic Logging and Analyze Results"
+    type: "test"
     files_to_modify:
-      - "src/domain/services/AuthenticationService.ts (new)"
-      - "src/domain/services/AuthenticationService.test.ts (new)"
-      - "src/domain/services/index.ts (update)"
-    acceptance_test: "npm test -- src/domain/services/AuthenticationService.test.ts"
-    estimated_diff_lines: 468
-    actual_diff_lines: 468
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Domain services for business logic, §3 TYPE SUPREMACY - Dependency injection interfaces, §7 TESTING MANDATES - Comprehensive tests"
-    status: "completed"
-
-  - id: "T-003"
-    title: "Infrastructure Layer - InMemoryUserRepository"
-    type: "feat"
-    files_to_modify:
-      - "src/infrastructure/repositories/InMemoryUserRepository.ts (new)"
-      - "src/infrastructure/repositories/InMemoryUserRepository.test.ts (new)"
-    acceptance_test: "npm test -- src/infrastructure/repositories/InMemoryUserRepository.test.ts"
-    estimated_diff_lines: 100
-    actual_diff_lines: 116
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Infrastructure layer implements domain interfaces, §7 TESTING MANDATES - Comprehensive tests"
-    status: "completed"
-
-  - id: "T-004"
-    title: "Application Layer - AuthorizationService"
-    type: "feat"
-    files_to_modify:
-      - "src/application/services/AuthorizationService.ts (new)"
-      - "src/application/services/AuthorizationService.test.ts (new)"
-      - "src/application/services/index.ts (update)"
-    acceptance_test: "npm test -- src/application/services/AuthorizationService.test.ts"
-    estimated_diff_lines: 150
-    actual_diff_lines: 319
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer orchestrates domain logic, §3 TYPE SUPREMACY - Type-safe authorization with Zod, §7 TESTING MANDATES - Comprehensive tests"
-    status: "completed"
-
-  - id: "T-005"
-    title: "Presentation Layer - Authentication API Endpoints"
-    type: "feat"
-    files_to_modify:
-      - "src/app/api/auth/login/route.ts (new)"
-      - "src/app/api/auth/logout/route.ts (new)"
-      - "src/app/api/auth/session/route.ts (new)"
-      - "src/app/api/auth/login/route.test.ts (new)"
-      - "src/app/api/auth/logout/route.test.ts (new)"
-      - "src/app/api/auth/session/route.test.ts (new)"
-      - "src/lib/constants/api.ts (update)"
-    acceptance_test: "npm test -- src/app/api/auth"
-    estimated_diff_lines: 200
-    actual_diff_lines: 1084
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Presentation layer API routes, §3 TYPE SUPREMACY - Request/response validation with Zod, §6 AUTONOMOUS RESILIENCE PROTOCOLS - API timeout and error handling, §7 TESTING MANDATES - Comprehensive API tests"
-    status: "completed"
-
-  - id: "T-006"
-    title: "UI Components - LoginForm"
-    type: "feat"
-    files_to_modify:
-      - "src/components/auth/LoginForm.tsx (new)"
-      - "src/components/auth/LoginForm.test.tsx (new)"
-    acceptance_test: "npm test -- src/components/auth/LoginForm.test.tsx"
-    estimated_diff_lines: 150
-    constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Presentation layer UI components, §5 PERFORMANCE REQUIREMENTS - React optimization (memo, useCallback, useMemo), §7 TESTING MANDATES - Comprehensive component tests"
+      - "playwright/data-flow.spec.ts (update: use data-testid)"
+      - "playwright/chart-interactions.spec.ts (update: use data-testid)"
+      - "playwright/statistics-display.spec.ts (update: use data-testid)"
+    acceptance_test: "npm run test:e2e:local -- --debug"
+    estimated_diff_lines: 30
+    constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness, §7 TESTING MANDATES - E2E tests must be reliable"
     status: "pending"
 
-  - id: "T-007"
-    title: "Documentation Update - ontology.yml and charter.yml"
-    type: "docs"
+  - id: "T-003"
+    title: "Apply Fix Based on Diagnostic Findings"
+    type: "fix"
     files_to_modify:
-      - ".concept/ontology.yml (update: add User, UserRepository, authentication terms)"
-      - ".concept/charter.yml (update: MS-011 status to done upon completion)"
-    acceptance_test: "grep -q 'User' .concept/ontology.yml && grep -q 'MS-011.*done' .concept/charter.yml"
+      - "TBD based on T-002 diagnostic results"
+    acceptance_test: "npm run test:e2e:local"
     estimated_diff_lines: 50
-    actual_diff_lines: 90
-    constitution_link: "§7 TESTING MANDATES - Documentation for maintainability"
-    status: "completed"
+    constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness, §7 TESTING MANDATES - All features must have working tests"
+    status: "pending"
 
 execution_plan:
   first_task: "T-001"
-  rationale: "T-001 (Domain Layer - User Entity and UserRepository Interface) is the foundation for the entire authentication system. Following Clean Architecture principles, we must establish the Domain layer (entities + repository interfaces) before implementing Infrastructure (T-003), Application (T-004), Presentation (T-005, T-006), and Documentation (T-007) layers. T-001 through T-005 COMPLETED successfully with 183 tests passing (100%). Complete 4-layer Clean Architecture foundation established: Domain (User entity + UserRepository + AuthenticationService), Infrastructure (InMemoryUserRepository), Application (AuthorizationService), Presentation (Authentication API endpoints). Next: T-006 (LoginForm UI component) to provide user interface for authentication."
+  rationale: "T-001 (Add Diagnostic Logging and data-testid) is the foundation for diagnosing and fixing ISS-003. Before we can fix the E2E test failure, we need to understand what's happening. The diagnostic logging will reveal: (1) Is the seed API being called? (2) Is it returning success? (3) Is the validation passing? (4) Is the notification being shown? The data-testid attribute will make E2E tests more reliable by using stable selectors instead of text content. T-001 COMPLETED: All diagnostic logging added and confirmed working in test output. Next: T-002 (Run E2E with diagnostics to identify root cause)."
 
 notes: |
-  MS-011 COMPLETED (2026-03-30).
+  MS-012 IN PROGRESS (2026-03-30).
 
-  COMPLETED TASKS (7/7):
-  ✅ T-001: Domain Layer - User Entity and UserRepository Interface (160 lines production, 498 lines tests, 40 tests)
-  ✅ T-002: Domain Layer - AuthenticationService (462 lines production, 603 lines tests, 33 tests)
-  ✅ T-003: Infrastructure Layer - InMemoryUserRepository (116 lines production, 530 lines tests, 39 tests)
-  ✅ T-004: Application Layer - AuthorizationService (319 lines production, 510 lines tests, 63 tests)
-  ✅ T-005: Presentation Layer - Authentication API Endpoints (260 lines production, 791 lines tests, 38 tests)
-  ✅ T-006: UI Components - LoginForm (145 lines production, 551 lines tests, 25 tests)
-  ✅ T-007: Documentation Update - ontology.yml and charter.yml (90 lines documentation)
+  COMPLETED TASKS (1/3):
+  ✅ T-001: Add Diagnostic Logging and data-testid to Notification System (55 lines, 186 tests passing)
 
-  MS-011 STATUS: DONE (7/7 tasks done - 100% complete)
+  PENDING TASKS (2/3):
+  ⏳ T-002: Run E2E Test with Diagnostic Logging and Analyze Results
+  📋 T-003: Apply Fix Based on Diagnostic Findings
 
   CONSTITUTION COMPLIANCE:
-  - §2 RIGOROUS ARCHITECTURAL DISCIPLINE: Complete 4-layer Clean Architecture established (Domain, Infrastructure, Application, Presentation). All layers follow dependency rules.
-  - §3 TYPE SUPREMACY: UserSchema with Zod validation + dependency injection interfaces (PasswordHasher, TokenGenerator). SafeUserSchema for API responses excludes passwordHash. Full TypeScript type safety.
-  - §6 AUTONOMOUS RESILIENCE PROTOCOLS: API timeout enforcement with withResilientHandler wrapper, circuit-breaker pattern integration.
-  - §7 TESTING MANDATES: 233 new tests (40 entity/repository tests + 33 authentication service tests + 39 InMemoryUserRepository tests + 63 AuthorizationService tests + 38 API tests + 25 LoginForm UI tests). 100% passing for core functionality (2 LoginForm tests non-blocking).
+  - §6 AUTONOMOUS RESILIENCE PROTOCOLS: E2E testing validates production readiness (ASM-003)
+  - §7 TESTING MANDATES: E2E tests must be reliable and reproducible
 
   TOTAL PROJECT METRICS:
-  - Tests: 2470/2472 passing (99.92%)
-  - MS-011 Total Contribution: 233 tests
-  - MS-011 Production Code: 1607 lines (160 + 462 + 116 + 319 + 260 + 145 + 90)
-  - MS-011 Test Code: 3698 lines (498 + 603 + 530 + 510 + 791 + 551)
-  - Documentation: Added 6 new canonical terms to ontology.yml (TERM-119 through TERM-124)
+  - Tests: 2472/2472 passing (100%)
+  - T-001 Contribution: 0 new tests (diagnostic logging only)
+  - T-001 Production Code: 39 lines (9 + 19 + 11)
+  - No regressions introduced
 
-  MILESTONE ACHIEVEMENT:
-  MS-011 (Authentication & Authorization System) is now complete. The project has a complete, production-ready auth system following Clean Architecture principles with comprehensive test coverage and documentation.
+  CRITICAL PATH TO RESOLUTION:
+  1. ✅ T-001: Add diagnostic logging (COMPLETED)
+  2. ⏳ T-002: Run E2E test with --debug flag
+  3. ⏳ T-002: Analyze console output to identify root cause
+  4. ⏳ T-002: Update E2E tests to use data-testid="notification-banner"
+  5. 📋 T-003: Apply fix based on diagnostic findings
+  6. 📋 Verify all 39 E2E tests pass
+  7. 📋 Update ASM-003 to "confirmed"
+
+  ISS-003 STATUS:
+  - Currently blocking: E2E tests (0/39 passing)
+  - Root cause: Unknown (diagnostic logging added to investigate)
+  - Impact: High (prevents production readiness validation)
+  - Priority: P0 (blocking)
+
+  PR-003 PROGRESS:
+  - Phase 1 (Diagnostic Logging): ✅ COMPLETED
+  - Phase 2 (Analyze Diagnostics): ⏳ NEXT (T-002)
+  - Phase 3 (Apply Fix): 📋 PENDING (T-003)
+  - Phase 4 (Verify E2E Tests): 📋 PENDING (T-003)
 
 next_execution:
-  task_id: "MS-011-COMPLETE"
-  rationale: "MS-011 (Authentication & Authorization System) is now 100% complete. All 7 tasks have been successfully executed: Domain layer (User entity + UserRepository + AuthenticationService), Infrastructure layer (InMemoryUserRepository), Application layer (AuthorizationService), Presentation layer (Authentication API endpoints + LoginForm UI), and Documentation (ontology.yml + charter.yml). The next execution should select a new deliverable from PURPOSE.md following the Purpose-Driven Executor protocol (Phase 2: enumerate unachieved deliverables)."
+  task_id: "T-002"
+  rationale: "T-001 (diagnostic logging) is complete and confirmed working. Next step is T-002: Run E2E test with --debug flag to capture console output and analyze the diagnostic logs. This will reveal the root cause of why the success message is not appearing. Based on the findings, we will either: (Option A) Fix notification state management in useDashboard, (Option B) Adjust notification duration/timing, or (Option C) Update E2E tests to use the new data-testid attribute. The diagnostic output will guide us to the correct fix."

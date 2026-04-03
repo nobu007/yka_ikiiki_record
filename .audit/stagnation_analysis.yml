@@ -1,0 +1,161 @@
+meta:
+  generated_at: "2026-04-04T03:50:53Z"
+  stagnation_duration_days: 0
+  total_idle_runs: 0
+  last_substantive_commit: "7f88b63d"
+  last_substantive_commit_date: "2026-04-01"
+  trigger: "test_only_plan_spin"
+
+diagnosis:
+  goal_distance:
+    north_star: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
+    current_phase: "MS-012 アクティブ (T-001, T-002 完了、T-003 保留中)"
+    blocking_factor: "ISS-003 - E2Eテストで成功メッセージが検出できない (PR-003修正が適用されているが未検証)"
+
+  loop_limitation:
+    all_automatable_complete: false
+    manual_tasks_remaining:
+      - "T-003: E2Eテスト実行 (type: test のみ)"
+      - "GAP-001: 本番デプロイ (Human Operator が必要)"
+    structural_cause: "test-only plan spin - purpose_driven_plan.yml の残りタスクが T-003 (type: test) のみ。これを実行しても plan が空になり、次のサイクルで feat/fix タスクが生成されない。"
+
+  commit_pattern:
+    audit_ratio: 0.033
+    last_feat_commit_days_ago: 0
+    last_feat_commit: "7f88b63d (2026-04-01)"
+    pattern: "test-only plan spin (audit-spin ではない)"
+
+  test_only_spin_detection:
+    detected: true
+    evidence:
+      remaining_tasks_count: 1
+      remaining_tasks_type: "test"
+      remaining_task_id: "T-003"
+      remaining_task_description: "Run E2E Tests and Verify All Tests Pass"
+    recommendation: "plan に feat/fix タスクを追加して多様性を確保する必要あり"
+
+  external_dependencies:
+    - "本番デプロイ環境 (Vercel + PostgreSQL) の設定 - Human Operator のアクションが必要"
+    - "E2Eテスト検証 - ISS-003 解決後に実行可能"
+
+  technical_frontier:
+    unexplored_areas:
+      - "E2Eテストの実行と検証 (T-003)"
+      - "本番デプロイ実行"
+      - "統合テストの拡張 (単体テストは99.43%カバレッジ済み)"
+      - "パフォーマンス監視の本番環境適用"
+      - "監査ログの実運用"
+
+countermeasures:
+  - id: CM-001
+    category: A
+    title: "Run E2E Tests to Verify PR-003 Fix (T-003)"
+    description: "PR-003 の修正 (diagnostic logging + data-testid selectors) が有効かどうかを E2E テスト実行で検証する。これが成功すれば ISS-003 が解決され、ASM-003 が confirmed に昇格できる。"
+    estimated_effort: "15m"
+    files_to_modify: []
+    acceptance_criteria: "npm run test:e2e:local で 39/39 テストがパスする"
+    north_star_contribution: "ISS-003 解決により本番稼働準備状況 (ASM-003) を検証可能にする"
+
+  - id: CM-002
+    category: A
+    title: "Add Data Visualization Export Feature (CSV/PDF)"
+    description: "現在のデータ可視化画面に CSV/PDF エクスポート機能を追加し、教育現場でのデータ利便性を向上させる。すでに MS-003 で CSV/Excel エクスポート API は実装済みなので、UI コンポーネントとの統合を行う。"
+    estimated_effort: "2h"
+    files_to_modify:
+      - "src/components/DataVisualization.tsx"
+      - "src/lib/export/csv.ts"
+      - "src/lib/export/pdf.ts"
+    acceptance_criteria: "データ可視化画面から CSV/PDF エクスポートができ、テストがパスする"
+    north_star_contribution: "教育現場でのデータ活用を支援する機能を追加"
+
+  - id: CM-003
+    category: A
+    title: "Implement Real-time Data Sync with WebSocket"
+    description: "複数の教員が同時にデータを入力した場合に、リアルタイムで他のクライアントに反映される WebSocket 機能を実装する。これにより、クラス全体での協力的なデータ入力が可能になる。"
+    estimated_effort: "3h"
+    files_to_modify:
+      - "src/lib/websocket.ts"
+      - "src/app/api/ws/route.ts"
+      - "src/hooks/useRealtimeSync.ts"
+    acceptance_criteria: "あるクライアントでデータを追加すると、他のクライアントで自動的に更新される"
+    north_star_contribution: "複数教員での同時利用を可能にする"
+
+  - id: CM-004
+    category: B
+    title: "Add E2E Tests for Authentication Flow"
+    description: "MS-011 で実装した認証システムの E2E テストを追加する。ログイン、ログアウト、セッション管理、権限チェックの統合テストを行う。"
+    estimated_effort: "2h"
+    files_to_modify:
+      - "playwright/auth-flow.spec.ts"
+      - "playwright/auth-protected-routes.spec.ts"
+    acceptance_criteria: "認証関連の E2E テスト 20件以上がパスする"
+    north_star_contribution: "認証システムの品質保証を強化"
+
+  - id: CM-005
+    category: B
+    title: "Add E2E Tests for Backup/Restore Flow"
+    description: "MS-008 で実装したバックアップ・復元システムの E2E テストを追加する。バックアップ作成、復元、データ整合性チェックの統合テストを行う。"
+    estimated_effort: "2h"
+    files_to_modify:
+      - "playwright/backup-restore.spec.ts"
+    acceptance_criteria: "バックアップ・復元関連の E2E テスト 15件以上がパスする"
+    north_star_contribution: "データ保護機能の信頼性を検証"
+
+  - id: CM-006
+    category: B
+    title: "Add E2E Tests for Notification System"
+    description: "MS-009 で実装した通知システムの E2E テストを追加する。異常検知、通知送信、通知履歴の統合テストを行う。"
+    estimated_effort: "1.5h"
+    files_to_modify:
+      - "playwright/notification-system.spec.ts"
+    acceptance_criteria: "通知関連の E2E テスト 10件以上がパスする"
+    north_star_contribution: "監視機能の品質保証を強化"
+
+  - id: CM-007
+    category: C
+    title: "Add Performance Monitoring Dashboard"
+    description: "MS-007 で実装した PerformanceMonitor の結果を可視化するダッシュボードを追加する。レンダリング時間、API応答時間、メモリ使用量をグラフで表示する。"
+    estimated_effort: "2h"
+    files_to_modify:
+      - "src/components/admin/PerformanceDashboard.tsx"
+      - "src/app/admin/performance/page.tsx"
+    acceptance_criteria: "パフォーマンスメトリクスがリアルタイムで表示される"
+    north_star_contribution: "運用上の監視能力を向上"
+
+  - id: CM-008
+    category: C
+    title: "Add CI/CD Pipeline for Automated Deployment"
+    description: "GitHub Actions を使用して、main ブランチへのマージ時に自動的に Vercel へデプロイする CI/CD パイプラインを追加する。"
+    estimated_effort: "1.5h"
+    files_to_modify:
+      - ".github/workflows/deploy.yml"
+      - "vercel.json"
+    acceptance_criteria: "main への push で自動デプロイが実行される"
+    north_star_contribution: "デプロイプロセスを自動化し、本番運用の効率を向上"
+
+  - id: CM-009
+    category: D
+    title: "Add User Manual for Teachers"
+    description: "教員向けのユーザーマニュアルを追加する。データ入力方法、統計表示の見方、エクスポート機能の使い方を説明する。"
+    estimated_effort: "1h"
+    files_to_modify:
+      - "docs/user-manual.md"
+      - "README.md"
+    acceptance_criteria: "教員がマニュアルを読むだけでシステムを使いこなせる"
+    north_star_contribution: "教育現場での導入障壁を低下"
+
+  - id: CM-010
+    category: E
+    title: "Optimize Bundle Size with Code Splitting"
+    description: "Next.js の dynamic import を使用して、初期バンドルサイズを削減する。特に認証関連コンポーネントと管理画面を遅延ロードする。"
+    estimated_effort: "1h"
+    files_to_modify:
+      - "src/app/admin/layout.tsx"
+      - "src/components/auth/LoginForm.tsx"
+    acceptance_criteria: "初期バンドルサイズが 20% 以上削減される"
+    north_star_contribution: "パフォーマンス改善によりユーザー体験を向上"
+
+recommendation:
+  immediate_action: "CM-001 を最初に実行すべき。これは現在の MS-012 の T-003 タスクそのものであり、ISS-003 解決の鍵となる。成功すれば本番稼働準備状況の検証が可能になり、失敗すれば追加の診断情報が得られる。"
+  sequence: ["CM-001", "CM-004", "CM-005", "CM-006", "CM-002", "CM-007", "CM-003", "CM-008", "CM-009", "CM-010"]
+  expected_outcome: "CM-001 で ISS-003 を解決し、その後の CM で本番運用に必要な機能・テスト・ドキュメント・インフラを拡充することで、本番デプロイの準備を完了させる。"

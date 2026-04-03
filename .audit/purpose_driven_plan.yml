@@ -1,288 +1,268 @@
 meta:
-  generated_at: "2026-03-30T12:30:00Z"
-  source_deliverable: "ISS-003 / PR-003: E2E Data Generation Success Message Not Displaying"
+  generated_at: "2026-04-04T03:50:53Z"
+  source_deliverable: "Stagnation Breaker Analysis - Test-Only Plan Spin Detected"
   milestone_id: "MS-012"
   milestone_status: "active"
+  reset_reason: "Previous plan had test-only spin (only T-003 remaining). Reset with feat/fix tasks from stagnation_analysis.yml countermeasures."
+  previous_plan_completed_count: 2
 
+# ↓ 既存planの実績を保持する（History preservation）
 completed_tasks:
   - id: "T-001"
     title: "Add Diagnostic Logging and data-testid to Notification System"
     type: "feat"
     commit_sha: "3623eb99"
     completed_at: "2026-03-30T12:00:00Z"
-    files_modified:
-      - "src/components/common/Notification.tsx (+9 lines: diagnostic logging + data-testid=\"notification-banner\" + data-notification-type attribute)"
-      - "src/hooks/useApp.ts (+19 lines: diagnostic logging in handleGenerate for API request, response, validation, and notification display)"
-      - "src/app/api/seed/route.ts (+11 lines: diagnostic logging for POST request, config, data generation completion, and response message)"
-      - ".concept/charter.yml (+16 lines: added MS-012 milestone definition)"
-    test_results: "186 existing tests still passing (100%). Diagnostic logging confirmed working in test output. All Notification, useApp, and seed API tests passing. No regressions introduced. Changes are non-invasive - only add logging and testability attributes. Overall project: 2472/2472 tests passing (100%)."
-    notes: |
-      T-001 COMPLETED (Phase 1 of PR-003).
-
-      CHANGES MADE:
-      1. Notification component:
-         - Added diagnostic logging: console.log('[NOTIFICATION] Displaying {type} notification: "{message}"')
-         - Added data-testid="notification-banner" for E2E test reliability
-         - Added data-notification-type={type} for enhanced testability
-
-      2. useDashboard hook:
-         - Added logging before API call: '[DEBUG] useDashboard: Starting data generation with config:'
-         - Added logging after response: '[DEBUG] useDashboard: Seed API response status:'
-         - Added logging for response data: '[DEBUG] useDashboard: Seed API response data:'
-         - Added logging after validation: '[DEBUG] useDashboard: Validation successful, showing success notification'
-         - Added logging for success message: '[DEBUG] useDashboard: Success message: {message}'
-         - Added logging after notification: '[DEBUG] useDashboard: Success notification displayed'
-
-      3. Seed API route:
-         - Added logging on request: '[DEBUG] Seed API: POST request received'
-         - Added logging for config: '[DEBUG] Seed API: Request config:'
-         - Added logging on completion: '[DEBUG] Seed API: Data generation complete'
-         - Added logging for response: '[DEBUG] Seed API: Response message: {message}'
-
-      4. Charter:
-         - Added MS-012 milestone for E2E fix
-         - Priority: P0 (blocking issue)
-         - Status: active
-
-      DIAGNOSTIC LOGGING CONFIRMED WORKING:
-      - Test output shows all debug messages appearing correctly
-      - Example: '[DEBUG] Seed API: Response message: テストデータの生成が完了しました'
-      - All diagnostic logs only active in development/test environment
-
-      NEXT STEPS (T-002):
-      - Run E2E tests with --debug flag to capture console output
-      - Analyze diagnostic output to identify root cause
-      - Apply fix based on findings (Option A: state management, Option B: timing, Option C: test selectors)
-      - Update E2E tests to use data-testid="notification-banner" instead of text content
-      - Verify all 39 E2E tests pass
+    notes: "Added diagnostic logging and data-testid attributes for E2E test reliability"
 
   - id: "T-002"
     title: "Update E2E Tests to Use data-testid Selectors"
     type: "fix"
     commit_sha: "20fb0c8a"
     completed_at: "2026-03-30T12:30:00Z"
-    files_modified:
-      - "playwright/data-flow.spec.ts (3 test assertions updated: data-testid selector + data-notification-type validation)"
-      - "playwright/chart-interactions.spec.ts (1 test assertion updated: beforeEach hook)"
-      - "playwright/statistics-display.spec.ts (9 test assertions updated: all data generation tests)"
-    test_results: "TypeScript compilation: PASSED (no errors in playwright files). All existing unit tests: 2472/2472 passing (100%). Changes are non-breaking - only replace text-based selectors with more reliable data-testid selectors. E2E tests will be validated in T-003."
-    notes: |
-      T-002 COMPLETED (Phase 2 of PR-003).
-
-      CHANGES MADE:
-      1. Replaced all text-based selectors with data-testid="notification-banner"
-      2. Added validation for data-notification-type="success" attribute
-      3. Updated 13 test assertions across 3 spec files
-
-      RATIONALE:
-      Text-based selectors (getByText) are fragile and can break with:
-      - Internationalization changes
-      - UI text updates
-      - Encoding issues
-
-      data-testid attributes provide:
-      - Stable selectors that don't change with UI updates
-      - Better test reliability and maintainability
-      - Clearer test intent
-
-      FILES MODIFIED:
-      1. data-flow.spec.ts: 3 tests updated
-         - 'データ生成フローの完全テスト'
-         - 'ボタンの状態変化'
-         - 'ページリロード時の状態保持'
-
-      2. chart-interactions.spec.ts: 1 test updated
-         - beforeEach hook (affects all 15 tests in suite)
-
-      3. statistics-display.spec.ts: 9 tests updated
-         - All tests that verify data generation completion
-
-      NEXT STEPS (T-003):
-      - Run E2E tests to verify all 39 tests pass
-      - Analyze any remaining failures
-      - Apply additional fixes if needed
-    files_modified:
-      - "src/components/common/Notification.tsx (+9 lines: diagnostic logging + data-testid=\"notification-banner\" + data-notification-type attribute)"
-      - "src/hooks/useApp.ts (+19 lines: diagnostic logging in handleGenerate for API request, response, validation, and notification display)"
-      - "src/app/api/seed/route.ts (+11 lines: diagnostic logging for POST request, config, data generation completion, and response message)"
-      - ".concept/charter.yml (+16 lines: added MS-012 milestone definition)"
-    test_results: "186 existing tests still passing (100%). Diagnostic logging confirmed working in test output. All Notification, useApp, and seed API tests passing. No regressions introduced. Changes are non-invasive - only add logging and testability attributes. Overall project: 2472/2472 tests passing (100%)."
-    notes: |
-      T-001 COMPLETED (Phase 1 of PR-003).
-
-      CHANGES MADE:
-      1. Notification component:
-         - Added diagnostic logging: console.log('[NOTIFICATION] Displaying {type} notification: "{message}"')
-         - Added data-testid="notification-banner" for E2E test reliability
-         - Added data-notification-type={type} for enhanced testability
-
-      2. useDashboard hook:
-         - Added logging before API call: '[DEBUG] useDashboard: Starting data generation with config:'
-         - Added logging after response: '[DEBUG] useDashboard: Seed API response status:'
-         - Added logging for response data: '[DEBUG] useDashboard: Seed API response data:'
-         - Added logging after validation: '[DEBUG] useDashboard: Validation successful, showing success notification'
-         - Added logging for success message: '[DEBUG] useDashboard: Success message: {message}'
-         - Added logging after notification: '[DEBUG] useDashboard: Success notification displayed'
-
-      3. Seed API route:
-         - Added logging on request: '[DEBUG] Seed API: POST request received'
-         - Added logging for config: '[DEBUG] Seed API: Request config:'
-         - Added logging on completion: '[DEBUG] Seed API: Data generation complete'
-         - Added logging for response: '[DEBUG] Seed API: Response message: {message}'
-
-      4. Charter:
-         - Added MS-012 milestone for E2E fix
-         - Priority: P0 (blocking issue)
-         - Status: active
-
-      DIAGNOSTIC LOGGING CONFIRMED WORKING:
-      - Test output shows all debug messages appearing correctly
-      - Example: '[DEBUG] Seed API: Response message: テストデータの生成が完了しました'
-      - All diagnostic logs only active in development/test environment
-
-      NEXT STEPS (T-002):
-      - Run E2E tests with --debug flag to capture console output
-      - Analyze diagnostic output to identify root cause
-      - Apply fix based on findings (Option A: state management, Option B: timing, Option C: test selectors)
-      - Update E2E tests to use data-testid="notification-banner" instead of text content
-      - Verify all 39 E2E tests pass
+    notes: "Updated 13 test assertions across 3 spec files to use data-testid selectors"
 
 remaining_tasks:
+  # CM-001: Complete current MS-012 task
   - id: "T-003"
     title: "Run E2E Tests and Verify All Tests Pass"
     type: "test"
-    files_to_modify:
-      - "No code changes expected (unless tests reveal additional issues)"
+    source_cm: "CM-001"
+    files_to_modify: []
     acceptance_test: "npm run test:e2e:local"
     estimated_diff_lines: 0
-    constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness, §7 TESTING MANDATES - All features must have working tests"
+    constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness"
     notes: |
-      T-003: Execute E2E test suite and verify all 39 tests pass.
+      Execute E2E test suite to verify PR-003 fix (diagnostic logging + data-testid selectors).
+      Expected: 39/39 tests passing.
+      If tests pass: MS-012 complete, ISS-003 resolved.
+      If tests fail: Analyze failure patterns and apply targeted fixes.
 
-      EXPECTED OUTCOME:
-      - All 39 E2E tests should pass with new data-testid selectors
-      - Tests should be more reliable and less fragile
-      - No more timeout failures waiting for text content
+  # CM-002: Add export UI feature (feat)
+  - id: "T-004"
+    title: "Add Data Visualization Export Feature (CSV/PDF)"
+    type: "feat"
+    source_cm: "CM-002"
+    files_to_modify:
+      - "src/components/DataVisualization.tsx"
+      - "src/lib/export/csv.ts"
+      - "src/lib/export/pdf.ts"
+    acceptance_test: "npm test -- --testPathPattern='export|DataVisualization'"
+    estimated_diff_lines: 150
+    constitution_link: "§7 TESTING MANDATES - All features must have tests"
+    notes: |
+      Integrate CSV/PDF export functionality into DataVisualization UI.
+      MS-003 already implemented CSV/Excel export APIs.
+      This task adds UI integration and PDF export capability.
 
-      IF TESTS PASS:
-      - MS-012 deliverable is complete
-      - Update charter.yml status to "done"
-      - ISS-003 is resolved
-      - PR-003 is complete
+  # CM-004: Add auth E2E tests (test)
+  - id: "T-005"
+    title: "Add E2E Tests for Authentication Flow"
+    type: "test"
+    source_cm: "CM-004"
+    files_to_modify:
+      - "playwright/auth-flow.spec.ts"
+      - "playwright/auth-protected-routes.spec.ts"
+    acceptance_test: "npm run test:e2e:local -- playwright/auth-flow.spec.ts"
+    estimated_diff_lines: 200
+    constitution_link: "§7 TESTING MANDATES - All features must have comprehensive tests"
+    notes: |
+      MS-011 implemented authentication system.
+      Add E2E tests for login, logout, session management, and authorization.
+      Target: 20+ E2E tests covering authentication flows.
 
-      IF TESTS FAIL:
-      - Analyze failure patterns
-      - Apply targeted fixes (may need additional tasks)
-      - Re-run tests until all pass
+  # CM-005: Add backup E2E tests (test)
+  - id: "T-006"
+    title: "Add E2E Tests for Backup/Restore Flow"
+    type: "test"
+    source_cm: "CM-005"
+    files_to_modify:
+      - "playwright/backup-restore.spec.ts"
+    acceptance_test: "npm run test:e2e:local -- playwright/backup-restore.spec.ts"
+    estimated_diff_lines: 150
+    constitution_link: "§7 TESTING MANDATES - All features must have comprehensive tests"
+    notes: |
+      MS-008 implemented backup/restore system.
+      Add E2E tests for backup creation, restoration, and data integrity.
+      Target: 15+ E2E tests covering backup/restore flows.
 
-      SUCCESS CRITERIA:
-      - 39/39 E2E tests passing
-      - No timeout errors
-      - No selector errors
-      - Consistent test results across multiple runs
+  # CM-006: Add notification E2E tests (test)
+  - id: "T-007"
+    title: "Add E2E Tests for Notification System"
+    type: "test"
+    source_cm: "CM-006"
+    files_to_modify:
+      - "playwright/notification-system.spec.ts"
+    acceptance_test: "npm run test:e2e:local -- playwright/notification-system.spec.ts"
+    estimated_diff_lines: 120
+    constitution_link: "§7 TESTING MANDATES - All features must have comprehensive tests"
+    notes: |
+      MS-009 implemented notification system.
+      Add E2E tests for anomaly detection, notification sending, and history.
+      Target: 10+ E2E tests covering notification flows.
+
+  # CM-007: Add performance dashboard (feat)
+  - id: "T-008"
+    title: "Add Performance Monitoring Dashboard"
+    type: "feat"
+    source_cm: "CM-007"
+    files_to_modify:
+      - "src/components/admin/PerformanceDashboard.tsx"
+      - "src/app/admin/performance/page.tsx"
+    acceptance_test: "npm test -- --testPathPattern='PerformanceDashboard'"
+    estimated_diff_lines: 180
+    constitution_link: "§5 PERFORMANCE REQUIREMENTS - Performance monitoring and optimization"
+    notes: |
+      MS-007 implemented PerformanceMonitor utility.
+      Add admin dashboard to visualize performance metrics.
+      Display render times, API response times, memory usage in graphs.
+
+  # CM-009: Add user manual (docs)
+  - id: "T-009"
+    title: "Add User Manual for Teachers"
+    type: "docs"
+    source_cm: "CM-009"
+    files_to_modify:
+      - "docs/user-manual.md"
+      - "README.md"
+    acceptance_test: "Documentation review - ensure all features are documented"
+    estimated_diff_lines: 300
+    constitution_link: "§1 DOCUMENTATION STANDARDS - All features must be documented"
+    notes: |
+      Create comprehensive user manual for teachers.
+      Cover: data input, statistics viewing, export features.
+      Goal: Teachers can use system independently after reading manual.
+
+  # CM-010: Optimize bundle size (perf)
+  - id: "T-010"
+    title: "Optimize Bundle Size with Code Splitting"
+    type: "refactor"
+    source_cm: "CM-010"
+    files_to_modify:
+      - "src/app/admin/layout.tsx"
+      - "src/components/auth/LoginForm.tsx"
+    acceptance_test: "npm run build and verify bundle size reduction > 20%"
+    estimated_diff_lines: 50
+    constitution_link: "§5 PERFORMANCE REQUIREMENTS - React component optimization"
+    notes: |
+      Use Next.js dynamic import to reduce initial bundle size.
+      Lazy load auth components and admin dashboard.
+      Target: 20%+ reduction in initial bundle size.
 
 execution_summary:
   constitution_mission: "日本の学校向けに、学生の成長と教室文化を1分間の記録で可視化する教育インフラを提供する"
-  quality_gate_contributed: "P0 - E2E Data Generation Success Message Fix → §6 AUTONOMOUS RESILIENCE PROTOCOLS (E2E testing validates production readiness), §7 TESTING MANDATES (E2E tests must be reliable and reproducible)"
+  quality_gate_contributed: "Multi-category improvement plan → Breaking test-only spin with diverse task types (feat, fix, test, docs, refactor)"
   constitution_links:
-    - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness before deployment"
-    - "§7 TESTING MANDATES - E2E tests must be reliable, reproducible, and pass consistently"
-  impact: "MS-012 T-001 and T-002 COMPLETED: Added diagnostic logging and data-testid to Notification system (T-001), then updated all E2E tests to use data-testid selectors (T-002). This is Phase 1-2 of PR-003 (ISS-003 fix). Diagnostic logging is active in development/test environments, providing visibility into: API requests/responses, validation steps, notification display state. All E2E tests now use stable data-testid='notification-banner' selectors instead of fragile text-based selectors. No regressions (2472/2472 unit tests passing). Next: T-003 (Run E2E tests and verify all 39 tests pass). This P0 blocking issue prevents production readiness validation (ASM-003)."
+    - "§5 PERFORMANCE REQUIREMENTS - Performance monitoring and optimization"
+    - "§7 TESTING MANDATES - All features must have comprehensive tests"
+    - "§1 DOCUMENTATION STANDARDS - All features must be documented"
+  impact: "Stagnation breaker analysis detected test-only plan spin. Reset purpose_driven_plan.yml with 8 new tasks (T-003 to T-010) covering: test completion (T-003), feat (T-004, T-008), test (T-005, T-006, T-007), docs (T-009), refactor (T-010). This breaks the test-only cycle and provides path to production readiness."
 
 selected_deliverable:
-  source: ".audit/analysis/gap.yml - ISS-003 / .audit/proposal/changes/PR-003.md"
-  description: "E2Eテストでデータ生成成功メッセージ「テストデータの生成が完了しました」が表示されない問題を修正し、E2Eテストの信頼性を回復する"
+  source: ".audit/stagnation_analysis.yml - Countermeasures CM-001 through CM-010"
+  description: "Break test-only plan spin and add diverse tasks covering feature development, testing, documentation, and optimization"
   milestone_id: "MS-012"
   priority: "P0"
-  constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness (ASM-003), §7 TESTING MANDATES - E2E tests must be reliable and reproducible"
-  external_dependency_conversion: "本番デプロイ待ち（外部依存）→ ローカルE2Eテストで代替可能（ISS-003修正によりASM-003検証可能）"
+  constitution_link: "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Continuous improvement with diverse task types"
+  external_dependency_conversion: "test-only spin → diverse task portfolio with feat/fix/docs/refactor tasks"
 
 task_breakdown:
-  - id: "T-001"
-    title: "Add Diagnostic Logging and data-testid to Notification System"
-    type: "feat"
-    files_to_modify:
-      - "src/components/common/Notification.tsx (update)"
-      - "src/hooks/useApp.ts (update)"
-      - "src/app/api/seed/route.ts (update)"
-      - ".concept/charter.yml (update)"
-    acceptance_test: "npm test -- --testPathPattern='Notification|useApp|seed'"
-    estimated_diff_lines: 55
-    actual_diff_lines: 55
-    constitution_link: "§7 TESTING MANDATES - Diagnostic logging aids test debugging, data-testid improves E2E test reliability"
-    status: "completed"
-    commit_sha: "3623eb99"
-
-  - id: "T-002"
-    title: "Update E2E Tests to Use data-testid Selectors"
-    type: "fix"
-    files_to_modify:
-      - "playwright/data-flow.spec.ts (update: use data-testid)"
-      - "playwright/chart-interactions.spec.ts (update: use data-testid)"
-      - "playwright/statistics-display.spec.ts (update: use data-testid)"
-    acceptance_test: "npm run test:e2e:local -- --debug"
-    estimated_diff_lines: 30
-    actual_diff_lines: 52
-    constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness, §7 TESTING MANDATES - E2E tests must be reliable"
-    status: "completed"
-    commit_sha: "20fb0c8a"
-
   - id: "T-003"
     title: "Run E2E Tests and Verify All Tests Pass"
     type: "test"
-    files_to_modify:
-      - "No code changes expected (unless tests reveal additional issues)"
-    acceptance_test: "npm run test:e2e:local"
-    estimated_diff_lines: 0
-    constitution_link: "§6 AUTONOMOUS RESILIENCE PROTOCOLS - E2E testing validates production readiness, §7 TESTING MANDATES - All features must have working tests"
+    source_cm: "CM-001"
+    status: "pending"
+
+  - id: "T-004"
+    title: "Add Data Visualization Export Feature (CSV/PDF)"
+    type: "feat"
+    source_cm: "CM-002"
+    status: "pending"
+
+  - id: "T-005"
+    title: "Add E2E Tests for Authentication Flow"
+    type: "test"
+    source_cm: "CM-004"
+    status: "pending"
+
+  - id: "T-006"
+    title: "Add E2E Tests for Backup/Restore Flow"
+    type: "test"
+    source_cm: "CM-005"
+    status: "pending"
+
+  - id: "T-007"
+    title: "Add E2E Tests for Notification System"
+    type: "test"
+    source_cm: "CM-006"
+    status: "pending"
+
+  - id: "T-008"
+    title: "Add Performance Monitoring Dashboard"
+    type: "feat"
+    source_cm: "CM-007"
+    status: "pending"
+
+  - id: "T-009"
+    title: "Add User Manual for Teachers"
+    type: "docs"
+    source_cm: "CM-009"
+    status: "pending"
+
+  - id: "T-010"
+    title: "Optimize Bundle Size with Code Splitting"
+    type: "refactor"
+    source_cm: "CM-010"
     status: "pending"
 
 execution_plan:
-  first_task: "T-001"
-  second_task: "T-002"
-  third_task: "T-003"
-  rationale: "T-001 (Add Diagnostic Logging and data-testid) is the foundation for diagnosing and fixing ISS-003. T-001 COMPLETED: All diagnostic logging added and confirmed working in test output. T-002 (Update E2E Tests) COMPLETED: All 13 test assertions updated across 3 spec files to use data-testid='notification-banner' selectors. Next: T-003 (Run E2E tests and verify all 39 tests pass). The diagnostic logging will help identify any remaining issues, and the data-testid selectors provide stable, reliable test targeting."
+  first_task: "T-003"
+  second_task: "T-004"
+  third_task: "T-005"
+  rationale: "T-003 completes the current MS-012 milestone (E2E validation). Then T-004 adds export UI feature (feat), T-005-T-007 add E2E tests for implemented features, T-008 adds performance dashboard, T-009 adds documentation, T-010 optimizes bundle size. This diverse task portfolio breaks the test-only spin and provides clear path to production readiness."
 
 notes: |
-  MS-012 IN PROGRESS (2026-03-30).
+  STAGNATION BREAKER ANALYSIS COMPLETE (2026-04-04).
 
-  COMPLETED TASKS (2/3):
-  ✅ T-001: Add Diagnostic Logging and data-testid to Notification System (55 lines, 186 tests passing) - Commit: 3623eb99
-  ✅ T-002: Update E2E Tests to Use data-testid Selectors (52 lines, 13 assertions updated) - Commit: 20fb0c8a
+  DIAGNOSIS:
+  - Trigger: test-only plan spin detected
+  - Evidence: Only T-003 (type: test) remaining in plan
+  - Impact: Plan would complete without generating feat/fix commits
+  - Solution: Reset plan with 8 new tasks from stagnation_analysis.yml
 
-  PENDING TASKS (1/3):
-  📋 T-003: Run E2E Tests and Verify All Tests Pass
+  PLAN RESET:
+  - Previous completed tasks: 2 (T-001, T-002) - PRESERVED
+  - New remaining tasks: 8 (T-003 to T-010)
+  - Task type distribution:
+    * test: 4 (T-003, T-005, T-006, T-007)
+    * feat: 2 (T-004, T-008)
+    * docs: 1 (T-009)
+    * refactor: 1 (T-010)
 
-  CONSTITUTION COMPLIANCE:
-  - §6 AUTONOMOUS RESILIENCE PROTOCOLS: E2E testing validates production readiness (ASM-003)
-  - §7 TESTING MANDATES: E2E tests must be reliable and reproducible
+  NEXT EXECUTION:
+  1. T-003: Run E2E tests (validate PR-003 fix)
+  2. T-004: Add export UI feature (feat)
+  3. T-005: Add auth E2E tests (test)
+  4. T-006: Add backup E2E tests (test)
+  5. T-007: Add notification E2E tests (test)
+  6. T-008: Add performance dashboard (feat)
+  7. T-009: Add user manual (docs)
+  8. T-010: Optimize bundle size (refactor)
 
-  TOTAL PROJECT METRICS:
-  - Tests: 2472/2472 passing (100%)
-  - T-001 Contribution: 39 lines production code (diagnostic logging)
-  - T-002 Contribution: 52 lines test code (data-testid selectors)
-  - No regressions introduced
+  CRITICAL PATH TO PRODUCTION READINESS:
+  1. ✅ T-001: Diagnostic logging (COMPLETED)
+  2. ✅ T-002: data-testid selectors (COMPLETED)
+  3. 📋 T-003: Run E2E tests (NEXT)
+  4. 📋 T-004-T-010: Diverse feature/test/doc tasks
+  5. 📋 Production deployment (Human Operator)
 
-  CRITICAL PATH TO RESOLUTION:
-  1. ✅ T-001: Add diagnostic logging (COMPLETED)
-  2. ✅ T-002: Update E2E tests to use data-testid="notification-banner" (COMPLETED)
-  3. 📋 T-003: Run E2E tests and verify all 39 tests pass
-  4. 📋 Update ASM-003 to "confirmed" (if all tests pass)
-  5. 📋 Update MS-012 status to "done" (if all tests pass)
-
-  ISS-003 STATUS:
-  - Currently blocking: E2E tests (verification pending)
-  - Root cause: Identified - text-based selectors were fragile
-  - Impact: High (prevents production readiness validation)
-  - Priority: P0 (blocking)
-  - Resolution: T-002 applied fix (data-testid selectors), T-003 will verify
-
-  PR-003 PROGRESS:
-  - Phase 1 (Diagnostic Logging): ✅ COMPLETED (T-001)
-  - Phase 2 (Update E2E Tests): ✅ COMPLETED (T-002)
-  - Phase 3 (Run E2E Tests): 📋 NEXT (T-003)
-  - Phase 4 (Verify Resolution): 📋 PENDING (after T-003)
+  STAGNATION BREAKER OUTCOME:
+  - Identified test-only plan spin as root cause
+  - Generated 10 countermeasures (CM-001 to CM-010)
+  - Reset plan with diverse task types
+  - Preserved completed task history
+  - Provided clear path to production readiness
 
 next_execution:
   task_id: "T-003"
-  rationale: "T-001 (diagnostic logging) and T-002 (data-testid selectors) are complete. Next step is T-003: Run E2E tests to verify all 39 tests pass. The data-testid selectors should provide stable, reliable targeting for notification elements. If all tests pass, MS-012 is complete and ISS-003 is resolved. If tests fail, we'll analyze the failure patterns and apply targeted fixes."
+  rationale: "Complete MS-012 by running E2E tests to verify PR-003 fix. If tests pass, ISS-003 is resolved and ASM-003 can be upgraded to 'confirmed'. If tests fail, analyze failure patterns and apply targeted fixes. After T-003, proceed with T-004 (export UI feature) to add substantive feat commit."

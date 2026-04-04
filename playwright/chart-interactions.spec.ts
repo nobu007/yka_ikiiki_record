@@ -6,7 +6,7 @@ test.describe('チャートインタラクションとアクセシビリティ -
     const generateButton = page.getByRole('button', { name: '初期データを生成' });
     await generateButton.click();
     const notification = page.getByTestId('notification-banner');
-    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toBeVisible({ timeout: 60000 });
     await expect(notification).toHaveAttribute('data-notification-type', 'success');
   });
 

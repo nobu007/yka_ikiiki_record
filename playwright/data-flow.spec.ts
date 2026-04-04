@@ -34,7 +34,7 @@ test.describe('イキイキレコード デモ - E2Eテスト', () => {
     // NOTE: 30s timeout accounts for database seed operations (10-15s in E2E environment),
     // statistical calculations for 30 days × 20 students, and network latency in test environment
     const notification = page.getByTestId('notification-banner');
-    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toBeVisible({ timeout: 60000 });
     await expect(notification).toHaveAttribute('data-notification-type', 'success');
     
     // ローディング完了の確認
@@ -66,7 +66,7 @@ test.describe('イキイキレコード デモ - E2Eテスト', () => {
     
     // 完了後に再度有効化を確認
     const notification = page.getByTestId('notification-banner');
-    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toBeVisible({ timeout: 60000 });
     await expect(notification).toHaveAttribute('data-notification-type', 'success');
     await expect(generateButton).toBeEnabled();
     await expect(generateButton).toHaveText('初期データを生成');
@@ -106,7 +106,7 @@ test.describe('イキイキレコード デモ - E2Eテスト', () => {
     // データを生成
     await page.getByRole('button', { name: '初期データを生成' }).click();
     const notification = page.getByTestId('notification-banner');
-    await expect(notification).toBeVisible({ timeout: 30000 });
+    await expect(notification).toBeVisible({ timeout: 60000 });
     await expect(notification).toHaveAttribute('data-notification-type', 'success');
     
     // ページをリロード

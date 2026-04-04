@@ -262,7 +262,10 @@ milestones:
       - "診断ログをuseDashboardフックに追加 (src/hooks/useApp.ts) - T-001 completed"
       - "診断ログをseed APIに追加 (src/app/api/seed/route.ts) - T-001 completed"
       - "E2Eテストをdata-testidセレクタに更新 (playwright/*.spec.ts) - T-002 completed"
-      - "E2Eテスト実行と検証 - T-003 (future)"
+      - "Playwright設定の修正 (playwright.config.ts) - T-003 completed"
+      - "環境設定ドキュメント追加 (.env.example) - T-003 completed"
+      - "ISS-003の根本原因特定とドキュメント化 - T-003 completed"
+      - "E2Eテスト全件実行と検証 - BLOCKED (ユーザーによる.env設定が必要)"
     acceptance:
       - type: "quality_gate"
         target: "診断ログが動作していることを確認し、E2Eテストで成功メッセージが検出できること"
@@ -271,7 +274,7 @@ milestones:
       - "§7 TESTING MANDATES - E2E tests must be reliable and reproducible"
     priority: "P0"
     status: "active"
-    progress_note: "MS-012 progress update 2026-03-30. T-001 completed: Added diagnostic logging and data-testid attributes to Notification component, useDashboard hook, and seed API route. T-002 completed: Updated all E2E tests (data-flow.spec.ts, chart-interactions.spec.ts, statistics-display.spec.ts) to use data-testid='notification-banner' selector instead of fragile text-based selectors. Total changes: 13 test assertions updated across 3 files. TypeScript compilation: PASSED. Next: T-003 (Run E2E tests and verify all 39 tests pass). Related: ISS-003, PR-003."
+    progress_note: "MS-012 ROOT CAUSE IDENTIFIED (2026-03-30). T-001 completed: Diagnostic logging added. T-002 completed: E2E tests updated to use data-testid selectors. T-003 IN PROGRESS: Root cause identified - DATABASE_PROVIDER was set to 'prisma' causing seed API to fail (Table public.Record does not exist). FIXED: Updated playwright.config.ts, added .env.example documentation. BLOCKED: User must update .env file to set DATABASE_PROVIDER='mirage' and restart dev server. After .env fix, all 39 E2E tests expected to pass. Related: ISS-003, PR-003."
 
 work_policy:
   default_mode: "commit"

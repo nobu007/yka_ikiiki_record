@@ -18,6 +18,7 @@
     "test:e2e:chromium": "playwright test --project=chromium",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:local": "bash scripts/test-e2e-local.sh",
+    "sec:allow-scripts": "npx @lavamoat/allow-scripts auto",
     "quality:check": "python3 scripts/meta_checker.py",
     "db:seed": "tsx prisma/seed.ts",
     "db:reset": "prisma migrate reset && pnpm run db:seed",

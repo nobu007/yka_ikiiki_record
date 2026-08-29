@@ -233,3 +233,6 @@ playwright-report/
 /prisma/*.db
 /prisma/*.db-journal
 /dev.db
+
+# harness-managed git worktrees (tas/ai-hub)
+/worktrees/

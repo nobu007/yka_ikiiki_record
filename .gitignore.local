@@ -49,3 +49,7 @@ chain_checkpoints/
 
 # AI Hub audit results (auto-generated)
 .audit/
+
+# AI Hub harness chain worktrees (git worktree add under /worktrees/).
+# Never commit these; deleting them would kill active chain runs.
+/worktrees/

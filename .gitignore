@@ -239,3 +239,7 @@ playwright-report/
 # is not present in this repo); never commit these — deleting them would kill
 # active chain runs.
 /worktrees/
+
+# auto-added by instructions/10_storage/100_audit_storage_policy.md
+.audit/development_direction.yml
+

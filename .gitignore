@@ -236,3 +236,9 @@ playwright-report/
 
 # ai-hub runtime metadata (managed by tas_autopilot)
 .audit/development_direction.yml
+
+# AI Hub harness chain worktrees (git worktree add under /worktrees/).
+# Kept in sync with .gitignore.local (merge script scripts_python/gitignore_manager.py
+# is not present in this repo); never commit these — deleting them would kill
+# active chain runs.
+/worktrees/

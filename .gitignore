@@ -237,3 +237,6 @@ playwright-report/
 # auto-added by instructions/10_storage/100_audit_storage_policy.md
 .audit/development_direction.yml
 
+# ai-hub monitoring drop (llm_analyzer.py writes a new timestamped file per run)
+data/llm_analysis_*.md
+

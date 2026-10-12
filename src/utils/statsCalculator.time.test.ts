@@ -47,6 +47,18 @@ describe("statsCalculator - Time-Based Statistics", () => {
     it("returns empty array for empty input", () => {
       expect(calculateMonthlyStats([])).toEqual([]);
     });
+
+    it("uses the Japanese calendar independently of the host timezone", () => {
+      const monthStats = calculateMonthlyStats([
+        { date: new Date("2024-03-31T16:00:00.000Z"), emotion: 3 },
+      ]);
+      const weekdayStats = calculateDayOfWeekStats([
+        { date: new Date("2025-05-24T20:00:00.000Z"), emotion: 4 },
+      ]);
+
+      expect(monthStats[0]?.month).toBe("2024-04");
+      expect(weekdayStats.find(({ day }) => day === "日")?.count).toBe(1);
+    });
   });
 
   describe("calculateDayOfWeekStats", () => {

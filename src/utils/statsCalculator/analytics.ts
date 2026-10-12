@@ -3,6 +3,10 @@ import { UI_CONFIG } from "@/lib/config";
 import { average } from "./math";
 import type { EmotionData } from "./generation";
 import { calculateTrendline } from "./trend";
+import {
+  getBusinessCalendarWeekday,
+  getBusinessCalendarYearMonth,
+} from "../calendar";
 
 /**
  * Calculates the average of emotion values from an array of EmotionData.
@@ -40,7 +44,7 @@ const groupByMonth = (emotions: EmotionData[]): Map<string, number[]> => {
   const groups = new Map<string, number[]>();
 
   emotions.forEach(({ date, emotion }) => {
-    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    const key = getBusinessCalendarYearMonth(date);
     const values = groups.get(key) || [];
     values.push(emotion);
     groups.set(key, values);
@@ -122,7 +126,7 @@ export const calculateMonthlyStats = (emotions: EmotionData[]) =>
 export const calculateDayOfWeekStats = (emotions: EmotionData[]) =>
   UI_CONFIG.daysOfWeek.map((day) => {
     const dayEmotions = emotions.filter(
-      ({ date }) => UI_CONFIG.daysOfWeek[date.getDay()] === day,
+      ({ date }) => getBusinessCalendarWeekday(date) === day,
     );
     return {
       day,

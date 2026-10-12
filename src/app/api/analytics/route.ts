@@ -5,6 +5,12 @@ import { createRecordRepository } from "@/infrastructure/factories/repositoryFac
 import { DEFAULT_TIMEOUTS } from "@/lib/resilience";
 import { API_OPERATIONS } from "@/lib/constants/api";
 import type { Record as RecordType } from "@/schemas/api";
+import {
+  getBusinessCalendarDate,
+  getBusinessCalendarMonthsAgo,
+  getBusinessCalendarWeekStartDate,
+  getBusinessCalendarYearMonth,
+} from "@/utils/calendar";
 
 const AnalyticsQuerySchema = z.object({
   student: z.string().optional(),
@@ -27,11 +33,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         ? allRecords.filter((r) => r.student === student)
         : allRecords;
 
-      const cutoffDate = new Date();
-      cutoffDate.setMonth(cutoffDate.getMonth() - months);
+      const cutoffDate = getBusinessCalendarMonthsAgo(new Date(), months);
 
       const recentRecords = filteredRecords.filter(
-        (r) => new Date(r.date) >= cutoffDate,
+        (r) => getBusinessCalendarDate(new Date(r.date)) >= cutoffDate,
       );
 
       const analytics = calculateAnalytics(recentRecords, granularity);
@@ -140,15 +145,11 @@ function groupByPeriod(
     let key: string;
 
     if (granularity === "day") {
-      const isoString = date.toISOString().split("T")[0];
-      key = isoString ?? date.toISOString().slice(0, 10);
+      key = getBusinessCalendarDate(date);
     } else if (granularity === "week") {
-      const weekStart = new Date(date);
-      weekStart.setDate(date.getDate() - date.getDay());
-      const isoString = weekStart.toISOString().split("T")[0];
-      key = isoString ?? weekStart.toISOString().slice(0, 10);
+      key = getBusinessCalendarWeekStartDate(date);
     } else {
-      key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      key = getBusinessCalendarYearMonth(date);
     }
 
     const existing = grouped.get(key);

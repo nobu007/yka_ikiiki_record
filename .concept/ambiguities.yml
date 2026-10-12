@@ -1,1 +1,31 @@
-ambiguities: []
+ambiguities:
+- id: AMB-001
+  term: NotificationProvider
+  topic: '名称衝突: ドメインのNotificationProvider vs UI通知コンポーネント vs useNotificationフック'
+  severity: low
+  uncertainty: 0.3
+  candidates:
+  - NotificationProvider=ドメインエンティティ（通知チャネル設定）
+  - Notification=UIトーストコンポーネント（UIComponentsのsynonym）
+  - useNotification=Reactフック
+  missing_info:
+  - 将来UI側名称がNotificationProviderに寄せられるか
+  linked_conflicts: []
+  auto_decision:
+    status: applied
+    decision_key: AUTO:NotificationProvider.boundary:domain_entity_vs_ui_toast
+    chosen: NotificationProvider=ドメインエンティティ / Notification=UIコンポーネント(UIComponents
+      synonym) / useNotification=フック として区別
+    policy: naming_convention + blast_radius_minimal
+    confidence_auto: 0.8
+    decided_at_run: '2026-10-12T19:35:37Z'
+    expires_after_runs: 20
+    revert_triggers:
+    - primary_evidence_contradiction
+    - ui_rename
+  last_touched_run: '2026-10-12T19:35:37Z'
+  evidence:
+  - source: src/components/common/Notification.tsx
+    quote: export function Notification
+  - source: src/hooks/useNotification.ts
+    quote: export function useNotification

@@ -1,1 +1,99 @@
-queue: []
+queue:
+- id: TP-000227-1
+  proposed_canonical: Backup
+  proposed_layer: domain
+  term_raw_examples:
+  - Backup
+  - BackupStatus
+  - BackupService
+  - バックアップ
+  reason: 'New feature area added after last sync (2026-03-22): entity+service+repository+API
+    routes. 2+ primary sources (spec doc, tests). No mergeable existing term.'
+  evidence:
+  - source: .spec-workflow/specs/Backup/Backup_spec.md
+    quote: '責務: バックアップデータの不変的な表現（時点スナップショット）'
+  - source: src/domain/entities/Backup.ts
+    quote: export type BackupStatus = "pending" | "in_progress" | "completed" | "failed";
+  auto_merge_candidates: []
+  decision: accepted
+  expires_after_runs: 10
+  created_run: '2026-10-12T19:35:37Z'
+- id: TP-000227-2
+  proposed_canonical: NotificationProvider
+  proposed_layer: domain
+  term_raw_examples:
+  - NotificationProvider
+  - NotificationService
+  - EmailNotificationProvider
+  - 通知プロバイダー
+  reason: Domain notification-provider concept. Distinct from UIComponents synonym
+    'Notification' (toast UI) and useNotification hook; boundary exclusion recorded
+    in AMB-001.
+  evidence:
+  - source: .spec-workflow/specs/NotificationProvider/NotificationProvider_spec.md
+    quote: 通知プロバイダー（Email、SMS、Webhook、In-App、Slack）の設定、チャンネル、ステータスを管理するドメインエンティティ
+  - source: src/domain/entities/NotificationProvider.ts
+    quote: export enum NotificationProviderType
+  auto_merge_candidates:
+  - term: UIComponents
+    similarity: 0.31
+  decision: accepted
+  expires_after_runs: 10
+  created_run: '2026-10-12T19:35:37Z'
+- id: TP-000227-3
+  proposed_canonical: TrendAnalysis
+  proposed_layer: domain
+  term_raw_examples:
+  - TrendAnalysis
+  - TrendDataPoint
+  - TrendAnalysisService
+  - トレンド分析
+  reason: 'New feature area: entity+service+repository+/api/trends+chart component.
+    2+ primary sources (spec doc, tests).'
+  evidence:
+  - source: .spec-workflow/specs/TrendAnalysis/TrendAnalysis_spec.md
+    quote: 生徒およびクラスの感情データの長期的トレンド分析を提供する
+  - source: src/domain/entities/TrendAnalysis.ts
+    quote: export interface TrendDataPoint
+  auto_merge_candidates: []
+  decision: accepted
+  expires_after_runs: 10
+  created_run: '2026-10-12T19:35:37Z'
+- id: TP-000227-4
+  proposed_canonical: Anomaly
+  proposed_layer: domain
+  term_raw_examples:
+  - Anomaly
+  - AnomalyDetectionService
+  - AnomalyDetectionConfig
+  - 異常検知
+  reason: 'New feature area: entity+service+repository. 2+ primary sources (spec doc,
+    tests).'
+  evidence:
+  - source: .spec-workflow/specs/AnomalyDetectionService/AnomalyDetectionService_spec.md
+    quote: 統計的異常検知を行い、急激な変動、異常パターン、データの欠落を検出するドメインサービス
+  - source: src/domain/entities/Anomaly.ts
+    quote: export interface Anomaly
+  auto_merge_candidates: []
+  decision: accepted
+  expires_after_runs: 10
+  created_run: '2026-10-12T19:35:37Z'
+- id: TP-000227-5
+  proposed_canonical: AuditLog
+  proposed_layer: domain
+  term_raw_examples:
+  - AuditLog
+  - AuditOperation
+  - AuditService
+  - 監査ログ
+  reason: 'New feature area: entity+service+repository. 2+ primary sources (spec doc,
+    tests). May contain student data mutations (pii tag).'
+  evidence:
+  - source: .spec-workflow/specs/AuditLog/AuditLog_spec.md
+    quote: すべてのデータ変異操作をキャプチャする
+  - source: src/domain/entities/AuditLog.ts
+    quote: export type AuditOperation = "create" | "update" | "delete";
+  auto_merge_candidates: []
+  decision: accepted
+  expires_after_runs: 10
+  created_run: '2026-10-12T19:35:37Z'

@@ -4,7 +4,7 @@ budget:
   draft_ratio_max: 0.30
   unmapped_ratio_max: 0.20
 current_usage:
-  terms_count: 43
+  terms_count: 54
   draft_count: 0
-  unmapped_count: 0
+  unmapped_count: 1
 status: "HEALTHY"

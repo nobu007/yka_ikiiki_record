@@ -657,7 +657,7 @@ canonical_terms:
 
   AuthorizationService:
     id: "TERM-122"
-    layer: "application"
+    layer: "domain"
     status: "stable"
     definition: "認可を行うアプリケーションサービス。ロールベースアクセス制御（RBAC）と権限チェックを担当"
     synonyms: ["RBAC", "PermissionChecker"]

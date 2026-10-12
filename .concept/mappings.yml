@@ -439,3 +439,40 @@ mappings:
       - "src/infrastructure/repositories/InMemoryAuditLogRepository.ts"
     db: []
     api: []
+
+  User:
+    code_symbols:
+      - "src/domain/entities/User.ts::type User"
+    db:
+      - "prisma/schema.prisma::model User"
+    api:
+      - "src/app/api/auth/session/route.ts"
+  UserRepository:
+    code_symbols:
+      - "src/domain/repositories/UserRepository.ts::interface UserRepository"
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts::class InMemoryUserRepository"
+    db: []
+    api: []
+  AuthenticationService:
+    code_symbols:
+      - "src/domain/services/AuthenticationService.ts::class AuthenticationService"
+    db: []
+    api:
+      - "src/app/api/auth/login/route.ts"
+      - "src/app/api/auth/logout/route.ts"
+      - "src/app/api/auth/session/route.ts"
+  AuthorizationService:
+    code_symbols:
+      - "src/application/services/AuthorizationService.ts::class AuthorizationService"
+    db: []
+    api: []
+  InMemoryUserRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts::class InMemoryUserRepository"
+    db: []
+    api: []
+  LoginForm:
+    code_symbols:
+      - "src/components/auth/LoginForm.tsx::const LoginForm"
+    db: []
+    api: []

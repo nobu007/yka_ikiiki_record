@@ -657,7 +657,7 @@ canonical_terms:
 
   AuthorizationService:
     id: "TERM-122"
-    layer: "application"
+    layer: "domain"
     status: "stable"
     definition: "認可を行うアプリケーションサービス。ロールベースアクセス制御（RBAC）と権限チェックを担当"
     synonyms: ["RBAC", "PermissionChecker"]
@@ -696,3 +696,84 @@ canonical_terms:
     evidence:
       - source: "src/components/auth/LoginForm.tsx"
         quote: "const LoginForm = memo(function LoginForm({ onSubmit, isLoading, error }: LoginFormProps)"
+
+  Backup:
+    id: "TERM-125"
+    layer: "aux"
+    status: "stable"
+    definition: "災害復旧のためのポイントインタイムのシステム状態スナップショット。データ破損・誤削除・障害時に復元に使う"
+    synonyms: ["backup snapshot"]
+    boundaries:
+      includes: ["バックアップ作成", "復元（restore）", "チェックサム検証", "ステータス管理（pending/in_progress/completed/failed）"]
+      excludes: ["Record の通常CRUD", "AuditLog 記録"]
+    lifecycle: ["Pending", "InProgress", "Completed", "Failed"]
+    related_terms: ["Record", "BackupRepository"]
+    evidence:
+      - source: ".spec-workflow/specs/Backup/Backup_spec.md"
+        quote: "Captures complete system state at a point in time for restoration in case of data corruption, accidental deletion, or system failure."
+      - source: "src/domain/entities/Backup.ts"
+        quote: "export type BackupStatus = \"pending\" | \"in_progress\" | \"completed\" | \"failed\";"
+
+  AuditLog:
+    id: "TERM-126"
+    layer: "aux"
+    status: "stable"
+    definition: "ドメインエンティティへの create/update/delete 操作を記録する監査証跡。コンプライアンス・デバッグ・データ整合検証に使う"
+    synonyms: ["audit entry"]
+    boundaries:
+      includes: ["操作種別（create/update/delete）", "操作対象（entityType/entityId）", "操作者（actor）", "変更前後値（changes.before/after）"]
+      excludes: ["通知送信", "バックアップ作成"]
+    related_terms: ["Record", "User"]
+    evidence:
+      - source: ".spec-workflow/specs/AuditLog/AuditLog_spec.md"
+        quote: "Captures all create/update/delete operations on domain entities with full context for compliance, debugging, and data integrity verification."
+      - source: "src/domain/entities/AuditLog.ts"
+        quote: "export type AuditOperation = \"create\" | \"update\" | \"delete\";"
+
+  NotificationProvider:
+    id: "TERM-127"
+    layer: "aux"
+    status: "stable"
+    definition: "通知チャネルの設定エンティティ。タイプ（EMAIL/SMS/SLACK/WEBHOOK/IN_APP）と状態（ACTIVE/INACTIVE/SUSPENDED）を持つ。UI通知表示とは別概念"
+    synonyms: ["notification channel"]
+    boundaries:
+      includes: ["プロバイダタイプ", "プロバイダ状態", "通知カテゴリ（anomaly_detection/system_alerts/data_backup/user_activity）"]
+      excludes: ["UI通知コンポーネント（Notification.tsx）", "送信実行ロジック（サービス層）"]
+    related_terms: ["Anomaly", "Backup"]
+    evidence:
+      - source: ".spec-workflow/specs/NotificationProvider/NotificationProvider_spec.md"
+        quote: "Notification provider types supported by the system"
+      - source: "src/domain/entities/NotificationProvider.ts"
+        quote: "export enum NotificationProviderType { EMAIL = \"email\", SMS = \"sms\", SLACK = \"slack\", WEBHOOK = \"webhook\", IN_APP = \"in_app\" }"
+
+  TrendAnalysis:
+    id: "TERM-128"
+    layer: "aux"
+    status: "stable"
+    definition: "学生・クラスの感情データの長期トレンド分析構造。時系列データポイントと方向（up/down/stable）を持ち教育判断を支援する。Stats とは別概念"
+    synonyms: ["trend data point"]
+    boundaries:
+      includes: ["時系列データポイント（date/emotion/recordCount）", "トレンド方向（up/down/stable）", "学生別・クラス別分析"]
+      excludes: ["統計集計（Stats）", "異常検知（Anomaly）"]
+    related_terms: ["Stats", "Record"]
+    evidence:
+      - source: ".spec-workflow/specs/TrendAnalysis/TrendAnalysis_spec.md"
+        quote: "Provides structures and factory functions for analyzing long-term trends in student and class emotion data"
+      - source: "src/domain/entities/TrendAnalysis.ts"
+        quote: "export type TrendDirection = \"up\" | \"down\" | \"stable\";"
+
+  Anomaly:
+    id: "TERM-129"
+    layer: "aux"
+    status: "stable"
+    definition: "感情データの異常検知結果。重要度（low/medium/high/critical）と検知タイプ（emotion_spike/emotion_drop/unusual_pattern/data_gap/outlier）を持つ"
+    synonyms: ["anomaly detection result"]
+    boundaries:
+      includes: ["異常重要度（4段階）", "異常タイプ（5種）", "検知対象データポイント"]
+      excludes: ["通知送信（NotificationProvider 経由）", "トレンド計算（TrendAnalysis）"]
+    related_terms: ["Record", "NotificationProvider"]
+    evidence:
+      - source: ".spec-workflow/specs/AnomalyDetectionService/AnomalyDetectionService_spec.md"
+        quote: "AnomalyDetectionService detects anomalies in emotion data and produces Anomaly results"
+      - source: "src/domain/entities/Anomaly.ts"
+        quote: "export enum AnomalyType { EMOTION_SPIKE = \"emotion_spike\", EMOTION_DROP = \"emotion_drop\", UNUSUAL_PATTERN = \"unusual_pattern\", DATA_GAP = \"data_gap\", OUTLIER = \"outlier\" }"

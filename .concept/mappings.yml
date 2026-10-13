@@ -396,3 +396,99 @@ mappings:
       - "src/integration/"
     db: []
     api: []
+
+  User:
+    code_symbols:
+      - "src/domain/entities/User.ts::interface User"
+      - "src/domain/entities/User.ts::type UserRole"
+    db:
+      - "prisma/schema.prisma::model User"
+    api: []
+
+  UserRepository:
+    code_symbols:
+      - "src/domain/repositories/UserRepository.ts::interface UserRepository"
+      - "src/infrastructure/repositories/PrismaUserRepository.ts::class PrismaUserRepository"
+    db:
+      - "prisma/schema.prisma::model User"
+    api: []
+
+  AuthenticationService:
+    code_symbols:
+      - "src/domain/services/AuthenticationService.ts::class AuthenticationService"
+    db: []
+    api:
+      - "src/app/api/auth/login/route.ts::POST"
+      - "src/app/api/auth/logout/route.ts::POST"
+      - "src/app/api/auth/session/route.ts::GET"
+
+  AuthorizationService:
+    code_symbols:
+      - "src/application/services/AuthorizationService.ts::class AuthorizationService"
+    db: []
+    api: []
+
+  InMemoryUserRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts::class InMemoryUserRepository"
+    db: []
+    api: []
+
+  LoginForm:
+    code_symbols:
+      - "src/components/auth/LoginForm.tsx::const LoginForm"
+    db: []
+    api: []
+
+  Backup:
+    code_symbols:
+      - "src/domain/entities/Backup.ts::interface Backup"
+      - "src/domain/repositories/BackupRepository.ts::interface BackupRepository"
+      - "src/infrastructure/repositories/InMemoryBackupRepository.ts::class InMemoryBackupRepository"
+      - "src/application/services/BackupService.ts::class BackupService"
+    db: []
+    api:
+      - "src/app/api/backup/route.ts"
+      - "src/app/api/restore/route.ts"
+
+  AuditLog:
+    code_symbols:
+      - "src/domain/entities/AuditLog.ts::interface AuditLog"
+      - "src/domain/repositories/AuditLogRepository.ts::interface AuditLogRepository"
+      - "src/infrastructure/repositories/InMemoryAuditLogRepository.ts::class InMemoryAuditLogRepository"
+      - "src/application/services/AuditService.ts::class AuditService"
+    db: []
+    api: []
+
+  NotificationProvider:
+    code_symbols:
+      - "src/domain/entities/NotificationProvider.ts::enum NotificationProviderType"
+      - "src/domain/repositories/NotificationProviderRepository.ts::interface NotificationProviderRepository"
+      - "src/infrastructure/storage/InMemoryNotificationProviderRepository.ts::class InMemoryNotificationProviderRepository"
+      - "src/application/services/NotificationService.ts::class NotificationService"
+      - "src/infrastructure/services/EmailNotificationProvider.ts::class EmailNotificationProvider"
+    db: []
+    api:
+      - "src/app/api/notifications/settings/route.ts"
+      - "src/app/api/notifications/history/route.ts"
+
+  TrendAnalysis:
+    code_symbols:
+      - "src/domain/entities/TrendAnalysis.ts::interface TrendDataPoint"
+      - "src/domain/entities/TrendAnalysis.ts::type TrendDirection"
+      - "src/domain/repositories/TrendAnalysisRepository.ts::interface TrendAnalysisRepository"
+      - "src/infrastructure/storage/InMemoryTrendAnalysisRepository.ts::class InMemoryTrendAnalysisRepository"
+      - "src/application/services/TrendAnalysisService.ts::class TrendAnalysisService"
+    db: []
+    api:
+      - "src/app/api/trends/route.ts"
+
+  Anomaly:
+    code_symbols:
+      - "src/domain/entities/Anomaly.ts::interface Anomaly"
+      - "src/domain/entities/Anomaly.ts::enum AnomalySeverity"
+      - "src/domain/repositories/AnomalyRepository.ts::interface AnomalyRepository"
+      - "src/infrastructure/storage/InMemoryAnomalyRepository.ts::class InMemoryAnomalyRepository"
+      - "src/domain/services/AnomalyDetectionService.ts::class AnomalyDetectionService"
+    db: []
+    api: []

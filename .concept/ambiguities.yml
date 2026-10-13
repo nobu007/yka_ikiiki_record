@@ -1,1 +1,29 @@
-ambiguities: []
+ambiguities:
+  - id: "AMB-001"
+    term: "Notification"
+    topic: "「Notification」語の両義性（UI通知表示 vs ドメイン通知チャネル）"
+    severity: "medium"
+    uncertainty: 0.55
+    candidates:
+      - "Notification = UI通知フィードバックコンポーネント（src/components/common/Notification.tsx, useNotification）"
+      - "Notification = 通知チャネルのドメイン概念（NotificationProvider/NotificationService）"
+    missing_info:
+      - "将来的に in-app 通知の配信履歴（NotificationsHistoryAPI）をドメインエンティティ化するか"
+    linked_conflicts: []
+    auto_decision:
+      status: "applied"
+      decision_key: "AUTO:Notification.term:provider_for_domain_ui_for_components"
+      chosen: "ドメイン側は NotificationProvider に正規化、UI側は既存 UIComponents に帰属。新語 Notification は canonical 化しない"
+      policy: "bloat_control + naming_convention（既存語への統合優先）"
+      confidence_auto: 0.72
+      decided_at_run: "2026-10-13T15:05:46Z"
+      expires_after_runs: 20
+      revert_triggers:
+        - "primary_evidence_contradiction"
+        - "in_app配信がドメインエンティティとして実装された場合"
+    last_touched_run: "2026-10-13T15:05:46Z"
+    evidence:
+      - source: "src/components/common/Notification.tsx"
+        quote: "UI通知コンポーネント（presentation層のフィードバック表示）"
+      - source: ".spec-workflow/specs/NotificationService/NotificationService_spec.md"
+        quote: "NotificationService dispatches notifications through configured providers"

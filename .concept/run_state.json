@@ -1,7 +1,7 @@
 {
-  "run_index": 227,
-  "last_run_id": "cycle-227-concept-sync",
-  "last_run_timestamp": "2026-10-14T03:40:00+09:00",
+  "run_index": 228,
+  "last_run_id": "cycle-228-metrics-integrity",
+  "last_run_timestamp": "2026-10-14T09:15:00+09:00",
   "phase": "maintenance",
   "claims_retained_lines": 24,
   "claims_archived_until_run_id": null

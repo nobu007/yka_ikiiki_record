@@ -1,1 +1,171 @@
-queue: []
+queue:
+  - id: "TP-000125"
+    proposed_canonical: "Backup"
+    proposed_layer: "aux"
+    term_raw_examples: ["Backup", "backup snapshot"]
+    reason: "災害復旧ドメイン。spec+entity+repository+service+tests が揃い受理基準を満たす"
+    evidence:
+      - source: ".spec-workflow/specs/Backup/Backup_spec.md"
+        quote: "Captures complete system state at a point in time for restoration"
+      - source: "src/domain/entities/Backup.ts"
+        quote: "export interface Backup { id: string; timestamp: number; ... status: BackupStatus }"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"
+
+  - id: "TP-000126"
+    proposed_canonical: "AuditLog"
+    proposed_layer: "aux"
+    term_raw_examples: ["AuditLog", "audit entry"]
+    reason: "データ変更の監査証跡。spec+entity+repository+service+tests が揃い受理基準を満たす"
+    evidence:
+      - source: ".spec-workflow/specs/AuditLog/AuditLog_spec.md"
+        quote: "Captures all create/update/delete operations on domain entities"
+      - source: "src/domain/entities/AuditLog.ts"
+        quote: "export interface AuditLog { id: string; entityType: string; operation: AuditOperation; ... }"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"
+
+  - id: "TP-000127"
+    proposed_canonical: "NotificationProvider"
+    proposed_layer: "aux"
+    term_raw_examples: ["NotificationProvider", "notification channel"]
+    reason: "通知チャネルの設定エンティティ。UI通知(Notification.tsx)とは別概念のため正規化先として採用"
+    evidence:
+      - source: ".spec-workflow/specs/NotificationProvider/NotificationProvider_spec.md"
+        quote: "Notification provider types supported by the system"
+      - source: "src/domain/entities/NotificationProvider.ts"
+        quote: "export enum NotificationProviderType { EMAIL, SMS, SLACK, WEBHOOK, IN_APP }"
+    auto_merge_candidates:
+      - term: "UIComponents"
+        similarity: 0.40
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"
+
+  - id: "TP-000128"
+    proposed_canonical: "TrendAnalysis"
+    proposed_layer: "aux"
+    term_raw_examples: ["TrendAnalysis", "trend data point"]
+    reason: "感情データの長期トレンド分析。Stats とは別概念（仕様が分離を明言）"
+    evidence:
+      - source: ".spec-workflow/specs/TrendAnalysis/TrendAnalysis_spec.md"
+        quote: "analyzing long-term trends in student and class emotion data"
+      - source: "src/domain/entities/TrendAnalysis.ts"
+        quote: "export type TrendDirection = \"up\" | \"down\" | \"stable\""
+    auto_merge_candidates:
+      - term: "Stats"
+        similarity: 0.55
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"
+
+  - id: "TP-000129"
+    proposed_canonical: "Anomaly"
+    proposed_layer: "aux"
+    term_raw_examples: ["Anomaly", "anomaly detection result"]
+    reason: "異常検知結果エンティティ。spec+entity+repository+service+tests が揃う"
+    evidence:
+      - source: ".spec-workflow/specs/AnomalyDetectionService/AnomalyDetectionService_spec.md"
+        quote: "AnomalyDetectionService detects anomalies in emotion data"
+      - source: "src/domain/entities/Anomaly.ts"
+        quote: "export enum AnomalyType { EMOTION_SPIKE, EMOTION_DROP, UNUSUAL_PATTERN, DATA_GAP, OUTLIER }"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"
+
+  - id: "TP-000130"
+    proposed_canonical: "BackupService"
+    proposed_layer: "aux"
+    term_raw_examples: ["BackupService"]
+    reason: "Backup の振る舞い層。次 run で Backup との統合（synonyms）か独立term化を判定"
+    evidence:
+      - source: ".spec-workflow/specs/BackupService/BackupService_spec.md"
+        quote: "BackupService orchestrates backup creation and restoration"
+    auto_merge_candidates:
+      - term: "Backup"
+        similarity: 0.72
+    decision: "pending"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"
+
+  - id: "TP-000131"
+    proposed_canonical: "AuditService"
+    proposed_layer: "aux"
+    term_raw_examples: ["AuditService"]
+    reason: "AuditLog の振る舞い層。次 run で統合判定"
+    evidence:
+      - source: ".spec-workflow/specs/AuditService/AuditService_spec.md"
+        quote: "AuditService records data mutations into the audit log"
+    auto_merge_candidates:
+      - term: "AuditLog"
+        similarity: 0.72
+    decision: "pending"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"
+
+  - id: "TP-000132"
+    proposed_canonical: "NotificationService"
+    proposed_layer: "aux"
+    term_raw_examples: ["NotificationService"]
+    reason: "NotificationProvider の送信振る舞い層。次 run で統合判定"
+    evidence:
+      - source: ".spec-workflow/specs/NotificationService/NotificationService_spec.md"
+        quote: "NotificationService dispatches notifications through configured providers"
+    auto_merge_candidates:
+      - term: "NotificationProvider"
+        similarity: 0.70
+    decision: "pending"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"
+
+  - id: "TP-000133"
+    proposed_canonical: "TrendAnalysisService"
+    proposed_layer: "aux"
+    term_raw_examples: ["TrendAnalysisService"]
+    reason: "TrendAnalysis の計算振る舞い層。次 run で統合判定"
+    evidence:
+      - source: ".spec-workflow/specs/TrendAnalysisService/TrendAnalysisService_spec.md"
+        quote: "TrendAnalysisService computes trend analyses from emotion records"
+    auto_merge_candidates:
+      - term: "TrendAnalysis"
+        similarity: 0.72
+    decision: "pending"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"
+
+  - id: "TP-000134"
+    proposed_canonical: "AnomalyDetectionService"
+    proposed_layer: "aux"
+    term_raw_examples: ["AnomalyDetectionService"]
+    reason: "Anomaly の検知振る舞い層。次 run で統合判定"
+    evidence:
+      - source: ".spec-workflow/specs/AnomalyDetectionService/AnomalyDetectionService_spec.md"
+        quote: "AnomalyDetectionService detects anomalies in emotion data and produces Anomaly results"
+    auto_merge_candidates:
+      - term: "Anomaly"
+        similarity: 0.72
+    decision: "pending"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"
+
+  - id: "TP-000135"
+    proposed_canonical: "Pagination"
+    proposed_layer: "aux"
+    term_raw_examples: ["paginate", "PaginationOptions", "PaginationResult", "usePagination"]
+    reason: "横断ユーティリティ。UI(PaginationControl)+hooks+utils に分散。既存 UIComponents への統合も検討"
+    evidence:
+      - source: ".spec-workflow/specs/paginate/paginate_spec.md"
+        quote: "paginate converts a full result set into a page slice plus PaginationResult"
+      - source: "src/utils/pagination.ts"
+        quote: "export function paginate"
+    auto_merge_candidates:
+      - term: "UIComponents"
+        similarity: 0.45
+    decision: "pending"
+    expires_after_runs: 10
+    created_run: "2026-10-13T15:05:46Z"

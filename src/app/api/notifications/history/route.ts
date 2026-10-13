@@ -11,13 +11,13 @@ import {
 } from "@/domain/entities/NotificationProvider";
 
 interface NotificationHistoryQuery {
-  channel?: string;
-  status?: string;
-  priority?: string;
+  channel?: NotificationChannel;
+  status?: NotificationDeliveryStatus;
+  priority?: NotificationPriority;
   limit?: number;
   offset?: number;
-  startDate?: string;
-  endDate?: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         if (!Object.values(NotificationChannel).includes(channel as NotificationChannel)) {
           throw createError.badRequest(`Invalid channel: ${channel}`);
         }
-        query.channel = channel;
+        query.channel = channel as NotificationChannel;
       }
 
       if (searchParams.get("status")) {
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         if (!Object.values(NotificationDeliveryStatus).includes(status as NotificationDeliveryStatus)) {
           throw createError.badRequest(`Invalid status: ${status}`);
         }
-        query.status = status;
+        query.status = status as NotificationDeliveryStatus;
       }
 
       if (searchParams.get("priority")) {
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         if (!Object.values(NotificationPriority).includes(priority as NotificationPriority)) {
           throw createError.badRequest(`Invalid priority: ${priority}`);
         }
-        query.priority = priority;
+        query.priority = priority as NotificationPriority;
       }
 
       if (searchParams.get("limit")) {

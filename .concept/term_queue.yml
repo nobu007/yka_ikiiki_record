@@ -1,24 +1,4 @@
 queue:
-  - id: "TP-000227-01"
-    proposed_canonical: "SessionToken"
-    proposed_layer: "aux"
-    term_raw_examples: ["session token", "Bearer token", "AuthenticationResult.token"]
-    reason: "ログイン発行とセッション検証が共有するトークン形式契約。既存termでは表現できない"
-    evidence:
-      - source: "src/app/api/auth/login/route.ts"
-        quote: "return `session_${user.id}_${timestamp}_${random}`"
-      - source: "src/app/api/auth/session/route.ts"
-        quote: "const tokenMatch = token.match(/^session_(\\d+)_/)"
-      - source: "src/domain/services/AuthenticationService.ts"
-        quote: "export interface AuthenticationResult { token: string; }"
-    auto_merge_candidates:
-      - term: "AuthenticationService"
-        similarity: 0.55
-    decision: "accepted"
-    accepted_at_run: "2026-10-14T18:49:28Z"
-    acceptance_note: "一次出典3件(code)、boundaries/mappings記入済み、既存termへマージ不可(類似度0.55<0.78)"
-    expires_after_runs: 10
-    created_run: "2026-10-14T18:49:28Z"
   - id: "TP-000227-02"
     proposed_canonical: "PlaywrightE2eConfig"
     proposed_layer: "aux"

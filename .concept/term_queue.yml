@@ -7,7 +7,8 @@ queue:
     evidence:
       - source: "playwright.config.ts"
         quote: "webServer: { command: 'npm run dev', url: 'http://127.0.0.1:3000', reuseExistingServer: true, timeout: 120 * 1000 }"
-    decision: "pending"
+    decision: "accepted"
+    review_note: "cycle-228 承認。一次出典2つ以上（playwright.config.ts / package.json test:e2e scripts / playwright/*.spec.ts）、TestUtilities とは境界が分離（モック/ヘルパー vs ブラウザE2E）、mappings.yml に4シンボル登録。TERM-125 として ontology へ投入"
     expires_after_runs: 10
     created_run: "2026-10-14T15:43:24Z"
 
@@ -19,7 +20,8 @@ queue:
     evidence:
       - source: ".npmrc"
         quote: "ignore-scripts=true / save-exact=true / audit-level=high / fund=false (ANSIBLE MANAGED BLOCK axios_check repo guard)"
-    decision: "pending"
+    decision: "accepted"
+    review_note: "cycle-228 承認。一次出典2つ（root .npmrc / packages/ui/.npmrc、同一ポリシーブロック）、mappings.yml に2パス登録。TERM-126 として ontology へ投入（tags: security）"
     expires_after_runs: 10
     created_run: "2026-10-14T15:43:24Z"
 
@@ -32,5 +34,6 @@ queue:
       - source: ".audit/spec/runs/old/scores (commit 50f6ecc9)"
         quote: "chore(audit): drop case-colliding uppercase score records (s-00X are canonical)"
     decision: "pending"
+    review_note: "cycle-228 審査: B-8 条件不足（mappings.yml に貼れる追跡対象の code/db/api パスがない — .audit は gitignore 対象のローカル成果物のため）。追跡可能な出典が増えない限り rejected 寄り。TTL 10 runs 内に再審査"
     expires_after_runs: 10
     created_run: "2026-10-14T15:43:24Z"

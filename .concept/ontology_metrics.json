@@ -1,19 +1,19 @@
 {
   "version": "1.0",
-  "last_updated": "2026-10-15T00:43:00+09:00",
-  "run_index": 227,
+  "last_updated": "2026-10-15T01:20:00+09:00",
+  "run_index": 228,
   "phase": "maintenance",
   "terms": {
-    "total": 49,
+    "total": 51,
     "core": 8,
     "domain": 21,
-    "aux": 20,
+    "aux": 22,
     "draft": 0,
-    "stable": 49
+    "stable": 51
   },
   "mappings": {
-    "total": 49,
-    "with_code_symbols": 49,
+    "total": 51,
+    "with_code_symbols": 51,
     "with_db": 4,
     "with_api": 8,
     "unmapped": 0
@@ -26,7 +26,7 @@
     "draft": 0
   },
   "quality_metrics": {
-    "ontology_coverage": "29.7%",
+    "ontology_coverage": "30.9%",
     "mapping_saturation": "100%",
     "draft_ratio": "0%",
     "unmapped_ratio": "0%",
@@ -48,13 +48,15 @@
     "merged": 0,
     "deleted": 0,
     "deprecated": 0,
-    "notes_trimmed": "maintenance_cycle_206..226 (21 repetitive near-identical entries) consolidated into maintenance_cycles_206_226"
+    "notes_trimmed": "maintenance_cycle_206..226 (21 repetitive near-identical entries) consolidated into maintenance_cycles_206_226",
+    "queue_adjudicated_cycle_228": "TP-000001 PlaywrightE2E accepted, TP-000002 ZeroTrustPackagePolicy accepted (both B-8 conditions met), TP-000003 AuditScoreRecord kept pending (no trackable code/db/api path — .audit is gitignored)"
   },
   "notes": {
-    "q1_coverage_rationale": "29.7% raw coverage (49 terms / 165 non-test source files, recount 2026-10-15; was 43/118 = 36.4% at consolidation time). Low-but-healthy for this codebase because: (1) All domain entities, services, repositories, and major architectural components are covered, (2) Newer files (auth domain, UI components, utilities) are appropriately consolidated into broader concepts or queued in term_queue pending entry review, (3) Adding more terms directly would violate the consolidation principle and the entry-control rule. The 49 terms represent canonical concepts after consolidation from 129 original terms (66.7% reduction) plus the later auth addition.",
+    "q1_coverage_rationale": "29.7% raw coverage at cycle-227 (49 terms / 165 non-test source files); 30.9% at cycle-228 (51 terms). Low-but-healthy for this codebase because: (1) All domain entities, services, repositories, and major architectural components are covered, (2) Newer files (auth domain, UI components, utilities) are appropriately consolidated into broader concepts or queued in term_queue pending entry review, (3) Adding more terms directly would violate the consolidation principle and the entry-control rule. The 51 terms represent canonical concepts after consolidation from 129 original terms (66.7% reduction) plus the later auth and e2e/security additions via term_queue.",
     "maintenance_cycles_206_226": "Health checks completed. All quality metrics remained stable. No code changes requiring concept synchronization were detected in this window. Test suite: 177 suites, 1312 tests passing. All files complied with SRP (max 283 lines, under the 300-line limit). Lint passed with no errors.",
-    "invariant_budget_note": "invariants.yml holds 100 entries; the v0.3 recommended cap is 60. A GC pass (merge/drop redundant invariants) is queued as a residual task and deliberately not executed in cycle-227 to keep the run minimal-diff.",
+    "invariant_budget_note": "invariants.yml holds 100 entries; the v0.3 recommended cap is 60. A GC pass (merge/drop redundant invariants) is queued as a residual task and deliberately not executed in cycles 227-228 to keep each run minimal-diff.",
     "integrity_repair_cycle_227": "Six auth terms (TERM-119..TERM-124: User, UserRepository, AuthenticationService, AuthorizationService, InMemoryUserRepository, LoginForm) existed in ontology without mappings.yml entries, violating the B-8 acceptance condition (min 1 mapping). Repaired: 6 mapping entries added with verified code symbols (49/49 saturation restored). AuthorizationService (TERM-122) carried invalid layer 'application' (allowed: core|domain|aux); corrected to 'domain' consistent with AuthenticationService. Term counts in this file were stale (43) versus actual ontology size (49) since the auth terms were added without a metrics refresh.",
-    "maintenance_cycle_227": "Concept sync resumed after staleness: 15+ commits landed between 2026-03-30 and 2026-10-08 (auth SPEC docs, LoginForm, e2e config, zero-trust security policy, audit data cleanup, LOOP.md, AUTOMATION.md) while run_state was still cycle-226. Ingested 13 claims from the delta; queued 3 new-term candidates (PlaywrightE2E, ZeroTrustPackagePolicy, AuditScoreRecord) in term_queue per entry-control; no contradictions found (EnvConfig/MirageServer consistent with .env.example DATABASE_PROVIDER); no AUTO decisions required (no high ambiguity). Trimmed repetitive maintenance notes. New terms NOT added to ontology directly (entry-control rule)."
+    "maintenance_cycle_227": "Concept sync resumed after staleness: 15+ commits landed between 2026-03-30 and 2026-10-08 (auth SPEC docs, LoginForm, e2e config, zero-trust security policy, audit data cleanup, LOOP.md, AUTOMATION.md) while run_state was still cycle-226. Ingested 13 claims from the delta; queued 3 new-term candidates (PlaywrightE2E, ZeroTrustPackagePolicy, AuditScoreRecord) in term_queue per entry-control; no contradictions found (EnvConfig/MirageServer consistent with .env.example DATABASE_PROVIDER); no AUTO decisions required (no high ambiguity). Trimmed repetitive maintenance notes. New terms NOT added to ontology directly (entry-control rule).",
+    "maintenance_cycle_228": "Single delta commit since cycle-227 (d2d7e5eb: .gitignore += .audit/development_direction.yml per audit storage policy). Ingested 3 claims. Term queue adjudicated: PlaywrightE2E (TERM-125) and ZeroTrustPackagePolicy (TERM-126) accepted with verified evidence and mappings (51/51 saturation maintained); AuditScoreRecord stays pending because its only mapping targets are gitignored local artifacts. No contradictions, no AUTO decisions required. Residual: invariants GC (100 -> <=60) remains queued for a dedicated run."
   }
 }

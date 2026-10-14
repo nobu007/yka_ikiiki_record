@@ -698,3 +698,37 @@ canonical_terms:
     evidence:
       - source: "src/components/auth/LoginForm.tsx"
         quote: "const LoginForm = memo(function LoginForm({ onSubmit, isLoading, error }: LoginFormProps)"
+
+  PlaywrightE2E:
+    id: "TERM-125"
+    layer: "aux"
+    status: "stable"
+    definition: "Playwright による E2E テスト実行基盤。webServer 自動起動、ブラウザプロジェクト、タイムアウト設定を管理する"
+    synonyms: ["e2e tests", "test:e2e"]
+    boundaries:
+      includes: ["webServer 自動起動（reuseExistingServer）", "ブラウザ E2E テスト実行", "E2E 用 npm スクリプト"]
+      excludes: ["ユニットテスト", "モック/テストヘルパー（TestUtilities）"]
+    related_terms: ["TestUtilities", "EnvConfig", "Dashboard"]
+    evidence:
+      - source: "playwright.config.ts"
+        quote: "webServer: { command: 'npm run dev', url: 'http://127.0.0.1:3000', reuseExistingServer: true, timeout: 120 * 1000 }"
+      - source: "package.json#L16-L20"
+        quote: "test:e2e, test:e2e:ui, test:e2e:chromium, test:e2e:headed, test:e2e:local"
+      - source: "playwright/"
+        quote: "chart-interactions.spec.ts, data-flow.spec.ts, statistics-display.spec.ts"
+
+  ZeroTrustPackagePolicy:
+    id: "TERM-126"
+    layer: "aux"
+    status: "stable"
+    definition: "npm パッケージインストールのゼロトラスト方針。ignore-scripts 等の設定を ansible 管理ブロックとしてリポジトリ内全 .npmrc に適用する"
+    synonyms: ["axios_check repo guard", "ignore-scripts policy"]
+    boundaries:
+      includes: ["ignore-scripts=true", "save-exact=true", "audit-level=high", "fund=false"]
+      excludes: ["依存バージョン選択", "ランタイムセキュリティ", "認証情報管理"]
+    related_terms: ["EnvConfig"]
+    evidence:
+      - source: ".npmrc"
+        quote: "BEGIN ANSIBLE MANAGED BLOCK axios_check repo guard / ignore-scripts=true / save-exact=true / audit-level=high / fund=false"
+      - source: "packages/ui/.npmrc"
+        quote: "同一の ANSIBLE MANAGED BLOCK axios_check repo guard が packages/ui にも適用"

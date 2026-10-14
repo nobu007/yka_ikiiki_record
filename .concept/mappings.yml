@@ -435,3 +435,19 @@ mappings:
       - "src/components/auth/LoginForm.tsx::LoginForm"
     db: []
     api: []
+
+  PlaywrightE2E:
+    code_symbols:
+      - "playwright.config.ts"
+      - "playwright/chart-interactions.spec.ts"
+      - "playwright/data-flow.spec.ts"
+      - "playwright/statistics-display.spec.ts"
+    db: []
+    api: []
+
+  ZeroTrustPackagePolicy:
+    code_symbols:
+      - ".npmrc"
+      - "packages/ui/.npmrc"
+    db: []
+    api: []

@@ -17,8 +17,9 @@ queue:
       - "src/domain/repositories/AnomalyRepository.ts"
       - "src/infrastructure/storage/InMemoryAnomalyRepository.ts"
       - "src/domain/services/AnomalyDetectionService.ts"
-    decision: "pending"
+    decision: "accepted"
     expires_after_runs: 10
+    decided_run: "2026-10-14T15:21:32Z"
     created_run: "2026-10-14T15:09:18Z"
 
   - id: "TP-000002"
@@ -38,8 +39,9 @@ queue:
       - "src/domain/entities/AuditLog.ts"
       - "src/domain/repositories/AuditLogRepository.ts"
       - "src/application/services/AuditService.ts"
-    decision: "pending"
+    decision: "accepted"
     expires_after_runs: 10
+    decided_run: "2026-10-14T15:21:32Z"
     created_run: "2026-10-14T15:09:18Z"
 
   - id: "TP-000003"
@@ -63,8 +65,9 @@ queue:
       - "src/application/services/BackupService.ts"
       - "src/app/api/backup/route.ts"
       - "src/app/api/restore/route.ts"
-    decision: "pending"
+    decision: "accepted"
     expires_after_runs: 10
+    decided_run: "2026-10-14T15:21:32Z"
     created_run: "2026-10-14T15:09:18Z"
 
   - id: "TP-000004"
@@ -86,8 +89,9 @@ queue:
       - "src/domain/entities/NotificationProvider.ts"
       - "src/domain/repositories/NotificationProviderRepository.ts"
       - "src/application/services/NotificationService.ts"
-    decision: "pending"
+    decision: "accepted"
     expires_after_runs: 10
+    decided_run: "2026-10-14T15:21:32Z"
     created_run: "2026-10-14T15:09:18Z"
 
   - id: "TP-000005"
@@ -112,6 +116,7 @@ queue:
       - "src/domain/repositories/TrendAnalysisRepository.ts"
       - "src/application/services/TrendAnalysisService.ts"
       - "src/app/api/trends/route.ts"
-    decision: "pending"
+    decision: "accepted"
     expires_after_runs: 10
+    decided_run: "2026-10-14T15:21:32Z"
     created_run: "2026-10-14T15:09:18Z"

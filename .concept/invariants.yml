@@ -7,6 +7,8 @@ last_updated: 2026-03-08
 invariants:
   # ARCHITECTURAL INVARIANTS
   - id: INV-ARCH-001
+    status: "stable"
+    strength: "hard"
     name: Single_Responsibility_Enforcement
     category: architecture
     severity: CRITICAL
@@ -16,6 +18,8 @@ invariants:
     rationale: "Prevents god objects, maintains modularity, ensures test file governance"
 
   - id: INV-ARCH-002
+    status: "stable"
+    strength: "hard"
     name: Layer_Separation
     category: architecture
     severity: CRITICAL
@@ -25,6 +29,8 @@ invariants:
     rationale: "Maintains architectural integrity"
 
   - id: INV-ARCH-003
+    status: "stable"
+    strength: "hard"
     name: Reference_Based_Options_Propagation
     category: architecture
     severity: CRITICAL
@@ -35,6 +41,8 @@ invariants:
 
   # CODE QUALITY INVARIANTS
   - id: INV-QUAL-001
+    status: "stable"
+    strength: "hard"
     name: TypeScript_Strict_Mode
     category: quality
     severity: CRITICAL
@@ -45,6 +53,8 @@ invariants:
     related_terms: ["CleanArchitecture", "DomainLayer"]
 
   - id: INV-QUAL-002
+    status: "stable"
+    strength: "hard"
     name: Fixed_Filename_Policy
     category: quality
     severity: CRITICAL
@@ -54,6 +64,8 @@ invariants:
     rationale: "Prevents report explosion, enforces singularity"
 
   - id: INV-QUAL-003
+    status: "stable"
+    strength: "hard"
     name: Common_Process_Reuse
     category: quality
     severity: HIGH
@@ -64,6 +76,8 @@ invariants:
 
   # TESTING INVARIANTS
   - id: INV-TEST-001
+    status: "stable"
+    strength: "hard"
     name: Test_Coverage_Floor
     category: testing
     severity: HIGH
@@ -73,6 +87,8 @@ invariants:
     rationale: "Maintains regression safety"
 
   - id: INV-TEST-002
+    status: "stable"
+    strength: "hard"
     name: Dual_Verification_Required
     category: testing
     severity: HIGH
@@ -83,6 +99,8 @@ invariants:
 
   # DOMAIN INVARIANTS
   - id: INV-DOM-001
+    status: "stable"
+    strength: "hard"
     name: Emotion_Value_Range
     category: domain
     severity: CRITICAL
@@ -93,6 +111,8 @@ invariants:
     related_terms: ["Record", "Stats", "EmotionGenerator"]
 
   - id: INV-DOM-002
+    status: "stable"
+    strength: "hard"
     name: Stats_Structure_Completeness
     category: domain
     severity: CRITICAL
@@ -103,6 +123,8 @@ invariants:
     related_terms: ["Stats", "StatsRepository", "StatsService"]
 
   - id: INV-DOM-003
+    status: "stable"
+    strength: "hard"
     name: Record_Optional_Fields
     category: domain
     severity: HIGH
@@ -114,6 +136,8 @@ invariants:
 
   # RESILIENCE INVARIANTS
   - id: INV-RES-001
+    status: "stable"
+    strength: "hard"
     name: CircuitBreaker_State_Transitions
     category: resilience
     severity: CRITICAL
@@ -124,6 +148,8 @@ invariants:
     related_terms: ["CircuitBreaker", "AppError"]
 
   - id: INV-RES-002
+    status: "stable"
+    strength: "hard"
     name: CircuitBreaker_Failure_Counting
     category: resilience
     severity: HIGH
@@ -135,6 +161,8 @@ invariants:
 
   # REPOSITORY INVARIANTS
   - id: INV-REP-001
+    status: "stable"
+    strength: "hard"
     name: Repository_Interface_Contract
     category: repository
     severity: CRITICAL
@@ -145,6 +173,8 @@ invariants:
     related_terms: ["StatsRepository", "IRecordRepository", "PrismaRecordRepository", "MockStatsRepository"]
 
   - id: INV-REP-002
+    status: "stable"
+    strength: "hard"
     name: Repository_Data_Isolation
     category: repository
     severity: HIGH
@@ -156,6 +186,8 @@ invariants:
 
   # UTILITY INVARIANTS
   - id: INV-UTIL-001
+    status: "stable"
+    strength: "hard"
     name: Math_Function_Boundary_Conditions
     category: utility
     severity: HIGH
@@ -166,6 +198,8 @@ invariants:
     related_terms: ["StatsCalculator"]
 
   - id: INV-UTIL-002
+    status: "stable"
+    strength: "soft"
     name: Average_Empty_Array_Handling
     category: utility
     severity: MEDIUM
@@ -176,6 +210,8 @@ invariants:
     related_terms: ["StatsCalculator"]
 
   - id: INV-UTIL-003
+    status: "stable"
+    strength: "hard"
     name: Clamp_Function_Range_Enforcement
     category: utility
     severity: HIGH
@@ -187,6 +223,8 @@ invariants:
 
   # LOGGING INVARIANTS
   - id: INV-LOG-001
+    status: "stable"
+    strength: "hard"
     name: Structured_Logging_Required_Fields
     category: logging
     severity: HIGH
@@ -197,6 +235,8 @@ invariants:
     related_terms: ["StructuredLogger"]
 
   - id: INV-LOG-002
+    status: "stable"
+    strength: "soft"
     name: Log_Level_Visibility_Mapping
     category: logging
     severity: MEDIUM
@@ -207,6 +247,8 @@ invariants:
     related_terms: ["StructuredLogger"]
 
   - id: INV-LOG-003
+    status: "stable"
+    strength: "hard"
     name: Log_Correlation_ID_Tracking
     category: logging
     severity: HIGH
@@ -217,6 +259,8 @@ invariants:
     related_terms: ["StructuredLogger"]
 
   - id: INV-LOG-004
+    status: "stable"
+    strength: "soft"
     name: Log_Size_Management
     category: logging
     severity: MEDIUM
@@ -228,6 +272,8 @@ invariants:
 
   # TIMEOUT INVARIANTS
   - id: INV-TIME-001
+    status: "stable"
+    strength: "hard"
     name: Timeout_Wrapper_Standard_Durations
     category: timeout
     severity: HIGH
@@ -238,6 +284,8 @@ invariants:
     related_terms: ["APITimeout", "TimeoutError"]
 
   - id: INV-TIME-002
+    status: "stable"
+    strength: "hard"
     name: Timeout_Error_Propagation
     category: timeout
     severity: HIGH
@@ -249,6 +297,8 @@ invariants:
 
   # LOOP DETECTION INVARIANTS
   - id: INV-LOOP-001
+    status: "stable"
+    strength: "hard"
     name: Loop_Detection_Maximum_Iterations
     category: loop_detection
     severity: CRITICAL
@@ -259,6 +309,8 @@ invariants:
     related_terms: ["LoopDetector", "InfiniteLoopError"]
 
   - id: INV-LOOP-002
+    status: "stable"
+    strength: "hard"
     name: Loop_Detection_Per_Operation_Tracking
     category: loop_detection
     severity: HIGH
@@ -269,6 +321,8 @@ invariants:
     related_terms: ["LoopDetector"]
 
   - id: INV-LOOP-003
+    status: "stable"
+    strength: "soft"
     name: Loop_Detection_Time_Window_Reset
     category: loop_detection
     severity: MEDIUM
@@ -280,6 +334,8 @@ invariants:
 
   # MEMORY MONITORING INVARIANTS
   - id: INV-MEM-001
+    status: "stable"
+    strength: "hard"
     name: Memory_Monitor_Lifecycle_Management
     category: memory
     severity: HIGH
@@ -290,6 +346,8 @@ invariants:
     related_terms: ["MemoryMonitor"]
 
   - id: INV-MEM-002
+    status: "stable"
+    strength: "soft"
     name: Memory_Monitor_Usage_Calculation
     category: memory
     severity: MEDIUM
@@ -301,6 +359,8 @@ invariants:
 
   # GLOBAL SINGLETONS INVARIANTS
   - id: INV-SINGLETON-001
+    status: "stable"
+    strength: "soft"
     name: Global_Resilience_Instances
     category: resilience
     severity: MEDIUM
@@ -312,6 +372,8 @@ invariants:
 
   # WORKFLOW INVARIANTS
   - id: INV-WORK-001
+    status: "stable"
+    strength: "hard"
     name: SDEC_Cycle_Mandatory
     category: workflow
     severity: CRITICAL
@@ -321,6 +383,8 @@ invariants:
     rationale: "Prevents assumption-based development"
 
   - id: INV-WORK-002
+    status: "stable"
+    strength: "soft"
     name: Clean_Git_State
     category: workflow
     severity: MEDIUM

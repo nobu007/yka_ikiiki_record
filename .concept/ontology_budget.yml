@@ -1,11 +1,11 @@
-version: "1.0"
+version: '1.0'
 budget:
   terms_max: 80
-  draft_ratio_max: 0.30
-  unmapped_ratio_max: 0.20
+  draft_ratio_max: 0.3
+  unmapped_ratio_max: 0.2
 current_usage:
-  terms_count: 49
+  terms_count: 54
   draft_count: 0
   unmapped_count: 0
-  queue_pending: 5
-status: "HEALTHY"
+  queue_pending: 0
+status: HEALTHY

@@ -696,3 +696,83 @@ canonical_terms:
     evidence:
       - source: "src/components/auth/LoginForm.tsx"
         quote: "const LoginForm = memo(function LoginForm({ onSubmit, isLoading, error }: LoginFormProps)"
+
+  Anomaly:
+    id: "TERM-125"
+    layer: "aux"
+    status: "stable"
+    definition: "感情データから検出される異常（外れ値・急変）を表すドメインエンティティ。重大度（AnomalySeverity）と異常タイプを持ち、AnomalyDetectionServiceが生成する"
+    synonyms: ["異常検知", "AnomalyDetectionResult"]
+    boundaries:
+      includes: ["異常検出結果", "重大度（AnomalySeverity）", "異常タイプ分類"]
+      excludes: ["監査ログ（AuditLog）", "感情値そのもの（Record）"]
+    related_terms: ["Record", "AuditLog"]
+    evidence:
+      - source: "src/domain/entities/Anomaly.ts"
+        quote: "export enum AnomalySeverity"
+      - source: ".spec-workflow/specs/InMemoryAnomalyRepository/InMemoryAnomalyRepository_spec.md"
+        quote: "# SPEC: InMemoryAnomalyRepository"
+
+  AuditLog:
+    id: "TERM-126"
+    layer: "aux"
+    status: "stable"
+    definition: "ドメインエンティティの作成・更新・削除操作を追跡する監査ログエントリ。コンプライアンス・デバッグ・データ整合性検証のため操作コンテキストを完全に記録する"
+    synonyms: ["監査ログ", "AuditTrail"]
+    boundaries:
+      includes: ["データ変更操作の記録", "操作者と時刻のコンテキスト", "コンプライアンス証跡"]
+      excludes: ["異常検知結果（Anomaly）", "アプリケーションログ（StructuredLogger）"]
+    related_terms: ["Record", "User"]
+    evidence:
+      - source: "src/domain/entities/AuditLog.ts"
+        quote: "Domain entity representing an audit log entry for tracking data mutations."
+      - source: ".spec-workflow/specs/AuditLog/AuditLog_spec.md"
+        quote: "# SPEC: AuditLog"
+
+  Backup:
+    id: "TERM-127"
+    layer: "aux"
+    status: "stable"
+    definition: "災害復旧のためのデータバックアップエンティティ。ある時点のシステム状態を退避し、データ破損・誤削除・障害時に復元（restore）へ供する"
+    synonyms: ["バックアップ", "DataBackup"]
+    boundaries:
+      includes: ["時点スナップショット退避", "復元（restore）", "backup/restore API"]
+      excludes: ["監査ログ（AuditLog）", "スキーママイグレーション"]
+    related_terms: ["Record"]
+    evidence:
+      - source: "src/domain/entities/Backup.ts"
+        quote: "Domain entity representing a data backup for disaster recovery."
+      - source: ".spec-workflow/specs/Backup/Backup_spec.md"
+        quote: "# SPEC: Backup (Entity)"
+
+  NotificationProvider:
+    id: "TERM-128"
+    layer: "aux"
+    status: "stable"
+    definition: "外部通知チャネル（email等）の設定を表すドメインエンティティ。プロバイダタイプと有効状態を持ち、NotificationServiceが配信に使用する"
+    synonyms: ["通知プロバイダ"]
+    boundaries:
+      includes: ["外部通知チャネル設定", "プロバイダタイプ（NotificationProviderType）", "有効/無効状態"]
+      excludes: ["UIトースト通知（UIComponents）", "通知履歴（NotificationsHistory）"]
+    related_terms: ["User"]
+    evidence:
+      - source: "src/domain/entities/NotificationProvider.ts"
+        quote: "export enum NotificationProviderType"
+      - source: ".spec-workflow/specs/NotificationProvider/NotificationProvider_spec.md"
+        quote: "NotificationProvider_spec"
+
+  TrendAnalysis:
+    id: "TERM-129"
+    layer: "aux"
+    status: "stable"
+    definition: "感情データの時系列トレンドを分析するドメインエンティティ。学生・クラスの長期トレンド構造を提供し、教育的洞察とデータ駆動意思決定を支援する"
+    synonyms: ["トレンド分析"]
+    boundaries:
+      includes: ["時系列トレンド構造", "長期分析のファクトリ関数", "trends API応答"]
+      excludes: ["単発統計集計（Stats/StatsCalculator）", "異常検知（Anomaly）"]
+    related_terms: ["Stats", "Record"]
+    evidence:
+      - source: "src/domain/entities/TrendAnalysis.ts"
+        quote: "Domain entity for trend analysis of emotion data over time."
+      - source: ".spec-workflow/specs/TrendAnalysis/TrendAnalysis_spec.md"
+        quote: "TrendAnalysis_spec"

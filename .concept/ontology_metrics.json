@@ -1,33 +1,33 @@
 {
   "version": "1.0",
-  "last_updated": "2026-10-15T00:09:18+09:00",
-  "run_index": 227,
+  "last_updated": "2026-10-15T00:22:35+09:00",
+  "run_index": 228,
   "phase": "maintenance",
   "terms": {
-    "total": 49,
+    "total": 54,
     "core": 8,
     "domain": 21,
-    "aux": 20,
+    "aux": 25,
     "draft": 0,
-    "stable": 43
+    "stable": 54
   },
   "mappings": {
-    "total": 43,
-    "with_code_symbols": 43,
+    "total": 54,
+    "with_code_symbols": 54,
     "with_db": 3,
-    "with_api": 6,
+    "with_api": 8,
     "unmapped": 0
   },
   "invariants": {
     "total": 100,
-    "hard": 54,
-    "soft": 14,
-    "stable": 68,
+    "hard": 79,
+    "soft": 21,
+    "stable": 100,
     "draft": 0
   },
   "quality_metrics": {
-    "ontology_coverage": "36.4%",
-    "mapping_saturation": "100%",
+    "ontology_coverage": "54/118 = 45.8%",
+    "mapping_saturation": "54/54 = 100%",
     "draft_ratio": "0%",
     "unmapped_ratio": "0%",
     "evidence_coverage": "100%",
@@ -67,9 +67,10 @@
     "maintenance_cycle_224": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
     "maintenance_cycle_225": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
     "maintenance_cycle_226": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_227": "Concept drift sync: 5 new domain vocabularies (Anomaly, AuditLog, Backup, NotificationProvider, TrendAnalysis) discovered in code since cycle 226 and registered in term_queue.yml as pending (aux, TTL 10 runs); none promoted to ontology per v0.3 rule 4 (no direct new-term insertion). Fixed TERM-122 AuthorizationService layer 'application' -> 'domain' (invalid enum per B-7). Recounted terms: 43 -> 49 (metrics/budget drift corrected). Prisma schema holds only Record and User models; new entities persist via in-memory repositories. Test counts left at last recorded evidence (1312/177) - full suite not run in this sync stage."
+    "maintenance_cycle_227": "Concept drift sync: 5 new domain vocabularies (Anomaly, AuditLog, Backup, NotificationProvider, TrendAnalysis) discovered in code since cycle 226 and registered in term_queue.yml as pending (aux, TTL 10 runs); none promoted to ontology per v0.3 rule 4 (no direct new-term insertion). Fixed TERM-122 AuthorizationService layer 'application' -> 'domain' (invalid enum per B-7). Recounted terms: 43 -> 49 (metrics/budget drift corrected). Prisma schema holds only Record and User models; new entities persist via in-memory repositories. Test counts left at last recorded evidence (1312/177) - full suite not run in this sync stage.",
+    "maintenance_cycle_228": "Queue promotion review (B-8): 5 pending terms (Anomaly, AuditLog, Backup, NotificationProvider, TrendAnalysis) accepted - each has >=2 primary sources (spec docs in .spec-workflow/specs/ + multiple test files), no merge candidate >=0.78, boundaries and mappings attached. Promoted as aux/stable (TERM-125..129). Added 11 missing mappings (6 pre-existing unmapped terms: User, UserRepository, InMemoryUserRepository, LoginForm, AuthenticationService, AuthorizationService + 5 promoted). Migrated 32 legacy-schema invariants to v0.3 (strength from severity: CRITICAL/HIGH=hard, MEDIUM=soft; status=stable) - arithmetic now consistent (79 hard + 21 soft = 100). Terms arithmetic consistent: 8 core + 21 domain + 25 aux = 54, all stable."
   },
-  "queue_pending": 5,
+  "queue_pending": 0,
   "gc_actions": {
     "merged": 0,
     "deleted": 0,

@@ -1,9 +1,9 @@
 {
-  "run_index": 228,
-  "last_run_id": "cycle-228-concept-sync",
-  "last_run_timestamp": "2026-10-15T01:20:00+09:00",
+  "run_index": 229,
+  "last_run_id": "cycle-229-invariants-gc",
+  "last_run_timestamp": "2026-10-15T01:30:00+09:00",
   "phase": "maintenance",
-  "claims_retained_lines": 17,
+  "claims_retained_lines": 20,
   "claims_archived_until_run_id": null,
   "last_synced_commit": "d2d7e5ebdfd64371f1f284e3822d1845fedbb3bb"
 }

@@ -1,1 +1,122 @@
-queue: []
+queue:
+  - id: "TP-000001"
+    proposed_canonical: "Anomaly"
+    proposed_layer: "aux"
+    term_raw_examples: ["Anomaly", "異常検知"]
+    reason: "ドメインエンティティ+リポジトリ+検知サービス+SPECドキュメントが存在。2一次資料以上あり次回runで昇格審査。"
+    evidence:
+      - source: "src/domain/entities/Anomaly.ts"
+        quote: "export interface Anomaly"
+      - source: ".spec-workflow/specs/InMemoryAnomalyRepository/InMemoryAnomalyRepository_spec.md"
+        quote: "InMemoryAnomalyRepository specification"
+      - source: "src/domain/services/AnomalyDetectionService.ts"
+        quote: "AnomalyDetectionService detects anomalies"
+    auto_merge_candidates: []
+    proposed_mappings:
+      - "src/domain/entities/Anomaly.ts"
+      - "src/domain/repositories/AnomalyRepository.ts"
+      - "src/infrastructure/storage/InMemoryAnomalyRepository.ts"
+      - "src/domain/services/AnomalyDetectionService.ts"
+    decision: "accepted"
+    expires_after_runs: 10
+    decided_run: "2026-10-14T15:21:32Z"
+    created_run: "2026-10-14T15:09:18Z"
+
+  - id: "TP-000002"
+    proposed_canonical: "AuditLog"
+    proposed_layer: "aux"
+    term_raw_examples: ["AuditLog", "監査ログ"]
+    reason: "監査エンティティ+リポジトリ+Application層AuditServiceが存在。PII/操作履歴を扱うため承認時はauthタグ相当の慎重審査が必要。Prismaモデルは未定義(in-memory)。"
+    evidence:
+      - source: "src/domain/entities/AuditLog.ts"
+        quote: "export interface AuditLog"
+      - source: "src/domain/repositories/AuditLogRepository.ts"
+        quote: "AuditLogRepository interface"
+      - source: "src/application/services/AuditService.ts"
+        quote: "AuditService writes audit logs"
+    auto_merge_candidates: []
+    proposed_mappings:
+      - "src/domain/entities/AuditLog.ts"
+      - "src/domain/repositories/AuditLogRepository.ts"
+      - "src/application/services/AuditService.ts"
+    decision: "accepted"
+    expires_after_runs: 10
+    decided_run: "2026-10-14T15:21:32Z"
+    created_run: "2026-10-14T15:09:18Z"
+
+  - id: "TP-000003"
+    proposed_canonical: "Backup"
+    proposed_layer: "aux"
+    term_raw_examples: ["Backup", "バックアップ", "Restore"]
+    reason: "バックアップエンティティ+リポジトリ+BackupService+backup/restore APIが存在。データ復元を伴うためdestructive側の安全側審査が必要。Prismaモデルは未定義(in-memory)。"
+    evidence:
+      - source: "src/domain/entities/Backup.ts"
+        quote: "export interface Backup"
+      - source: "src/domain/repositories/BackupRepository.ts"
+        quote: "BackupRepository interface"
+      - source: "src/app/api/backup/route.ts"
+        quote: "backup API route"
+      - source: "src/app/api/restore/route.ts"
+        quote: "restore API route"
+    auto_merge_candidates: []
+    proposed_mappings:
+      - "src/domain/entities/Backup.ts"
+      - "src/domain/repositories/BackupRepository.ts"
+      - "src/application/services/BackupService.ts"
+      - "src/app/api/backup/route.ts"
+      - "src/app/api/restore/route.ts"
+    decision: "accepted"
+    expires_after_runs: 10
+    decided_run: "2026-10-14T15:21:32Z"
+    created_run: "2026-10-14T15:09:18Z"
+
+  - id: "TP-000004"
+    proposed_canonical: "NotificationProvider"
+    proposed_layer: "aux"
+    term_raw_examples: ["NotificationProvider", "通知プロバイダ"]
+    reason: "外部通知チャネルのドメインエンティティ。UIのトースト通知(Notification/Toast, UIComponentsのsynonyms)とは別概念だが名前が近いためレビュー必要。Prismaモデルは未定義(in-memory)。"
+    evidence:
+      - source: "src/domain/entities/NotificationProvider.ts"
+        quote: "export interface NotificationProvider"
+      - source: "src/domain/repositories/NotificationProviderRepository.ts"
+        quote: "NotificationProviderRepository interface"
+      - source: "src/application/services/NotificationService.ts"
+        quote: "NotificationService dispatches notifications"
+    auto_merge_candidates:
+      - term: "UIComponents"
+        similarity: 0.40
+    proposed_mappings:
+      - "src/domain/entities/NotificationProvider.ts"
+      - "src/domain/repositories/NotificationProviderRepository.ts"
+      - "src/application/services/NotificationService.ts"
+    decision: "accepted"
+    expires_after_runs: 10
+    decided_run: "2026-10-14T15:21:32Z"
+    created_run: "2026-10-14T15:09:18Z"
+
+  - id: "TP-000005"
+    proposed_canonical: "TrendAnalysis"
+    proposed_layer: "aux"
+    term_raw_examples: ["TrendAnalysis", "トレンド分析"]
+    reason: "長期トレンド分析のドメインエンティティ+リポジトリ+TrendAnalysisService+trends APIが存在。StatsCalculatorのsynonymsにTrendCalculatorがあるが集計ユーティリティであり別概念。Prismaモデルは未定義(in-memory)。"
+    evidence:
+      - source: "src/domain/entities/TrendAnalysis.ts"
+        quote: "export interface TrendAnalysis"
+      - source: "src/domain/repositories/TrendAnalysisRepository.ts"
+        quote: "TrendAnalysisRepository interface"
+      - source: "src/application/services/TrendAnalysisService.ts"
+        quote: "TrendAnalysisService computes trends"
+      - source: "src/app/api/trends/route.ts"
+        quote: "trends API route"
+    auto_merge_candidates:
+      - term: "StatsCalculator"
+        similarity: 0.55
+    proposed_mappings:
+      - "src/domain/entities/TrendAnalysis.ts"
+      - "src/domain/repositories/TrendAnalysisRepository.ts"
+      - "src/application/services/TrendAnalysisService.ts"
+      - "src/app/api/trends/route.ts"
+    decision: "accepted"
+    expires_after_runs: 10
+    decided_run: "2026-10-14T15:21:32Z"
+    created_run: "2026-10-14T15:09:18Z"

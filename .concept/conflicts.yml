@@ -1,1 +1,19 @@
-conflicts: []
+conflicts:
+- id: CFLT-QGATE-001
+  term: ontology_metrics
+  about: quality_gate
+  severity: low
+  nli: contradiction
+  items:
+  - claim: 'Q1: >=80% of code modules must exist as ontology terms'
+    source: 11_repo_autopilot.md section 4 Q1
+  - claim: 'Q6: ontology terms must be <= 80, consolidation over addition'
+    source: 11_repo_autopilot.md section 4 Q6
+  - claim: Codebase has 118 non-test source files; 80/118 = 67.8% is the mathematical
+      maximum under Q6, so Q1 (80%) is unsatisfiable while Q6 holds
+    source: measured cycle 228
+  status: open
+  active_workaround:
+    decision_key: AUTO:quality_gate.q1_vs_q6:consolidation_priority
+    summary: 'AUTO: Q6 (consolidation, <=80 terms) takes precedence; Q1 is reported
+      as raw ratio with documented rationale instead of forcing term inflation'

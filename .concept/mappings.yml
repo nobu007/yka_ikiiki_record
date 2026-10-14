@@ -396,3 +396,87 @@ mappings:
       - "src/integration/"
     db: []
     api: []
+
+  Anomaly:
+    code_symbols:
+      - "src/domain/entities/Anomaly.ts::interface Anomaly"
+      - "src/domain/repositories/AnomalyRepository.ts::interface AnomalyRepository"
+      - "src/domain/services/AnomalyDetectionService.ts"
+      - "src/infrastructure/storage/InMemoryAnomalyRepository.ts::class InMemoryAnomalyRepository"
+    db: []
+    api: []
+
+  AuditLog:
+    code_symbols:
+      - "src/domain/entities/AuditLog.ts::interface AuditLog"
+      - "src/domain/repositories/AuditLogRepository.ts::interface AuditLogRepository"
+      - "src/application/services/AuditService.ts"
+      - "src/infrastructure/repositories/InMemoryAuditLogRepository.ts::class InMemoryAuditLogRepository"
+    db: []
+    api: []
+
+  Backup:
+    code_symbols:
+      - "src/domain/entities/Backup.ts::interface Backup"
+      - "src/domain/repositories/BackupRepository.ts::interface BackupRepository"
+      - "src/application/services/BackupService.ts"
+      - "src/infrastructure/repositories/InMemoryBackupRepository.ts::class InMemoryBackupRepository"
+    db: []
+    api:
+      - "src/app/api/backup/route.ts"
+      - "src/app/api/restore/route.ts"
+
+  NotificationProvider:
+    code_symbols:
+      - "src/domain/entities/NotificationProvider.ts::interface NotificationProvider"
+      - "src/domain/repositories/NotificationProviderRepository.ts::interface NotificationProviderRepository"
+      - "src/application/services/NotificationService.ts"
+      - "src/infrastructure/storage/InMemoryNotificationProviderRepository.ts"
+    db: []
+    api: []
+
+  TrendAnalysis:
+    code_symbols:
+      - "src/domain/entities/TrendAnalysis.ts::interface TrendAnalysis"
+      - "src/domain/repositories/TrendAnalysisRepository.ts::interface TrendAnalysisRepository"
+      - "src/application/services/TrendAnalysisService.ts"
+      - "src/infrastructure/storage/InMemoryTrendAnalysisRepository.ts"
+    db: []
+    api:
+      - "src/app/api/trends/route.ts"
+
+  User:
+    code_symbols:
+      - "src/domain/entities/User.ts::type User"
+    db: []
+    api: []
+
+  UserRepository:
+    code_symbols:
+      - "src/domain/repositories/UserRepository.ts::interface UserRepository"
+    db: []
+    api: []
+
+  InMemoryUserRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts::class InMemoryUserRepository"
+    db: []
+    api: []
+
+  LoginForm:
+    code_symbols:
+      - "src/components/auth/LoginForm.tsx::const LoginForm"
+    db: []
+    api: []
+
+  AuthenticationService:
+    code_symbols:
+      - "src/domain/services/AuthenticationService.ts::class AuthenticationService"
+    db: []
+    api: []
+
+  AuthorizationService:
+    code_symbols:
+      - "src/application/services/AuthorizationService.ts::class AuthorizationService"
+    db: []
+    api: []

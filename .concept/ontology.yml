@@ -477,15 +477,17 @@ canonical_terms:
     id: "TERM-047"
     layer: "domain"
     status: "stable"
-    definition: "環境変数の設定と取得を管理するユーティリティ"
+    definition: "環境変数の設定と取得を管理するユーティリティ。データベースプロバイダ選択（DATABASE_PROVIDER）を含む"
     synonyms: []
     boundaries:
-      includes: ["環境変数", "設定検証"]
+      includes: ["環境変数", "設定検証", "DATABASE_PROVIDER"]
       excludes: []
-    related_terms: []
+    related_terms: ["MirageServer", "PrismaClient"]
     evidence:
       - source: "src/lib/config/env.ts"
         quote: "export function getEnv(): Env"
+      - source: ".env.example"
+        quote: "DATABASE_PROVIDER=\"mirage\" # For development and E2E testing (in-memory database, no setup required)"
 
   ApplicationLayer:
     id: "TERM-048"
@@ -657,7 +659,7 @@ canonical_terms:
 
   AuthorizationService:
     id: "TERM-122"
-    layer: "application"
+    layer: "domain"
     status: "stable"
     definition: "認可を行うアプリケーションサービス。ロールベースアクセス制御（RBAC）と権限チェックを担当"
     synonyms: ["RBAC", "PermissionChecker"]

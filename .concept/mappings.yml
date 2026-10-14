@@ -396,3 +396,13 @@ mappings:
       - "src/integration/"
     db: []
     api: []
+
+  SessionToken:
+    code_symbols:
+      - "src/app/api/auth/login/route.ts::class SimpleTokenGenerator"
+      - "src/app/api/auth/session/route.ts::function GET (token parse /^session_(\\d+)_/)"
+      - "src/domain/services/AuthenticationService.ts::interface AuthenticationResult"
+    db: []
+    api:
+      - "src/app/api/auth/login/route.ts::POST /api/auth/login"
+      - "src/app/api/auth/session/route.ts::GET /api/auth/session"

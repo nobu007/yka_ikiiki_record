@@ -73,3 +73,26 @@ conflicts:
   status: open
   resolution_required: Reconcile the Q3 count-based acceptance rule with the invariant budget at its governing
     source; neither is silently relaxed in this repository.
+- id: CFLT-BACKUP-001
+  term: Backup
+  about: boundary
+  severity: high
+  tags:
+  - destructive
+  nli: contradiction
+  items:
+  - claim: MS-008 is intended to provide data integrity and disaster recovery; the
+      service documentation promises restoration of entity data.
+    source: .concept/charter.yml
+    quote: データの整合性と災害復旧のため、バックアップ・復元システムを実装し、運用上の回復力を向上させる
+  - claim: createBackup computes size/checksum but saves only Backup metadata; restoreBackup
+      delegates to the repository without restoring entity contents.
+    source: src/application/services/BackupService.ts
+  - claim: InMemoryBackupRepository.restore returns metadata only; a new repository
+      starts with an empty backup array.
+    source: src/infrastructure/repositories/InMemoryBackupRepository.ts
+  status: open
+  active_workaround:
+    decision_key: AUTO:Backup.boundary:metadata_only_prototype
+    summary: Treat Backup as a metadata-only prototype; MS-008 is active until snapshot
+      recovery and cross-request retention are verified.

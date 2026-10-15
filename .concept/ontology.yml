@@ -722,15 +722,17 @@ canonical_terms:
   Backup:
     id: TERM-BACKUP
     layer: aux
-    status: stable
-    definition: 記録のバックアップと復元。状態、件数、サイズ、チェックサム、および復元処理を扱う。
+    status: draft
+    definition: 記録スナップショットの保存と復元を目的とする概念。現実装は状態・件数・サイズ・チェックサムのメタデータ管理であり、記録本体の復旧は実装されていない。
     lifecycle: [pending, in_progress, completed, failed]
     synonyms: []
     boundaries:
       includes:
-      - バックアップ状態と整合性検査
-      - 復元サービスとインメモリ保存
+      - バックアップ状態とチェックサムの算出
+      - メタデータのインメモリ保存と復元結果の返却
       excludes:
+      - 記録・統計・監査ログ本体の復旧保証
+      - 別リクエストのサービスインスタンス間でのバックアップ共有保証
       - 定期実行の運用保証
       - 外部永続ストレージの保証
     related_terms:
@@ -740,6 +742,14 @@ canonical_terms:
     - source: src/domain/entities/Backup.test.ts
     - source: src/domain/repositories/BackupRepository.test.ts
     - source: src/domain/entities/Backup.ts
+    - source: src/application/services/BackupService.ts
+    - source: src/infrastructure/repositories/InMemoryBackupRepository.ts
+    - source: src/infrastructure/factories/repositoryFactory.ts
+    assumptions:
+    - id: ASM-BACKUP-001
+      text: "AUTO: 現実装はメタデータのプロトタイプとして扱い、データ復旧の根拠にしない"
+      decision_key: AUTO:Backup.boundary:metadata_only_prototype
+      expires_after_runs: 20
 
   TrendAnalysis:
     id: TERM-TRENDANALYSIS

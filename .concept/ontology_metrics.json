@@ -1,17 +1,17 @@
 {
-  "run_id": "2026-10-15T17:38:17Z",
+  "run_id": "2026-10-15T17:53:32Z",
   "total_terms": 54,
   "by_layer": {
     "core": 8,
     "domain": 21,
     "aux": 25
   },
-  "draft_ratio": 0.1111111111111111,
+  "draft_ratio": 0.12962962962962962,
   "invariants_count": 60,
   "mappings_count": 54,
   "queue_pending": 0,
-  "claims_retained_lines": 22,
-  "decisions_md_lines": 25,
+  "claims_retained_lines": 32,
+  "decisions_md_lines": 33,
   "gc_actions": {
     "merged_invariants": 0,
     "merged_terms": 0,
@@ -43,23 +43,18 @@
   },
   "stage_11_quality": {
     "Q1": {
-      "value": 0.8583333333333333,
+      "value": 0.9,
       "threshold": 0.8,
       "status": "PASS",
       "measurement": "Conservative source coverage: minimum of directly mapped exported production modules and classes. Excludes test/support files, declaration files, test-utils, and barrel index files. Directory mappings do not imply every descendant is semantically covered.",
       "production_modules": 120,
-      "mapped_modules": 103,
+      "mapped_modules": 108,
       "production_classes": 34,
       "mapped_classes": 33,
       "unmapped_modules": [
         "src/app/api/auth/login/route.ts",
         "src/app/api/auth/logout/route.ts",
         "src/app/api/auth/session/route.ts",
-        "src/app/api/backup/route.ts",
-        "src/app/api/notifications/history/route.ts",
-        "src/app/api/notifications/settings/route.ts",
-        "src/app/api/restore/route.ts",
-        "src/app/api/trends/route.ts",
         "src/components/common/ComponentCard.tsx",
         "src/components/common/ExportButton.tsx",
         "src/components/common/PaginationControl.tsx",
@@ -86,7 +81,7 @@
       "invariant_records": 60
     },
     "Q4": {
-      "value": 0.1111111111111111,
+      "value": 0.12962962962962962,
       "threshold": 0.3,
       "status": "PASS"
     },

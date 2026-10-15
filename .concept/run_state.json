@@ -1,9 +1,9 @@
 {
-  "last_run_id": "2026-10-15T17:38:17Z",
-  "run_index": 228,
-  "claims_retained_lines": 22,
+  "last_run_id": "2026-10-15T17:53:32Z",
+  "run_index": 229,
+  "claims_retained_lines": 32,
   "claims_archived_until_run_id": null,
-  "baseline_commit": "0839402ab1d510291542085c61dbc70cdbb6b686",
+  "baseline_commit": "2aceb4ce89baf12d743ecd7eecaba8673aa14c30",
   "term_last_touched_run": {
     "Record": 227,
     "Stats": 227,
@@ -55,9 +55,9 @@
     "InMemoryUserRepository": 227,
     "LoginForm": 227,
     "AuditLog": 228,
-    "Backup": 228,
-    "TrendAnalysis": 228,
-    "NotificationProvider": 228,
+    "Backup": 229,
+    "TrendAnalysis": 229,
+    "NotificationProvider": 229,
     "Anomaly": 228
   },
   "legacy_term_age_before_run": null

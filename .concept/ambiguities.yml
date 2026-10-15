@@ -95,6 +95,12 @@ ambiguities:
   topic: Timestamp naming is not proof of concurrent uniqueness
   severity: low
   uncertainty: 0.216
+  uncertainty_inputs:
+    related_claims: 2
+    unknown: 0
+    contradictions: 1
+    k: 2
+    average_weight: 0.85
   candidates:
   - Certify uniqueness from a delayed sequential test
   - Retain uniqueness as a draft requirement pending a collision-safe implementation and concurrency test
@@ -121,3 +127,46 @@ ambiguities:
     quote: const timestamp = Date.now()
   - source: src/app/api/export/route.headers.test.ts
     quote: await new Promise((resolve) => setTimeout(resolve, 10))
+- id: AMB-BACKUP-001
+  term: Backup
+  topic: Backup metadata success is not entity snapshot recovery
+  severity: high
+  uncertainty: 0.212
+  tags:
+  - destructive
+  candidates:
+  - Certify disaster recovery from successful metadata responses
+  - Treat current backup/restore as a metadata-only prototype until entity recovery
+    is implemented and verified
+  missing_info:
+  - Snapshot payload storage and integrity verification contract
+  - Create backup, mutate/delete synthetic data, restore, and compare every protected
+    entity
+  - Backup retention across independently constructed API service instances
+  linked_conflicts:
+  - CFLT-BACKUP-001
+  uncertainty_inputs:
+    related_claims: 4
+    unknown: 1
+    contradictions: 1
+    k: 4
+    average_weight: 0.85
+  auto_decision:
+    status: applied
+    decision_key: AUTO:Backup.boundary:metadata_only_prototype
+    chosen: 現実装はメタデータのプロトタイプとして扱い、記録本体の復旧やリクエスト間共有を保証しない。MS-008は未完了とする。
+    policy: destructive_safety + reversibility + locality; no data mutation or acceptance
+      weakening
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T17:53:32Z'
+    expires_after_runs: 20
+    revert_triggers:
+    - primary_evidence_contradiction
+    - security_risk
+    - repeated_critical_test_failure
+  last_touched_run: '2026-10-15T17:53:32Z'
+  evidence:
+  - source: .concept/charter.yml
+  - source: src/application/services/BackupService.ts
+  - source: src/infrastructure/repositories/InMemoryBackupRepository.ts
+  - source: src/application/services/BackupService.test.ts

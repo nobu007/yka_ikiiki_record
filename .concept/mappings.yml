@@ -448,6 +448,9 @@ mappings:
     - src/domain/repositories/BackupRepository.ts::BackupRepository
     - src/application/services/BackupService.ts::BackupService
     - src/infrastructure/repositories/InMemoryBackupRepository.ts::InMemoryBackupRepository
+    - src/app/api/backup/route.ts::POST
+    - src/app/api/backup/route.ts::GET
+    - src/app/api/restore/route.ts::POST
     db: []
     api:
     - POST /api/backup
@@ -462,6 +465,7 @@ mappings:
     - src/application/services/TrendAnalysisService.ts::TrendAnalysisService
     - src/infrastructure/storage/InMemoryTrendAnalysisRepository.ts::InMemoryTrendAnalysisRepository
     - src/components/charts/TrendReportChart.tsx
+    - src/app/api/trends/route.ts::GET
     db: []
     api:
     - GET /api/trends
@@ -473,6 +477,9 @@ mappings:
     - src/application/services/NotificationService.ts::NotificationService
     - src/infrastructure/services/EmailNotificationProvider.ts::EmailNotificationProvider
     - src/infrastructure/storage/InMemoryNotificationProviderRepository.ts::InMemoryNotificationProviderRepository
+    - src/app/api/notifications/settings/route.ts::GET
+    - src/app/api/notifications/settings/route.ts::POST
+    - src/app/api/notifications/history/route.ts::GET
     db: []
     api:
     - GET /api/notifications/settings

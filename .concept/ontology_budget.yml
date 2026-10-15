@@ -1,10 +1,25 @@
-version: "1.0"
-budget:
-  terms_max: 80
-  draft_ratio_max: 0.30
-  unmapped_ratio_max: 0.20
-current_usage:
-  terms_count: 43
-  draft_count: 0
-  unmapped_count: 0
-status: "HEALTHY"
+limits:
+  total_terms_max: 80
+  core_max: 20
+  domain_max: 30
+  aux_max: 30
+  invariants_max: 60
+  ambiguities_max: 50
+  conflicts_max: 50
+  mappings_max: 200
+  queue_max: 50
+  claims_max_lines: 10000
+  claims_max_bytes: 10485760
+  decisions_max_lines: 200
+ratios:
+  draft_ratio_max: 0.3
+  queue_pending_max: 30
+  unmapped_ratio_max: 0.2
+ttl_runs:
+  aux_delete: 10
+  draft_delete: 15
+  domain_deprecate: 20
+  queue_reject: 10
+merge:
+  similarity_merge_threshold: 0.78
+  similarity_review_threshold: 0.65

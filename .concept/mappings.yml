@@ -63,7 +63,7 @@ mappings:
 
   EmotionGenerator:
     code_symbols:
-      - "src/domain/services/EmotionGenerator.ts::function generateEmotion"
+    - src/domain/services/EmotionGenerator.ts::const generateEmotion
     db: []
     api: []
 
@@ -85,11 +85,10 @@ mappings:
 
   InfrastructureLayer:
     code_symbols:
-      - "src/infrastructure/"
-      - "src/infrastructure/storage/"
-      - "src/infrastructure/repositories/"
-      - "src/infrastructure/factories/"
-      - "src/app/api/"
+    - src/infrastructure/
+    - src/infrastructure/storage/
+    - src/infrastructure/repositories/
+    - src/infrastructure/factories/
     db: []
     api: []
 
@@ -137,22 +136,20 @@ mappings:
 
   PrismaRecordRepository:
     code_symbols:
-      - "src/infrastructure/repositories/PrismaRecordRepository.ts::class PrismaRecordRepository"
+    - src/infrastructure/repositories/PrismaRecordRepository.ts::class PrismaRecordRepository
     db:
-      - "prisma/schema.prisma::model Record"
+    - prisma/schema.prisma::model Record
     api:
-      - "GET /api/records/:id"
-      - "POST /api/records"
-      - "DELETE /api/records/:id"
+    - POST /api/seed
+    - GET /api/export
 
   PrismaStatsRepository:
     code_symbols:
-      - "src/infrastructure/repositories/PrismaStatsRepository.ts::class PrismaStatsRepository"
-      - "src/infrastructure/repositories/PrismaSeedRepository.ts::class PrismaSeedRepository"
-    db:
-      - "prisma/schema.prisma::model Stats"
+    - src/infrastructure/repositories/PrismaStatsRepository.ts::class PrismaStatsRepository
+    - src/infrastructure/repositories/PrismaSeedRepository.ts::async function generateSeedData
+    db: []
     api:
-      - "GET /api/stats"
+    - GET /api/stats
 
   DynamicBarChart:
     code_symbols:
@@ -223,11 +220,11 @@ mappings:
 
   StatsCalculator:
     code_symbols:
-      - "src/utils/statsCalculator.ts::function calculateStats"
-      - "src/utils/statsCalculator/math.ts"
-      - "src/utils/statsCalculator/analytics.ts"
-      - "src/utils/statsCalculator/generation.ts"
-      - "src/utils/statsCalculator/trend.ts"
+    - src/utils/statsCalculator/math.ts::const calculateAverage
+    - src/utils/statsCalculator/math.ts
+    - src/utils/statsCalculator/analytics.ts
+    - src/utils/statsCalculator/generation.ts
+    - src/utils/statsCalculator/trend.ts
     db: []
     api: []
 
@@ -257,17 +254,17 @@ mappings:
 
   ResilientHandler:
     code_symbols:
-      - "src/lib/api/error-handler.ts::function withResilientHandler"
-      - "src/lib/api/error-handler.ts::function handleApiError"
-      - "src/lib/resilience/timeout.ts::class TimeoutError"
-      - "src/lib/resilience/timeout.ts::interface TimeoutConfig"
-      - "src/lib/resilience/timeout.ts::function withTimeout"
-      - "src/lib/resilience/timeout.ts::function withApiTimeout"
-      - "src/lib/resilience/timeout.ts::function withDatabaseTimeout"
-      - "src/lib/resilience/timeout.ts::function withCommandTimeout"
-      - "src/lib/resilience/timeout.ts::function withFileTimeout"
-      - "src/lib/resilience/timeout.ts::function withE2ETimeout"
-      - "src/lib/resilience/timeout.ts::function withCustomTimeout"
+    - src/lib/api/error-handler.ts::function withResilientHandler
+    - src/lib/api/error-handler.ts::function handleApiError
+    - src/lib/resilience/timeout.ts::class TimeoutError
+    - src/lib/resilience/timeout.ts::interface TimeoutConfig
+    - src/lib/resilience/timeout.ts::const withTimeout
+    - src/lib/resilience/timeout.ts::const withApiTimeout
+    - src/lib/resilience/timeout.ts::const withDatabaseTimeout
+    - src/lib/resilience/timeout.ts::const withCommandTimeout
+    - src/lib/resilience/timeout.ts::const withFileTimeout
+    - src/lib/resilience/timeout.ts::const withE2ETimeout
+    - src/lib/resilience/timeout.ts::const withCustomTimeout
     db: []
     api: []
 
@@ -310,43 +307,44 @@ mappings:
 
   PresentationLayer:
     code_symbols:
-      - "src/presentation/"
-      - "src/presentation/hooks/"
-      - "src/components/"
+    - src/presentation/
+    - src/presentation/hooks/
+    - src/components/
+    - src/app/api/
     db: []
     api: []
 
   Dashboard:
     code_symbols:
-      - "src/components/Dashboard.tsx::function Dashboard"
-      - "src/app/(dashboard)/dashboard/page.tsx::function DashboardPage"
-      - "src/app/(dashboard)/layout.tsx::function DashboardLayout"
-      - "src/app/(chart)/bar-chart/page.tsx::function BarChartPage"
-      - "src/app/(chart)/bar-chart/components/BarChartContent.tsx::function BarChartContent"
-      - "src/app/layout.tsx::function RootLayout"
-      - "src/app/page.tsx::function HomePage"
-      - "src/app/not-found.tsx::function NotFound"
-      - "src/app/(dashboard)/dashboard/components/stats/StatsDisplay.tsx::function StatsDisplay"
-      - "src/app/(dashboard)/dashboard/components/stats/DataGenerationPanel.tsx::function DataGenerationPanel"
-      - "src/app/(dashboard)/dashboard/components/stats/GenerationControls.tsx::function GenerationControls"
-      - "src/app/(dashboard)/dashboard/components/stats/EventManager.tsx::function EventManager"
-      - "src/app/(dashboard)/dashboard/components/stats/ClassCharacteristicsEditor.tsx::function ClassCharacteristicsEditor"
-      - "src/components/dashboard/DataVisualization.tsx::function DataVisualization"
-      - "src/components/dashboard/DataSection.tsx::function DataSection"
-      - "src/components/dashboard/InstructionsSection.tsx::function InstructionsSection"
+    - src/components/Dashboard.tsx::function Dashboard
+    - src/app/(dashboard)/dashboard/page.tsx::function DashboardPage
+    - src/app/(dashboard)/layout.tsx::function DashboardLayout
+    - src/app/(chart)/bar-chart/page.tsx::function Page
+    - src/app/(chart)/bar-chart/components/BarChartContent.tsx::function BarChartContent
+    - src/app/layout.tsx::function RootLayout
+    - src/app/page.tsx::const Home
+    - src/app/not-found.tsx::function NotFound
+    - src/app/(dashboard)/dashboard/components/stats/StatsDisplay.tsx::function StatsDisplay
+    - src/app/(dashboard)/dashboard/components/stats/DataGenerationPanel.tsx::function DataGenerationPanel
+    - src/app/(dashboard)/dashboard/components/stats/GenerationControls.tsx::function GenerationControls
+    - src/app/(dashboard)/dashboard/components/stats/EventManager.tsx::function EventManager
+    - src/app/(dashboard)/dashboard/components/stats/ClassCharacteristicsEditor.tsx::function ClassCharacteristicsEditor
+    - src/components/dashboard/DataVisualization.tsx::const DataVisualization
+    - src/components/dashboard/DataSection.tsx::const DataSection
+    - src/components/dashboard/InstructionsSection.tsx::function InstructionsSection
     db: []
     api: []
 
   UIComponents:
     code_symbols:
-      - "src/components/common/Notification.tsx::function Notification"
-      - "src/components/common/LoadingSpinner.tsx::function LoadingSpinner"
-      - "src/components/common/ErrorBoundary.tsx::class ErrorBoundary"
-      - "src/components/common/PageBreadCrumb.tsx::function PageBreadCrumb"
-      - "src/components/common/UsageInstructions.tsx::function UsageInstructions"
-      - "src/components/common/GridShape.tsx::function GridShape"
-      - "src/components/ui/index.tsx::const Button"
-      - "src/components/common/Icons.tsx"
+    - src/components/common/Notification.tsx::const Notification
+    - src/components/common/LoadingSpinner.tsx::const LoadingSpinner
+    - src/components/common/ErrorBoundary.tsx::class ErrorBoundary
+    - src/components/common/PageBreadCrumb.tsx::const PageBreadcrumb
+    - src/components/common/UsageInstructions.tsx::const UsageInstructions
+    - src/components/common/GridShape.tsx::const GridShape
+    - src/components/ui/index.tsx::const Button
+    - src/components/common/Icons.tsx
     db: []
     api: []
 
@@ -372,16 +370,16 @@ mappings:
 
   ApplicationConstants:
     code_symbols:
-      - "src/lib/constants/api.ts::const API_ENDPOINTS"
-      - "src/lib/constants/api.ts::const HTTP_STATUS"
-      - "src/lib/constants/api.ts::const API_ERROR_MESSAGES"
-      - "src/lib/constants/messages.ts"
-      - "src/lib/constants/browser.ts::const WINDOW_EVENTS"
-      - "src/lib/constants/browser.ts::function reloadPage"
-      - "src/lib/constants/storage.ts"
-      - "src/lib/constants/ui.ts::const THEME, BREAKPOINTS"
-      - "src/lib/constants/resilience.ts"
-      - "src/lib/resilience/timeout.ts::interface TimeoutConfig"
+    - src/lib/constants/api.ts::const API_ENDPOINTS
+    - src/lib/constants/api.ts::const HTTP_STATUS
+    - src/lib/constants/api.ts::const API_ERROR_MESSAGES
+    - src/lib/constants/messages.ts
+    - src/lib/constants/browser.ts::const WINDOW_EVENTS
+    - src/lib/constants/browser.ts::const reloadPage
+    - src/lib/constants/storage.ts
+    - src/lib/constants/ui.ts::const UI_CONSTANTS
+    - src/lib/constants/resilience.ts
+    - src/lib/resilience/timeout.ts::interface TimeoutConfig
     db: []
     api: []
 
@@ -394,5 +392,41 @@ mappings:
       - "src/test-utils/component-helpers.ts::function expectClasses"
       - "src/test-utils/component-helpers.ts::function mockProcessEnv"
       - "src/integration/"
+    db: []
+    api: []
+  User:
+    code_symbols:
+    - src/domain/entities/User.ts
+    db:
+    - prisma/schema.prisma::model User
+    api: []
+
+  UserRepository:
+    code_symbols:
+    - src/domain/repositories/UserRepository.ts
+    db: []
+    api: []
+
+  AuthenticationService:
+    code_symbols:
+    - src/domain/services/AuthenticationService.ts
+    db: []
+    api: []
+
+  AuthorizationService:
+    code_symbols:
+    - src/application/services/AuthorizationService.ts
+    db: []
+    api: []
+
+  InMemoryUserRepository:
+    code_symbols:
+    - src/infrastructure/repositories/InMemoryUserRepository.ts
+    db: []
+    api: []
+
+  LoginForm:
+    code_symbols:
+    - src/components/auth/LoginForm.tsx
     db: []
     api: []

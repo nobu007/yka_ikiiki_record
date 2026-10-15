@@ -1,1 +1,35 @@
-conflicts: []
+conflicts:
+- id: CFLT-RECORD-001
+  term: Record
+  about: data_constraint
+  severity: low
+  nli: contradiction
+  items:
+  - claim: Emotion range is 0-100
+    source: git:0839402ab1d510291542085c61dbc70cdbb6b686:.concept/ontology.yml#L11
+  - claim: Raw emotion range is 1.0-5.0
+    source: src/lib/constants/index.ts#L21-L24
+  status: resolved
+  resolution: Record boundaries now use 1-5; INV-DOM-001 retains decimal support.
+- id: CFLT-STATS-001
+  term: StatsOverview
+  about: data_constraint
+  severity: medium
+  nli: contradiction
+  items:
+  - claim: Empty overview count=0 has avgEmotion=0
+    source: src/domain/entities/StatsOverview.test.ts#L16-L25
+  - claim: StatsOverviewSchema rejects avgEmotion below 1, even when count=0
+    source: src/schemas/api.ts#L96-L99
+  status: open
+- id: CFLT-EXPORT-001
+  term: APIRouteHandler
+  about: invariant
+  severity: medium
+  nli: contradiction
+  items:
+  - claim: INV-API-011 (merged into INV-API-009) requires each export filename to have a unique timestamp
+    source: .concept/invariants.yml
+  - claim: Date.now() has millisecond resolution; simultaneous export requests can share filenames
+    source: src/app/api/export/route.ts#L39-L58
+  status: open

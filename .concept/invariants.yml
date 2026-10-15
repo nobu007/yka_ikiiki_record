@@ -14,6 +14,8 @@ invariants:
     constraint: "Maximum 1 public responsibility per module - applies to ALL files without exception"
     validation: "File line count < 300 for ALL files (src/**/*.ts, src/**/*.tsx) - no test file exclusions"
     rationale: "Prevents god objects, maintains modularity, ensures test file governance"
+    status: "stable"
+    strength: "hard"
 
   - id: INV-ARCH-002
     name: Layer_Separation
@@ -23,6 +25,8 @@ invariants:
     constraint: "No cross-layer imports (Domain ← Infrastructure prohibited)"
     validation: "Dependency graph validation on commit"
     rationale: "Maintains architectural integrity"
+    status: "stable"
+    strength: "hard"
 
   - id: INV-ARCH-003
     name: Reference_Based_Options_Propagation
@@ -32,6 +36,8 @@ invariants:
     constraint: "Forbidden: deepcopy(options), copy.deepcopy(options)"
     validation: "Grep check for deepcopy in options handling"
     rationale: "Ensures parameter visibility across all layers"
+    status: "stable"
+    strength: "hard"
 
   # CODE QUALITY INVARIANTS
   - id: INV-QUAL-001
@@ -42,6 +48,8 @@ invariants:
     constraint: "No 'any' types without explicit justification, no implicit any"
     validation: "TypeScript compilation with strict mode must pass"
     rationale: "Maintains type safety across the codebase"
+    status: "stable"
+    strength: "hard"
     related_terms: ["CleanArchitecture", "DomainLayer"]
 
   - id: INV-QUAL-002
@@ -52,6 +60,8 @@ invariants:
     constraint: "Fixed paths only, overwrite is mandatory"
     validation: "find . -name '*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*' = 0"
     rationale: "Prevents report explosion, enforces singularity"
+    status: "stable"
+    strength: "hard"
 
   - id: INV-QUAL-003
     name: Common_Process_Reuse
@@ -61,6 +71,8 @@ invariants:
     constraint: "95%+ common code reuse rate required"
     validation: "Implementation requires pre-search grep for existing solutions"
     rationale: "Prevents wheel reinvention"
+    status: "stable"
+    strength: "hard"
 
   # TESTING INVARIANTS
   - id: INV-TEST-001
@@ -71,6 +83,8 @@ invariants:
     constraint: "90%+ coverage required for new code"
     validation: "Coverage report validation on commit"
     rationale: "Maintains regression safety"
+    status: "stable"
+    strength: "hard"
 
   - id: INV-TEST-002
     name: Dual_Verification_Required
@@ -80,6 +94,8 @@ invariants:
     constraint: "Both creation and skip scenarios must be tested"
     validation: "Test audit for file state transitions"
     rationale: "Prevents 'works once' failures"
+    status: "stable"
+    strength: "hard"
 
   # DOMAIN INVARIANTS
   - id: INV-DOM-001
@@ -90,6 +106,8 @@ invariants:
     constraint: "Emotion values must be between 1.0 and 5.0 inclusive"
     validation: "All Record entities and generated stats enforce 1.0-5.0 range"
     rationale: "Emotion scores are normalized to 1-5 scale for consistency"
+    status: "stable"
+    strength: "hard"
     related_terms: ["Record", "Stats", "EmotionGenerator"]
 
   - id: INV-DOM-002
@@ -100,6 +118,8 @@ invariants:
     constraint: "Stats must have overview, monthlyStats, studentStats, dayOfWeekStats, emotionDistribution, timeOfDayStats"
     validation: "StatsRepository and StatsService ensure complete structure"
     rationale: "Dashboard and UI depend on complete stats structure"
+    status: "stable"
+    strength: "hard"
     related_terms: ["Stats", "StatsRepository", "StatsService"]
 
   - id: INV-DOM-003
@@ -110,6 +130,8 @@ invariants:
     constraint: "id, comment, createdAt, updatedAt are optional; emotion, date, student are required"
     validation: "Record.test.ts verifies creation with and without optional fields"
     rationale: "Supports flexible record creation and persistence lifecycle"
+    status: "stable"
+    strength: "hard"
     related_terms: ["Record"]
 
   # RESILIENCE INVARIANTS
@@ -121,6 +143,8 @@ invariants:
     constraint: "State changes only on failure threshold or timeout expiration"
     validation: "CircuitBreaker.test.ts verifies state transitions and reset behavior"
     rationale: "Prevents cascading failures in distributed systems"
+    status: "stable"
+    strength: "hard"
     related_terms: ["CircuitBreaker", "AppError"]
 
   - id: INV-RES-002
@@ -131,6 +155,8 @@ invariants:
     constraint: "Failure count resets to 0 on successful operation or manual reset"
     validation: "CircuitBreaker tracks failureCount and resets appropriately"
     rationale: "Accurate failure tracking enables correct circuit state management"
+    status: "stable"
+    strength: "hard"
     related_terms: ["CircuitBreaker"]
 
   # REPOSITORY INVARIANTS
@@ -142,6 +168,8 @@ invariants:
     constraint: "All repository methods must be async and return proper types"
     validation: "StatsRepository.contract.test.ts enforces interface compliance"
     rationale: "Ensures swappable repository implementations (Prisma, Mock)"
+    status: "stable"
+    strength: "hard"
     related_terms: ["StatsRepository", "IRecordRepository", "PrismaRecordRepository", "MockStatsRepository"]
 
   - id: INV-REP-002
@@ -152,6 +180,8 @@ invariants:
     constraint: "Each repository call must be independent and isolated"
     validation: "Repository tests verify no state leakage between operations"
     rationale: "Prevents data corruption in concurrent scenarios"
+    status: "stable"
+    strength: "hard"
     related_terms: ["StatsRepository", "IRecordRepository"]
 
   # UTILITY INVARIANTS
@@ -163,6 +193,8 @@ invariants:
     constraint: "clamp, average, and other math functions handle edge cases gracefully"
     validation: "statsCalculator.basic.test.ts verifies boundary conditions"
     rationale: "Prevents NaN and undefined errors in calculations"
+    status: "stable"
+    strength: "hard"
     related_terms: ["StatsCalculator"]
 
   - id: INV-UTIL-002
@@ -173,6 +205,8 @@ invariants:
     constraint: "average([]) === 0, not NaN or undefined"
     validation: "statsCalculator.basic.test.ts verifies empty array behavior"
     rationale: "Provides predictable behavior for empty datasets"
+    status: "stable"
+    strength: "soft"
     related_terms: ["StatsCalculator"]
 
   - id: INV-UTIL-003
@@ -183,6 +217,8 @@ invariants:
     constraint: "clamp(value, min, max) returns value when within range, min when below, max when above"
     validation: "statsCalculator.basic.test.ts verifies clamp behavior with edge cases"
     rationale: "Ensures predictable value range enforcement"
+    status: "stable"
+    strength: "hard"
     related_terms: ["StatsCalculator"]
 
   # LOGGING INVARIANTS
@@ -194,6 +230,8 @@ invariants:
     constraint: "Log entries must have: level, category, operation, timestamp, correlationId, metadata, visibility"
     validation: "structured-logger.test.ts verifies all required fields are present"
     rationale: "Ensures log entries are queryable and traceable"
+    status: "stable"
+    strength: "hard"
     related_terms: ["StructuredLogger"]
 
   - id: INV-LOG-002
@@ -204,6 +242,8 @@ invariants:
     constraint: "DEBUG level maps to DEBUG visibility; INFO/WARN/ERROR/FATAL map to INTERNAL"
     validation: "structured-logger.test.ts verifies visibility mapping for convenience methods"
     rationale: "Prevents sensitive information leakage in debug logs"
+    status: "stable"
+    strength: "soft"
     related_terms: ["StructuredLogger"]
 
   - id: INV-LOG-003
@@ -214,6 +254,8 @@ invariants:
     constraint: "Every log entry must include a correlationId field"
     validation: "structured-logger.correlation.test.ts verifies correlation ID generation"
     rationale: "Enables distributed tracing and debugging"
+    status: "stable"
+    strength: "hard"
     related_terms: ["StructuredLogger"]
 
   - id: INV-LOG-004
@@ -224,6 +266,8 @@ invariants:
     constraint: "Logger must enforce max_logs limit and implement FIFO eviction"
     validation: "structured-logger.sizemanagement.test.ts verifies size limits"
     rationale: "Prevents memory leaks from unbounded log growth"
+    status: "stable"
+    strength: "soft"
     related_terms: ["StructuredLogger"]
 
   # TIMEOUT INVARIANTS
@@ -235,6 +279,8 @@ invariants:
     constraint: "API=10s, Database=5s, Command=30s, File=15s, E2E=60s"
     validation: "timeout.test.ts verifies DEFAULT_TIMEOUTS values"
     rationale: "Provides consistent timeout behavior across operations"
+    status: "stable"
+    strength: "hard"
     related_terms: ["APITimeout", "TimeoutError"]
 
   - id: INV-TIME-002
@@ -245,6 +291,8 @@ invariants:
     constraint: "Operation errors must be propagated, not replaced by TimeoutError"
     validation: "timeout.test.ts verifies error propagation before timeout"
     rationale: "Prevents masking actual operation failures with timeout errors"
+    status: "stable"
+    strength: "hard"
     related_terms: ["TimeoutError", "APITimeout"]
 
   # LOOP DETECTION INVARIANTS
@@ -256,6 +304,8 @@ invariants:
     constraint: "Default max iterations = 1000; custom limits allowed but must be enforced"
     validation: "loop-detector.test.ts verifies InfiniteLoopError thrown on exceeded iterations"
     rationale: "Prevents infinite loops from hanging the application"
+    status: "stable"
+    strength: "hard"
     related_terms: ["LoopDetector", "InfiniteLoopError"]
 
   - id: INV-LOOP-002
@@ -266,6 +316,8 @@ invariants:
     constraint: "Each operation ID has independent iteration counter"
     validation: "loop-detector.test.ts verifies different operation IDs don't interfere"
     rationale: "Prevents false positives from multiple concurrent loops"
+    status: "stable"
+    strength: "hard"
     related_terms: ["LoopDetector"]
 
   - id: INV-LOOP-003
@@ -276,6 +328,8 @@ invariants:
     constraint: "Counters reset after time window (default 30000ms)"
     validation: "loop-detector.test.ts verifies counter reset after timeout"
     rationale: "Allows legitimate long-running operations to complete"
+    status: "stable"
+    strength: "soft"
     related_terms: ["LoopDetector"]
 
   # MEMORY MONITORING INVARIANTS
@@ -287,6 +341,8 @@ invariants:
     constraint: "Multiple start calls must be idempotent; destroy must cleanup resources"
     validation: "memory-monitor.lifecycle.test.ts verifies lifecycle methods"
     rationale: "Prevents resource leaks and duplicate monitoring"
+    status: "stable"
+    strength: "hard"
     related_terms: ["MemoryMonitor"]
 
   - id: INV-MEM-002
@@ -297,6 +353,8 @@ invariants:
     constraint: "Must return heapUsed, heapTotal, external, arrayBuffers, rss"
     validation: "memory-monitor.lifecycle.test.ts verifies usage object structure"
     rationale: "Enables accurate memory tracking and alerting"
+    status: "stable"
+    strength: "soft"
     related_terms: ["MemoryMonitor"]
 
   # GLOBAL SINGLETONS INVARIANTS
@@ -308,6 +366,8 @@ invariants:
     constraint: "globalCircuitBreaker, globalLogger, globalLoopDetector, globalMemoryMonitor must be available"
     validation: "Resilience test suites verify global instances exist"
     rationale: "Provides shared resilience state across application"
+    status: "stable"
+    strength: "soft"
     related_terms: ["CircuitBreaker", "StructuredLogger", "LoopDetector", "MemoryMonitor"]
 
   # WORKFLOW INVARIANTS
@@ -319,6 +379,8 @@ invariants:
     constraint: "No implementation without evidence collection"
     validation: "Commit messages must reference evidence"
     rationale: "Prevents assumption-based development"
+    status: "stable"
+    strength: "hard"
 
   - id: INV-WORK-002
     name: Clean_Git_State
@@ -328,6 +390,8 @@ invariants:
     constraint: "No uncommitted changes after task completion"
     validation: "git status --porcelain = 0"
     rationale: "Maintains reproducibility"
+    status: "stable"
+    strength: "soft"
 
   # DOMAIN INVARIANTS (EXTRACTED FROM TESTS)
   - id: INV-DOM-004

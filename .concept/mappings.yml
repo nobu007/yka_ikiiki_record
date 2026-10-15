@@ -396,3 +396,44 @@ mappings:
       - "src/integration/"
     db: []
     api: []
+
+  User:
+    code_symbols:
+      - "src/domain/entities/User.ts"
+    db:
+      - "prisma/schema.prisma::model User"
+    api: []
+
+  UserRepository:
+    code_symbols:
+      - "src/domain/repositories/UserRepository.ts::interface UserRepository"
+      - "src/infrastructure/repositories/PrismaUserRepository.ts"
+    db: []
+    api: []
+
+  AuthenticationService:
+    code_symbols:
+      - "src/domain/services/AuthenticationService.ts::class AuthenticationService"
+    db: []
+    api:
+      - "POST /api/auth/login"
+      - "POST /api/auth/logout"
+      - "GET /api/auth/session"
+
+  AuthorizationService:
+    code_symbols:
+      - "src/application/services/AuthorizationService.ts::class AuthorizationService"
+    db: []
+    api: []
+
+  InMemoryUserRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts::class InMemoryUserRepository"
+    db: []
+    api: []
+
+  LoginForm:
+    code_symbols:
+      - "src/components/auth/LoginForm.tsx"
+    db: []
+    api: []

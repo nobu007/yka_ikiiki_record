@@ -29,6 +29,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # .npmrc has ignore-scripts=true (ansible-managed), so the package.json
+      # postinstall (prisma generate) never runs during install; generate the
+      # client explicitly or prisma/seed.ts fails typecheck in `next build`.
+      - name: Generate Prisma client
+        run: pnpm exec prisma generate
+
       - name: Build
         run: pnpm run build
 

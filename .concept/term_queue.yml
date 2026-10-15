@@ -1,1 +1,76 @@
-queue: []
+queue:
+- id: TP-AUDITLOG
+  proposed_canonical: AuditLog
+  proposed_layer: aux
+  term_raw_examples:
+  - AuditLog
+  reason: Entity and repository tests independently establish the concept; explicit includes/excludes and source
+    mappings distinguish it from existing terms.
+  evidence:
+  - source: src/domain/entities/AuditLog.test.ts
+  - source: src/domain/repositories/AuditLogRepository.test.ts
+  auto_merge_candidates: []
+  decision: accepted
+  expires_after_runs: 10
+  created_run: '2026-10-15T17:15:58Z'
+  reviewed_run: '2026-10-15T17:34:50Z'
+- id: TP-BACKUP
+  proposed_canonical: Backup
+  proposed_layer: aux
+  term_raw_examples:
+  - Backup
+  reason: Entity and repository tests independently establish the concept; explicit includes/excludes and source
+    mappings distinguish it from existing terms.
+  evidence:
+  - source: src/domain/entities/Backup.test.ts
+  - source: src/domain/repositories/BackupRepository.test.ts
+  auto_merge_candidates: []
+  decision: accepted
+  expires_after_runs: 10
+  created_run: '2026-10-15T17:15:58Z'
+  reviewed_run: '2026-10-15T17:34:50Z'
+- id: TP-TRENDANALYSIS
+  proposed_canonical: TrendAnalysis
+  proposed_layer: aux
+  term_raw_examples:
+  - TrendAnalysis
+  reason: Entity and repository tests independently establish the concept; explicit includes/excludes and source
+    mappings distinguish it from existing terms.
+  evidence:
+  - source: src/domain/entities/TrendAnalysis.test.ts
+  - source: src/domain/repositories/TrendAnalysisRepository.test.ts
+  auto_merge_candidates: []
+  decision: accepted
+  expires_after_runs: 10
+  created_run: '2026-10-15T17:15:58Z'
+  reviewed_run: '2026-10-15T17:34:50Z'
+- id: TP-NOTIFICATIONPROVIDER
+  proposed_canonical: NotificationProvider
+  proposed_layer: aux
+  term_raw_examples:
+  - NotificationProvider
+  reason: Entity and repository tests independently establish the concept; explicit includes/excludes and source
+    mappings distinguish it from existing terms.
+  evidence:
+  - source: src/domain/entities/NotificationProvider.test.ts
+  - source: src/domain/repositories/NotificationProviderRepository.test.ts
+  auto_merge_candidates: []
+  decision: accepted
+  expires_after_runs: 10
+  created_run: '2026-10-15T17:15:58Z'
+  reviewed_run: '2026-10-15T17:34:50Z'
+- id: TP-ANOMALY
+  proposed_canonical: Anomaly
+  proposed_layer: aux
+  term_raw_examples:
+  - Anomaly
+  reason: Entity and repository tests independently establish the concept; explicit includes/excludes and source
+    mappings distinguish it from existing terms.
+  evidence:
+  - source: src/domain/entities/Anomaly.test.ts
+  - source: src/domain/repositories/AnomalyRepository.test.ts
+  auto_merge_candidates: []
+  decision: accepted
+  expires_after_runs: 10
+  created_run: '2026-10-15T17:15:58Z'
+  reviewed_run: '2026-10-15T17:34:50Z'

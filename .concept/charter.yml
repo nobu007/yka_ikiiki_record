@@ -5,16 +5,16 @@ product_goal:
   success_metrics:
     - id: "MET-001"
       name: "テストカバレッジ"
-      target: "≥ 90%"
-      current: "100% (2245 tests passing)"
+      target: "SYSTEM_CONSTITUTION.md Testing Mandates に従う"
+      current: "未検証（過去の実行値は現状の証拠としない）"
     - id: "MET-002"
       name: "不変条件準拠率"
       target: "100%"
-      current: "100% (20/20 invariants stable)"
+      current: "未検証（過去の実行値は現状の証拠としない）"
     - id: "MET-003"
       name: "単一責務原則準拠"
       target: "100% (全ファイル300行以下)"
-      current: "100% (0/308 files over 300 lines)"
+      current: "未検証（過去の実行値は現状の証拠としない）"
   non_goals:
     - "実際のAI/MLモデルの実装（デモ用モックデータのみ）"
     - "本番環境向けの認証・認可システム"
@@ -31,7 +31,7 @@ milestones:
       - type: "quality_gate"
         target: "全品質基準（Q1-Q8）を満たす"
     priority: "P0"
-    status: "done"
+    status: "active"
 
   - id: "MS-002"
     name: "E2Eテスト自動化の強化"
@@ -178,8 +178,8 @@ milestones:
       - "§2 RIGOROUS ARCHITECTURAL DISCIPLINE - Application layer use cases orchestrate domain logic"
       - "§6 AUTONOMOUS RESILIENCE PROTOCOLS - Data protection and disaster recovery infrastructure"
     priority: "P3"
-    status: "done"
-    progress_note: "MS-008 completed 2026-03-30. All 4 tasks completed: (T-001) Domain layer (Backup entity + repository interface), (T-002) Infrastructure layer (InMemoryBackupRepository), (T-003) Application layer (BackupService), (T-004) Presentation layer (API endpoints /api/backup, /api/restore). Total production: 1176 lines. Total tests: 2046 lines. 144 backup-specific tests passing (100% for core layers). Complete 4-layer Clean Architecture implementation. HTTP API endpoints provide POST /api/backup, GET /api/backup, POST /api/restore. SHA-256 checksums for data integrity. Audit logging for all operations. Overall project: 1963/1976 tests passing (99.3%)."
+    status: "active"
+    progress_note: "Reopened after source inspection and a synthetic in-memory probe: one record plus singleton statistics were backed up, the record was deleted, restore reported recordCount=2, but the record repository remained empty. BackupService saves metadata/checksum only; InMemoryBackupRepository.restore returns metadata and each factory call constructs a fresh backup repository. Existing tests verify metadata responses, not entity recovery. Pending: snapshot payload storage, verified entity restoration, cross-request retention, and the existing full-test/coverage acceptance. See CFLT-BACKUP-001 and AMB-BACKUP-001."
 
   - id: "MS-009"
     name: "通知システムの強化（Notification System Enhancement）"
@@ -280,9 +280,6 @@ work_policy:
   default_mode: "commit"
   iteration_budget:
     max_cycles: 5
-  quality_gates:
-    must_pass: ["lint", "test"]
-
     max_files_changed: 25
   quality_gates:
     must_pass: ["lint", "test"]

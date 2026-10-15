@@ -1,1 +1,98 @@
-conflicts: []
+conflicts:
+- id: CFLT-RECORD-001
+  term: Record
+  about: data_constraint
+  severity: low
+  nli: contradiction
+  items:
+  - claim: Emotion range is 0-100
+    source: git:0839402ab1d510291542085c61dbc70cdbb6b686:.concept/ontology.yml#L11
+  - claim: Raw emotion range is 1.0-5.0
+    source: src/lib/constants/index.ts#L21-L24
+  status: resolved
+  resolution: Record boundaries now use 1-5; INV-DOM-001 retains decimal support.
+- id: CFLT-STATS-001
+  term: StatsOverview
+  about: data_constraint
+  severity: medium
+  nli: contradiction
+  items:
+  - claim: Empty overview count=0 has avgEmotion=0
+    source: src/domain/entities/StatsOverview.test.ts#L16-L25
+  - claim: StatsOverviewSchema rejects avgEmotion below 1, even when count=0
+    source: src/schemas/api.ts#L96-L99
+  status: open
+  related_invariants:
+  - INV-DOM-011
+  active_workaround:
+    decision_key: AUTO:StatsOverview.data_constraint:empty_sentinel_provisional
+    summary: Draft empty-domain sentinel only; API mismatch remains open.
+- id: CFLT-EXPORT-001
+  term: APIRouteHandler
+  about: invariant
+  severity: medium
+  nli: contradiction
+  items:
+  - claim: INV-API-011 (merged into INV-API-009) requires each export filename to have a unique timestamp
+    source: .concept/invariants.yml
+  - claim: Date.now() has millisecond resolution; simultaneous export requests can share filenames
+    source: src/app/api/export/route.ts#L39-L58
+  status: open
+  related_invariants:
+  - INV-API-009
+  active_workaround:
+    decision_key: AUTO:APIRouteHandler.invariant:filename_uniqueness_unverified
+    summary: Uniqueness clause remains draft; sequential test is not a concurrency guarantee.
+- id: CFLT-QUAL-001
+  term: CleanArchitecture
+  about: invariant
+  severity: medium
+  nli: contradiction
+  items:
+  - claim: The constitution prohibits explicit any; INV-QUAL-001 records that requirement, not current compliance.
+    source: SYSTEM_CONSTITUTION.md
+    quote: 100% type coverage is mandatory - no `any` types permitted
+  - claim: The ESLint configuration explicitly disables the explicit-any rule.
+    source: eslint.config.mjs
+    quote: '"@typescript-eslint/no-explicit-any": "off"'
+  related_invariants:
+  - INV-QUAL-001
+  status: open
+- id: CFLT-CONCEPT-001
+  term: SingleResponsibilityPrinciple
+  about: invariant
+  severity: medium
+  nli: contradiction
+  items:
+  - claim: Stage 11 Q3 requires invariant records / test files >= 0.5; 227 Jest files require at least 114
+      records. Clauses and historical merged IDs are not extra records.
+    source: scripts/test_concept_integrity.py
+  - claim: The adopted concept budget allows at most 60 invariant records.
+    source: .concept/ontology_budget.yml
+    quote: 'invariants_max: 60'
+  status: open
+  resolution_required: Reconcile the Q3 count-based acceptance rule with the invariant budget at its governing
+    source; neither is silently relaxed in this repository.
+- id: CFLT-BACKUP-001
+  term: Backup
+  about: boundary
+  severity: high
+  tags:
+  - destructive
+  nli: contradiction
+  items:
+  - claim: MS-008 is intended to provide data integrity and disaster recovery; the
+      service documentation promises restoration of entity data.
+    source: .concept/charter.yml
+    quote: データの整合性と災害復旧のため、バックアップ・復元システムを実装し、運用上の回復力を向上させる
+  - claim: createBackup computes size/checksum but saves only Backup metadata; restoreBackup
+      delegates to the repository without restoring entity contents.
+    source: src/application/services/BackupService.ts
+  - claim: InMemoryBackupRepository.restore returns metadata only; a new repository
+      starts with an empty backup array.
+    source: src/infrastructure/repositories/InMemoryBackupRepository.ts
+  status: open
+  active_workaround:
+    decision_key: AUTO:Backup.boundary:metadata_only_prototype
+    summary: Treat Backup as a metadata-only prototype; MS-008 is active until snapshot
+      recovery and cross-request retention are verified.

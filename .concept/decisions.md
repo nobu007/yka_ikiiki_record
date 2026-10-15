@@ -1,26 +1,33 @@
-# Active AUTO Decisions
+# Active AUTO Decisions (cache) — safe to delete
 
-This file contains a cache of active AUTO decisions made during concept synchronization.
-Maximum 200 lines - this file can be regenerated and truncated.
+## AUTO:StatsOverview.data_constraint:empty_sentinel_provisional
+- Status: ACTIVE
+- Chosen: Keep the zero sentinel provisional at the domain boundary; record API schema incompatibility as unresolved.
+- Policy: reversibility + locality; no implementation or requirement weakening
+- Expires After Runs: 20
+- Linked: AMB-STATS-001 / CFLT-STATS-001
+- Revert Triggers: primary_evidence_contradiction, security_risk, repeated_critical_test_failure
 
-## Recent Decisions
+## AUTO:AuthenticationService.boundary:prototype_only
+- Status: ACTIVE
+- Chosen: 認証関連はプロトタイプとして扱い、本番の認証・認可の保証に使わない
+- Policy: security_safety + reversibility + locality
+- Expires After Runs: 20
+- Linked: AMB-AUTH-001
+- Revert Triggers: primary_evidence_contradiction, security_risk, repeated_critical_test_failure
 
-### 2026-03-22 - Initial Concept Population
-- DECISION-001: Mapped core domain entities (Record, Stats, StatsOverview) from src/domain/entities/
-- DECISION-002: Mapped domain services (StatsService, EmotionGenerator) from src/domain/services/
-- DECISION-003: Mapped repository interfaces (StatsRepository, IRecordRepository) from src/domain/repositories/
-- DECISION-004: Identified Clean Architecture layering from README.md and src/ structure
-- DECISION-005: Mapped all stat types (MonthlyStats, StudentStats, DayOfWeekStats, TimeOfDayStats) from Stats.ts
-- DECISION-006: Identified SingleResponsibilityPrinciple invariant from invariants.yml INV-ARCH-001
+## AUTO:APIRouteHandler.invariant:filename_uniqueness_unverified
+- Status: ACTIVE
+- Chosen: Retain uniqueness as a draft requirement; current timestamp naming remains uncertified for simultaneous exports.
+- Policy: reversibility + locality; no implementation or requirement weakening
+- Expires After Runs: 20
+- Linked: AMB-EXPORT-001 / CFLT-EXPORT-001
+- Revert Triggers: primary_evidence_contradiction, security_risk, repeated_critical_test_failure
 
-### Evidence Sources
-- src/domain/entities/Record.ts
-- src/domain/entities/Stats.ts
-- src/domain/entities/DataGeneration.ts
-- src/domain/services/StatsService.ts
-- src/domain/services/EmotionGenerator.ts
-- src/domain/repositories/StatsRepository.ts
-- src/domain/repositories/IRecordRepository.ts
-- README.md
-- .concept/invariants.yml
-- prisma/schema.prisma
+## AUTO:Backup.boundary:metadata_only_prototype
+- Status: ACTIVE
+- Chosen: 現実装はメタデータのプロトタイプとして扱い、記録本体の復旧やリクエスト間共有を保証しない。MS-008は未完了とする。
+- Policy: destructive_safety + reversibility + locality; no data mutation or acceptance weakening
+- Expires After Runs: 20
+- Linked: AMB-BACKUP-001 / CFLT-BACKUP-001
+- Revert Triggers: primary_evidence_contradiction, security_risk, repeated_critical_test_failure

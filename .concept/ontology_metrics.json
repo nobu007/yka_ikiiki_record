@@ -1,71 +1,109 @@
 {
-  "version": "1.0",
-  "last_updated": "2026-03-22T15:22:00.000000+09:00",
-  "run_index": 226,
-  "phase": "maintenance",
-  "terms": {
-    "total": 43,
-    "core": 7,
-    "domain": 18,
-    "aux": 18,
-    "draft": 0,
-    "stable": 43
+  "run_id": "2026-10-15T17:53:32Z",
+  "total_terms": 54,
+  "by_layer": {
+    "core": 8,
+    "domain": 21,
+    "aux": 25
   },
-  "mappings": {
-    "total": 43,
-    "with_code_symbols": 43,
-    "with_db": 3,
-    "with_api": 6,
-    "unmapped": 0
+  "draft_ratio": 0.12962962962962962,
+  "invariants_count": 60,
+  "mappings_count": 54,
+  "queue_pending": 0,
+  "claims_retained_lines": 32,
+  "decisions_md_lines": 33,
+  "gc_actions": {
+    "merged_invariants": 0,
+    "merged_terms": 0,
+    "deleted_terms": 0,
+    "deprecated_terms": 0
   },
-  "invariants": {
-    "total": 100,
-    "hard": 54,
-    "soft": 14,
-    "stable": 68,
-    "draft": 0
-  },
-  "quality_metrics": {
-    "ontology_coverage": "36.4%",
-    "mapping_saturation": "100%",
-    "draft_ratio": "0%",
-    "unmapped_ratio": "0%",
-    "evidence_coverage": "100%",
-    "invariant_extraction_rate": "56.5%"
+  "stage_11_q3": {
+    "test_files": 227,
+    "ratio": 0.2643171806167401,
+    "threshold": 0.5,
+    "status": "FAIL",
+    "measurement": "Jest .test.ts/.test.tsx files under src and scripts; excludes Python concept validator",
+    "applicability": "Stage 11 acceptance gate: FAIL. At least 114 invariant records are required for 227 tests, but ontology_budget.yml caps records at 60. Clauses and merged IDs are not counted as additional invariants."
   },
   "test_results": {
-    "test_suites": 177,
-    "tests_passed": 1312,
-    "timestamp": "2026-03-22T12:45:00.000000+00:00"
+    "command": "LC_ALL=ja_JP.UTF-8 LANG=ja_JP.UTF-8 npm test -- --runInBand --cacheDirectory=/tmp/yka-concept-jest-cache",
+    "suites": 227,
+    "passed": 2490,
+    "failed": 0,
+    "dependency_source": "Existing main-checkout node_modules via an ignored local symlink; application source and Jest root remain in this worktree."
   },
-  "consolidation_summary": {
-    "previous_terms": 129,
-    "current_terms": 43,
-    "terms_removed": 86,
-    "consolidation_ratio": "66.7%"
+  "validation_scope": "Stage 11 concept integrity and measured Q1-Q8; Q3 fails; the adopted invariant budget cannot meet the count-based threshold. Application security, coverage, build, and complete pipeline acceptance are not certified.",
+  "lint_result": {
+    "command": "./node_modules/.bin/eslint .",
+    "errors": 43,
+    "warnings": 0,
+    "status": "FAIL",
+    "scope": "Pre-existing application files; no application source changed."
   },
-  "notes": {
-    "q1_coverage_rationale": "36.4% raw coverage (43 terms / 118 non-test source files). This appears low but is healthy for this codebase because: (1) All domain entities, services, repositories, and major architectural components are covered, (2) The remaining files are primarily small utilities, types, and component implementations that are appropriately consolidated into broader concepts, (3) Adding more terms would violate the consolidation principle stated in the autopilot instruction. The 43 terms represent the canonical concepts after consolidation from 129 original terms (66.7% reduction).",
-    "maintenance_cycle_206": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_207": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_208": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_209": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 276 lines, well under 300-line limit).",
-    "maintenance_cycle_210": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 276 lines, well under 300-line limit).",
-    "maintenance_cycle_211": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_212": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_213": "Health check completed. All quality metrics remain stable. All recent code changes (trend.ts split, logWithLevel extraction, averageEmotion helper, etc.) are already reflected in the ontology. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_214": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_215": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_216": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_217": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_218": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_219": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_220": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_221": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_222": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_223": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_224": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_225": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_226": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors."
+  "stage_11_quality": {
+    "Q1": {
+      "value": 0.9,
+      "threshold": 0.8,
+      "status": "PASS",
+      "measurement": "Conservative source coverage: minimum of directly mapped exported production modules and classes. Excludes test/support files, declaration files, test-utils, and barrel index files. Directory mappings do not imply every descendant is semantically covered.",
+      "production_modules": 120,
+      "mapped_modules": 108,
+      "production_classes": 34,
+      "mapped_classes": 33,
+      "unmapped_modules": [
+        "src/app/api/auth/login/route.ts",
+        "src/app/api/auth/logout/route.ts",
+        "src/app/api/auth/session/route.ts",
+        "src/components/common/ComponentCard.tsx",
+        "src/components/common/ExportButton.tsx",
+        "src/components/common/PaginationControl.tsx",
+        "src/lib/export/csv.ts",
+        "src/lib/resilience/performance-monitor.ts",
+        "src/presentation/hooks/usePagination.ts",
+        "src/presentation/hooks/useStats.ts",
+        "src/types/pagination.ts",
+        "src/utils/pagination.ts"
+      ]
+    },
+    "Q2": {
+      "value": 1.0,
+      "threshold": 0.9,
+      "status": "PASS"
+    },
+    "Q3": {
+      "value": 0.2643171806167401,
+      "threshold": 0.5,
+      "status": "FAIL",
+      "invariants_max": 60,
+      "minimum_required": 114,
+      "test_files": 227,
+      "invariant_records": 60
+    },
+    "Q4": {
+      "value": 0.12962962962962962,
+      "threshold": 0.3,
+      "status": "PASS"
+    },
+    "Q5": {
+      "value": 0.0,
+      "threshold": 0.2,
+      "status": "PASS"
+    },
+    "Q6": {
+      "value": 54,
+      "threshold": 80,
+      "status": "PASS"
+    },
+    "Q7": {
+      "value": true,
+      "threshold": true,
+      "status": "PASS"
+    },
+    "Q8": {
+      "value": 1.0,
+      "threshold": 1.0,
+      "status": "PASS"
+    }
   }
 }

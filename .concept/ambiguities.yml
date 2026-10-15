@@ -1,1 +1,172 @@
-ambiguities: []
+ambiguities:
+- id: AMB-STATS-001
+  term: StatsOverview
+  topic: Empty aggregate sentinel vs response validation
+  severity: low
+  uncertainty: 0.216
+  candidates:
+  - Allow zero averages only for empty aggregates
+  - Require non-empty aggregates at the API boundary
+  missing_info:
+  - Which empty-stats API representation is intended?
+  linked_conflicts:
+  - CFLT-STATS-001
+  last_touched_run: '2026-10-15T17:32:00Z'
+  evidence:
+  - source: src/domain/entities/StatsOverview.test.ts#L16-L25
+  - source: src/schemas/api.ts#L96-L99
+  uncertainty_inputs:
+    related_claims: 2
+    unknown: 0
+    contradictions: 1
+    k: 2
+    average_weight: 0.85
+  auto_decision:
+    status: applied
+    decision_key: AUTO:StatsOverview.data_constraint:empty_sentinel_provisional
+    chosen: Keep the zero sentinel provisional at the domain boundary; record API schema incompatibility as
+      unresolved.
+    policy: reversibility + locality; no implementation or requirement weakening
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T17:32:00Z'
+    expires_after_runs: 20
+    revert_triggers:
+    - primary_evidence_contradiction
+    - security_risk
+    - repeated_critical_test_failure
+- id: AMB-AUTH-001
+  term: AuthenticationService
+  topic: Prototype authentication must not imply production protection
+  severity: high
+  uncertainty: 0.216
+  tags:
+  - auth
+  - pii
+  candidates:
+  - Treat current auth as a prototype
+  - Assume the current implementation is production authentication
+  missing_info:
+  - Verified production authentication/session contract and acceptance evidence
+  linked_conflicts: []
+  auto_decision:
+    status: applied
+    decision_key: AUTO:AuthenticationService.boundary:prototype_only
+    chosen: 認証関連はプロトタイプとして扱い、本番の認証・認可の保証に使わない
+    policy: security_safety + reversibility + locality
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T17:15:58Z'
+    expires_after_runs: 20
+    revert_triggers:
+    - primary_evidence_contradiction
+    - security_risk
+    - repeated_critical_test_failure
+  last_touched_run: '2026-10-15T17:15:58Z'
+  evidence:
+  - source: .concept/charter.yml#L20-L24
+  - source: src/app/api/auth/login/route.ts#L48-L55
+  uncertainty_inputs:
+    related_claims: 2
+    unknown: 1
+    contradictions: 0
+    k: 2
+    average_weight: 0.85
+- id: AMB-GC-001
+  term: SingleResponsibilityPrinciple
+  topic: Legacy per-term age is unavailable
+  severity: low
+  uncertainty: 0.315
+  candidates:
+  - Delete legacy aux terms by assuming all 226 runs were inactive
+  - Retain mapped terms until actual per-term age is recorded
+  missing_info:
+  - Per-term last-touched run indices before this run
+  linked_conflicts: []
+  last_touched_run: '2026-10-15T17:15:58Z'
+  evidence:
+  - source: .concept/run_state.json
+  uncertainty_inputs:
+    related_claims: 1
+    unknown: 1
+    contradictions: 0
+    k: 1
+    average_weight: 0.5
+- id: AMB-EXPORT-001
+  term: APIRouteHandler
+  topic: Timestamp naming is not proof of concurrent uniqueness
+  severity: low
+  uncertainty: 0.216
+  uncertainty_inputs:
+    related_claims: 2
+    unknown: 0
+    contradictions: 1
+    k: 2
+    average_weight: 0.85
+  candidates:
+  - Certify uniqueness from a delayed sequential test
+  - Retain uniqueness as a draft requirement pending a collision-safe implementation and concurrency test
+  missing_info:
+  - Collision-safe filename contract and simultaneous-request acceptance evidence
+  linked_conflicts:
+  - CFLT-EXPORT-001
+  auto_decision:
+    status: applied
+    decision_key: AUTO:APIRouteHandler.invariant:filename_uniqueness_unverified
+    chosen: Retain uniqueness as a draft requirement; current timestamp naming remains uncertified for simultaneous
+      exports.
+    policy: reversibility + locality; no implementation or requirement weakening
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T17:32:00Z'
+    expires_after_runs: 20
+    revert_triggers:
+    - primary_evidence_contradiction
+    - security_risk
+    - repeated_critical_test_failure
+  last_touched_run: '2026-10-15T17:32:00Z'
+  evidence:
+  - source: src/app/api/export/route.ts
+    quote: const timestamp = Date.now()
+  - source: src/app/api/export/route.headers.test.ts
+    quote: await new Promise((resolve) => setTimeout(resolve, 10))
+- id: AMB-BACKUP-001
+  term: Backup
+  topic: Backup metadata success is not entity snapshot recovery
+  severity: high
+  uncertainty: 0.212
+  tags:
+  - destructive
+  candidates:
+  - Certify disaster recovery from successful metadata responses
+  - Treat current backup/restore as a metadata-only prototype until entity recovery
+    is implemented and verified
+  missing_info:
+  - Snapshot payload storage and integrity verification contract
+  - Create backup, mutate/delete synthetic data, restore, and compare every protected
+    entity
+  - Backup retention across independently constructed API service instances
+  linked_conflicts:
+  - CFLT-BACKUP-001
+  uncertainty_inputs:
+    related_claims: 4
+    unknown: 1
+    contradictions: 1
+    k: 4
+    average_weight: 0.85
+  auto_decision:
+    status: applied
+    decision_key: AUTO:Backup.boundary:metadata_only_prototype
+    chosen: 現実装はメタデータのプロトタイプとして扱い、記録本体の復旧やリクエスト間共有を保証しない。MS-008は未完了とする。
+    policy: destructive_safety + reversibility + locality; no data mutation or acceptance
+      weakening
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T17:53:32Z'
+    expires_after_runs: 20
+    revert_triggers:
+    - primary_evidence_contradiction
+    - security_risk
+    - repeated_critical_test_failure
+  last_touched_run: '2026-10-15T17:53:32Z'
+  evidence:
+  - source: .concept/charter.yml
+  - source: src/application/services/BackupService.ts
+  - source: src/infrastructure/repositories/InMemoryBackupRepository.ts
+  - source: src/application/services/BackupService.test.ts

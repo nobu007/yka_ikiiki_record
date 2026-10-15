@@ -24,7 +24,7 @@ web_bundle: true
 ### Constitutional Constraints
 
 - **INV-ARCH-001**: All files (including this system) must maintain SRP (< 300 lines)
-- **INV-QUAL-001**: No logging.getLogger() usage
+- **INV-QUAL-001**: TypeScript strict mode; no any types
 - **INV-QUAL-002**: Fixed filenames only (no timestamps)
 - **INV-WORK-001**: All changes follow SDEC cycle
 - **INV-WORK-002**: Clean git state after each improvement
@@ -49,7 +49,7 @@ find src -name "*.ts" -o -name "*.tsx" | xargs wc -l | awk 'NR>1 && $1>300 {coun
 ### Phase 2: Improvement Opportunity Identification
 
 #### 2.1 Metric-Based Detection
-- Test coverage gaps (< 90%)
+- Test coverage gaps (SYSTEM_CONSTITUTION.md Testing Mandates)
 - File size violations (> 300 lines)
 - Performance bottlenecks
 - Code duplication patterns

@@ -1,1 +1,17 @@
-conflicts: []
+conflicts:
+- id: CFLT-AUTH-001
+  term: AuthenticationService
+  about: transition
+  severity: high
+  nli: contradiction
+  preconditions:
+  - API生成トークンをドメインverifyTokenへ渡す場合
+  items:
+  - claim: API生成トークンはsession_{id}_{timestamp}_{random}形式
+    source: src/app/api/auth/login/route.ts#L54-L60
+  - claim: ドメインverifyTokenはsession-{id}-...形式を解析する
+    source: src/domain/services/AuthenticationService.ts#L332-L345
+  status: open
+  active_workaround:
+    decision_key: AUTO:AuthenticationService.transition:keep_demo_only
+    summary: 形式を統一済みと扱わず、認証の本番対応は未完了として扱う

@@ -22,6 +22,11 @@ conflicts:
   - claim: StatsOverviewSchema rejects avgEmotion below 1, even when count=0
     source: src/schemas/api.ts#L96-L99
   status: open
+  related_invariants:
+  - INV-DOM-011
+  active_workaround:
+    decision_key: AUTO:StatsOverview.data_constraint:empty_sentinel_provisional
+    summary: Draft empty-domain sentinel only; API mismatch remains open.
 - id: CFLT-EXPORT-001
   term: APIRouteHandler
   about: invariant
@@ -33,3 +38,38 @@ conflicts:
   - claim: Date.now() has millisecond resolution; simultaneous export requests can share filenames
     source: src/app/api/export/route.ts#L39-L58
   status: open
+  related_invariants:
+  - INV-API-009
+  active_workaround:
+    decision_key: AUTO:APIRouteHandler.invariant:filename_uniqueness_unverified
+    summary: Uniqueness clause remains draft; sequential test is not a concurrency guarantee.
+- id: CFLT-QUAL-001
+  term: CleanArchitecture
+  about: invariant
+  severity: medium
+  nli: contradiction
+  items:
+  - claim: The constitution prohibits explicit any; INV-QUAL-001 records that requirement, not current compliance.
+    source: SYSTEM_CONSTITUTION.md
+    quote: 100% type coverage is mandatory - no `any` types permitted
+  - claim: The ESLint configuration explicitly disables the explicit-any rule.
+    source: eslint.config.mjs
+    quote: '"@typescript-eslint/no-explicit-any": "off"'
+  related_invariants:
+  - INV-QUAL-001
+  status: open
+- id: CFLT-CONCEPT-001
+  term: SingleResponsibilityPrinciple
+  about: invariant
+  severity: medium
+  nli: contradiction
+  items:
+  - claim: Stage 11 Q3 requires invariant records / test files >= 0.5; 227 Jest files require at least 114
+      records. Clauses and historical merged IDs are not extra records.
+    source: scripts/test_concept_integrity.py
+  - claim: The adopted concept budget allows at most 60 invariant records.
+    source: .concept/ontology_budget.yml
+    quote: 'invariants_max: 60'
+  status: open
+  resolution_required: Reconcile the Q3 count-based acceptance rule with the invariant budget at its governing
+    source; neither is silently relaxed in this repository.

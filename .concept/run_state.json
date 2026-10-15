@@ -1,7 +1,7 @@
 {
-  "last_run_id": "2026-10-15T17:15:58Z",
-  "run_index": 227,
-  "claims_retained_lines": 13,
+  "last_run_id": "2026-10-15T17:38:17Z",
+  "run_index": 228,
+  "claims_retained_lines": 22,
   "claims_archived_until_run_id": null,
   "baseline_commit": "0839402ab1d510291542085c61dbc70cdbb6b686",
   "term_last_touched_run": {
@@ -53,7 +53,12 @@
     "AuthenticationService": 227,
     "AuthorizationService": 227,
     "InMemoryUserRepository": 227,
-    "LoginForm": 227
+    "LoginForm": 227,
+    "AuditLog": 228,
+    "Backup": 228,
+    "TrendAnalysis": 228,
+    "NotificationProvider": 228,
+    "Anomaly": 228
   },
   "legacy_term_age_before_run": null
 }

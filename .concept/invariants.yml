@@ -42,11 +42,22 @@ invariants:
     severity: CRITICAL
     description: All TypeScript code must comply with strict type checking
     constraint: No explicit or implicit any types permitted
-    validation: TypeScript compilation with strict mode must pass
+    validation: Run TypeScript strict checking for implicit any. Explicit any is also prohibited by the constitution,
+      but the current ESLint configuration disables that check (CFLT-QUAL-001).
     rationale: Maintains type safety across the codebase
     related_terms:
     - CleanArchitecture
     - DomainLayer
+    status: stable
+    strength: hard
+    evidence:
+    - source: SYSTEM_CONSTITUTION.md
+      quote: 100% type coverage is mandatory - no `any` types permitted
+    - source: tsconfig.json
+      quote: '"noImplicitAny": true'
+    linked_conflicts:
+    - CFLT-QUAL-001
+    verification_status: contradicted
 
   - id: INV-QUAL-002
     name: Fixed_Filename_Policy
@@ -117,10 +128,10 @@ invariants:
     category: domain
     severity: CRITICAL
     description: 'Consolidated contract: Stats Structure Completeness'
-    constraint: 'Stats must have overview, monthlyStats, studentStats, dayOfWeekStats, emotionDistribution, timeOfDayStats;
-      Generated stats must include: overview, monthlyStats, studentStats, dayOfWeekStats, emotionDistribution, timeOfDayStats'
-    validation: StatsRepository and StatsService ensure complete structure; StatsService.test.ts verifies all subsections
-      exist
+    constraint: Stats, including generated stats, contain overview, monthlyStats, studentStats, dayOfWeekStats,
+      emotionDistribution, and timeOfDayStats.
+    validation: StatsRepository and StatsService ensure complete structure; StatsService.test.ts verifies all
+      subsections exist
     rationale: Dashboard and UI depend on complete stats structure
     related_terms:
     - Stats
@@ -129,15 +140,16 @@ invariants:
     merged_ids:
     - INV-SVC-001
     strength: hard
+    evidence:
+    - source: src/domain/entities/Stats.ts
+      quote: export interface Stats {
 
   - id: INV-DOM-003
     name: Record_Optional_Fields
     category: domain
     severity: CRITICAL
     description: 'Consolidated contract: Record Optional Fields'
-    constraint: id, comment, createdAt, updatedAt are optional; emotion, date, student are required; emotion, date,
-      student are required; id, comment, createdAt, updatedAt are optional; id, comment, createdAt, updatedAt must
-      be optional; emotion, date, student required
+    constraint: emotion, date, and student are required; id, comment, createdAt, and updatedAt are optional.
     validation: Record.test.ts verifies creation with and without optional fields
     rationale: Supports flexible record creation and persistence lifecycle
     related_terms:
@@ -146,6 +158,9 @@ invariants:
     - INV-DOM-004
     - INV-REC-001
     strength: hard
+    evidence:
+    - source: src/schemas/api.ts
+      quote: 'id: z.number().int().positive().optional()'
 
   - id: INV-RES-001
     name: CircuitBreaker_State_Transitions
@@ -162,16 +177,18 @@ invariants:
     category: resilience
     severity: HIGH
     description: 'Consolidated contract: CircuitBreaker Failure Counting'
-    constraint: Failure count resets to 0 on successful operation or manual reset; Failure count must increment on
-      failure, reset on success or manual reset
-    validation: CircuitBreaker tracks failureCount and resets appropriately; CircuitBreaker.test.ts verifies failure
-      count tracking
+    constraint: Failure count increments on failure and resets to zero on success or manual reset.
+    validation: CircuitBreaker tracks failureCount and resets appropriately; CircuitBreaker.test.ts verifies
+      failure count tracking
     rationale: Accurate failure tracking enables correct circuit state management
     related_terms:
     - CircuitBreaker
     merged_ids:
     - INV-CIRCUIT-003
     strength: hard
+    evidence:
+    - source: src/lib/resilience/circuit-breaker.ts
+      quote: this.failures = 0;
 
   - id: INV-REP-001
     name: Repository_Interface_Contract
@@ -195,14 +212,12 @@ invariants:
 
   # UTILITY INVARIANTS
   - id: INV-UTIL-001
-    name: Math_Function_Boundary_Conditions
+    name: Math_Average_And_Clamp_Boundaries
     category: utility
     severity: HIGH
-    description: 'Consolidated contract: Math Function Boundary Conditions'
-    constraint: clamp, average, and other math functions handle edge cases gracefully; average([]) === 0, not NaN
-      or undefined; clamp(value, min, max) returns value when within range, min when below, max when above
-    validation: statsCalculator.basic.test.ts verifies boundary conditions; statsCalculator.basic.test.ts verifies
-      empty array behavior; statsCalculator.basic.test.ts verifies clamp behavior with edge cases
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests or inspect the code cited by each clause; evidence supports only that clause.
     rationale: Prevents NaN and undefined errors in calculations
     related_terms:
     - StatsCalculator
@@ -210,14 +225,33 @@ invariants:
     - INV-UTIL-002
     - INV-UTIL-003
     strength: hard
+    clauses:
+    - id: INV-UTIL-001
+      constraint: Average and clamp boundary behavior is specified by the clauses below.
+      status: stable
+      evidence:
+      - source: src/utils/statsCalculator/math.ts
+        quote: export const average =
+    - id: INV-UTIL-002
+      constraint: average([]) === 0, not NaN or undefined
+      status: stable
+      evidence:
+      - source: src/utils/statsCalculator.basic.test.ts
+        quote: it("returns 0 for empty array"
+    - id: INV-UTIL-003
+      constraint: clamp(value, min, max) returns value when within range, min when below, max when above
+      status: stable
+      evidence:
+      - source: src/utils/statsCalculator.basic.test.ts
+        quote: it("clamps to max when above"
 
   - id: INV-LOG-001
     name: Structured_Logging_Required_Fields
     category: logging
     severity: HIGH
     description: 'Consolidated contract: Structured Logging Required Fields'
-    constraint: 'Log entries must have: level, category, operation, timestamp, correlationId, metadata, visibility;
-      Every log entry must include a correlationId field'
+    constraint: Every log entry contains level, category, operation, timestamp, correlationId, metadata, and
+      visibility.
     validation: structured-logger.test.ts verifies all required fields are present; structured-logger.correlation.test.ts
       verifies correlation ID generation
     rationale: Ensures log entries are queryable and traceable
@@ -227,6 +261,9 @@ invariants:
     - INV-LOG-003
     - INV-LOG-005
     strength: hard
+    evidence:
+    - source: src/lib/resilience/structured-logger.ts
+      quote: 'correlationId: string;'
 
   - id: INV-LOG-002
     name: Log_Level_Visibility_Mapping
@@ -272,14 +309,12 @@ invariants:
     - ResilientHandler
 
   - id: INV-LOOP-001
-    name: Loop_Detection_Maximum_Iterations
+    name: LoopDetector_Limits_Isolation_And_Reset
     category: loop_detection
     severity: CRITICAL
-    description: 'Consolidated contract: Loop Detection Maximum Iterations'
-    constraint: Default max iterations = 1000; custom limits allowed but must be enforced; Each operation ID has independent
-      iteration counter; Counters reset after time window (default 30000ms)
-    validation: loop-detector.test.ts verifies InfiniteLoopError thrown on exceeded iterations; loop-detector.test.ts
-      verifies different operation IDs don't interfere; loop-detector.test.ts verifies counter reset after timeout
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests cited by each clause; evidence supports only the conditions tested.
     rationale: Prevents infinite loops from hanging the application
     related_terms:
     - LoopDetector
@@ -288,22 +323,52 @@ invariants:
     - INV-LOOP-002
     - INV-LOOP-003
     strength: hard
+    clauses:
+    - id: INV-LOOP-001
+      constraint: Default max iterations = 1000; custom limits allowed but must be enforced
+      status: stable
+      evidence:
+      - source: src/lib/resilience/loop-detector.test.ts
+        quote: it("should throw error when exceeding maximum iterations"
+    - id: INV-LOOP-002
+      constraint: Each operation ID has independent iteration counter
+      status: stable
+      evidence:
+      - source: src/lib/resilience/loop-detector.test.ts
+        quote: it("should track different operation IDs independently"
+    - id: INV-LOOP-003
+      constraint: Counters reset after time window (default 30000ms)
+      status: stable
+      evidence:
+      - source: src/lib/resilience/loop-detector.test.ts
+        quote: it("should reset counter after time window"
 
   - id: INV-MEM-001
-    name: Memory_Monitor_Lifecycle_Management
+    name: MemoryMonitor_Lifecycle_And_Metrics
     category: memory
     severity: HIGH
-    description: 'Consolidated contract: Memory Monitor Lifecycle Management'
-    constraint: Multiple start calls must be idempotent; destroy must cleanup resources; Must return heapUsed, heapTotal,
-      external, arrayBuffers, rss
-    validation: memory-monitor.lifecycle.test.ts verifies lifecycle methods; memory-monitor.lifecycle.test.ts verifies
-      usage object structure
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests cited by each clause; evidence supports only the conditions tested.
     rationale: Prevents resource leaks and duplicate monitoring
     related_terms:
     - MemoryMonitor
     merged_ids:
     - INV-MEM-002
     strength: hard
+    clauses:
+    - id: INV-MEM-001
+      constraint: Multiple start calls must be idempotent; destroy must cleanup resources
+      status: stable
+      evidence:
+      - source: src/lib/resilience/memory-monitor.lifecycle.test.ts
+        quote: it("should handle multiple start calls gracefully"
+    - id: INV-MEM-002
+      constraint: Must return heapUsed, heapTotal, external, arrayBuffers, rss
+      status: stable
+      evidence:
+      - source: src/lib/resilience/memory-monitor.lifecycle.test.ts
+        quote: expect(usage).toHaveProperty("heapUsed")
 
   - id: INV-SINGLETON-001
     name: Global_Resilience_Instances
@@ -350,10 +415,10 @@ invariants:
     category: domain
     severity: CRITICAL
     description: 'Consolidated contract: Emotion Value Precision'
-    constraint: Emotion values accept decimal numbers with 1 decimal place precision; Emotion field must accept decimal
-      values (e.g., 3.7, 4.2)
-    validation: Record.test.ts accepts 3.7, 4.5; statsCalculator rounds to 1 decimal; Record.test.ts verifies decimal
-      emotion values are preserved
+    constraint: Emotion values accept decimals such as 3.7 and 4.2; this does not impose a one-decimal-place
+      validation limit.
+    validation: Record.test.ts accepts 3.7, 4.5; statsCalculator rounds to 1 decimal; Record.test.ts verifies
+      decimal emotion values are preserved
     rationale: Enables precise emotion tracking and statistical analysis
     related_terms:
     - Record
@@ -363,6 +428,9 @@ invariants:
     strength: hard
     merged_ids:
     - INV-REC-002
+    evidence:
+    - source: src/schemas/api.ts
+      quote: 'emotion: z.number().min(EMOTION_RANGES.MIN).max(EMOTION_RANGES.MAX)'
 
   - id: INV-DOM-006
     name: Student_Identifier_Flexibility
@@ -389,15 +457,12 @@ invariants:
     strength: "hard"
 
   - id: INV-DOM-008
-    name: Data_Generation_Configuration_Validation
+    name: Data_Generation_Schema_Default_Config_And_Service
     category: domain
     severity: CRITICAL
-    description: 'Consolidated contract: Data Generation Configuration Validation'
-    constraint: studentCount > 0, periodDays > 0, pattern in ['normal','bimodal','stress','happy'], classCharacteristics
-      in [1.0,5.0]; All optional config fields must have default values; generateSeedData() must work without config
-      parameter
-    validation: DataGeneration.config.test.ts validates all config fields; DataGeneration.defaults.test.ts verifies
-      default values; StatsService.test.ts verifies default config usage
+    description: Separate schema boundaries, defaults, and behavioral requirements.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Inspect the sources and run the tests cited per clause; fixture assertions are not runtime validation.
     rationale: Ensures valid test data generation parameters
     related_terms:
     - DataGenerationConfig
@@ -407,37 +472,96 @@ invariants:
     merged_ids:
     - INV-GEN-002
     - INV-SVC-002
+    clauses:
+    - id: INV-DOM-008
+      constraint: At the Zod boundary, studentCount is an integer in [10,500], periodDays in [7,365], distributionPattern
+        is normal/bimodal/stress/happy, baselineEmotion in [2.5,3.5], and volatility/cohesion in [0.1,1]. The
+        domain interface alone does not validate these ranges.
+      status: stable
+      evidence:
+      - source: src/schemas/api.ts
+        quote: export const DataGenerationConfigSchema = z.object({
+      - source: src/lib/constants/index.ts
+        quote: export const GENERATION_CONSTRAINTS = {
+    - id: INV-GEN-002
+      constraint: DEFAULT_CONFIG supplies all generation fields. The request schema still requires those fields;
+        supplying a partial config does not imply default filling.
+      status: stable
+      evidence:
+      - source: src/domain/entities/DataGeneration.defaults.test.ts
+        quote: expect(DEFAULT_CONFIG.studentCount).toBe(25)
+    - id: INV-SVC-002
+      constraint: StatsService.generateSeedData() uses DEFAULT_CONFIG when its config argument is omitted.
+      status: stable
+      evidence:
+      - source: src/domain/services/StatsService.test.ts
+        quote: it("should generate data with default config when no config provided"
 
   - id: INV-DOM-009
-    name: Seasonal_Effect_Bounds
+    name: Seasonal_Impact_Constants_Fixtures_And_Generation
     category: domain
     severity: CRITICAL
-    description: 'Consolidated contract: Seasonal Effect Bounds'
-    constraint: SEASONAL_IMPACT in [0, 1], MAX_EVENT_IMPACT in [0, 1]; seasonalEffect.spring/summer/autumn/winter
-      >= 0; When seasonalEffects=true, must adjust emotion based on date
-    validation: DataGeneration.config.test.ts verifies impact bounds; DataGeneration.seasonal.test.ts verifies non-negative
-      values; EmotionGenerator.test.ts verifies seasonal effects produce different values
+    description: Separate schema boundaries, defaults, and behavioral requirements.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Inspect the sources and run the tests cited per clause; fixture assertions are not runtime validation.
     rationale: Prevents excessive emotion modifications from seasonal/event effects
     related_terms:
     - DataGenerationConfig
     - EmotionGenerator
-    status: stable
+    status: draft
     strength: hard
     merged_ids:
     - INV-DOM-012
     - INV-GEN-004
+    clauses:
+    - id: INV-DOM-009
+      constraint: SEASONAL_IMPACT and MAX_EVENT_IMPACT constants lie in [0,1]. This does not constrain EventEffect.impact,
+        whose schema allows [-1,1].
+      status: stable
+      evidence:
+      - source: src/domain/entities/DataGeneration.defaults.test.ts
+        quote: expect(EMOTION_CONSTANTS.SEASONAL_IMPACT).toBeGreaterThan(0)
+    - id: INV-DOM-012
+      constraint: SeasonalEffect fixture values are nonnegative. Runtime nonnegative validation is not established
+        by this fixture test or by the number-only TypeScript type.
+      status: draft
+      evidence:
+      - source: src/domain/entities/DataGeneration.seasonal.test.ts
+        quote: expect(effect.spring).toBeGreaterThanOrEqual(0)
+    - id: INV-GEN-004
+      constraint: Enabling seasonalEffects changes generation based on date.
+      status: stable
+      evidence:
+      - source: src/domain/services/EmotionGenerator.test.ts
+        quote: test("applies seasonal effects when enabled"
 
   - id: INV-DOM-011
     name: StatsOverview_Zero_Count_Handling
     category: domain
     severity: CRITICAL
     description: StatsOverview must handle zero count with avgEmotion of 0
-    constraint: "count=0 must have avgEmotion=0"
-    validation: "StatsOverview.test.ts verifies zero count handling"
-    rationale: "Provides predictable behavior for empty datasets"
-    related_terms: ["StatsOverview", "Stats"]
-    status: "stable"
-    strength: "hard"
+    constraint: count=0 must have avgEmotion=0
+    validation: StatsOverview.test.ts verifies zero count handling
+    rationale: Provides predictable behavior for empty datasets
+    related_terms:
+    - StatsOverview
+    - Stats
+    status: draft
+    strength: hard
+    linked_conflicts:
+    - CFLT-STATS-001
+    verification_status: contradicted
+    scope: Desired empty-aggregate contract; the domain fixture accepts it but the API response schema rejects
+      it.
+    assumptions:
+    - decision_key: AUTO:StatsOverview.data_constraint:empty_sentinel_provisional
+      text: Keep count=0/avgEmotion=0 as the provisional domain sentinel; do not claim API compatibility.
+      expires_after_runs: 20
+    evidence:
+    - source: src/domain/entities/StatsOverview.test.ts
+      quote: expect(overview.avgEmotion).toBe(0)
+    - source: src/schemas/api.ts
+      quote: 'avgEmotion: z.number().min(1).max(5)'
 
   - id: INV-REP-003
     name: Repository_Sequential_ID_Assignment
@@ -513,14 +637,12 @@ invariants:
 
   # UTILITY INVARIANTS (EXTRACTED FROM TESTS)
   - id: INV-UTL-004
-    name: Trendline_Null_Handling
+    name: Trendline_Missing_Values_And_Window
     category: utility
     severity: CRITICAL
-    description: 'Consolidated contract: Trendline Null Handling'
-    constraint: Null/undefined values converted to 0 in trendline calculation; Trendline returns at most 7 most recent
-      values
-    validation: statsCalculator.stats.test.ts verifies null becomes 0.0; statsCalculator.stats.test.ts verifies 10-element
-      input returns 7-element output
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests or inspect the code cited by each clause; evidence supports only that clause.
     rationale: Prevents NaN propagation in trend calculations
     related_terms:
     - StatsCalculator
@@ -528,6 +650,19 @@ invariants:
     strength: hard
     merged_ids:
     - INV-UTL-005
+    clauses:
+    - id: INV-UTL-004
+      constraint: Null/undefined values converted to 0 in trendline calculation
+      status: stable
+      evidence:
+      - source: src/utils/statsCalculator.stats.test.ts
+        quote: it("handles null/undefined values with fallback to 0 (line 143)"
+    - id: INV-UTL-005
+      constraint: Trendline returns at most 7 most recent values
+      status: stable
+      evidence:
+      - source: src/utils/statsCalculator.stats.test.ts
+        quote: it("returns last 7 values rounded to 1 decimal"
 
   - id: INV-UTL-006
     name: Day_of_Week_Complete_Coverage
@@ -575,8 +710,7 @@ invariants:
     category: ui
     severity: CRITICAL
     description: 'Consolidated contract: Chart Loading State Priority'
-    constraint: Loading state takes priority over error state in ChartWrapper; When both loading and error are true,
-      show loading UI
+    constraint: When both loading and error are true, ChartWrapper shows the loading UI.
     validation: ChartWrapper.loading.test.tsx verifies loading shows when isLoading=true and error exists; ChartWrapper.loading.test.ts
       verifies loading priority
     rationale: Prevents flashing error messages during initial data fetch
@@ -609,8 +743,7 @@ invariants:
     category: ui
     severity: CRITICAL
     description: 'Consolidated contract: Chart Error Resilience'
-    constraint: 'Chart handles data errors: property throws, null values, undefined values without crash; Chart must
-      not crash when data properties throw during access; Charts must filter out null/undefined without crashing'
+    constraint: Charts filter null/undefined entries and handle throwing data properties without crashing.
     validation: DynamicBarChart.errorHandling.test.tsx verifies multiple error scenarios; DynamicBarChart.errorHandling.test.ts
       verifies error handling; DynamicBarChart.errorHandling.test.ts verifies null handling
     rationale: Prevents UI crashes from malformed data
@@ -625,14 +758,12 @@ invariants:
     - INV-CHART-002
 
   - id: INV-ERR-001
-    name: AppError_Type_Guard_Contract
+    name: AppError_Guards_And_ValidationError_Contract
     category: error_handling
     severity: CRITICAL
-    description: 'Consolidated contract: AppError Type Guard Contract'
-    constraint: isAppError() returns true for AppError subclasses, false for Error/null/undefined/string; isNetworkError()
-      returns true for statusCode=0 or ERROR_CODES.NETWORK; ValidationError instances have statusCode=400 and code=VALIDATION
-    validation: error-handler.guards.test.ts verifies type guard contract; error-handler.guards.test.ts verifies statusCode
-      0 detection; error-handler.guards.test.ts verifies ValidationError properties
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests cited by each clause; evidence supports only the conditions tested.
     rationale: Enables type narrowing and safe error handling
     related_terms:
     - AppError
@@ -641,18 +772,33 @@ invariants:
     merged_ids:
     - INV-ERR-002
     - INV-ERR-003
+    clauses:
+    - id: INV-ERR-001
+      constraint: isAppError() returns true for AppError subclasses, false for Error/null/undefined/string
+      status: stable
+      evidence:
+      - source: src/lib/error-handler.guards.test.ts
+        quote: test("isAppError identifies AppError instances"
+    - id: INV-ERR-002
+      constraint: isNetworkError() returns true for statusCode=0 or ERROR_CODES.NETWORK
+      status: stable
+      evidence:
+      - source: src/lib/error-handler.guards.test.ts
+        quote: test("isNetworkError identifies errors with statusCode 0"
+    - id: INV-ERR-003
+      constraint: ValidationError instances have statusCode=400 and code=VALIDATION
+      status: stable
+      evidence:
+      - source: src/lib/error-handler.classes.test.ts
+        quote: test("ValidationError creates proper error instance"
 
   - id: INV-API-001
-    name: Analytics_Response_Structure
+    name: Analytics_Structure_Trend_Empty_And_Granularity
     category: api
     severity: CRITICAL
-    description: 'Consolidated contract: Analytics Response Structure'
-    constraint: Response JSON contains trend[], summary{}, distribution{}; summary.trendDirection in ['up', 'down',
-      'stable']; Empty records returns trend=[], totalRecords=0, overallAvg=0; granularity parameter accepts 'day',
-      'week', 'month'
-    validation: analytics/route.basic.test.ts verifies response structure; analytics/route.basic.test.ts verifies
-      trend direction enum; analytics/route.basic.test.ts verifies empty dataset handling; analytics/route.granularity.test.ts
-      verifies all granularity options
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests cited by each clause; evidence supports only the conditions tested.
     rationale: Ensures frontend can depend on complete analytics data
     related_terms:
     - Stats
@@ -662,6 +808,31 @@ invariants:
     - INV-API-002
     - INV-API-003
     - INV-API-004
+    clauses:
+    - id: INV-API-001
+      constraint: Response JSON contains trend[], summary{}, distribution{}
+      status: stable
+      evidence:
+      - source: src/app/api/analytics/route.basic.test.ts
+        quote: expect(data).toHaveProperty("trend")
+    - id: INV-API-002
+      constraint: summary.trendDirection in ['up', 'down', 'stable']
+      status: stable
+      evidence:
+      - source: src/app/api/analytics/route.basic.test.ts
+        quote: expect(data.summary.trendDirection).toMatch(/up|down|stable/)
+    - id: INV-API-003
+      constraint: Empty records returns trend=[], totalRecords=0, overallAvg=0
+      status: stable
+      evidence:
+      - source: src/app/api/analytics/route.basic.test.ts
+        quote: expect(data.summary.totalRecords).toBe(0)
+    - id: INV-API-004
+      constraint: granularity parameter accepts 'day', 'week', 'month'
+      status: stable
+      evidence:
+      - source: src/app/api/analytics/route.granularity.test.ts
+        quote: test("groups data by month when granularity=month"
 
   - id: INV-API-005
     name: Export_CSV_Headers
@@ -676,14 +847,12 @@ invariants:
     strength: "hard"
 
   - id: INV-API-006
-    name: Export_CSV_Escaping_Commas
+    name: Export_CSV_Field_Escaping
     category: api
     severity: CRITICAL
-    description: 'Consolidated contract: Export CSV Escaping Commas'
-    constraint: Fields with commas are wrapped in double quotes; Quotes within fields are escaped as double quotes
-      (""); Newlines in fields are preserved with quoted wrapping
-    validation: export/route.csv.test.ts verifies comma escaping; export/route.csv.test.ts verifies quote escaping;
-      export/route.csv.test.ts verifies newline escaping
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests or inspect the code cited by each clause; evidence supports only that clause.
     rationale: Prevents CSV parsing errors for names/comments with commas
     related_terms:
     - Record
@@ -692,24 +861,75 @@ invariants:
     merged_ids:
     - INV-API-007
     - INV-API-008
+    clauses:
+    - id: INV-API-006
+      constraint: Fields with commas are wrapped in double quotes
+      status: stable
+      evidence:
+      - source: src/app/api/export/route.ts
+        quote: value.includes(",")
+    - id: INV-API-007
+      constraint: Quotes within fields are escaped as double quotes ("")
+      status: stable
+      evidence:
+      - source: src/app/api/export/route.ts
+        quote: value.replace(/"/g, '""')
+    - id: INV-API-008
+      constraint: Newlines in fields are preserved with quoted wrapping
+      status: stable
+      evidence:
+      - source: src/app/api/export/route.ts
+        quote: value.includes("\n")
 
   - id: INV-API-009
-    name: Export_Content_Type_Header
+    name: Export_Response_Headers_And_Filename_Requirement
     category: api
     severity: CRITICAL
-    description: 'Consolidated contract: Export Content Type Header'
-    constraint: Response Content-Type is 'text/csv; charset=utf-8'; Content-Disposition matches 'attachment; filename="records-{timestamp}.csv"';
-      Each export request generates filename with unique timestamp
-    validation: export/route.headers.test.ts verifies Content-Type header; export/route.headers.test.ts verifies Content-Disposition
-      format; export/route.headers.test.ts verifies filename uniqueness
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests cited by each clause; evidence supports only the conditions tested.
     rationale: Ensures proper CSV MIME type for browser download
     related_terms:
     - Record
-    status: stable
+    status: draft
     strength: hard
     merged_ids:
     - INV-API-010
     - INV-API-011
+    clauses:
+    - id: INV-API-009
+      constraint: Response Content-Type is 'text/csv; charset=utf-8'
+      status: stable
+      evidence:
+      - source: src/app/api/export/route.headers.test.ts
+        quote: test("sets correct Content-Type header"
+    - id: INV-API-010
+      constraint: Content-Disposition matches 'attachment; filename="records-{timestamp}.csv"'
+      status: stable
+      evidence:
+      - source: src/app/api/export/route.headers.test.ts
+        quote: test("sets Content-Disposition header with attachment filename"
+    - id: INV-API-011
+      constraint: Each export request generates filename with unique timestamp
+      status: draft
+      evidence:
+      - source: src/app/api/export/route.headers.test.ts
+        quote: await new Promise((resolve) => setTimeout(resolve, 10))
+      linked_conflicts:
+      - CFLT-EXPORT-001
+      verification_status: contradicted
+      scope: Desired uniqueness, not a guarantee made by Date.now(); the existing test delays 10 ms between requests.
+      assumptions:
+      - decision_key: AUTO:APIRouteHandler.invariant:filename_uniqueness_unverified
+        text: Do not certify concurrent uniqueness from a delayed sequential-request test.
+        expires_after_runs: 20
+    linked_conflicts:
+    - CFLT-EXPORT-001
+    verification_status: contradicted
+    assumptions:
+    - decision_key: AUTO:APIRouteHandler.invariant:filename_uniqueness_unverified
+      text: Timestamp filenames are current behavior; simultaneous-request uniqueness is not established.
+      expires_after_runs: 20
 
   - id: INV-API-012
     name: Metrics_Response_Structure
@@ -737,14 +957,12 @@ invariants:
 
   # INFRASTRUCTURE INVARIANTS (EXTRACTED FROM TESTS)
   - id: INV-INF-001
-    name: Repository_Factory_Default_Provider
+    name: Stats_Repository_Provider_Selection
     category: infrastructure
     severity: CRITICAL
-    description: 'Consolidated contract: Repository Factory Default Provider'
-    constraint: Missing DATABASE_PROVIDER returns MockStatsRepository; DATABASE_PROVIDER=prisma requires DATABASE_URL
-      to be set; Invalid DATABASE_PROVIDER values throw error
-    validation: repositoryFactory.test.ts verifies default provider; repositoryFactory.test.ts verifies Prisma validation;
-      repositoryFactory.test.ts verifies error on invalid provider
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests or inspect the code cited by each clause; evidence supports only that clause.
     rationale: Ensures test environment works without configuration
     related_terms:
     - StatsRepository
@@ -755,16 +973,34 @@ invariants:
     merged_ids:
     - INV-INF-002
     - INV-INF-003
+    clauses:
+    - id: INV-INF-001
+      constraint: For the stats repository, missing DATABASE_PROVIDER selects MockStatsRepository. This does
+        not apply to createRecordRepository, which rejects Mirage mode.
+      status: stable
+      evidence:
+      - source: src/infrastructure/factories/repositoryFactory.test.ts
+        quote: it("should return MockStatsRepository when provider is not set"
+    - id: INV-INF-002
+      constraint: DATABASE_PROVIDER=prisma requires DATABASE_URL to be set
+      status: stable
+      evidence:
+      - source: src/infrastructure/factories/repositoryFactory.test.ts
+        quote: it("should throw error when provider is prisma but DATABASE_URL is missing"
+    - id: INV-INF-003
+      constraint: Invalid DATABASE_PROVIDER values throw error
+      status: stable
+      evidence:
+      - source: src/infrastructure/factories/repositoryFactory.test.ts
+        quote: it("should throw error for invalid provider"
 
   - id: INV-HOOK-001
-    name: useAsync_Initial_State
+    name: useAsync_Initial_Loading_And_Error_States
     category: hook
     severity: HIGH
-    description: 'Consolidated contract: useAsync Initial State'
-    constraint: 'Initial state must be: isLoading=false, error=null, data=null; isLoading must be true during execution,
-      false after completion; On error, data must be null and error must be set'
-    validation: useAsync.test.ts verifies initial state values; useAsync.test.ts verifies state transitions during
-      async operations; useAsync.test.ts verifies error state after rejection
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests or inspect the code cited by each clause; evidence supports only that clause.
     rationale: Ensures predictable hook initialization
     related_terms:
     - ReactHooks
@@ -774,16 +1010,33 @@ invariants:
     merged_ids:
     - INV-HOOK-002
     - INV-HOOK-003
+    clauses:
+    - id: INV-HOOK-001
+      constraint: 'Initial state must be: isLoading=false, error=null, data=null'
+      status: stable
+      evidence:
+      - source: src/hooks/useAsync.test.ts
+        quote: test("initial state should be correct"
+    - id: INV-HOOK-002
+      constraint: isLoading must be true during execution, false after completion
+      status: stable
+      evidence:
+      - source: src/hooks/useAsync.test.ts
+        quote: test("should handle successful async operation"
+    - id: INV-HOOK-003
+      constraint: On error, data must be null and error must be set
+      status: stable
+      evidence:
+      - source: src/hooks/useAsync.test.ts
+        quote: test("should handle async operation error"
 
   - id: INV-HOOK-004
-    name: useNotification_Initial_State
+    name: useNotification_Defaults_And_Types
     category: hook
     severity: MEDIUM
-    description: 'Consolidated contract: useNotification Initial State'
-    constraint: 'Initial state must be: show=false, message='''', type=''success''; Must support: success, error,
-      warning, info types'
-    validation: useNotification.test.ts verifies initial notification state; useNotification.test.ts verifies all
-      notification types
+    description: Related requirements remain independently verifiable under their original IDs.
+    constraint: Each clause below is a separate requirement; shared storage does not imply shared verification.
+    validation: Run the tests or inspect the code cited by each clause; evidence supports only that clause.
     rationale: Ensures predictable notification initialization
     related_terms:
     - ReactHooks
@@ -791,6 +1044,19 @@ invariants:
     strength: soft
     merged_ids:
     - INV-HOOK-005
+    clauses:
+    - id: INV-HOOK-004
+      constraint: 'Initial state must be: show=false, message='''', type=''success'''
+      status: stable
+      evidence:
+      - source: src/hooks/useNotification.test.ts
+        quote: it("should initialize with default notification state"
+    - id: INV-HOOK-005
+      constraint: 'Must support: success, error, warning, info types'
+      status: stable
+      evidence:
+      - source: src/hooks/useNotification.ts
+        quote: '"success" | "error" | "warning" | "info"'
 
   - id: INV-BRW-001
     name: Browser_Reload_Idempotence

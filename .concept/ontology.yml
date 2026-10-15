@@ -697,3 +697,111 @@ canonical_terms:
         expires_after_runs: 20
     evidence:
       - source: "src/components/auth/LoginForm.tsx"
+
+  AuditLog:
+    id: TERM-AUDITLOG
+    layer: aux
+    status: stable
+    definition: データ変更の監査記録。操作、実行者、対象、および変更前後の状態を保持する。
+    synonyms: []
+    boundaries:
+      includes:
+      - データ変更履歴
+      - 監査リポジトリと記録サービス
+      excludes:
+      - 運用ログの可視性フィルタ
+      - 本番監査の適合性保証
+    related_terms:
+    - Record
+    - StructuredLogger
+    evidence:
+    - source: src/domain/entities/AuditLog.test.ts
+    - source: src/domain/repositories/AuditLogRepository.test.ts
+    - source: src/domain/entities/AuditLog.ts
+
+  Backup:
+    id: TERM-BACKUP
+    layer: aux
+    status: stable
+    definition: 記録のバックアップと復元。状態、件数、サイズ、チェックサム、および復元処理を扱う。
+    lifecycle: [pending, in_progress, completed, failed]
+    synonyms: []
+    boundaries:
+      includes:
+      - バックアップ状態と整合性検査
+      - 復元サービスとインメモリ保存
+      excludes:
+      - 定期実行の運用保証
+      - 外部永続ストレージの保証
+    related_terms:
+    - Record
+    - AuditLog
+    evidence:
+    - source: src/domain/entities/Backup.test.ts
+    - source: src/domain/repositories/BackupRepository.test.ts
+    - source: src/domain/entities/Backup.ts
+
+  TrendAnalysis:
+    id: TERM-TRENDANALYSIS
+    layer: aux
+    status: stable
+    definition: 生徒・学級ごとの時系列感情データと傾向指標を扱い、保存・取得・レポート表示をつなぐ。
+    synonyms: []
+    boundaries:
+      includes:
+      - 生徒別と学級別の傾向指標
+      - トレンド保存とレポート表示
+      excludes:
+      - 現在値の概要統計のみ
+      - 将来の感情予測モデル
+    related_terms:
+    - Record
+    - Stats
+    evidence:
+    - source: src/domain/entities/TrendAnalysis.test.ts
+    - source: src/domain/repositories/TrendAnalysisRepository.test.ts
+    - source: src/domain/entities/TrendAnalysis.ts
+
+  NotificationProvider:
+    id: TERM-NOTIFICATIONPROVIDER
+    layer: aux
+    status: stable
+    definition: 通知先プロバイダーの設定・状態・チャネルと通知の送信制御を表す。
+    lifecycle: [active, inactive, suspended]
+    synonyms: []
+    boundaries:
+      includes:
+      - プロバイダー設定と状態
+      - メール通知実装と通知サービス
+      excludes:
+      - 全通知方式の送信実装保証
+      - 外部メールサービスへの配信保証
+    related_terms:
+    - Anomaly
+    - Backup
+    evidence:
+    - source: src/domain/entities/NotificationProvider.test.ts
+    - source: src/domain/repositories/NotificationProviderRepository.test.ts
+    - source: src/domain/entities/NotificationProvider.ts
+
+  Anomaly:
+    id: TERM-ANOMALY
+    layer: aux
+    status: stable
+    definition: 感情データの異常検知結果。種類、重大度、対象期間、実測値と期待値、確認状態を持つ。
+    lifecycle: [unacknowledged, acknowledged]
+    synonyms: []
+    boundaries:
+      includes:
+      - 閾値に基づく検知と結果保存
+      - 異常の確認状態
+      excludes:
+      - 臨床診断
+      - 機械学習モデルによる推論
+    related_terms:
+    - Record
+    - NotificationProvider
+    evidence:
+    - source: src/domain/entities/Anomaly.test.ts
+    - source: src/domain/repositories/AnomalyRepository.test.ts
+    - source: src/domain/entities/Anomaly.ts

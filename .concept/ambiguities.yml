@@ -11,7 +11,7 @@ ambiguities:
   - Which empty-stats API representation is intended?
   linked_conflicts:
   - CFLT-STATS-001
-  last_touched_run: '2026-10-15T17:15:58Z'
+  last_touched_run: '2026-10-15T17:32:00Z'
   evidence:
   - source: src/domain/entities/StatsOverview.test.ts#L16-L25
   - source: src/schemas/api.ts#L96-L99
@@ -21,6 +21,19 @@ ambiguities:
     contradictions: 1
     k: 2
     average_weight: 0.85
+  auto_decision:
+    status: applied
+    decision_key: AUTO:StatsOverview.data_constraint:empty_sentinel_provisional
+    chosen: Keep the zero sentinel provisional at the domain boundary; record API schema incompatibility as
+      unresolved.
+    policy: reversibility + locality; no implementation or requirement weakening
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T17:32:00Z'
+    expires_after_runs: 20
+    revert_triggers:
+    - primary_evidence_contradiction
+    - security_risk
+    - repeated_critical_test_failure
 - id: AMB-AUTH-001
   term: AuthenticationService
   topic: Prototype authentication must not imply production protection
@@ -77,3 +90,34 @@ ambiguities:
     contradictions: 0
     k: 1
     average_weight: 0.5
+- id: AMB-EXPORT-001
+  term: APIRouteHandler
+  topic: Timestamp naming is not proof of concurrent uniqueness
+  severity: low
+  uncertainty: 0.216
+  candidates:
+  - Certify uniqueness from a delayed sequential test
+  - Retain uniqueness as a draft requirement pending a collision-safe implementation and concurrency test
+  missing_info:
+  - Collision-safe filename contract and simultaneous-request acceptance evidence
+  linked_conflicts:
+  - CFLT-EXPORT-001
+  auto_decision:
+    status: applied
+    decision_key: AUTO:APIRouteHandler.invariant:filename_uniqueness_unverified
+    chosen: Retain uniqueness as a draft requirement; current timestamp naming remains uncertified for simultaneous
+      exports.
+    policy: reversibility + locality; no implementation or requirement weakening
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T17:32:00Z'
+    expires_after_runs: 20
+    revert_triggers:
+    - primary_evidence_contradiction
+    - security_risk
+    - repeated_critical_test_failure
+  last_touched_run: '2026-10-15T17:32:00Z'
+  evidence:
+  - source: src/app/api/export/route.ts
+    quote: const timestamp = Date.now()
+  - source: src/app/api/export/route.headers.test.ts
+    quote: await new Promise((resolve) => setTimeout(resolve, 10))

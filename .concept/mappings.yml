@@ -43,11 +43,12 @@ mappings:
 
   IRecordRepository:
     code_symbols:
-      - "src/domain/repositories/IRecordRepository.ts::interface IRecordRepository"
+    - src/domain/repositories/IRecordRepository.ts::interface IRecordRepository
+    - src/infrastructure/storage/InMemoryRecordRepository.ts::InMemoryRecordRepository
     db: []
     api:
-      - "POST /api/seed"
-      - "GET /api/export"
+    - POST /api/seed
+    - GET /api/export
 
   DataGenerationConfig:
     code_symbols:
@@ -404,6 +405,7 @@ mappings:
   UserRepository:
     code_symbols:
     - src/domain/repositories/UserRepository.ts
+    - src/infrastructure/repositories/PrismaUserRepository.ts::PrismaUserRepository
     db: []
     api: []
 
@@ -428,5 +430,60 @@ mappings:
   LoginForm:
     code_symbols:
     - src/components/auth/LoginForm.tsx
+    db: []
+    api: []
+
+  AuditLog:
+    code_symbols:
+    - src/domain/entities/AuditLog.ts::AuditLog
+    - src/domain/repositories/AuditLogRepository.ts::AuditLogRepository
+    - src/application/services/AuditService.ts::AuditService
+    - src/infrastructure/repositories/InMemoryAuditLogRepository.ts::InMemoryAuditLogRepository
+    db: []
+    api: []
+
+  Backup:
+    code_symbols:
+    - src/domain/entities/Backup.ts::Backup
+    - src/domain/repositories/BackupRepository.ts::BackupRepository
+    - src/application/services/BackupService.ts::BackupService
+    - src/infrastructure/repositories/InMemoryBackupRepository.ts::InMemoryBackupRepository
+    db: []
+    api:
+    - POST /api/backup
+    - GET /api/backup
+    - POST /api/restore
+
+  TrendAnalysis:
+    code_symbols:
+    - src/domain/entities/TrendAnalysis.ts::StudentTrendAnalysis
+    - src/domain/entities/TrendAnalysis.ts::ClassTrendAnalysis
+    - src/domain/repositories/TrendAnalysisRepository.ts::TrendAnalysisRepository
+    - src/application/services/TrendAnalysisService.ts::TrendAnalysisService
+    - src/infrastructure/storage/InMemoryTrendAnalysisRepository.ts::InMemoryTrendAnalysisRepository
+    - src/components/charts/TrendReportChart.tsx
+    db: []
+    api:
+    - GET /api/trends
+
+  NotificationProvider:
+    code_symbols:
+    - src/domain/entities/NotificationProvider.ts::NotificationProvider
+    - src/domain/repositories/NotificationProviderRepository.ts::NotificationProviderRepository
+    - src/application/services/NotificationService.ts::NotificationService
+    - src/infrastructure/services/EmailNotificationProvider.ts::EmailNotificationProvider
+    - src/infrastructure/storage/InMemoryNotificationProviderRepository.ts::InMemoryNotificationProviderRepository
+    db: []
+    api:
+    - GET /api/notifications/settings
+    - POST /api/notifications/settings
+    - GET /api/notifications/history
+
+  Anomaly:
+    code_symbols:
+    - src/domain/entities/Anomaly.ts::Anomaly
+    - src/domain/repositories/AnomalyRepository.ts::AnomalyRepository
+    - src/domain/services/AnomalyDetectionService.ts::AnomalyDetectionService
+    - src/infrastructure/storage/InMemoryAnomalyRepository.ts::InMemoryAnomalyRepository
     db: []
     api: []

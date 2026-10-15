@@ -1,9 +1,10 @@
-"""Validate the stage 10 concept model without external services (requires PyYAML)."""
+"""Validate concept integrity; Q1-Q8 acceptance is reported separately (requires PyYAML)."""
 import collections
 import json
 from pathlib import Path
 import re
 import subprocess
+import sys
 import unittest
 
 import yaml
@@ -153,12 +154,62 @@ class ConceptIntegrityTest(unittest.TestCase):
         for key, decision in active.items():
             self.assertGreater(decision["expires_after_runs"], 0)
             self.assertTrue(decision["revert_triggers"])
-        for term in self.terms.values():
-            for assumption in term.get("assumptions", []):
+        contracts = [*self.terms.values(), *self.invariants,
+                     *(c for inv in self.invariants for c in inv.get("clauses", []))]
+        for contract in contracts:
+            for assumption in contract.get("assumptions", []):
                 self.assertIn(assumption["decision_key"], active)
-                self.assertEqual(term["status"], "draft")
+                self.assertEqual(contract["status"], "draft")
         cache = (CONCEPT / "decisions.md").read_text()
         self.assertEqual(set(re.findall(r"^## (AUTO:.+)$", cache, re.M)), set(active))
+
+    def test_independent_clauses_and_conflicts(self) -> None:
+        by_id = {i["id"]: i for i in self.invariants}
+        conflicts = {c["id"]: c for c in self.documents["conflicts.yml"]["conflicts"]}
+        for ident in ("INV-LOOP-001", "INV-MEM-001", "INV-ERR-001", "INV-API-001",
+                      "INV-API-009", "INV-UTIL-001", "INV-UTL-004", "INV-INF-001",
+                      "INV-HOOK-001", "INV-HOOK-004", "INV-API-006"):
+            self.assertTrue(by_id[ident].get("clauses"), ident)
+        for inv in self.invariants:
+            clauses = inv.get("clauses", [])
+            if clauses:
+                ids = [c["id"] for c in clauses]
+                self.assertEqual(set(ids), {inv["id"], *inv.get("merged_ids", [])})
+                self.assertEqual(len(ids), len(set(ids)))
+                for clause in clauses:
+                    self.assertTrue(clause["constraint"], clause["id"])
+                    self.assertTrue(clause["evidence"], clause["id"])
+            for contract in [inv, *clauses]:
+                for ident in contract.get("linked_conflicts", []):
+                    self.assertIn(ident, conflicts)
+                    self.assertIn(inv["id"], conflicts[ident]["related_invariants"])
+                    if conflicts[ident]["status"] == "open":
+                        self.assertEqual(contract["verification_status"], "contradicted")
+        for conflict in conflicts.values():
+            for ident in conflict.get("related_invariants", []):
+                self.assertIn(ident, by_id)
+                self.assertIn(conflict["id"], by_id[ident]["linked_conflicts"])
+        # These unresolved interpretations cannot silently become certified contracts.
+        for ident in ("INV-DOM-011", "INV-API-009"):
+            self.assertEqual(by_id[ident]["status"], "draft")
+            self.assertTrue(by_id[ident]["assumptions"])
+            self.assertTrue(by_id[ident]["linked_conflicts"])
+        # A stable policy can remain valid while its enforcement is contradicted.
+        self.assertTrue(by_id["INV-QUAL-001"]["evidence"])
+        self.assertEqual(by_id["INV-QUAL-001"]["verification_status"], "contradicted")
+
+    def test_new_terms_admission(self) -> None:
+        for entry in self.documents["term_queue.yml"]["queue"]:
+            if entry["decision"] != "accepted":
+                continue
+            term = entry["proposed_canonical"]
+            self.assertIn(term, self.terms)
+            primary = {e["source"] for e in entry["evidence"]
+                       if re.search(r"\.test\.tsx?$", e["source"])}
+            self.assertGreaterEqual(len(primary), 2, term)
+            self.assertTrue(self.terms[term]["boundaries"]["includes"])
+            self.assertTrue(self.terms[term]["boundaries"]["excludes"])
+            self.assertTrue(self.mappings[term]["code_symbols"])
 
     def test_measured_state(self) -> None:
         metrics = json.loads((CONCEPT / "ontology_metrics.json").read_text())
@@ -182,6 +233,53 @@ class ConceptIntegrityTest(unittest.TestCase):
         self.assertEqual(metrics["stage_11_q3"]["status"],
                          "PASS" if len(self.invariants) / len(test_files) >= 0.5 else "FAIL")
 
+    def test_stage_11_measurements(self) -> None:
+        quality = json.loads((CONCEPT / "ontology_metrics.json").read_text())["stage_11_quality"]
+        modules, classes = set(), []
+        for path in (ROOT / "src").rglob("*"):
+            if path.suffix not in (".ts", ".tsx") or path.name.endswith(".d.ts"):
+                continue
+            if path.stem == "index" or "test-utils" in path.parts or re.search(
+                    r"\.(test|spec|setup|helpers|types)(\.|$)", path.name):
+                continue
+            source = path.read_text()
+            relative = str(path.relative_to(ROOT))
+            if re.search(r"^export (?:default |async |abstract )?(?:class|function|const|interface|type)\b",
+                         source, re.M):
+                modules.add(relative)
+            classes.extend(relative for _ in re.findall(r"^export (?:abstract )?class \w+", source, re.M))
+        mapped = {re.sub(r":\d+(?:-\d+)?$", "", s.split("::")[0])
+                  for m in self.mappings.values() for s in m["code_symbols"]}
+        q1 = quality["Q1"]
+        self.assertEqual(q1["production_modules"], len(modules))
+        self.assertEqual(q1["production_classes"], len(classes))
+        self.assertEqual(q1["unmapped_modules"], sorted(modules - mapped))
+        self.assertEqual(q1["mapped_modules"], len(modules & mapped))
+        self.assertEqual(q1["mapped_classes"], sum(c in mapped for c in classes))
+        expected = {
+            "Q1": min(len(modules & mapped) / len(modules), sum(c in mapped for c in classes) / len(classes)),
+            "Q2": sum(bool(self.mappings.get(t, {}).get("code_symbols")) for t in self.terms) / len(self.terms),
+            "Q3": json.loads((CONCEPT / "ontology_metrics.json").read_text())["stage_11_q3"]["ratio"],
+            "Q4": sum(t["status"] == "draft" for t in self.terms.values()) / len(self.terms),
+            "Q5": sum(c["term_canonical"] == "__UNMAPPED__" for c in self.claims) / len(self.claims),
+            "Q6": len(self.terms),
+            "Q7": bool(self.documents["charter.yml"]["product_goal"]["north_star"] and
+                       self.documents["charter.yml"]["milestones"]),
+            "Q8": sum(bool(t.get("evidence")) for t in self.terms.values()) / len(self.terms),
+        }
+        for key, threshold in zip(expected, (.8, .9, .5, .3, .2, 80, True, 1.0)):
+            self.assertEqual(quality[key]["value"], expected[key], key)
+            self.assertEqual(quality[key]["threshold"], threshold, key)
+            passed = expected[key] <= threshold if key in ("Q4", "Q5", "Q6") else expected[key] >= threshold
+            self.assertEqual(quality[key]["status"], "PASS" if passed else "FAIL", key)
+
 
 if __name__ == "__main__":
+    if "--quality" in sys.argv:
+        result = unittest.main(argv=[sys.argv[0]], exit=False).result
+        quality = json.loads((CONCEPT / "ontology_metrics.json").read_text())["stage_11_quality"]
+        print("| 指標 | 現在値 | 基準 | 判定 |\n|---|---:|---:|---|")
+        for key, metric in quality.items():
+            print(f"| {key} | {metric['value']} | {metric['threshold']} | {metric['status']} |")
+        sys.exit(not result.wasSuccessful() or any(m["status"] == "FAIL" for m in quality.values()))
     unittest.main()

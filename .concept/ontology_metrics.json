@@ -1,19 +1,19 @@
 {
-  "run_id": "2026-10-15T17:15:58Z",
-  "total_terms": 49,
+  "run_id": "2026-10-15T17:38:17Z",
+  "total_terms": 54,
   "by_layer": {
     "core": 8,
     "domain": 21,
-    "aux": 20
+    "aux": 25
   },
-  "draft_ratio": 0.12244897959183673,
+  "draft_ratio": 0.1111111111111111,
   "invariants_count": 60,
-  "mappings_count": 49,
-  "queue_pending": 5,
-  "claims_retained_lines": 13,
-  "decisions_md_lines": 9,
+  "mappings_count": 54,
+  "queue_pending": 0,
+  "claims_retained_lines": 22,
+  "decisions_md_lines": 25,
   "gc_actions": {
-    "merged_invariants": 40,
+    "merged_invariants": 0,
     "merged_terms": 0,
     "deleted_terms": 0,
     "deprecated_terms": 0
@@ -24,21 +24,91 @@
     "threshold": 0.5,
     "status": "FAIL",
     "measurement": "Jest .test.ts/.test.tsx files under src and scripts; excludes Python concept validator",
-    "applicability": "Informational only: stage 11 was not executed. The 60-invariant limit is adopted from the v0.3 recommendation; Q3 is not a stage 10 acceptance gate."
+    "applicability": "Stage 11 acceptance gate: FAIL. At least 114 invariant records are required for 227 tests, but ontology_budget.yml caps records at 60. Clauses and merged IDs are not counted as additional invariants."
   },
   "test_results": {
-    "command": "LC_ALL=ja_JP.UTF-8 LANG=ja_JP.UTF-8 npm test -- --runInBand",
+    "command": "LC_ALL=ja_JP.UTF-8 LANG=ja_JP.UTF-8 npm test -- --runInBand --cacheDirectory=/tmp/yka-concept-jest-cache",
     "suites": 227,
     "passed": 2490,
     "failed": 0,
-    "default_locale_result": "en-US: 1 failure in EventManager.rendering.test.tsx; 2489 passed"
+    "dependency_source": "Existing main-checkout node_modules via an ignored local symlink; application source and Jest root remain in this worktree."
   },
-  "validation_scope": "Stage 10 structural integrity; does not certify application security, coverage, lint, stage 11 Q1-Q8, or the entire pipeline.",
+  "validation_scope": "Stage 11 concept integrity and measured Q1-Q8; Q3 fails; the adopted invariant budget cannot meet the count-based threshold. Application security, coverage, build, and complete pipeline acceptance are not certified.",
   "lint_result": {
     "command": "./node_modules/.bin/eslint .",
     "errors": 43,
     "warnings": 0,
     "status": "FAIL",
     "scope": "Pre-existing application files; no application source changed."
+  },
+  "stage_11_quality": {
+    "Q1": {
+      "value": 0.8583333333333333,
+      "threshold": 0.8,
+      "status": "PASS",
+      "measurement": "Conservative source coverage: minimum of directly mapped exported production modules and classes. Excludes test/support files, declaration files, test-utils, and barrel index files. Directory mappings do not imply every descendant is semantically covered.",
+      "production_modules": 120,
+      "mapped_modules": 103,
+      "production_classes": 34,
+      "mapped_classes": 33,
+      "unmapped_modules": [
+        "src/app/api/auth/login/route.ts",
+        "src/app/api/auth/logout/route.ts",
+        "src/app/api/auth/session/route.ts",
+        "src/app/api/backup/route.ts",
+        "src/app/api/notifications/history/route.ts",
+        "src/app/api/notifications/settings/route.ts",
+        "src/app/api/restore/route.ts",
+        "src/app/api/trends/route.ts",
+        "src/components/common/ComponentCard.tsx",
+        "src/components/common/ExportButton.tsx",
+        "src/components/common/PaginationControl.tsx",
+        "src/lib/export/csv.ts",
+        "src/lib/resilience/performance-monitor.ts",
+        "src/presentation/hooks/usePagination.ts",
+        "src/presentation/hooks/useStats.ts",
+        "src/types/pagination.ts",
+        "src/utils/pagination.ts"
+      ]
+    },
+    "Q2": {
+      "value": 1.0,
+      "threshold": 0.9,
+      "status": "PASS"
+    },
+    "Q3": {
+      "value": 0.2643171806167401,
+      "threshold": 0.5,
+      "status": "FAIL",
+      "invariants_max": 60,
+      "minimum_required": 114,
+      "test_files": 227,
+      "invariant_records": 60
+    },
+    "Q4": {
+      "value": 0.1111111111111111,
+      "threshold": 0.3,
+      "status": "PASS"
+    },
+    "Q5": {
+      "value": 0.0,
+      "threshold": 0.2,
+      "status": "PASS"
+    },
+    "Q6": {
+      "value": 54,
+      "threshold": 80,
+      "status": "PASS"
+    },
+    "Q7": {
+      "value": true,
+      "threshold": true,
+      "status": "PASS"
+    },
+    "Q8": {
+      "value": 1.0,
+      "threshold": 1.0,
+      "status": "PASS"
+    }
   }
 }

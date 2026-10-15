@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "last_updated": "2026-10-15T20:31:30.000000+00:00",
-  "run_index": 227,
+  "last_updated": "2026-10-15T20:45:52.000000+00:00",
+  "run_index": 228,
   "phase": "sync",
   "terms": {
     "total": 57,
@@ -48,6 +48,7 @@
   "notes": {
     "q1_coverage_rationale": "35.6% raw coverage (57 terms / 160 non-test source files). Healthy for this codebase: all domain entities, services, repositories, application services, API routes and major UI concepts are covered; remaining files are small utilities/types consolidated into broader concepts. Post-consolidation canonical count (129 original -> 57) still honors the consolidation principle.",
     "maintenance_cycles_206_to_226": "21 cycles of identical health-check results (all quality metrics stable, 177 suites / 1312 tests, SRP max <= 283 lines). Consolidated here for bloat control; individual entries were redundant.",
-    "sync_run_227": "Substantive sync after dormancy since cycle 226 (2026-03-22). Detected 126 changed src files (+27,637 lines) since 0e9efa52. Added 8 consolidated terms via term_queue acceptance (AuditLog, Backup, NotificationProvider, Anomaly, TrendAnalysis, Pagination, CsvExport, PerformanceMonitor; TERM-125..132), backfilled mappings for 6 previously unmapped User/auth terms, normalized AuthorizationService layer application->domain, appended 29 claims, recorded 2 ambiguities (AMB-BACKUP-001 restore semantics, AMB-NOTIF-001 delivery transport). No conflicts detected. Budget: 57/80 terms, draft 0%, unmapped 0%."
+    "sync_run_227": "Substantive sync after dormancy since cycle 226 (2026-03-22). Detected 126 changed src files (+27,637 lines) since 0e9efa52. Added 8 consolidated terms via term_queue acceptance (AuditLog, Backup, NotificationProvider, Anomaly, TrendAnalysis, Pagination, CsvExport, PerformanceMonitor; TERM-125..132), backfilled mappings for 6 previously unmapped User/auth terms, normalized AuthorizationService layer application->domain, appended 29 claims, recorded 2 ambiguities (AMB-BACKUP-001 restore semantics, AMB-NOTIF-001 delivery transport). No conflicts detected. Budget: 57/80 terms, draft 0%, unmapped 0%.",
+    "sync_run_228": "Evidence quality fixes from run-227 review. TERM-122 AuthorizationService: definition reworded to separate concept layer (importance tier per B-7) from physical placement; evidence replaced with real quotes (async hasRole(userId, role): Promise<boolean>, L101). term_queue: 16 placeholder quotes replaced with verified real quotes (all substring-checked against cited sources), accepted_as_term_id normalized TERM-000125..132 -> TERM-125..132. Layer field semantics and ID notation recorded as DECISION-007/008. No term/mapping/invariant count changes."
   }
 }

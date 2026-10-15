@@ -6,11 +6,13 @@ queue:
     term_raw_examples: ["監査ログ"]
     reason: "2026-03-22以降に追加されたコードで導入された概念。実装+テストの一次出典が2つ以上あり、boundaries/mappings が書ける"
     evidence:
-      - source: "AuditLog.ts + AuditService.ts + AuditLogRepository.ts"
-        quote: "implementation + test files"
+      - source: "src/domain/entities/AuditLog.ts"
+        quote: "export type AuditOperation = \"create\" | \"update\" | \"delete\"; export interface AuditLog {"
+      - source: "src/application/services/AuditService.ts"
+        quote: "export class AuditService {"
     auto_merge_candidates: []
     decision: "accepted"
-    accepted_as_term_id: "TERM-000125"
+    accepted_as_term_id: "TERM-125"
     expires_after_runs: 10
     created_run: "2026-10-15T20:31:30Z"
   - id: "TP-000126"
@@ -19,11 +21,13 @@ queue:
     term_raw_examples: ["バックアップ"]
     reason: "2026-03-22以降に追加されたコードで導入された概念。実装+テストの一次出典が2つ以上あり、boundaries/mappings が書ける"
     evidence:
-      - source: "Backup.ts + BackupService.ts + BackupRepository.ts + backup/restore routes"
-        quote: "implementation + test files"
+      - source: "src/domain/entities/Backup.ts"
+        quote: "export type BackupStatus = \"pending\" | \"in_progress\" | \"completed\" | \"failed\"; export interface Backup {"
+      - source: "src/application/services/BackupService.ts"
+        quote: "export class BackupService {"
     auto_merge_candidates: []
     decision: "accepted"
-    accepted_as_term_id: "TERM-000126"
+    accepted_as_term_id: "TERM-126"
     expires_after_runs: 10
     created_run: "2026-10-15T20:31:30Z"
   - id: "TP-000127"
@@ -32,11 +36,13 @@ queue:
     term_raw_examples: ["通知設定"]
     reason: "2026-03-22以降に追加されたコードで導入された概念。実装+テストの一次出典が2つ以上あり、boundaries/mappings が書ける"
     evidence:
-      - source: "NotificationProvider.ts + NotificationService.ts + notifications routes"
-        quote: "implementation + test files"
+      - source: "src/domain/entities/NotificationProvider.ts"
+        quote: "export interface NotificationProvider {"
+      - source: "src/application/services/NotificationService.ts"
+        quote: "export class NotificationService {"
     auto_merge_candidates: []
     decision: "accepted"
-    accepted_as_term_id: "TERM-000127"
+    accepted_as_term_id: "TERM-127"
     expires_after_runs: 10
     created_run: "2026-10-15T20:31:30Z"
   - id: "TP-000128"
@@ -45,11 +51,13 @@ queue:
     term_raw_examples: ["異常検知"]
     reason: "2026-03-22以降に追加されたコードで導入された概念。実装+テストの一次出典が2つ以上あり、boundaries/mappings が書ける"
     evidence:
-      - source: "Anomaly.ts + AnomalyDetectionService.ts + AnomalyRepository.ts"
-        quote: "implementation + test files"
+      - source: "src/domain/entities/Anomaly.ts"
+        quote: "export interface Anomaly {"
+      - source: "src/domain/services/AnomalyDetectionService.ts"
+        quote: "export class AnomalyDetectionService {"
     auto_merge_candidates: []
     decision: "accepted"
-    accepted_as_term_id: "TERM-000128"
+    accepted_as_term_id: "TERM-128"
     expires_after_runs: 10
     created_run: "2026-10-15T20:31:30Z"
   - id: "TP-000129"
@@ -58,11 +66,13 @@ queue:
     term_raw_examples: ["トレンド分析"]
     reason: "2026-03-22以降に追加されたコードで導入された概念。実装+テストの一次出典が2つ以上あり、boundaries/mappings が書ける"
     evidence:
-      - source: "TrendAnalysis.ts + TrendAnalysisService.ts + trends route + TrendReportChart"
-        quote: "implementation + test files"
+      - source: "src/domain/entities/TrendAnalysis.ts"
+        quote: "export type TrendDirection = \"up\" | \"down\" | \"stable\"; export interface TrendDataPoint {"
+      - source: "src/application/services/TrendAnalysisService.ts"
+        quote: "export class TrendAnalysisService {"
     auto_merge_candidates: []
     decision: "accepted"
-    accepted_as_term_id: "TERM-000129"
+    accepted_as_term_id: "TERM-129"
     expires_after_runs: 10
     created_run: "2026-10-15T20:31:30Z"
   - id: "TP-000130"
@@ -71,11 +81,13 @@ queue:
     term_raw_examples: ["ページング"]
     reason: "2026-03-22以降に追加されたコードで導入された概念。実装+テストの一次出典が2つ以上あり、boundaries/mappings が書ける"
     evidence:
-      - source: "pagination.ts + usePagination.ts + PaginationControl.tsx"
-        quote: "implementation + test files"
+      - source: "src/utils/pagination.ts"
+        quote: "export function paginate<T>("
+      - source: "src/presentation/hooks/usePagination.ts"
+        quote: "export function usePagination<T>("
     auto_merge_candidates: []
     decision: "accepted"
-    accepted_as_term_id: "TERM-000130"
+    accepted_as_term_id: "TERM-130"
     expires_after_runs: 10
     created_run: "2026-10-15T20:31:30Z"
   - id: "TP-000131"
@@ -84,11 +96,13 @@ queue:
     term_raw_examples: ["CSV出力"]
     reason: "2026-03-22以降に追加されたコードで導入された概念。実装+テストの一次出典が2つ以上あり、boundaries/mappings が書ける"
     evidence:
-      - source: "csv.ts + ExportButton.tsx"
-        quote: "implementation + test files"
+      - source: "src/lib/export/csv.ts"
+        quote: "export interface CsvExportOptions {"
+      - source: "src/components/common/ExportButton.tsx"
+        quote: "export const ExportButton = ExportButtonComponent;"
     auto_merge_candidates: []
     decision: "accepted"
-    accepted_as_term_id: "TERM-000131"
+    accepted_as_term_id: "TERM-131"
     expires_after_runs: 10
     created_run: "2026-10-15T20:31:30Z"
   - id: "TP-000132"
@@ -97,10 +111,10 @@ queue:
     term_raw_examples: ["パフォーマンス計測"]
     reason: "2026-03-22以降に追加されたコードで導入された概念。実装+テストの一次出典が2つ以上あり、boundaries/mappings が書ける"
     evidence:
-      - source: "performance-monitor.ts"
-        quote: "implementation + test files"
+      - source: "src/lib/resilience/performance-monitor.ts"
+        quote: "export interface PerformanceMetric {"
     auto_merge_candidates: []
     decision: "accepted"
-    accepted_as_term_id: "TERM-000132"
+    accepted_as_term_id: "TERM-132"
     expires_after_runs: 10
     created_run: "2026-10-15T20:31:30Z"

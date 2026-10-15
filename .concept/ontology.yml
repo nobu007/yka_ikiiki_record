@@ -659,7 +659,7 @@ canonical_terms:
     id: "TERM-122"
     layer: "domain"
     status: "stable"
-    definition: "認可を行うアプリケーションサービス。ロールベースアクセス制御（RBAC）と権限チェックを担当"
+    definition: "認可（RBAC）の概念。ロール階層（ADMIN>TEACHER）に基づく権限チェックを担い、src/application/services/AuthorizationService.ts に実装される"
     synonyms: ["RBAC", "PermissionChecker"]
     boundaries:
       includes: ["ロールチェック", "権限チェック", "リソースアクション権限", "ロール階層（管理者>教員）"]
@@ -667,7 +667,9 @@ canonical_terms:
     related_terms: ["User", "AuthenticationService"]
     evidence:
       - source: "src/application/services/AuthorizationService.ts"
-        quote: "export class AuthorizationService { hasRole(user: User, role: UserRole): boolean; can(user: User, resource: string, action: string): boolean; }"
+        quote: "export class AuthorizationService {"
+      - source: "src/application/services/AuthorizationService.ts"
+        quote: "async hasRole(userId: number, role: UserRole): Promise<boolean> {"
 
   InMemoryUserRepository:
     id: "TERM-123"

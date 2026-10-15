@@ -1,14 +1,15 @@
 {
-  "run_index": 227,
-  "last_run_id": "2026-10-15T20:31:30Z",
-  "last_run_timestamp": "2026-10-16T05:31:30+09:00",
+  "run_index": 228,
+  "last_run_id": "2026-10-15T20:45:52Z",
+  "last_run_timestamp": "2026-10-16T05:45:52+09:00",
   "phase": "sync",
   "last_substantive_sync": {
-    "run_id": "2026-10-15T20:31:30Z",
-    "since_commit": "0e9efa52",
-    "claims_added": 29,
-    "terms_added": 8,
-    "mappings_added": 14,
-    "ambiguities_added": 2
+    "run_id": "2026-10-15T20:45:52Z",
+    "since_commit": "3e904f7c",
+    "claims_added": 0,
+    "terms_added": 0,
+    "mappings_added": 0,
+    "ambiguities_added": 0,
+    "note": "evidence quality fixes: TERM-122 definition + real quotes, term_queue 16 real quotes + ID normalization (TERM-000125..132 -> TERM-125..132), DECISION-007/008, trailing newlines"
   }
 }

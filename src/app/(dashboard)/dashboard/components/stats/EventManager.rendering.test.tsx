@@ -7,6 +7,10 @@ describe("EventManager - rendering", () => {
     clearMocks();
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("should render event input form", () => {
     render(<EventManager {...defaultProps} />);
 
@@ -26,12 +30,26 @@ describe("EventManager - rendering", () => {
     expect(screen.getByText("運動会", { exact: false })).toBeInTheDocument();
   });
 
-  it("should display event date ranges correctly", () => {
-    render(<EventManager {...defaultProps} />);
+  it.each(["en-US", "ja-JP"])(
+    "should display Japanese event date ranges with %s as the default locale",
+    (defaultLocale) => {
+      const originalToLocaleDateString = Date.prototype.toLocaleDateString;
+      jest.spyOn(Date.prototype, "toLocaleDateString").mockImplementation(
+        function (this: Date, locales, options) {
+          return originalToLocaleDateString.call(
+            this,
+            locales ?? defaultLocale,
+            options,
+          );
+        },
+      );
 
-    expect(screen.getByText(/2026\/1\/15 〜 2026\/1\/20/)).toBeInTheDocument();
-    expect(screen.getByText(/2026\/2\/10 〜 2026\/2\/10/)).toBeInTheDocument();
-  });
+      render(<EventManager {...defaultProps} />);
+
+      expect(screen.getByText(/2026\/1\/15 〜 2026\/1\/20/)).toBeInTheDocument();
+      expect(screen.getByText(/2026\/2\/10 〜 2026\/2\/10/)).toBeInTheDocument();
+    },
+  );
 
   it("should render delete buttons for each event", () => {
     render(<EventManager {...defaultProps} />);

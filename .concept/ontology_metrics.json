@@ -1,14 +1,13 @@
 {
   "version": "1.0",
-  "last_updated": "2026-10-16T00:06:20+09:00",
-  "run_index": 227,
+  "last_updated": "2026-10-16T00:16:20+09:00",
+  "run_index": 228,
   "phase": "maintenance",
   "terms": {
     "total": 49,
     "core": 8,
-    "domain": 20,
+    "domain": 21,
     "aux": 20,
-    "application_layer_value": 1,
     "draft": 0,
     "stable": 49
   },
@@ -21,9 +20,9 @@
   },
   "invariants": {
     "total": 100,
-    "hard": 54,
-    "soft": 14,
-    "stable": 68,
+    "hard": 79,
+    "soft": 21,
+    "stable": 100,
     "draft": 0
   },
   "quality_metrics": {
@@ -49,6 +48,7 @@
   "notes": {
     "q1_coverage_rationale": "31.0% raw coverage (49 terms / 158 non-test source files, re-measured 2026-10-16). Healthy for this codebase: all domain entities, services, repositories and major architectural components are covered; remaining files are small utilities/types/components consolidated into broader concepts. 49 terms = canonical concepts after consolidation from 129 originals (62.0% reduction).",
     "historical_maintenance_206_226": "Cycles 206-226 (2026-03 and earlier): repeated health checks, all stable, no concept-relevant code changes. Individual per-cycle notes were consolidated per bloat-control policy — they were verbatim identical ('no code changes detected, 177 suites / 1312 tests passing, SRP compliant').",
-    "maintenance_cycle_227": "Catch-up after 7-month gap (364 commits since cycle-226). Found: ontology already contained 6 auth-era terms (User, UserRepository, AuthenticationService, AuthorizationService, InMemoryUserRepository,LoginForm; added upstream ~commit 1b01f07a) but mappings.yml still had only 43 entries and metrics/budget were stale at 43. Fixed: added 6 mappings (all verified against real files; User -> prisma model User; AuthenticationService -> auth API routes), budget current_usage 43->49, metrics re-measured (158 non-test src files, db mappings 3->4, api mappings 6->7). Bloat check: 49/80 terms (61%), 0 drafts, queue empty, 0 unmapped -> HEALTHY. Observation: AuthorizationService carries layer value 'application' (non-standard vs core/domain/aux) — left as-is (minimal diff), flagged as open risk."
+    "maintenance_cycle_227": "Catch-up after 7-month gap (364 commits since cycle-226). Found: ontology already contained 6 auth-era terms (User, UserRepository, AuthenticationService, AuthorizationService, InMemoryUserRepository, LoginForm; added upstream ~commit 1b01f07a) but mappings.yml still had only 43 entries and metrics/budget were stale at 43. Fixed: added 6 mappings (all verified against real files; User -> prisma model User; AuthenticationService -> auth API routes), budget current_usage 43->49, metrics re-measured (158 non-test src files, db mappings 3->4, api mappings 6->7). Bloat check: 49/80 terms (61%), 0 drafts, queue empty, 0 unmapped -> HEALTHY. Observation: AuthorizationService carries layer value 'application' (non-standard vs core/domain/aux) — left as-is (minimal diff), flagged as open risk.",
+    "maintenance_cycle_228": "Schema-conformance fixes from cycle-227 review: (1) AuthorizationService layer normalized 'application' -> 'domain' (ontology layer taxonomy is core/domain/aux per 10_concept_sync_system B-7; domain chosen for symmetry with AuthenticationService and because RBAC role rules are business logic, not aux (GC-first) material); (2) 32 legacy-schema invariants gained required status:'stable' and strength fields (severity CRITICAL/HIGH->hard, MEDIUM->soft, convention verified against the pre-existing 68 entries) — now 79 hard / 21 soft / 100 stable; (3) mappings reference verification: all 174 code_symbols/db refs resolve to real files, all 20 api endpoint refs exist as src/app/api/*/route.ts (stats, seed, export, records, health, metrics, analytics, auth login/logout/session); (4) claims.ndjson re-validated against 10_concept_sync_system C-1: 9/9 lines schema-compliant. Known remaining gap (recorded for next run): all 100 invariants use 'constraint' field instead of schema field 'statement' and lack 'evidence' entries."
   }
 }

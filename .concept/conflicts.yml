@@ -1,1 +1,89 @@
-conflicts: []
+conflicts:
+- id: CFLT-RECORD-SCALE
+  term: Record
+  about: data_constraint
+  severity: low
+  nli: contradiction
+  items:
+  - claim: Record score range is 0-100
+    source: git:9ecf4bfe7835607c93e7642e21253cd1a926d3fd:.concept/ontology.yml#L11
+  - claim: Record score bounds are 1-5
+    source: src/lib/constants/index.ts#L22
+    quote: 'MIN: 1.0,'
+  status: resolved
+- id: CFLT-TIMEOUT-DEFAULT
+  term: ResilientHandler
+  about: data_constraint
+  severity: low
+  nli: contradiction
+  items:
+  - claim: Database timeout is 5 seconds
+    source: git:9ecf4bfe7835607c93e7642e21253cd1a926d3fd:.concept/invariants.yml#L235
+  - claim: Database timeout is 10 seconds
+    source: src/lib/constants/resilience.ts#L19
+    quote: 'DATABASE: 10000,'
+  status: resolved
+- id: CFLT-AUTH-TOKEN
+  term: AuthenticationService
+  about: boundary
+  severity: high
+  nli: contradiction
+  items:
+  - claim: Domain verifyToken splits session-userId tokens on hyphens
+    source: src/domain/services/AuthenticationService.ts#L333
+    quote: const parts = token.split("-");
+  - claim: Login API generates session_userId_timestamp_random tokens
+    source: src/app/api/auth/login/route.ts#L49
+    quote: return `session_${user.id}_${timestamp}_${random}`;
+  - claim: Session API parses underscore tokens
+    source: src/app/api/auth/session/route.ts#L24
+    quote: const tokenMatch = token.match(/^session_(\d+)_/);
+  status: open
+  active_workaround:
+    decision_key: AUTO:AuthenticationService.boundary:demo_only
+    summary: Do not describe this prototype as a production authentication or session validation boundary; no auth
+      behavior changed in this sync
+- id: CFLT-EMPTY-STATS
+  term: StatsOverview
+  about: data_constraint
+  severity: medium
+  nli: contradiction
+  items:
+  - claim: Stats response validates averages in [1,5] even when count=0
+    source: src/schemas/api.ts#L98
+    quote: 'avgEmotion: z.number().min(1).max(5),'
+  - claim: Empty average returns zero
+    source: src/utils/statsCalculator/math.ts#L37
+    quote: values.length === 0
+  status: open
+  active_workaround:
+    decision_key: AUTO:StatsOverview.data_constraint:empty_schema_unverified
+    summary: Retain empty-domain-stat contract as draft; do not assert response-schema compatibility
+- id: CFLT-PRISMA-STATS-MAPPING
+  term: PrismaStatsRepository
+  about: data_constraint
+  severity: low
+  nli: contradiction
+  items:
+  - claim: Prisma Stats repository maps to model Stats
+    source: git:9ecf4bfe7835607c93e7642e21253cd1a926d3fd:.concept/mappings.yml#L153
+  - claim: PrismaStatsRepository aggregates Record; schema contains Record and User, no Stats model
+    source: prisma/schema.prisma#L15
+    quote: model Record {
+  status: resolved
+- id: CFLT-REPOSITORY-CONTRACT
+  term: IRecordRepository
+  about: boundary
+  severity: medium
+  nli: contradiction
+  items:
+  - claim: Repository contract expects ascending per-student dates
+    source: src/domain/repositories/IRecordRepository.findByFilters.test.ts#L101
+    quote: it("should return all records for a student in chronological order", async () => {
+  - claim: Prisma implementation orders per-student dates descending
+    source: src/infrastructure/repositories/PrismaRecordRepository.ts#L36
+    quote: 'orderBy: { date: "desc" },'
+  status: open
+  active_workaround:
+    decision_key: AUTO:IRecordRepository.boundary:fixture_not_implementation
+    summary: Keep the affected contract invariants draft and preserve the discrepancy; runtime behavior is unchanged

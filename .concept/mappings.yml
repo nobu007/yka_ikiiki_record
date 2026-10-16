@@ -396,3 +396,126 @@ mappings:
       - "src/integration/"
     db: []
     api: []
+
+  Anomaly:
+    code_symbols:
+      - "src/domain/entities/Anomaly.ts::interface Anomaly"
+      - "src/domain/entities/Anomaly.ts::enum AnomalyType"
+      - "src/domain/entities/Anomaly.ts::enum AnomalySeverity"
+    db: []
+    api: []
+
+  AnomalyDetectionService:
+    code_symbols:
+      - "src/domain/services/AnomalyDetectionService.ts::class AnomalyDetectionService"
+    db: []
+    api: []
+
+  AuditLog:
+    code_symbols:
+      - "src/domain/entities/AuditLog.ts::interface AuditLog"
+      - "src/domain/entities/AuditLog.ts::type AuditOperation"
+      - "src/infrastructure/repositories/InMemoryAuditLogRepository.ts::class InMemoryAuditLogRepository"
+    db: []
+    api: []
+
+  AuditService:
+    code_symbols:
+      - "src/application/services/AuditService.ts::class AuditService"
+      - "src/domain/repositories/AuditLogRepository.ts::interface AuditLogRepository"
+    db: []
+    api: []
+
+  Backup:
+    code_symbols:
+      - "src/domain/entities/Backup.ts::interface Backup"
+      - "src/domain/entities/Backup.ts::type BackupStatus"
+      - "src/infrastructure/repositories/InMemoryBackupRepository.ts::class InMemoryBackupRepository"
+    db: []
+    api:
+      - "src/app/api/backup/route.ts"
+
+  BackupService:
+    code_symbols:
+      - "src/application/services/BackupService.ts::class BackupService"
+      - "src/domain/repositories/BackupRepository.ts::interface BackupRepository"
+    db: []
+    api:
+      - "src/app/api/backup/route.ts"
+
+  NotificationProvider:
+    code_symbols:
+      - "src/domain/entities/NotificationProvider.ts::enum NotificationProviderType"
+      - "src/domain/entities/NotificationProvider.ts::interface NotificationProvider"
+      - "src/infrastructure/services/EmailNotificationProvider.ts::class EmailNotificationProvider"
+    db: []
+    api: []
+
+  NotificationService:
+    code_symbols:
+      - "src/application/services/NotificationService.ts::class NotificationService"
+      - "src/domain/repositories/NotificationProviderRepository.ts::interface NotificationProviderRepository"
+    db: []
+    api:
+      - "src/app/api/notifications/settings/route.ts"
+      - "src/app/api/notifications/history/route.ts"
+
+  TrendAnalysis:
+    code_symbols:
+      - "src/domain/entities/TrendAnalysis.ts::interface StudentTrendAnalysis"
+      - "src/domain/entities/TrendAnalysis.ts::interface ClassTrendAnalysis"
+      - "src/domain/entities/TrendAnalysis.ts::interface TrendDataPoint"
+    db: []
+    api: []
+
+  TrendAnalysisService:
+    code_symbols:
+      - "src/application/services/TrendAnalysisService.ts::class TrendAnalysisService"
+      - "src/domain/repositories/TrendAnalysisRepository.ts::interface TrendAnalysisRepository"
+    db: []
+    api:
+      - "src/app/api/trends/route.ts"
+
+  User:
+    code_symbols:
+      - "src/domain/entities/User.ts::type User"
+    db:
+      - "prisma/schema.prisma::model User"
+    api: []
+
+  UserRepository:
+    code_symbols:
+      - "src/domain/repositories/UserRepository.ts::interface UserRepository"
+      - "src/infrastructure/repositories/PrismaUserRepository.ts::class PrismaUserRepository"
+    db:
+      - "prisma/schema.prisma::model User"
+    api: []
+
+  AuthenticationService:
+    code_symbols:
+      - "src/domain/services/AuthenticationService.ts::class AuthenticationService"
+      - "src/domain/services/AuthenticationService.ts::interface PasswordHasher"
+      - "src/domain/services/AuthenticationService.ts::interface TokenGenerator"
+    db: []
+    api:
+      - "src/app/api/auth/login/route.ts"
+      - "src/app/api/auth/logout/route.ts"
+
+  AuthorizationService:
+    code_symbols:
+      - "src/application/services/AuthorizationService.ts::class AuthorizationService"
+      - "src/application/services/AuthorizationService.ts::const PERMISSIONS"
+    db: []
+    api: []
+
+  InMemoryUserRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts::class InMemoryUserRepository"
+    db: []
+    api: []
+
+  LoginForm:
+    code_symbols:
+      - "src/components/auth/LoginForm.tsx::const LoginForm"
+    db: []
+    api: []

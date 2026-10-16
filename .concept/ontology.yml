@@ -696,3 +696,143 @@ canonical_terms:
     evidence:
       - source: "src/components/auth/LoginForm.tsx"
         quote: "const LoginForm = memo(function LoginForm({ onSubmit, isLoading, error }: LoginFormProps)"
+
+  Anomaly:
+    id: "TERM-125"
+    layer: "core"
+    status: "stable"
+    definition: "異常検知の結果を表すドメインエンティティ。タイプ（急上昇/急低下/異常パターン/データ欠損/外れ値）、重要度、コンテキスト、推奨アクション、確認済みフラグを持つ"
+    synonyms: ["AnomalyDetectionResult"]
+    boundaries:
+      includes: ["異常タイプ", "重要度", "検知コンテキスト", "推奨アクション", "確認状態"]
+      excludes: ["検知アルゴリズム（AnomalyDetectionService）", "通知送信（NotificationService）"]
+    related_terms: ["AnomalyDetectionService", "NotificationService", "Record"]
+    evidence:
+      - source: "src/domain/entities/Anomaly.ts"
+        quote: "export interface Anomaly { id: string; type: AnomalyType; severity: AnomalySeverity; description: string; detectedAt: Date; context: AnomalyContext; recommendations: string[]; acknowledged: boolean; }"
+
+  AnomalyDetectionService:
+    id: "TERM-126"
+    layer: "domain"
+    status: "stable"
+    definition: "生徒の感情レコードから統計的手法で異常を検知するドメインサービス。標準偏差による急変検知、連続偏差パターン分析、データ欠損検知を担当"
+    synonyms: []
+    boundaries:
+      includes: ["急上昇/急低下検知（標準偏差閾値）", "異常パターン検知", "データ欠損検知", "検知設定（stdDevThreshold, minRecordsRequired）"]
+      excludes: ["異常の永続化", "通知送信", "UI表示"]
+    related_terms: ["Anomaly", "Record", "NotificationService"]
+    evidence:
+      - source: "src/domain/services/AnomalyDetectionService.ts"
+        quote: "export class AnomalyDetectionService { async detectAnomalies(records: Record[], options?: Partial<AnomalyDetectionConfig>): Promise<Anomaly[]> }"
+
+  AuditLog:
+    id: "TERM-127"
+    layer: "core"
+    status: "stable"
+    definition: "データ変更を追跡する監査ログエントリのドメインエンティティ。entityType/entityId/operation（create|update|delete）/actor/before・afterスナップショットを持つ"
+    synonyms: ["AuditEntry", "MutationLog"]
+    boundaries:
+      includes: ["変更操作種別", "実行者", "変更前後スナップショット", "タイムスタンプ"]
+      excludes: ["監査ログの永続化", "ログ表示UI"]
+    related_terms: ["AuditService", "Record", "Backup"]
+    evidence:
+      - source: "src/domain/entities/AuditLog.ts"
+        quote: "export interface AuditLog { id: string; timestamp: number; entityType: string; entityId: string; operation: AuditOperation; actor: string; changes: { before; after; }; }"
+
+  AuditService:
+    id: "TERM-128"
+    layer: "application"
+    status: "stable"
+    definition: "監査ログを自動記録するアプリケーションサービス。AuditLogファクトリ関数とAuditLogRepositoryをラップし、全データ変更を compliance/デバッグ目的でキャプチャする"
+    synonyms: []
+    boundaries:
+      includes: ["監査ログ生成（create/update/delete用ファクトリ）", "監査ログ永続化", "メタデータ付与"]
+      excludes: ["ドメインエンティティ定義", "ログ検索API", "UI表示"]
+    related_terms: ["AuditLog", "AuditLogRepository"]
+    evidence:
+      - source: "src/application/services/AuditService.ts"
+        quote: "export class AuditService — Application service for automatic audit logging, wrapping the domain entity factory functions and repository operations"
+
+  Backup:
+    id: "TERM-129"
+    layer: "core"
+    status: "stable"
+    definition: "障害復旧用のポイントインタイムスナップショットを表すドメインエンティティ。サイズ、レコード数、SHA-256チェックサム、ステータス（pending/in_progress/completed/failed）を持つ"
+    synonyms: ["BackupSnapshot", "SystemBackup"]
+    boundaries:
+      includes: ["スナップショットメタデータ", "整合性チェックサム", "ステータスライフサイクル", "記録対象エンティティ一覧"]
+      excludes: ["バックアップ作成手順（BackupService）", "ファイルI/O実装"]
+    related_terms: ["BackupService", "AuditLog", "Record"]
+    evidence:
+      - source: "src/domain/entities/Backup.ts"
+        quote: "export interface Backup { id: string; timestamp: number; size: number; recordCount: number; checksum: string; status: BackupStatus; metadata: BackupMetadata; }"
+
+  BackupService:
+    id: "TERM-130"
+    layer: "application"
+    status: "stable"
+    definition: "バックアップ作成・復元を統括するアプリケーションサービス。Record/Stats/AuditLog各リポジトリからデータを収集し、SHA-256チェックサム付きバックアップを生成、BackupStatsを提供する"
+    synonyms: []
+    boundaries:
+      includes: ["バックアップ作成オーケストレーション", "SHA-256チェックサム計算", "復元可能性判定（isBackupRestorable）", "バックアップ統計"]
+      excludes: ["ストレージ実装（InMemoryBackupRepository）", "バックアップ対象エンティティの定義"]
+    related_terms: ["Backup", "BackupRepository", "AuditService"]
+    evidence:
+      - source: "src/application/services/BackupService.ts"
+        quote: "export class BackupService — creates backups from RecordRepository/StatsRepository/AuditLogRepository with SHA-256 checksums"
+
+  NotificationProvider:
+    id: "TERM-131"
+    layer: "core"
+    status: "stable"
+    definition: "通知プロバイダの設定を表すドメインエンティティ。タイプ（email/sms/slack/webhook/in_app）、状態（active/inactive/suspended）、チャネル、優先度の定義を含む"
+    synonyms: ["NotificationChannelConfig"]
+    boundaries:
+      includes: ["プロバイダタイプ", "プロバイダ状態", "通知チャネル分類", "優先度レベル", "プロバイダ別設定（SMTP等）"]
+      excludes: ["UI通知コンポーネント（Notification toast）", "通知送信処理（NotificationService）"]
+    related_terms: ["NotificationService", "Anomaly"]
+    evidence:
+      - source: "src/domain/entities/NotificationProvider.ts"
+        quote: "export enum NotificationProviderType { EMAIL = \"email\", SMS = \"sms\", SLACK = \"slack\", WEBHOOK = \"webhook\", IN_APP = \"in_app\" }"
+
+  NotificationService:
+    id: "TERM-132"
+    layer: "application"
+    status: "stable"
+    definition: "プロバイダ経由で通知を送信するアプリケーションサービス。受信者メール検証、チャネル/優先度指定、異常検知との連携アラート送信を担当"
+    synonyms: []
+    boundaries:
+      includes: ["通知送信", "受信者検証（メール正規表現）", "チャネル/優先度指定", "異常アラート連携", "通知履歴・設定API"]
+      excludes: ["プロバイダ実装（EmailNotificationProvider）", "プロバイダ設定のドメイン定義"]
+    related_terms: ["NotificationProvider", "AnomalyDetectionService", "Anomaly"]
+    evidence:
+      - source: "src/application/services/NotificationService.ts"
+        quote: "export class NotificationService — sends notifications through NotificationProviderRepository-managed providers"
+
+  TrendAnalysis:
+    id: "TERM-133"
+    layer: "core"
+    status: "stable"
+    definition: "感情データの長期トレンドを表すドメインエンティティ。トレンドデータポイント（日付/感情/レコード数）と生徒別・クラス別メトリクス（方向/平均/変動性/要支援者）を持つ"
+    synonyms: ["EmotionTrend", "StudentTrend"]
+    boundaries:
+      includes: ["トレンドデータポイント", "トレンド方向（up/down/stable）", "変動性（volatility）", "上位者/要支援者リスト"]
+      excludes: ["トレンドチャートUI（EmotionTrendChart）", "統計集計（StatsCalculator）"]
+    related_terms: ["TrendAnalysisService", "Record", "Stats"]
+    evidence:
+      - source: "src/domain/entities/TrendAnalysis.ts"
+        quote: "export interface StudentTrendAnalysis { student: string; dataPoints: TrendDataPoint[]; metrics: StudentTrendMetrics; }"
+
+  TrendAnalysisService:
+    id: "TERM-134"
+    layer: "application"
+    status: "stable"
+    definition: "トレンド分析を計算するアプリケーションサービス。TrendAnalysisRepositoryデータに対して移動平均（既定窓幅3）とトレンド分析を算出する"
+    synonyms: []
+    boundaries:
+      includes: ["移動平均計算", "トレンド分析生成", "リポジトリデータ集約"]
+      excludes: ["トレンドのドメイン構造定義", "チャート描画", "統計API（/api/trends以外）"]
+    related_terms: ["TrendAnalysis", "TrendAnalysisRepository"]
+    evidence:
+      - source: "src/application/services/TrendAnalysisService.ts"
+        quote: "export class TrendAnalysisService — computes moving averages and trend analyses, DEFAULT_WINDOW_SIZE = 3"

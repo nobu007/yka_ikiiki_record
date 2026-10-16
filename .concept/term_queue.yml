@@ -1,1 +1,145 @@
-queue: []
+queue:
+  - id: "TQ-20261016-001"
+    proposed_canonical: "Anomaly"
+    proposed_layer: "core"
+    term_raw_examples: ["Anomaly", "AnomalyType", "AnomalySeverity"]
+    reason: "Domain entity present since 2026-03 (MS-009); no existing term covers anomaly detection results"
+    evidence:
+      - source: "src/domain/entities/Anomaly.ts"
+        quote: "export interface Anomaly { id: string; type: AnomalyType; severity: AnomalySeverity; description: string; detectedAt: Date; context: AnomalyContext; recommendations: string[]; acknowledged: boolean; }"
+      - source: "src/domain/entities/Anomaly.test.ts"
+        quote: "entity test suite"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-16T14:13:00Z"
+  - id: "TQ-20261016-002"
+    proposed_canonical: "AnomalyDetectionService"
+    proposed_layer: "domain"
+    term_raw_examples: ["AnomalyDetectionService"]
+    reason: "Domain service for statistical anomaly detection; not mergeable into existing services"
+    evidence:
+      - source: "src/domain/services/AnomalyDetectionService.ts"
+        quote: "export class AnomalyDetectionService { async detectAnomalies(records: Record[], options?: Partial<AnomalyDetectionConfig>): Promise<Anomaly[]> }"
+      - source: "src/domain/services/AnomalyDetectionService.test.ts"
+        quote: "domain service test suite"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-16T14:13:00Z"
+  - id: "TQ-20261016-003"
+    proposed_canonical: "AuditLog"
+    proposed_layer: "core"
+    term_raw_examples: ["AuditLog", "AuditOperation"]
+    reason: "Domain entity for mutation audit trail; distinct from all existing terms"
+    evidence:
+      - source: "src/domain/entities/AuditLog.ts"
+        quote: "export interface AuditLog { id: string; timestamp: number; entityType: string; entityId: string; operation: AuditOperation; actor: string; changes: { before; after; }; }"
+      - source: "src/domain/entities/AuditLog.test.ts"
+        quote: "entity test suite"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-16T14:13:00Z"
+  - id: "TQ-20261016-004"
+    proposed_canonical: "AuditService"
+    proposed_layer: "application"
+    term_raw_examples: ["AuditService"]
+    reason: "Application service for automatic audit logging; middleware over AuditLog factories and repository"
+    evidence:
+      - source: "src/application/services/AuditService.ts"
+        quote: "export class AuditService — Application service for automatic audit logging"
+      - source: "src/application/services/AuditService.test.ts"
+        quote: "application service test suite"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-16T14:13:00Z"
+  - id: "TQ-20261016-005"
+    proposed_canonical: "Backup"
+    proposed_layer: "core"
+    term_raw_examples: ["Backup", "BackupStatus"]
+    reason: "Domain entity for disaster-recovery snapshots; no existing term"
+    evidence:
+      - source: "src/domain/entities/Backup.ts"
+        quote: "export interface Backup { id: string; timestamp: number; size: number; recordCount: number; checksum: string; status: BackupStatus; metadata: BackupMetadata; }"
+      - source: "src/domain/entities/Backup.test.ts"
+        quote: "entity test suite"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-16T14:13:00Z"
+  - id: "TQ-20261016-006"
+    proposed_canonical: "BackupService"
+    proposed_layer: "application"
+    term_raw_examples: ["BackupService", "BackupStats"]
+    reason: "Application service orchestrating backup creation/restoration across repositories"
+    evidence:
+      - source: "src/application/services/BackupService.ts"
+        quote: "export class BackupService — creates backups from RecordRepository/StatsRepository/AuditLogRepository with SHA-256 checksums"
+      - source: "src/application/services/BackupService.test.ts"
+        quote: "application service test suite"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-16T14:13:00Z"
+  - id: "TQ-20261016-007"
+    proposed_canonical: "NotificationProvider"
+    proposed_layer: "core"
+    term_raw_examples: ["NotificationProvider", "NotificationProviderType", "NotificationChannel"]
+    reason: "Domain entity for provider configuration; distinct from UI toast Notification (UIComponents synonym)"
+    evidence:
+      - source: "src/domain/entities/NotificationProvider.ts"
+        quote: "export enum NotificationProviderType { EMAIL, SMS, SLACK, WEBHOOK, IN_APP }"
+      - source: "src/domain/entities/NotificationProvider.test.ts"
+        quote: "entity test suite"
+    auto_merge_candidates:
+      - term: "UIComponents"
+        similarity: 0.30
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-16T14:13:00Z"
+  - id: "TQ-20261016-008"
+    proposed_canonical: "NotificationService"
+    proposed_layer: "application"
+    term_raw_examples: ["NotificationService"]
+    reason: "Application service sending notifications via providers; integrates with AnomalyDetectionService"
+    evidence:
+      - source: "src/application/services/NotificationService.ts"
+        quote: "export class NotificationService — sends notifications through NotificationProviderRepository-managed providers"
+      - source: "src/application/services/NotificationService.test.ts"
+        quote: "application service test suite"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-16T14:13:00Z"
+  - id: "TQ-20261016-009"
+    proposed_canonical: "TrendAnalysis"
+    proposed_layer: "core"
+    term_raw_examples: ["TrendAnalysis", "TrendDataPoint", "TrendMetrics"]
+    reason: "Domain entity for long-term emotion trend structures; distinct from EmotionTrendChart UI and statsCalculator trend util"
+    evidence:
+      - source: "src/domain/entities/TrendAnalysis.ts"
+        quote: "export interface StudentTrendAnalysis { student: string; dataPoints: TrendDataPoint[]; metrics: StudentTrendMetrics; }"
+      - source: "src/domain/entities/TrendAnalysis.test.ts"
+        quote: "entity test suite"
+    auto_merge_candidates:
+      - term: "StatsCalculator"
+        similarity: 0.35
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-16T14:13:00Z"
+  - id: "TQ-20261016-010"
+    proposed_canonical: "TrendAnalysisService"
+    proposed_layer: "application"
+    term_raw_examples: ["TrendAnalysisService"]
+    reason: "Application service computing moving averages and trend analyses over repository data"
+    evidence:
+      - source: "src/application/services/TrendAnalysisService.ts"
+        quote: "export class TrendAnalysisService — computes moving averages and trend analyses, DEFAULT_WINDOW_SIZE = 3"
+      - source: "src/application/services/TrendAnalysisService.test.ts"
+        quote: "application service test suite"
+    auto_merge_candidates: []
+    decision: "accepted"
+    expires_after_runs: 10
+    created_run: "2026-10-16T14:13:00Z"

@@ -103,8 +103,10 @@ invariants:
     strength: "hard"
     validation: "Coverage report validation on commit"
     evidence:
-      - source: "jest.config.js#L99"
-        quote: "coverageThreshold: {"
+      - source: "jest.config.js#L101"
+        quote: "statements: 90,"
+      - source: "jest.config.js#L104"
+        quote: "lines: 90,"
     rationale: "Maintains regression safety"
 
   - id: INV-TEST-002
@@ -132,8 +134,10 @@ invariants:
     strength: "hard"
     validation: "All Record entities and generated stats enforce 1.0-5.0 range"
     evidence:
-      - source: "src/utils/statsCalculator.emotion.test.ts#L17"
-        quote: "describe(\"generateBaseEmotion\", () => {"
+      - source: "src/utils/statsCalculator.emotion.test.ts#L21"
+        quote: "expect(val).toBeGreaterThanOrEqual(1);"
+      - source: "src/utils/statsCalculator.emotion.test.ts#L22"
+        quote: "expect(val).toBeLessThanOrEqual(5);"
     rationale: "Emotion scores are normalized to 1-5 scale for consistency"
     related_terms: ["Record", "Stats", "EmotionGenerator"]
 
@@ -162,8 +166,10 @@ invariants:
     strength: "hard"
     validation: "Record.test.ts verifies creation with and without optional fields"
     evidence:
-      - source: "src/domain/entities/Record.test.ts#L4"
-        quote: "describe(\"creation\", () => {"
+      - source: "src/domain/entities/Record.test.ts#L15"
+        quote: "expect(record.comment).toBeUndefined();"
+      - source: "src/domain/entities/Record.test.ts#L16"
+        quote: "expect(record.id).toBeUndefined();"
     rationale: "Supports flexible record creation and persistence lifecycle"
     related_terms: ["Record"]
 
@@ -178,8 +184,12 @@ invariants:
     strength: "hard"
     validation: "CircuitBreaker.test.ts verifies state transitions and reset behavior"
     evidence:
-      - source: "src/lib/resilience/circuit-breaker.state-transitions.test.ts#L8"
-        quote: "describe(\"execute - state transitions\", () => {"
+      - source: "src/lib/resilience/circuit-breaker.state-transitions.test.ts#L34"
+        quote: "expect(circuitBreaker.getState()).toBe(\"OPEN\");"
+      - source: "src/lib/resilience/circuit-breaker.state-transitions.test.ts#L35"
+        quote: "expect(circuitBreaker.getFailureCount()).toBe(3);"
+      - source: "src/lib/resilience/circuit-breaker.state-transitions.test.ts#L91"
+        quote: "expect(circuitBreaker.getState()).toBe(\"CLOSED\");"
     rationale: "Prevents cascading failures in distributed systems"
     related_terms: ["CircuitBreaker", "AppError"]
 
@@ -209,8 +219,12 @@ invariants:
     strength: "hard"
     validation: "StatsRepository.contract.test.ts enforces interface compliance"
     evidence:
-      - source: "src/domain/repositories/StatsRepository.contract.test.ts#L5"
-        quote: "describe(\"StatsRepository Interface Contract\", () => {"
+      - source: "src/domain/repositories/StatsRepository.contract.test.ts#L54"
+        quote: "expect(mockRepository.getStats()).toBeInstanceOf(Promise);"
+      - source: "src/domain/repositories/StatsRepository.contract.test.ts#L55"
+        quote: "expect(mockRepository.saveStats(emptyStats)).toBeInstanceOf(Promise);"
+      - source: "src/domain/repositories/StatsRepository.contract.test.ts#L56"
+        quote: "expect(mockRepository.generateSeedData()).toBeInstanceOf(Promise);"
     rationale: "Ensures swappable repository implementations (Prisma, Mock)"
     related_terms: ["StatsRepository", "IRecordRepository", "PrismaRecordRepository", "MockStatsRepository"]
 
@@ -375,8 +389,8 @@ invariants:
     strength: "hard"
     validation: "loop-detector.test.ts verifies InfiniteLoopError thrown on exceeded iterations"
     evidence:
-      - source: "src/lib/resilience/loop-detector.test.ts#L51"
-        quote: "describe(\"InfiniteLoopError\", () => {"
+      - source: "src/lib/resilience/loop-detector.test.ts#L55"
+        quote: "expect(error.name).toBe(\"InfiniteLoopError\");"
     rationale: "Prevents infinite loops from hanging the application"
     related_terms: ["LoopDetector", "InfiniteLoopError"]
 
@@ -468,8 +482,10 @@ invariants:
     strength: "hard"
     validation: "Commit messages must reference evidence"
     evidence:
-      - source: "AGENTS.md#L9"
-        quote: "**すべての作業はこのループで実行する**"
+      - source: "AGENTS.md#L127"
+        quote: "- 推測や憶測での実装禁止"
+      - source: "AGENTS.md#L128"
+        quote: "- grep/ls/findで証拠を収集してから行動"
     rationale: "Prevents assumption-based development"
 
   - id: INV-WORK-002
@@ -492,8 +508,12 @@ invariants:
     constraint: "emotion, date, student are required; id, comment, createdAt, updatedAt are optional"
     validation: "Record.test.ts verifies creation with and without optional fields"
     evidence:
-      - source: "src/domain/entities/Record.test.ts#L3"
-        quote: "describe(\"Record Entity\", () => {"
+      - source: "src/domain/entities/Record.test.ts#L12"
+        quote: "expect(record.emotion).toBe(4.5);"
+      - source: "src/domain/entities/Record.test.ts#L13"
+        quote: "expect(record.student).toBe(\"学生1\");"
+      - source: "src/domain/entities/Record.test.ts#L14"
+        quote: "expect(record.date).toEqual(new Date(\"2026-03-16T10:00:00Z\"));"
     rationale: "Ensures data integrity for emotion records while supporting flexible creation and persistence lifecycle"
     related_terms: ["Record"]
     status: "stable"
@@ -507,8 +527,8 @@ invariants:
     constraint: "Emotion values accept decimal numbers with 1 decimal place precision"
     validation: "Record.test.ts accepts 3.7, 4.5; statsCalculator rounds to 1 decimal"
     evidence:
-      - source: "src/domain/entities/Record.test.ts#L57"
-        quote: "describe(\"emotion values\", () => {"
+      - source: "src/domain/entities/Record.test.ts#L79"
+        quote: "expect(record.emotion).toBe(3.7);"
     rationale: "Enables precise emotion tracking and statistical analysis"
     related_terms: ["Record", "EmotionGenerator", "StatsCalculator"]
     status: "stable"
@@ -537,8 +557,10 @@ invariants:
     constraint: "date field accepts any Date object (past, present, future)"
     validation: "Record.test.ts tests now, past, and future dates"
     evidence:
-      - source: "src/domain/entities/Record.test.ts#L99"
-        quote: "describe(\"date field\", () => {"
+      - source: "src/domain/entities/Record.test.ts#L124"
+        quote: "expect(recordPast.date).toEqual(past);"
+      - source: "src/domain/entities/Record.test.ts#L125"
+        quote: "expect(recordFuture.date).toEqual(future);"
     rationale: "Supports historical data analysis and future planning"
     related_terms: ["Record"]
     status: "stable"
@@ -552,8 +574,14 @@ invariants:
     constraint: "studentCount > 0, periodDays > 0, pattern in ['normal','bimodal','stress','happy'], classCharacteristics in [1.0,5.0]"
     validation: "DataGeneration.config.test.ts validates all config fields"
     evidence:
-      - source: "src/application/hooks/useDataGeneration.config.test.ts#L18"
-        quote: "describe(\"useDataGeneration - Configuration\", () => {"
+      - source: "src/application/hooks/useDataGeneration.config.test.ts#L54"
+        quote: "expect(result.current.config.studentCount).toBe(MIN_STUDENTS);"
+      - source: "src/application/hooks/useDataGeneration.config.test.ts#L64"
+        quote: "expect(result.current.config.studentCount).toBe(MAX_STUDENTS);"
+      - source: "src/application/hooks/useDataGeneration.config.test.ts#L86"
+        quote: "expect(result.current.config.periodDays).toBe(MIN_PERIOD_DAYS);"
+      - source: "src/application/hooks/useDataGeneration.config.test.ts#L96"
+        quote: "expect(result.current.config.periodDays).toBe(MAX_PERIOD_DAYS);"
     rationale: "Ensures valid test data generation parameters"
     related_terms: ["DataGenerationConfig", "EmotionDistributionPattern"]
     status: "stable"
@@ -567,8 +595,14 @@ invariants:
     constraint: "SEASONAL_IMPACT in [0, 1], MAX_EVENT_IMPACT in [0, 1]"
     validation: "DataGeneration.config.test.ts verifies impact bounds"
     evidence:
-      - source: "src/domain/entities/DataGeneration.seasonal.test.ts#L3"
-        quote: "describe(\"SeasonalEffect\", () => {"
+      - source: "src/domain/entities/DataGeneration.test.ts#L58"
+        quote: "expect(EMOTION_CONSTANTS.SEASONAL_IMPACT).toBeGreaterThanOrEqual(0);"
+      - source: "src/domain/entities/DataGeneration.test.ts#L59"
+        quote: "expect(EMOTION_CONSTANTS.SEASONAL_IMPACT).toBeLessThanOrEqual(1);"
+      - source: "src/domain/entities/DataGeneration.test.ts#L63"
+        quote: "expect(EMOTION_CONSTANTS.MAX_EVENT_IMPACT).toBeGreaterThanOrEqual(0);"
+      - source: "src/domain/entities/DataGeneration.test.ts#L64"
+        quote: "expect(EMOTION_CONSTANTS.MAX_EVENT_IMPACT).toBeLessThanOrEqual(1);"
     rationale: "Prevents excessive emotion modifications from seasonal/event effects"
     related_terms: ["DataGenerationConfig", "EmotionGenerator"]
     status: "stable"
@@ -582,8 +616,10 @@ invariants:
     constraint: "All patterns return values in range [1.0, 5.0]"
     validation: "EmotionGenerator.test.ts and statsCalculator.emotion.test.ts verify pattern bounds"
     evidence:
-      - source: "src/domain/services/EmotionGenerator.test.ts#L6"
-        quote: "describe(\"generateEmotion\", () => {"
+      - source: "src/domain/services/EmotionGenerator.test.ts#L11"
+        quote: "expect(emotion).toBeGreaterThanOrEqual(EMOTION_RANGES.MIN);"
+      - source: "src/domain/services/EmotionGenerator.test.ts#L12"
+        quote: "expect(emotion).toBeLessThanOrEqual(EMOTION_RANGES.MAX);"
     rationale: "Ensures pattern-based generation respects emotion bounds"
     related_terms: ["EmotionDistributionPattern", "EmotionGenerator"]
     status: "stable"
@@ -597,8 +633,10 @@ invariants:
     constraint: "count=0 must have avgEmotion=0"
     validation: "StatsOverview.test.ts verifies zero count handling"
     evidence:
-      - source: "src/domain/entities/StatsOverview.test.ts#L3"
-        quote: "describe(\"StatsOverview\", () => {"
+      - source: "src/domain/entities/StatsOverview.test.ts#L24"
+        quote: "expect(overview.count).toBe(0);"
+      - source: "src/domain/entities/StatsOverview.test.ts#L25"
+        quote: "expect(overview.avgEmotion).toBe(0);"
     rationale: "Provides predictable behavior for empty datasets"
     related_terms: ["StatsOverview", "Stats"]
     status: "stable"
@@ -612,8 +650,10 @@ invariants:
     constraint: "seasonalEffect.spring/summer/autumn/winter >= 0"
     validation: "DataGeneration.seasonal.test.ts verifies non-negative values"
     evidence:
-      - source: "src/domain/entities/DataGeneration.seasonal.test.ts#L4"
-        quote: "it(\"should create valid SeasonalEffect\", () => {"
+      - source: "src/domain/entities/DataGeneration.seasonal.test.ts#L30"
+        quote: "expect(effect.spring).toBeGreaterThanOrEqual(0);"
+      - source: "src/domain/entities/DataGeneration.seasonal.test.ts#L33"
+        quote: "expect(effect.winter).toBeGreaterThanOrEqual(0);"
     rationale: "Prevents invalid negative seasonal adjustments"
     related_terms: ["DataGenerationConfig"]
     status: "stable"
@@ -628,8 +668,8 @@ invariants:
     constraint: "New records receive sequential auto-incrementing IDs"
     validation: "IRecordRepository.save.test.ts verifies saved2.id === saved1.id! + 1"
     evidence:
-      - source: "src/domain/repositories/IRecordRepository.save.test.ts#L8"
-        quote: "describe(\"IRecordRepository - save\", () => {"
+      - source: "src/domain/repositories/IRecordRepository.save.test.ts#L55"
+        quote: "expect(saved2.id).toBe(saved1.id! + 1);"
     rationale: "Ensures unique, predictable record identification"
     related_terms: ["IRecordRepository"]
     status: "stable"
@@ -643,8 +683,10 @@ invariants:
     constraint: "save() creates if no id, updates if id present"
     validation: "IRecordRepository.save.test.ts verifies create and update paths"
     evidence:
-      - source: "src/domain/repositories/IRecordRepository.save.test.ts#L15"
-        quote: "describe(\"save\", () => {"
+      - source: "src/domain/repositories/IRecordRepository.save.test.ts#L25"
+        quote: "expect(saved.id).toBeDefined();"
+      - source: "src/domain/repositories/IRecordRepository.save.test.ts#L44"
+        quote: "expect(result.id).toBe(saved.id);"
     rationale: "Implements active record pattern for CRUD operations"
     related_terms: ["IRecordRepository", "Record"]
     status: "stable"
@@ -658,8 +700,8 @@ invariants:
     constraint: "Date range queries include boundary records (startDate <= date <= endDate)"
     validation: "IRecordRepository.findByFilters.test.ts verifies boundary inclusion"
     evidence:
-      - source: "src/domain/repositories/IRecordRepository.findByFilters.test.ts#L14"
-        quote: "describe(\"findByDateRange\", () => {"
+      - source: "src/domain/repositories/IRecordRepository.findByFilters.test.ts#L62"
+        quote: "expect(found).toHaveLength(3);"
     rationale: "Prevents data loss at query boundaries"
     related_terms: ["IRecordRepository"]
     status: "stable"
@@ -673,8 +715,8 @@ invariants:
     constraint: "Student records sorted by date ascending"
     validation: "IRecordRepository.findByFilters.test.ts verifies chronological order"
     evidence:
-      - source: "src/domain/repositories/IRecordRepository.findByFilters.test.ts#L66"
-        quote: "describe(\"findByStudent\", () => {"
+      - source: "src/domain/repositories/IRecordRepository.findByFilters.test.ts#L105"
+        quote: "expect(found[0]!.date.getTime()).toBeLessThan(found[1]!.date.getTime());"
     rationale: "Ensures consistent time-series data presentation"
     related_terms: ["IRecordRepository"]
     status: "stable"
@@ -703,8 +745,10 @@ invariants:
     constraint: "count() accurately reflects record count after save/delete"
     validation: "IRecordRepository.delete.test.ts verifies count increments/decrements"
     evidence:
-      - source: "src/domain/repositories/IRecordRepository.delete.test.ts#L99"
-        quote: "describe(\"count\", () => {"
+      - source: "src/domain/repositories/IRecordRepository.delete.test.ts#L141"
+        quote: "expect(await repository.count()).toBe(3);"
+      - source: "src/domain/repositories/IRecordRepository.delete.test.ts#L158"
+        quote: "expect(await repository.count()).toBe(1);"
     rationale: "Provides reliable record tracking for pagination and statistics"
     related_terms: ["IRecordRepository"]
     status: "stable"
@@ -719,8 +763,10 @@ invariants:
     constraint: "Null/undefined values converted to 0 in trendline calculation"
     validation: "statsCalculator.stats.test.ts verifies null becomes 0.0"
     evidence:
-      - source: "src/utils/statsCalculator.stats.test.ts#L69"
-        quote: "describe(\"calculateTrendline\", () => {"
+      - source: "src/utils/statsCalculator.stats.test.ts#L94"
+        quote: "expect(result).toEqual([1.0, 2.0, 0.0, 4.0, 0.0, 6.0]);"
+      - source: "src/utils/statsCalculator.stats.test.ts#L100"
+        quote: "expect(result).toEqual([0.0, 0.0, 0.0]);"
     rationale: "Prevents NaN propagation in trend calculations"
     related_terms: ["StatsCalculator"]
     status: "stable"
@@ -734,8 +780,8 @@ invariants:
     constraint: "Trendline returns at most 7 most recent values"
     validation: "statsCalculator.stats.test.ts verifies 10-element input returns 7-element output"
     evidence:
-      - source: "src/utils/statsCalculator.stats.test.ts#L104"
-        quote: "describe(\"calculateEmotionTrend\", () => {"
+      - source: "src/utils/statsCalculator.stats.test.ts#L73"
+        quote: "expect(result).toEqual([4, 5, 6, 7, 8, 9, 10]);"
     rationale: "Maintains manageable trendline size for UI rendering"
     related_terms: ["StatsCalculator"]
     status: "stable"
@@ -749,8 +795,10 @@ invariants:
     constraint: "Day of week stats always returns 7 entries with 0 avgEmotion for empty days"
     validation: "statsCalculator.time.test.ts verifies all 7 days returned"
     evidence:
-      - source: "src/utils/statsCalculator.time.test.ts#L52"
-        quote: "describe(\"calculateDayOfWeekStats\", () => {"
+      - source: "src/utils/statsCalculator.time.test.ts#L59"
+        quote: "expect(result).toHaveLength(7);"
+      - source: "src/utils/statsCalculator.time.test.ts#L83"
+        quote: "expect(stat.avgEmotion).toBe(0);"
     rationale: "Ensures consistent UI rendering for all weekdays"
     related_terms: ["StatsCalculator", "DayOfWeekStats"]
     status: "stable"
@@ -764,8 +812,12 @@ invariants:
     constraint: "Hours categorized as morning [5-12], afternoon [12-18], evening [18-24]"
     validation: "statsCalculator.time.test.ts verifies hour 8→morning, 14→afternoon, 20→evening"
     evidence:
-      - source: "src/utils/statsCalculator.time.test.ts#L89"
-        quote: "describe(\"calculateTimeOfDayStats\", () => {"
+      - source: "src/utils/statsCalculator.time.test.ts#L97"
+        quote: "expect(result.morning).toBe(3);"
+      - source: "src/utils/statsCalculator.time.test.ts#L98"
+        quote: "expect(result.afternoon).toBe(4);"
+      - source: "src/utils/statsCalculator.time.test.ts#L99"
+        quote: "expect(result.evening).toBe(2);"
     rationale: "Standardizes time-of-day emotion analysis"
     related_terms: ["StatsCalculator", "TimeOfDayStats"]
     status: "stable"
@@ -779,8 +831,12 @@ invariants:
     constraint: "Emotion values distributed into 5 buckets with boundaries clamped to [1,5]"
     validation: "statsCalculator.stats.test.ts verifies 0.5→index 0, 6.0→index 4"
     evidence:
-      - source: "src/utils/statsCalculator.stats.test.ts#L9"
-        quote: "describe(\"calculateEmotionDistribution\", () => {"
+      - source: "src/utils/statsCalculator.stats.test.ts#L19"
+        quote: "expect(result).toHaveLength(5);"
+      - source: "src/utils/statsCalculator.stats.test.ts#L37"
+        quote: "expect(result[0]).toBe(1); // 0.5 → index 0"
+      - source: "src/utils/statsCalculator.stats.test.ts#L38"
+        quote: "expect(result[4]).toBe(1); // 6.0 → index 4"
     rationale: "Provides consistent histogram-style emotion distribution"
     related_terms: ["StatsCalculator"]
     status: "stable"

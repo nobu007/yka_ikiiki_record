@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "last_updated": "2026-10-16T23:55:00+09:00",
-  "run_index": 228,
+  "last_updated": "2026-10-17T09:30:00+09:00",
+  "run_index": 229,
   "phase": "quality_improvement",
   "terms": {
     "total": 59,
@@ -24,7 +24,7 @@
     "soft": 21,
     "stable": 100,
     "draft": 0,
-    "with_evidence": 0
+    "with_evidence": 98
   },
   "quality_metrics": {
     "ontology_coverage": "33.3%",
@@ -32,14 +32,15 @@
     "draft_ratio": "0.0%",
     "unmapped_ratio": "0.0%",
     "evidence_coverage": "100%",
-    "invariant_evidence_coverage": "0%"
+    "invariant_evidence_coverage": "98%"
   },
   "notes": {
     "q1_coverage_method": "Denominator = non-test source files under src/ (find src -type f \\( -name '*.ts' -o -name '*.tsx' \\) ! -name '*.test.ts' ! -name '*.test.tsx' | wc -l = 177). Coverage = 59/177 = 33.3%. Prior denominators (118, 160) had no recorded command and were not reproducible; this definition replaces them and is recomputed from files each cycle. File-level coverage >=80% is mathematically unreachable under the 80-term budget cap (would require ~142 terms); the consolidation policy (129->59) deliberately trades file-count coverage for concept-level coverage of domain entities/services/architecture, per the bloat-control principle (prefer consolidation over growth).",
     "cycle_228_quality_repair": "Fixed 4 integrity defect groups found by cycle-227 review: (1) added status/strength to 32 invariants that lacked both, using the established severity convention (CRITICAL/HIGH=hard, MEDIUM=soft, all stable) — counts now reconcile (hard 79 + soft 21 = stable 100); (2) replaced 10 placeholder test-evidence quotes in term_queue.yml with actual quoted describe() lines and line refs from the referenced test files; (3) reclassified 5 ontology terms from non-schema layer 'application' to 'domain' (AuthorizationService TERM-122, AuditService, BackupService, NotificationService, TrendAnalysisService), matching the established convention that service terms live in domain; (4) recomputed this metrics file from actual file state.",
+    "cycle_229_invariant_evidence_backfill": "Backfilled evidence for 98/100 invariants in invariants.yml. Every entry cites the real repository file named in the invariant's validation field (test file describe/it/test line, or AGENTS.md/tsconfig.json/jest.config.js/resilience index for config- and doc-level invariants) with a verbatim quote and line ref. All 98 quotes machine-verified against file content at the referenced line. No invariant entries were otherwise modified (ids, constraints, strength unchanged); consolidation toward the 60-cap remains deferred.",
     "reconciliation_cycle_227_metrics": "Cycle-226 metrics recorded terms total=43 (core 7/domain 18/aux 18) while the ontology file actually held 49 terms (core 8/domain 20/aux 20/application 1): 6 terms added in earlier cycles without a metrics refresh. Cycle-227 added 10 terms (TERM-125..134), so file count 49+10=59 was correct all along; the reported 43->59 (+16) delta was measured against the stale baseline, not a double-add. Metrics are now always derived from files.",
     "invariant_budget_note": "100 invariants exceeds the 10_concept_sync_system B-10 recommended cap of 60. Consolidation/merge toward <=60 is deferred to a dedicated run (not done here to keep the diff minimal and reviewable).",
-    "invariant_evidence_gap": "0/100 invariants carry evidence entries (schema C-3 includes evidence). Backfill from tests/const-constitution is queued as a dedicated run; disclosed instead of left implicit.",
+    "invariant_evidence_gap": "RESOLVED in cycle-229: 98/100 invariants now carry evidence entries with verbatim quoted lines and line refs from the exact files cited in their validation fields, machine cross-checked (quote == file line at referenced line number). INV-REP-002 (repository data isolation: no dedicated isolation test found in the repo) and INV-WORK-002 (clean git state: no repo file states this rule; it is harness-level policy) intentionally remain without evidence rather than carrying fabricated quotes.",
     "test_results_note": "Test metrics date from 2026-03-22 (last full run); not re-executed in this cycle (node_modules absent, .concept-only changes do not affect tests)."
   }
 }

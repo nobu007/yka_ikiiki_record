@@ -1,14 +1,13 @@
 {
   "version": "1.0",
-  "last_updated": "2026-10-16T23:15:00+09:00",
-  "run_index": 227,
-  "phase": "maintenance",
+  "last_updated": "2026-10-16T23:55:00+09:00",
+  "run_index": 228,
+  "phase": "quality_improvement",
   "terms": {
     "total": 59,
     "core": 13,
-    "domain": 21,
+    "domain": 26,
     "aux": 20,
-    "application": 5,
     "draft": 0,
     "stable": 59
   },
@@ -21,33 +20,26 @@
   },
   "invariants": {
     "total": 100,
-    "hard": 54,
-    "soft": 14,
-    "stable": 68,
-    "draft": 0
+    "hard": 79,
+    "soft": 21,
+    "stable": 100,
+    "draft": 0,
+    "with_evidence": 0
   },
   "quality_metrics": {
-    "ontology_coverage": "36.9%",
+    "ontology_coverage": "33.3%",
     "mapping_saturation": "100%",
     "draft_ratio": "0.0%",
     "unmapped_ratio": "0.0%",
     "evidence_coverage": "100%",
-    "invariant_extraction_rate": "56.5%"
-  },
-  "test_results": {
-    "test_suites": 177,
-    "tests_passed": 1312,
-    "timestamp": "2026-03-22T12:45:00.000000+00:00",
-    "note": "last full run; not re-executed in this concept-sync cycle"
-  },
-  "consolidation_summary": {
-    "previous_terms": 129,
-    "current_terms": 59,
-    "terms_removed": 70,
-    "consolidation_ratio": "54.3%"
+    "invariant_evidence_coverage": "0%"
   },
   "notes": {
-    "q1_coverage_rationale": "59 terms / 160 non-test source files. Coverage is healthy: all domain entities, services, repositories and architectural components are represented; remaining files are small utilities/components consolidated into broader concepts per the consolidation principle.",
-    "cycle_227_concept_sync": "Registered 10 post-2026-03 domain concepts (Anomaly, AnomalyDetectionService, AuditLog, AuditService, Backup, BackupService, NotificationProvider, NotificationService, TrendAnalysis, TrendAnalysisService) via term_queue (all accepted, B-8 conditions met: entity+test sources, boundaries, mappings). Backfilled missing mappings for 6 auth terms (User, UserRepository, AuthenticationService, AuthorizationService, InMemoryUserRepository, LoginForm). Maintenance notes 206-226 compacted per bloat-control policy."
+    "q1_coverage_method": "Denominator = non-test source files under src/ (find src -type f \\( -name '*.ts' -o -name '*.tsx' \\) ! -name '*.test.ts' ! -name '*.test.tsx' | wc -l = 177). Coverage = 59/177 = 33.3%. Prior denominators (118, 160) had no recorded command and were not reproducible; this definition replaces them and is recomputed from files each cycle. File-level coverage >=80% is mathematically unreachable under the 80-term budget cap (would require ~142 terms); the consolidation policy (129->59) deliberately trades file-count coverage for concept-level coverage of domain entities/services/architecture, per the bloat-control principle (prefer consolidation over growth).",
+    "cycle_228_quality_repair": "Fixed 4 integrity defect groups found by cycle-227 review: (1) added status/strength to 32 invariants that lacked both, using the established severity convention (CRITICAL/HIGH=hard, MEDIUM=soft, all stable) — counts now reconcile (hard 79 + soft 21 = stable 100); (2) replaced 10 placeholder test-evidence quotes in term_queue.yml with actual quoted describe() lines and line refs from the referenced test files; (3) reclassified 5 ontology terms from non-schema layer 'application' to 'domain' (AuthorizationService TERM-122, AuditService, BackupService, NotificationService, TrendAnalysisService), matching the established convention that service terms live in domain; (4) recomputed this metrics file from actual file state.",
+    "reconciliation_cycle_227_metrics": "Cycle-226 metrics recorded terms total=43 (core 7/domain 18/aux 18) while the ontology file actually held 49 terms (core 8/domain 20/aux 20/application 1): 6 terms added in earlier cycles without a metrics refresh. Cycle-227 added 10 terms (TERM-125..134), so file count 49+10=59 was correct all along; the reported 43->59 (+16) delta was measured against the stale baseline, not a double-add. Metrics are now always derived from files.",
+    "invariant_budget_note": "100 invariants exceeds the 10_concept_sync_system B-10 recommended cap of 60. Consolidation/merge toward <=60 is deferred to a dedicated run (not done here to keep the diff minimal and reviewable).",
+    "invariant_evidence_gap": "0/100 invariants carry evidence entries (schema C-3 includes evidence). Backfill from tests/const-constitution is queued as a dedicated run; disclosed instead of left implicit.",
+    "test_results_note": "Test metrics date from 2026-03-22 (last full run); not re-executed in this cycle (node_modules absent, .concept-only changes do not affect tests)."
   }
 }

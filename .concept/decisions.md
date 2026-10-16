@@ -35,3 +35,16 @@ Maximum 200 lines - this file can be regenerated and truncated.
 - README.md
 - .concept/invariants.yml
 - prisma/schema.prisma
+
+### 2026-10-16 - Quality repair cycle 228
+- DECISION-014: Reclassified 5 terms from non-schema layer 'application' to 'domain'
+  (AuthorizationService, AuditService, BackupService, NotificationService, TrendAnalysisService).
+  Rule: service terms live in the domain layer (precedent: AuthenticationService, AnomalyDetectionService);
+  'application' is not a valid layer per 10_concept_sync_system B-7 (core|domain|aux only).
+- DECISION-015: Added status/strength to 32 invariants missing both, using the file's own severity
+  convention (CRITICAL/HIGH=hard+stable, MEDIUM=soft+stable). Counts now reconcile: 79 hard + 21 soft = 100 stable.
+- DECISION-016: Replaced 10 placeholder test-evidence quotes in term_queue.yml with actual describe()
+  lines + line refs; Q1 coverage denominator redefined to a reproducible command (177 non-test src files);
+  stale-baseline reconciliation documented (cycle-226 metrics said 43, file had 49).
+- Disclosed gaps (not fixed this run): invariant evidence 0/100 (backfill queued); invariants 100 > B-10 cap 60
+  (consolidation queued). Both recorded in ontology_metrics.json notes.

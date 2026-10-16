@@ -657,7 +657,7 @@ canonical_terms:
 
   AuthorizationService:
     id: "TERM-122"
-    layer: "application"
+    layer: "domain"
     status: "stable"
     definition: "認可を行うアプリケーションサービス。ロールベースアクセス制御（RBAC）と権限チェックを担当"
     synonyms: ["RBAC", "PermissionChecker"]
@@ -741,7 +741,7 @@ canonical_terms:
 
   AuditService:
     id: "TERM-128"
-    layer: "application"
+    layer: "domain"
     status: "stable"
     definition: "監査ログを自動記録するアプリケーションサービス。AuditLogファクトリ関数とAuditLogRepositoryをラップし、全データ変更を compliance/デバッグ目的でキャプチャする"
     synonyms: []
@@ -769,7 +769,7 @@ canonical_terms:
 
   BackupService:
     id: "TERM-130"
-    layer: "application"
+    layer: "domain"
     status: "stable"
     definition: "バックアップ作成・復元を統括するアプリケーションサービス。Record/Stats/AuditLog各リポジトリからデータを収集し、SHA-256チェックサム付きバックアップを生成、BackupStatsを提供する"
     synonyms: []
@@ -797,7 +797,7 @@ canonical_terms:
 
   NotificationService:
     id: "TERM-132"
-    layer: "application"
+    layer: "domain"
     status: "stable"
     definition: "プロバイダ経由で通知を送信するアプリケーションサービス。受信者メール検証、チャネル/優先度指定、異常検知との連携アラート送信を担当"
     synonyms: []
@@ -825,7 +825,7 @@ canonical_terms:
 
   TrendAnalysisService:
     id: "TERM-134"
-    layer: "application"
+    layer: "domain"
     status: "stable"
     definition: "トレンド分析を計算するアプリケーションサービス。TrendAnalysisRepositoryデータに対して移動平均（既定窓幅3）とトレンド分析を算出する"
     synonyms: []

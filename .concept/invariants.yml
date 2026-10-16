@@ -12,6 +12,8 @@ invariants:
     severity: CRITICAL
     description: Every class/module must have exactly one reason to change (INCLUDING TEST FILES)
     constraint: "Maximum 1 public responsibility per module - applies to ALL files without exception"
+    status: "stable"
+    strength: "hard"
     validation: "File line count < 300 for ALL files (src/**/*.ts, src/**/*.tsx) - no test file exclusions"
     rationale: "Prevents god objects, maintains modularity, ensures test file governance"
 
@@ -21,6 +23,8 @@ invariants:
     severity: CRITICAL
     description: Domain, Application, and Infrastructure layers must never mix
     constraint: "No cross-layer imports (Domain ← Infrastructure prohibited)"
+    status: "stable"
+    strength: "hard"
     validation: "Dependency graph validation on commit"
     rationale: "Maintains architectural integrity"
 
@@ -30,6 +34,8 @@ invariants:
     severity: CRITICAL
     description: Multi-layer options must use reference passing, never deepcopy
     constraint: "Forbidden: deepcopy(options), copy.deepcopy(options)"
+    status: "stable"
+    strength: "hard"
     validation: "Grep check for deepcopy in options handling"
     rationale: "Ensures parameter visibility across all layers"
 
@@ -40,6 +46,8 @@ invariants:
     severity: CRITICAL
     description: All TypeScript code must comply with strict type checking
     constraint: "No 'any' types without explicit justification, no implicit any"
+    status: "stable"
+    strength: "hard"
     validation: "TypeScript compilation with strict mode must pass"
     rationale: "Maintains type safety across the codebase"
     related_terms: ["CleanArchitecture", "DomainLayer"]
@@ -50,6 +58,8 @@ invariants:
     severity: CRITICAL
     description: No timestamped or date-stamped filenames
     constraint: "Fixed paths only, overwrite is mandatory"
+    status: "stable"
+    strength: "hard"
     validation: "find . -name '*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]*' = 0"
     rationale: "Prevents report explosion, enforces singularity"
 
@@ -59,6 +69,8 @@ invariants:
     severity: HIGH
     description: Must reuse existing utilities before implementing new ones
     constraint: "95%+ common code reuse rate required"
+    status: "stable"
+    strength: "hard"
     validation: "Implementation requires pre-search grep for existing solutions"
     rationale: "Prevents wheel reinvention"
 
@@ -69,6 +81,8 @@ invariants:
     severity: HIGH
     description: All production code must have test coverage
     constraint: "90%+ coverage required for new code"
+    status: "stable"
+    strength: "hard"
     validation: "Coverage report validation on commit"
     rationale: "Maintains regression safety"
 
@@ -78,6 +92,8 @@ invariants:
     severity: HIGH
     description: Tests must verify both new file creation AND existing file skip
     constraint: "Both creation and skip scenarios must be tested"
+    status: "stable"
+    strength: "hard"
     validation: "Test audit for file state transitions"
     rationale: "Prevents 'works once' failures"
 
@@ -88,6 +104,8 @@ invariants:
     severity: CRITICAL
     description: Emotion scores must always be within valid range
     constraint: "Emotion values must be between 1.0 and 5.0 inclusive"
+    status: "stable"
+    strength: "hard"
     validation: "All Record entities and generated stats enforce 1.0-5.0 range"
     rationale: "Emotion scores are normalized to 1-5 scale for consistency"
     related_terms: ["Record", "Stats", "EmotionGenerator"]
@@ -98,6 +116,8 @@ invariants:
     severity: CRITICAL
     description: Stats entity must contain all required subsections
     constraint: "Stats must have overview, monthlyStats, studentStats, dayOfWeekStats, emotionDistribution, timeOfDayStats"
+    status: "stable"
+    strength: "hard"
     validation: "StatsRepository and StatsService ensure complete structure"
     rationale: "Dashboard and UI depend on complete stats structure"
     related_terms: ["Stats", "StatsRepository", "StatsService"]
@@ -108,6 +128,8 @@ invariants:
     severity: HIGH
     description: Record entity must allow optional comment and metadata
     constraint: "id, comment, createdAt, updatedAt are optional; emotion, date, student are required"
+    status: "stable"
+    strength: "hard"
     validation: "Record.test.ts verifies creation with and without optional fields"
     rationale: "Supports flexible record creation and persistence lifecycle"
     related_terms: ["Record"]
@@ -119,6 +141,8 @@ invariants:
     severity: CRITICAL
     description: CircuitBreaker must transition through CLOSED → OPEN → HALF_OPEN → CLOSED
     constraint: "State changes only on failure threshold or timeout expiration"
+    status: "stable"
+    strength: "hard"
     validation: "CircuitBreaker.test.ts verifies state transitions and reset behavior"
     rationale: "Prevents cascading failures in distributed systems"
     related_terms: ["CircuitBreaker", "AppError"]
@@ -129,6 +153,8 @@ invariants:
     severity: HIGH
     description: CircuitBreaker must accurately track failures and reset on success
     constraint: "Failure count resets to 0 on successful operation or manual reset"
+    status: "stable"
+    strength: "hard"
     validation: "CircuitBreaker tracks failureCount and resets appropriately"
     rationale: "Accurate failure tracking enables correct circuit state management"
     related_terms: ["CircuitBreaker"]
@@ -140,6 +166,8 @@ invariants:
     severity: CRITICAL
     description: Repository implementations must fulfill complete interface contract
     constraint: "All repository methods must be async and return proper types"
+    status: "stable"
+    strength: "hard"
     validation: "StatsRepository.contract.test.ts enforces interface compliance"
     rationale: "Ensures swappable repository implementations (Prisma, Mock)"
     related_terms: ["StatsRepository", "IRecordRepository", "PrismaRecordRepository", "MockStatsRepository"]
@@ -150,6 +178,8 @@ invariants:
     severity: HIGH
     description: Repository operations must not leak data between requests
     constraint: "Each repository call must be independent and isolated"
+    status: "stable"
+    strength: "hard"
     validation: "Repository tests verify no state leakage between operations"
     rationale: "Prevents data corruption in concurrent scenarios"
     related_terms: ["StatsRepository", "IRecordRepository"]
@@ -161,6 +191,8 @@ invariants:
     severity: HIGH
     description: Math utilities must handle edge cases (empty arrays, equal bounds, out-of-range)"
     constraint: "clamp, average, and other math functions handle edge cases gracefully"
+    status: "stable"
+    strength: "hard"
     validation: "statsCalculator.basic.test.ts verifies boundary conditions"
     rationale: "Prevents NaN and undefined errors in calculations"
     related_terms: ["StatsCalculator"]
@@ -171,6 +203,8 @@ invariants:
     severity: MEDIUM
     description: Average function must return 0 for empty arrays
     constraint: "average([]) === 0, not NaN or undefined"
+    status: "stable"
+    strength: "soft"
     validation: "statsCalculator.basic.test.ts verifies empty array behavior"
     rationale: "Provides predictable behavior for empty datasets"
     related_terms: ["StatsCalculator"]
@@ -181,6 +215,8 @@ invariants:
     severity: HIGH
     description: Clamp function must enforce value boundaries
     constraint: "clamp(value, min, max) returns value when within range, min when below, max when above"
+    status: "stable"
+    strength: "hard"
     validation: "statsCalculator.basic.test.ts verifies clamp behavior with edge cases"
     rationale: "Ensures predictable value range enforcement"
     related_terms: ["StatsCalculator"]
@@ -192,6 +228,8 @@ invariants:
     severity: HIGH
     description: All log entries must contain required structured fields
     constraint: "Log entries must have: level, category, operation, timestamp, correlationId, metadata, visibility"
+    status: "stable"
+    strength: "hard"
     validation: "structured-logger.test.ts verifies all required fields are present"
     rationale: "Ensures log entries are queryable and traceable"
     related_terms: ["StructuredLogger"]
@@ -202,6 +240,8 @@ invariants:
     severity: MEDIUM
     description: Log levels must map to appropriate visibility settings
     constraint: "DEBUG level maps to DEBUG visibility; INFO/WARN/ERROR/FATAL map to INTERNAL"
+    status: "stable"
+    strength: "soft"
     validation: "structured-logger.test.ts verifies visibility mapping for convenience methods"
     rationale: "Prevents sensitive information leakage in debug logs"
     related_terms: ["StructuredLogger"]
@@ -212,6 +252,8 @@ invariants:
     severity: HIGH
     description: All log entries must have unique correlation IDs for request tracing
     constraint: "Every log entry must include a correlationId field"
+    status: "stable"
+    strength: "hard"
     validation: "structured-logger.correlation.test.ts verifies correlation ID generation"
     rationale: "Enables distributed tracing and debugging"
     related_terms: ["StructuredLogger"]
@@ -222,6 +264,8 @@ invariants:
     severity: MEDIUM
     description: Logger must enforce maximum log size limits
     constraint: "Logger must enforce max_logs limit and implement FIFO eviction"
+    status: "stable"
+    strength: "soft"
     validation: "structured-logger.sizemanagement.test.ts verifies size limits"
     rationale: "Prevents memory leaks from unbounded log growth"
     related_terms: ["StructuredLogger"]
@@ -233,6 +277,8 @@ invariants:
     severity: HIGH
     description: Timeout wrappers must use predefined standard durations for different operation types
     constraint: "API=10s, Database=5s, Command=30s, File=15s, E2E=60s"
+    status: "stable"
+    strength: "hard"
     validation: "timeout.test.ts verifies DEFAULT_TIMEOUTS values"
     rationale: "Provides consistent timeout behavior across operations"
     related_terms: ["APITimeout", "TimeoutError"]
@@ -243,6 +289,8 @@ invariants:
     severity: HIGH
     description: Timeout wrappers must preserve operation errors when they occur before timeout
     constraint: "Operation errors must be propagated, not replaced by TimeoutError"
+    status: "stable"
+    strength: "hard"
     validation: "timeout.test.ts verifies error propagation before timeout"
     rationale: "Prevents masking actual operation failures with timeout errors"
     related_terms: ["TimeoutError", "APITimeout"]
@@ -254,6 +302,8 @@ invariants:
     severity: CRITICAL
     description: Loop detectors must enforce maximum iteration limits
     constraint: "Default max iterations = 1000; custom limits allowed but must be enforced"
+    status: "stable"
+    strength: "hard"
     validation: "loop-detector.test.ts verifies InfiniteLoopError thrown on exceeded iterations"
     rationale: "Prevents infinite loops from hanging the application"
     related_terms: ["LoopDetector", "InfiniteLoopError"]
@@ -264,6 +314,8 @@ invariants:
     severity: HIGH
     description: Loop detectors must track iteration counts independently for each operation ID
     constraint: "Each operation ID has independent iteration counter"
+    status: "stable"
+    strength: "hard"
     validation: "loop-detector.test.ts verifies different operation IDs don't interfere"
     rationale: "Prevents false positives from multiple concurrent loops"
     related_terms: ["LoopDetector"]
@@ -274,6 +326,8 @@ invariants:
     severity: MEDIUM
     description: Loop detectors must reset counters after time window expires
     constraint: "Counters reset after time window (default 30000ms)"
+    status: "stable"
+    strength: "soft"
     validation: "loop-detector.test.ts verifies counter reset after timeout"
     rationale: "Allows legitimate long-running operations to complete"
     related_terms: ["LoopDetector"]
@@ -285,6 +339,8 @@ invariants:
     severity: HIGH
     description: Memory monitors must support proper start/stop/destroy lifecycle
     constraint: "Multiple start calls must be idempotent; destroy must cleanup resources"
+    status: "stable"
+    strength: "hard"
     validation: "memory-monitor.lifecycle.test.ts verifies lifecycle methods"
     rationale: "Prevents resource leaks and duplicate monitoring"
     related_terms: ["MemoryMonitor"]
@@ -295,6 +351,8 @@ invariants:
     severity: MEDIUM
     description: Memory monitors must provide accurate heap usage metrics
     constraint: "Must return heapUsed, heapTotal, external, arrayBuffers, rss"
+    status: "stable"
+    strength: "soft"
     validation: "memory-monitor.lifecycle.test.ts verifies usage object structure"
     rationale: "Enables accurate memory tracking and alerting"
     related_terms: ["MemoryMonitor"]
@@ -306,6 +364,8 @@ invariants:
     severity: MEDIUM
     description: Core resilience utilities must provide global singleton instances
     constraint: "globalCircuitBreaker, globalLogger, globalLoopDetector, globalMemoryMonitor must be available"
+    status: "stable"
+    strength: "soft"
     validation: "Resilience test suites verify global instances exist"
     rationale: "Provides shared resilience state across application"
     related_terms: ["CircuitBreaker", "StructuredLogger", "LoopDetector", "MemoryMonitor"]
@@ -317,6 +377,8 @@ invariants:
     severity: CRITICAL
     description: All changes must follow Spec-Data-Eval-Change cycle
     constraint: "No implementation without evidence collection"
+    status: "stable"
+    strength: "hard"
     validation: "Commit messages must reference evidence"
     rationale: "Prevents assumption-based development"
 
@@ -326,6 +388,8 @@ invariants:
     severity: MEDIUM
     description: Working directory must be clean after feature completion
     constraint: "No uncommitted changes after task completion"
+    status: "stable"
+    strength: "soft"
     validation: "git status --porcelain = 0"
     rationale: "Maintains reproducibility"
 

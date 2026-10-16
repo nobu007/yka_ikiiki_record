@@ -7,8 +7,8 @@ queue:
     evidence:
       - source: "src/domain/entities/Anomaly.ts"
         quote: "export interface Anomaly { id: string; type: AnomalyType; severity: AnomalySeverity; description: string; detectedAt: Date; context: AnomalyContext; recommendations: string[]; acknowledged: boolean; }"
-      - source: "src/domain/entities/Anomaly.test.ts"
-        quote: "entity test suite"
+      - source: "src/domain/entities/Anomaly.test.ts#L11"
+        quote: "describe(\"Anomaly Domain Entity\", () => {"
     auto_merge_candidates: []
     decision: "accepted"
     expires_after_runs: 10
@@ -21,8 +21,8 @@ queue:
     evidence:
       - source: "src/domain/services/AnomalyDetectionService.ts"
         quote: "export class AnomalyDetectionService { async detectAnomalies(records: Record[], options?: Partial<AnomalyDetectionConfig>): Promise<Anomaly[]> }"
-      - source: "src/domain/services/AnomalyDetectionService.test.ts"
-        quote: "domain service test suite"
+      - source: "src/domain/services/AnomalyDetectionService.test.ts#L5"
+        quote: "describe(\"AnomalyDetectionService\", () => {"
     auto_merge_candidates: []
     decision: "accepted"
     expires_after_runs: 10
@@ -35,8 +35,8 @@ queue:
     evidence:
       - source: "src/domain/entities/AuditLog.ts"
         quote: "export interface AuditLog { id: string; timestamp: number; entityType: string; entityId: string; operation: AuditOperation; actor: string; changes: { before; after; }; }"
-      - source: "src/domain/entities/AuditLog.test.ts"
-        quote: "entity test suite"
+      - source: "src/domain/entities/AuditLog.test.ts#L8"
+        quote: "describe(\"AuditLog Domain Entity\", () => {"
     auto_merge_candidates: []
     decision: "accepted"
     expires_after_runs: 10
@@ -49,8 +49,8 @@ queue:
     evidence:
       - source: "src/application/services/AuditService.ts"
         quote: "export class AuditService — Application service for automatic audit logging"
-      - source: "src/application/services/AuditService.test.ts"
-        quote: "application service test suite"
+      - source: "src/application/services/AuditService.test.ts#L7"
+        quote: "describe(\"AuditService\", () => {"
     auto_merge_candidates: []
     decision: "accepted"
     expires_after_runs: 10
@@ -63,8 +63,8 @@ queue:
     evidence:
       - source: "src/domain/entities/Backup.ts"
         quote: "export interface Backup { id: string; timestamp: number; size: number; recordCount: number; checksum: string; status: BackupStatus; metadata: BackupMetadata; }"
-      - source: "src/domain/entities/Backup.test.ts"
-        quote: "entity test suite"
+      - source: "src/domain/entities/Backup.test.ts#L11"
+        quote: "describe(\"Backup Entity\", () => {"
     auto_merge_candidates: []
     decision: "accepted"
     expires_after_runs: 10
@@ -77,8 +77,8 @@ queue:
     evidence:
       - source: "src/application/services/BackupService.ts"
         quote: "export class BackupService — creates backups from RecordRepository/StatsRepository/AuditLogRepository with SHA-256 checksums"
-      - source: "src/application/services/BackupService.test.ts"
-        quote: "application service test suite"
+      - source: "src/application/services/BackupService.test.ts#L9"
+        quote: "describe(\"BackupService\", () => {"
     auto_merge_candidates: []
     decision: "accepted"
     expires_after_runs: 10
@@ -91,8 +91,8 @@ queue:
     evidence:
       - source: "src/domain/entities/NotificationProvider.ts"
         quote: "export enum NotificationProviderType { EMAIL, SMS, SLACK, WEBHOOK, IN_APP }"
-      - source: "src/domain/entities/NotificationProvider.test.ts"
-        quote: "entity test suite"
+      - source: "src/domain/entities/NotificationProvider.test.ts#L12"
+        quote: "describe(\"NotificationProvider\", () => {"
     auto_merge_candidates:
       - term: "UIComponents"
         similarity: 0.30
@@ -107,8 +107,8 @@ queue:
     evidence:
       - source: "src/application/services/NotificationService.ts"
         quote: "export class NotificationService — sends notifications through NotificationProviderRepository-managed providers"
-      - source: "src/application/services/NotificationService.test.ts"
-        quote: "application service test suite"
+      - source: "src/application/services/NotificationService.test.ts#L16"
+        quote: "describe(\"NotificationService\", () => {"
     auto_merge_candidates: []
     decision: "accepted"
     expires_after_runs: 10
@@ -121,8 +121,8 @@ queue:
     evidence:
       - source: "src/domain/entities/TrendAnalysis.ts"
         quote: "export interface StudentTrendAnalysis { student: string; dataPoints: TrendDataPoint[]; metrics: StudentTrendMetrics; }"
-      - source: "src/domain/entities/TrendAnalysis.test.ts"
-        quote: "entity test suite"
+      - source: "src/domain/entities/TrendAnalysis.test.ts#L22"
+        quote: "describe(\"TrendAnalysis\", () => {"
     auto_merge_candidates:
       - term: "StatsCalculator"
         similarity: 0.35
@@ -137,8 +137,8 @@ queue:
     evidence:
       - source: "src/application/services/TrendAnalysisService.ts"
         quote: "export class TrendAnalysisService — computes moving averages and trend analyses, DEFAULT_WINDOW_SIZE = 3"
-      - source: "src/application/services/TrendAnalysisService.test.ts"
-        quote: "application service test suite"
+      - source: "src/application/services/TrendAnalysisService.test.ts#L14"
+        quote: "describe(\"TrendAnalysisService\", () => {"
     auto_merge_candidates: []
     decision: "accepted"
     expires_after_runs: 10

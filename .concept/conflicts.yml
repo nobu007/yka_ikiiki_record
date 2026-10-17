@@ -1,1 +1,17 @@
-conflicts: []
+conflicts:
+  - id: "CFLT-GOV-001"
+    term: "AuthorizationService"
+    about: "boundary"
+    severity: "high"
+    nli: "contradiction"
+    items:
+      - claim: "non_goals に「本番環境向けの認証・認可システム（実装しない）」が明記されている"
+        source: ".concept/charter.yml#L20"
+      - claim: "MS-011（認証・認可システムの実装）は done — 4層 Clean Architecture 認証システム（User/AuthenticationService/AuthorizationService/LoginForm、233 auth tests passing）が実装済み"
+        source: ".concept/charter.yml#L232-L254"
+      - claim: "両者の整合（スコープ限定か non_goals 側の陳腐化か）はオーナーの意図確認が必要 — B-004"
+        source: "docs/BACKLOG.md#L11"
+    status: "open"
+    active_workaround:
+      decision_key: "AUTO:governance.non_goals_vs_MS-011:preserve_pending_owner"
+      summary: "AUTO: 解決断定をしない。実装コードと non_goals 文言の双方を現状保持し、判断を BACKLOG B-004 としてオーナーに委ねる（安全側: コード削除も non_goals 改変もしない）。expires_after_runs: 20 / revert_triggers: owner_decision, primary_evidence_contradiction"

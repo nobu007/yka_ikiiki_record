@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "last_updated": "2026-10-17T02:46:01+09:00",
-  "run_index": 231,
+  "last_updated": "2026-10-17T23:38:30+09:00",
+  "run_index": 232,
   "phase": "quality_improvement",
   "terms": {
     "total": 59,
@@ -43,6 +43,8 @@
     "invariant_evidence_gap": "RESOLVED in cycle-229: 98/100 invariants now carry evidence entries with verbatim quoted lines and line refs from the exact files cited in their validation fields, machine cross-checked (quote == file line at referenced line number). INV-REP-002 (repository data isolation: no dedicated isolation test found in the repo) and INV-WORK-002 (clean git state: no repo file states this rule; it is harness-level policy) intentionally remain without evidence rather than carrying fabricated quotes.",
     "test_results_note": "Tests were not revalidated in cycle 231: npm test failed because jest is unavailable; pnpm install --frozen-lockfile could not restore dependencies because the configured pnpm store is read-only (EROFS).",
     "cycle_230_evidence_quote_upgrade": "Upgraded evidence quotes for 25 invariants (2 review-flagged: INV-WORK-001, INV-TEST-001; 23 CRITICAL header-quotes in DOM/RES/REP/UTL/LOOP groups) from describe()/it() block headers to assertion-level lines (expect() calls / concrete config values). Evidence entries grew 98 -> 126 (25 targets now carry 1-4 assertion entries each). All 126 quotes machine-verified against the cited file line. INV-LOOP-001 uses the InfiniteLoopError name assertion as best available evidence; no test asserts the default maxIterations=1000 directly. INV-DOM-009's source corrected to DataGeneration.test.ts#L58-59,L63-64 where the verifying assertions live. Remaining weak quotes: ~19 CRITICAL (UI/API/ERR/INF) + 39 non-CRITICAL - deferred to next runs; 60-cap consolidation still deferred.",
-    "cycle_231_charter_sync": "Updated charter current metrics from checkout evidence: 100/100 invariant records are marked stable (runtime compliance unverified), and 39/404 TypeScript files under src exceed 300 lines. Test coverage remains unverified because Jest could not be run."
-  }
+    "cycle_231_charter_sync": "Updated charter current metrics from checkout evidence: 100/100 invariant records are marked stable (runtime compliance unverified), and 39/404 TypeScript files under src exceed 300 lines. Test coverage remains unverified because Jest could not be run.",
+    "cycle_232_plan_doc_ingestion": "Ingested 2026-10-17 planning docs (ORDER.md new long-term canonical, docs/GOAL.md, docs/BACKLOG.md, PURPOSE.md plan-location section): 11 claims appended. Fixed BACKLOG B-006: charter.yml duplicate quality_gates key removed, max_files_changed: 25 restored to effective config (yaml.safe_load verified). Registered CFLT-GOV-001 (open, high, auth): non_goals 'no production auth' vs MS-011 done — owner confirmation pending via B-004. Queued TQ-20261017-001 OperationalProof (aux, pending; governance concept, no mapping so B-8 acceptance unmet). ontology.yml/invariants.yml untouched: 59/80 terms, but invariants remain 100 > 60-cap so additions are forbidden; 60-cap consolidation still deferred."
+  },
+  "queue_pending": 1
 }

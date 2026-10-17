@@ -129,6 +129,20 @@ queue:
     decision: "accepted"
     expires_after_runs: 10
     created_run: "2026-10-16T14:13:00Z"
+  - id: "TQ-20261017-001"
+    proposed_canonical: "OperationalProof"
+    proposed_layer: "aux"
+    term_raw_examples: ["運用実証", "operational proof", "本番稼働の証拠"]
+    reason: "Load-bearing distinction introduced by the 2026-10-17 planning docs: implementation-complete (code exists) must not be conflated with operationally-proven (production evidence exists). Kept pending: governance concept with no code/db/api mapping available (B-8 acceptance requires a mapping)."
+    evidence:
+      - source: "ORDER.md#L21"
+        quote: "注意: これは**実装完了**であり**運用実証**ではない。両者は区別して扱う。"
+      - source: "docs/GOAL.md#L27-L31"
+        quote: "**実装完了（証拠あり）**: 段階1の全コンポーネント、マイルストーン MS-001〜MS-011 ... **運用実証（証拠なし・未達）**: 本番デプロイ、E2E 全件実行（MS-012 が blocked）、教育現場での実使用。"
+    auto_merge_candidates: []
+    decision: "pending"
+    expires_after_runs: 10
+    created_run: "2026-10-17T14:38:30Z"
   - id: "TQ-20261016-010"
     proposed_canonical: "TrendAnalysisService"
     proposed_layer: "application"

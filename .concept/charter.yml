@@ -282,7 +282,4 @@ work_policy:
     max_cycles: 5
   quality_gates:
     must_pass: ["lint", "test"]
-
     max_files_changed: 25
-  quality_gates:
-    must_pass: ["lint", "test"]

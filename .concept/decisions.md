@@ -48,3 +48,14 @@ Maximum 200 lines - this file can be regenerated and truncated.
   stale-baseline reconciliation documented (cycle-226 metrics said 43, file had 49).
 - Disclosed gaps (not fixed this run): invariant evidence 0/100 (backfill queued); invariants 100 > B-10 cap 60
   (consolidation queued). Both recorded in ontology_metrics.json notes.
+
+### 2026-10-17 - Plan-doc ingestion & integrity repair (cycle 232)
+- DECISION-017: Fixed charter.yml duplicate quality_gates key (BACKLOG B-006): merged into one
+  block; max_files_changed: 25 restored to effective config (verified via yaml.safe_load).
+- DECISION-018: Registered CFLT-GOV-001 (open, high, auth): charter non_goals "no production auth"
+  vs MS-011 auth implementation done. AUTO: preserve both, owner decides via BACKLOG B-004.
+  expires_after_runs: 20; revert_triggers: owner_decision, primary_evidence_contradiction.
+- DECISION-019: Queued TQ-20261017-001 OperationalProof (aux, pending) — implementation-complete
+  vs operationally-proven distinction; no mapping available so B-8 acceptance unmet.
+- Ingested: ORDER.md, docs/GOAL.md, docs/BACKLOG.md, PURPOSE.md plan-location section (11 claims).
+  ontology.yml / invariants.yml untouched (no new SOT terms; invariants already over 60-cap).

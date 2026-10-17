@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "last_updated": "2026-10-17T23:38:30+09:00",
-  "run_index": 232,
+  "last_updated": "2026-10-18T07:37:17+09:00",
+  "run_index": 233,
   "phase": "quality_improvement",
   "terms": {
     "total": 59,
@@ -44,7 +44,10 @@
     "test_results_note": "Tests were not revalidated in cycle 231: npm test failed because jest is unavailable; pnpm install --frozen-lockfile could not restore dependencies because the configured pnpm store is read-only (EROFS).",
     "cycle_230_evidence_quote_upgrade": "Upgraded evidence quotes for 25 invariants (2 review-flagged: INV-WORK-001, INV-TEST-001; 23 CRITICAL header-quotes in DOM/RES/REP/UTL/LOOP groups) from describe()/it() block headers to assertion-level lines (expect() calls / concrete config values). Evidence entries grew 98 -> 126 (25 targets now carry 1-4 assertion entries each). All 126 quotes machine-verified against the cited file line. INV-LOOP-001 uses the InfiniteLoopError name assertion as best available evidence; no test asserts the default maxIterations=1000 directly. INV-DOM-009's source corrected to DataGeneration.test.ts#L58-59,L63-64 where the verifying assertions live. Remaining weak quotes: ~19 CRITICAL (UI/API/ERR/INF) + 39 non-CRITICAL - deferred to next runs; 60-cap consolidation still deferred.",
     "cycle_231_charter_sync": "Updated charter current metrics from checkout evidence: 100/100 invariant records are marked stable (runtime compliance unverified), and 39/404 TypeScript files under src exceed 300 lines. Test coverage remains unverified because Jest could not be run.",
-    "cycle_232_plan_doc_ingestion": "Ingested 2026-10-17 planning docs (ORDER.md new long-term canonical, docs/GOAL.md, docs/BACKLOG.md, PURPOSE.md plan-location section): 11 claims appended. Fixed BACKLOG B-006: charter.yml duplicate quality_gates key removed, max_files_changed: 25 restored to effective config (yaml.safe_load verified). Registered CFLT-GOV-001 (open, high, auth): non_goals 'no production auth' vs MS-011 done — owner confirmation pending via B-004. Queued TQ-20261017-001 OperationalProof (aux, pending; governance concept, no mapping so B-8 acceptance unmet). ontology.yml/invariants.yml untouched: 59/80 terms, but invariants remain 100 > 60-cap so additions are forbidden; 60-cap consolidation still deferred."
+    "cycle_232_plan_doc_ingestion": "Ingested 2026-10-17 planning docs (ORDER.md new long-term canonical, docs/GOAL.md, docs/BACKLOG.md, PURPOSE.md plan-location section): 11 claims appended. Fixed BACKLOG B-006: charter.yml duplicate quality_gates key removed, max_files_changed: 25 restored to effective config (yaml.safe_load verified). Registered CFLT-GOV-001 (open, high, auth): non_goals 'no production auth' vs MS-011 done — owner confirmation pending via B-004. Queued TQ-20261017-001 OperationalProof (aux, pending; governance concept, no mapping so B-8 acceptance unmet). ontology.yml/invariants.yml untouched: 59/80 terms, but invariants remain 100 > 60-cap so additions are forbidden; 60-cap consolidation still deferred.",
+    "cycle_233_evidence_upgrade": "Upgraded evidence for all 19 remaining CRITICAL header-only invariants (UI-001..003, ERR-001..003, API-001/003/004/005..010/012, INF-001..003) from describe()/it() block headers to assertion-level lines (expect() payloads and request/response literals), adding 27 entries: evidence entries 126 -> 153. All 153 quotes machine-verified against cited file lines. Header-only evidence now confined to 38 non-CRITICAL invariants (deferred). INV-REP-002/INV-WORK-002 remain intentionally evidence-free (harness-level rules, no repo file states them). invariants still 100 > B-10 cap 60; consolidation deferred."
   },
-  "queue_pending": 1
+  "queue_pending": 1,
+  "claims_retained_lines": 49,
+  "decisions_md_lines": 61
 }

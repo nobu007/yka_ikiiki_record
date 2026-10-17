@@ -59,3 +59,15 @@ Maximum 200 lines - this file can be regenerated and truncated.
   vs operationally-proven distinction; no mapping available so B-8 acceptance unmet.
 - Ingested: ORDER.md, docs/GOAL.md, docs/BACKLOG.md, PURPOSE.md plan-location section (11 claims).
   ontology.yml / invariants.yml untouched (no new SOT terms; invariants already over 60-cap).
+
+### 2026-10-17 - CRITICAL invariant evidence upgrade (cycle 233)
+- DECISION-020: Upgraded evidence quotes for the 19 remaining CRITICAL header-only
+  invariants (UI-001..003, ERR-001..003, API-001/003/004/005..010/012, INF-001..003)
+  from describe()/it() block headers to assertion-level lines (expect() payloads,
+  request/response literals). Evidence entries 126 -> 153; all machine-verified
+  against the cited file line. Header-only evidence now confined to 38 non-CRITICAL
+  invariants (deferred to later runs, same policy as cycle-230).
+- No ontology/term changes: 59/80 terms, queue_pending=1 (TQ-20261017-001
+  OperationalProof still lacks a mapping for B-8 acceptance), CFLT-GOV-001 still
+  open pending owner decision (B-004). Invariants remain 100 > B-10 cap 60;
+  consolidation deferred.

@@ -851,8 +851,10 @@ invariants:
     constraint: "Loading state takes priority over error state in ChartWrapper"
     validation: "ChartWrapper.loading.test.tsx verifies loading shows when isLoading=true and error exists"
     evidence:
-      - source: "src/components/charts/ChartWrapper.loading.test.tsx#L41"
-        quote: "it(\"should prioritize loading state over error state\", () => {"
+      - source: "src/components/charts/ChartWrapper.loading.test.tsx#L20"
+        quote: "expect(screen.queryByTestId(\"chart-content\")).not.toBeInTheDocument();"
+      - source: "src/components/charts/ChartWrapper.loading.test.tsx#L52"
+        quote: "expect(screen.queryByRole(\"alert\")).not.toBeInTheDocument();"
     rationale: "Prevents flashing error messages during initial data fetch"
     related_terms: ["ChartWrapper"]
     status: "stable"
@@ -866,8 +868,14 @@ invariants:
     constraint: "ARIA labels required: loading (role=status), error (role=alert), chart (role=region)"
     validation: "ChartWrapper.accessibility.test.tsx verifies all ARIA labels"
     evidence:
-      - source: "src/components/charts/ChartWrapper.accessibility.test.tsx#L21"
-        quote: "it(\"should have proper aria-label for error state\", () => {"
+      - source: "src/components/charts/ChartWrapper.accessibility.test.tsx#L17"
+        quote: "screen.getByRole(\"status\", { name: \"グラフローディング中\" }),"
+      - source: "src/components/charts/ChartWrapper.accessibility.test.tsx#L26"
+        quote: "screen.getByRole(\"alert\", { name: \"グラフエラー\" }),"
+      - source: "src/components/charts/ChartWrapper.accessibility.test.tsx#L42"
+        quote: "screen.getByRole(\"region\", { name: \"統計グラフ\" }),"
+      - source: "src/components/charts/ChartWrapper.accessibility.test.tsx#L50"
+        quote: "expect(heading).toHaveAttribute(\"id\", \"chart-Test-Chart-title\");"
     rationale: "Ensures accessibility for screen readers"
     related_terms: ["ChartWrapper"]
     status: "stable"
@@ -881,8 +889,12 @@ invariants:
     constraint: "Chart handles data errors: property throws, null values, undefined values without crash"
     validation: "DynamicBarChart.errorHandling.test.tsx verifies multiple error scenarios"
     evidence:
-      - source: "src/components/charts/DynamicBarChart.errorHandling.test.tsx#L12"
-        quote: "describe(\"DynamicBarChart Error Handling\", () => {"
+      - source: "src/components/charts/DynamicBarChart.errorHandling.test.tsx#L45"
+        quote: "screen.queryByText(\"表示するデータがありません\"),"
+      - source: "src/components/charts/DynamicBarChart.errorHandling.test.tsx#L57"
+        quote: "screen.queryByText(\"表示するデータがありません\"),"
+      - source: "src/components/charts/DynamicBarChart.errorHandling.test.tsx#L69"
+        quote: "screen.queryByText(\"表示するデータがありません\"),"
     rationale: "Prevents UI crashes from malformed data"
     related_terms: ["DynamicBarChart"]
     status: "stable"
@@ -897,8 +909,14 @@ invariants:
     constraint: "isAppError() returns true for AppError subclasses, false for Error/null/undefined/string"
     validation: "error-handler.guards.test.ts verifies type guard contract"
     evidence:
-      - source: "src/lib/error-handler.guards.test.ts#L15"
-        quote: "test(\"isAppError identifies AppError instances\", () => {"
+      - source: "src/lib/error-handler.guards.test.ts#L17"
+        quote: "expect(isAppError(appError)).toBe(true);"
+      - source: "src/lib/error-handler.guards.test.ts#L26"
+        quote: "expect(isAppError(plainError)).toBe(false);"
+      - source: "src/lib/error-handler.guards.test.ts#L29"
+        quote: "expect(isAppError(nullValue)).toBe(false);"
+      - source: "src/lib/error-handler.guards.test.ts#L35"
+        quote: "expect(isAppError(stringValue)).toBe(false);"
     rationale: "Enables type narrowing and safe error handling"
     related_terms: ["AppError", "ValidationError", "NetworkError"]
     status: "stable"
@@ -912,8 +930,12 @@ invariants:
     constraint: "isNetworkError() returns true for statusCode=0 or ERROR_CODES.NETWORK"
     validation: "error-handler.guards.test.ts verifies statusCode 0 detection"
     evidence:
-      - source: "src/lib/error-handler.guards.test.ts#L72"
-        quote: "test(\"isNetworkError identifies errors with statusCode 0\", () => {"
+      - source: "src/lib/error-handler.guards.test.ts#L65"
+        quote: "expect(unknownError.code).toBe(ERROR_CODES.NETWORK);"
+      - source: "src/lib/error-handler.guards.test.ts#L66"
+        quote: "expect(unknownError.statusCode).toBe(0);"
+      - source: "src/lib/error-handler.guards.test.ts#L74"
+        quote: "expect(isNetworkError(errorWithZeroStatus)).toBe(true);"
     rationale: "Standardizes network error identification across the application"
     related_terms: ["NetworkError", "AppError"]
     status: "stable"
@@ -927,8 +949,12 @@ invariants:
     constraint: "ValidationError instances have statusCode=400 and code=VALIDATION"
     validation: "error-handler.guards.test.ts verifies ValidationError properties"
     evidence:
-      - source: "src/lib/error-handler.guards.test.ts#L77"
-        quote: "test(\"isValidationError identifies validation errors\", () => {"
+      - source: "src/lib/error-handler.guards.test.ts#L79"
+        quote: "expect(isValidationError(validationError)).toBe(true);"
+      - source: "src/lib/error-handler.guards.test.ts#L92"
+        quote: "expect(unknownError.code).toBe(ERROR_CODES.VALIDATION);"
+      - source: "src/lib/error-handler.guards.test.ts#L93"
+        quote: "expect(unknownError.statusCode).toBe(400);"
     rationale: "Standardizes validation error HTTP mapping"
     related_terms: ["ValidationError", "AppError"]
     status: "stable"
@@ -943,8 +969,12 @@ invariants:
     constraint: "Response JSON contains trend[], summary{}, distribution{}"
     validation: "analytics/route.basic.test.ts verifies response structure"
     evidence:
-      - source: "src/app/api/analytics/route.basic.test.ts#L9"
-        quote: "describe(\"GET /api/analytics - Basic functionality\", () => {"
+      - source: "src/app/api/analytics/route.basic.test.ts#L20"
+        quote: "expect(data).toHaveProperty(\"trend\");"
+      - source: "src/app/api/analytics/route.basic.test.ts#L21"
+        quote: "expect(data).toHaveProperty(\"summary\");"
+      - source: "src/app/api/analytics/route.basic.test.ts#L22"
+        quote: "expect(data).toHaveProperty(\"distribution\");"
     rationale: "Ensures frontend can depend on complete analytics data"
     related_terms: ["Stats"]
     status: "stable"
@@ -973,8 +1003,12 @@ invariants:
     constraint: "Empty records returns trend=[], totalRecords=0, overallAvg=0"
     validation: "analytics/route.basic.test.ts verifies empty dataset handling"
     evidence:
-      - source: "src/app/api/analytics/route.basic.test.ts#L51"
-        quote: "test(\"handles empty records gracefully\", async () => {"
+      - source: "src/app/api/analytics/route.basic.test.ts#L58"
+        quote: "expect(data.trend).toEqual([]);"
+      - source: "src/app/api/analytics/route.basic.test.ts#L59"
+        quote: "expect(data.summary.totalRecords).toBe(0);"
+      - source: "src/app/api/analytics/route.basic.test.ts#L60"
+        quote: "expect(data.summary.overallAvg).toBe(0);"
     rationale: "Provides predictable behavior for new classrooms"
     related_terms: ["Stats"]
     status: "stable"
@@ -988,8 +1022,14 @@ invariants:
     constraint: "granularity parameter accepts 'day', 'week', 'month'"
     validation: "analytics/route.granularity.test.ts verifies all granularity options"
     evidence:
-      - source: "src/app/api/analytics/route.granularity.test.ts#L9"
-        quote: "describe(\"GET /api/analytics - Granularity options\", () => {"
+      - source: "src/app/api/analytics/route.granularity.test.ts#L14"
+        quote: "\"http://localhost:3000/api/analytics?granularity=day\","
+      - source: "src/app/api/analytics/route.granularity.test.ts#L29"
+        quote: "\"http://localhost:3000/api/analytics?granularity=week\","
+      - source: "src/app/api/analytics/route.granularity.test.ts#L42"
+        quote: "\"http://localhost:3000/api/analytics?granularity=month\","
+      - source: "src/app/api/analytics/route.granularity.test.ts#L48"
+        quote: "expect(data.trend[0].period).toMatch(/^\\d{4}-\\d{2}$/);"
     rationale: "Enables flexible time-based analytics grouping"
     related_terms: ["Stats"]
     status: "stable"
@@ -1003,8 +1043,8 @@ invariants:
     constraint: "First CSV line is 'ID,Emotion,Date,Student,Comment,CreatedAt,UpdatedAt'"
     validation: "export/route.csv.test.ts verifies header format"
     evidence:
-      - source: "src/app/api/export/route.csv.test.ts#L10"
-        quote: "describe(\"GET /api/export - CSV formatting\", () => {"
+      - source: "src/app/api/export/route.csv.test.ts#L20"
+        quote: "\"ID,Emotion,Date,Student,Comment,CreatedAt,UpdatedAt\","
     rationale: "Ensures consistent CSV import/export format"
     related_terms: ["Record"]
     status: "stable"
@@ -1018,8 +1058,10 @@ invariants:
     constraint: "Fields with commas are wrapped in double quotes"
     validation: "export/route.csv.test.ts verifies comma escaping"
     evidence:
-      - source: "src/app/api/export/route.csv.test.ts#L34"
-        quote: "test(\"escapes commas in values by wrapping in quotes\", async () => {"
+      - source: "src/app/api/export/route.csv.test.ts#L52"
+        quote: "expect(text).toContain('\"Doe, John\"');"
+      - source: "src/app/api/export/route.csv.test.ts#L53"
+        quote: "expect(text).toContain('\"Good, work\"');"
     rationale: "Prevents CSV parsing errors for names/comments with commas"
     related_terms: ["Record"]
     status: "stable"
@@ -1033,8 +1075,10 @@ invariants:
     constraint: "Quotes within fields are escaped as double quotes (\"\")"
     validation: "export/route.csv.test.ts verifies quote escaping"
     evidence:
-      - source: "src/app/api/export/route.csv.test.ts#L56"
-        quote: "test(\"escapes quotes in values by doubling them\", async () => {"
+      - source: "src/app/api/export/route.csv.test.ts#L74"
+        quote: "expect(text).toContain('\"Alice \"\"The Great\"\"\"');"
+      - source: "src/app/api/export/route.csv.test.ts#L75"
+        quote: "expect(text).toContain('\"Said \"\"Hello\"\"\"');"
     rationale: "Follows RFC 4180 CSV standard for quote escaping"
     related_terms: ["Record"]
     status: "stable"
@@ -1048,8 +1092,8 @@ invariants:
     constraint: "Newlines in fields are preserved with quoted wrapping"
     validation: "export/route.csv.test.ts verifies newline escaping"
     evidence:
-      - source: "src/app/api/export/route.csv.test.ts#L78"
-        quote: "test(\"escapes newlines in values by wrapping in quotes\", async () => {"
+      - source: "src/app/api/export/route.csv.test.ts#L96"
+        quote: "expect(text).toContain('\"Line 1\\nLine 2\"');"
     rationale: "Preserves multi-line comments in CSV format"
     related_terms: ["Record"]
     status: "stable"
@@ -1063,8 +1107,10 @@ invariants:
     constraint: "Response Content-Type is 'text/csv; charset=utf-8'"
     validation: "export/route.headers.test.ts verifies Content-Type header"
     evidence:
-      - source: "src/app/api/export/route.headers.test.ts#L10"
-        quote: "test(\"sets correct Content-Type header\", async () => {"
+      - source: "src/app/api/export/route.headers.test.ts#L16"
+        quote: "expect(response.headers.get(\"Content-Type\")).toBe("
+      - source: "src/app/api/export/route.headers.test.ts#L17"
+        quote: "\"text/csv; charset=utf-8\","
     rationale: "Ensures proper CSV MIME type for browser download"
     related_terms: ["Record"]
     status: "stable"
@@ -1078,8 +1124,8 @@ invariants:
     constraint: "Content-Disposition matches 'attachment; filename=\"records-{timestamp}.csv\"'"
     validation: "export/route.headers.test.ts verifies Content-Disposition format"
     evidence:
-      - source: "src/app/api/export/route.headers.test.ts#L21"
-        quote: "test(\"sets Content-Disposition header with attachment filename\", async () => {"
+      - source: "src/app/api/export/route.headers.test.ts#L29"
+        quote: "/^attachment; filename=\"records-\\d+\\.csv\"$/,"
     rationale: "Triggers browser download with unique filename"
     related_terms: ["Record"]
     status: "stable"
@@ -1108,8 +1154,12 @@ invariants:
     constraint: "Response JSON contains timestamp, judgment{}, system{}"
     validation: "metrics/route.test.ts verifies response structure"
     evidence:
-      - source: "src/app/api/metrics/route.test.ts#L4"
-        quote: "describe(\"GET /api/metrics\", () => {"
+      - source: "src/app/api/metrics/route.test.ts#L20"
+        quote: "expect(data).toHaveProperty(\"timestamp\");"
+      - source: "src/app/api/metrics/route.test.ts#L21"
+        quote: "expect(data).toHaveProperty(\"judgment\");"
+      - source: "src/app/api/metrics/route.test.ts#L22"
+        quote: "expect(data).toHaveProperty(\"system\");"
     rationale: "Ensures monitoring dashboard receives complete metrics"
     related_terms: []
     status: "stable"
@@ -1139,8 +1189,10 @@ invariants:
     constraint: "Missing DATABASE_PROVIDER returns MockStatsRepository"
     validation: "repositoryFactory.test.ts verifies default provider"
     evidence:
-      - source: "src/infrastructure/factories/repositoryFactory.test.ts#L34"
-        quote: "it(\"should return MockStatsRepository when provider is not set\", () => {"
+      - source: "src/infrastructure/factories/repositoryFactory.test.ts#L31"
+        quote: "expect(repository.constructor.name).toBe(\"MockStatsRepository\");"
+      - source: "src/infrastructure/factories/repositoryFactory.test.ts#L42"
+        quote: "expect(repository.constructor.name).toBe(\"MockStatsRepository\");"
     rationale: "Ensures test environment works without configuration"
     related_terms: ["StatsRepository", "MockStatsRepository"]
     status: "stable"
@@ -1154,8 +1206,10 @@ invariants:
     constraint: "DATABASE_PROVIDER=prisma requires DATABASE_URL to be set"
     validation: "repositoryFactory.test.ts verifies Prisma validation"
     evidence:
-      - source: "src/infrastructure/factories/repositoryFactory.test.ts#L45"
-        quote: "it(\"should return PrismaStatsRepository when provider is prisma with DATABASE_URL\", () => {"
+      - source: "src/infrastructure/factories/repositoryFactory.test.ts#L76"
+        quote: "\"DATABASE_URL is required when DATABASE_PROVIDER=prisma\","
+      - source: "src/infrastructure/factories/repositoryFactory.test.ts#L54"
+        quote: "expect(repository.constructor.name).toBe(\"PrismaStatsRepository\");"
     rationale: "Prevents runtime errors from missing database connection string"
     related_terms: ["StatsRepository", "PrismaStatsRepository"]
     status: "stable"
@@ -1169,8 +1223,8 @@ invariants:
     constraint: "Invalid DATABASE_PROVIDER values throw error"
     validation: "repositoryFactory.test.ts verifies error on invalid provider"
     evidence:
-      - source: "src/infrastructure/factories/repositoryFactory.test.ts#L57"
-        quote: "it(\"should throw error for invalid provider\", () => {"
+      - source: "src/infrastructure/factories/repositoryFactory.test.ts#L64"
+        quote: "expect(() => createStatsRepository()).toThrow();"
     rationale: "Fails fast on configuration errors"
     related_terms: ["StatsRepository"]
     status: "stable"

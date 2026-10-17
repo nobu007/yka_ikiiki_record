@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-17T12:31:00Z",
+  "long_term": {
+    "summary": "日本の教育現場における「生徒の心の成長」と「学級文化」を可視化する革新的な教育インフラを構築する。",
+    "source": "PURPOSE.md#北極星",
+    "source_hash": "git-blob:d9b2bedb527026ec9f2c64af5fc8579beddf9ebe",
+    "updated_at": "2026-03-08"
+  },
+  "short_term": {
+    "summary": "本番環境（Vercel + PostgreSQL）へデプロイし、教育現場で実際に使用できる状態にする。技術的実装は完了しており、Human Operator による Vercel 連携・PostgreSQL 構築・環境変数設定・デプロイ実行が待たれている（P1）。",
+    "source": "PURPOSE.md#直近の優先成果",
+    "source_hash": "git-blob:d9b2bedb527026ec9f2c64af5fc8579beddf9ebe",
+    "updated_at": "2026-03-19",
+    "status": "blocked"
+  }
+}

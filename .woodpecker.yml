@@ -4,6 +4,14 @@ when:
   - event: [pull_request, manual]
 labels:
   platform: linux/amd64
+# This repository has no .gitmodules; its legacy template gitlink is not a submodule.
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      recursive: false
+      partial: false
+      depth: 50
 steps:
   - name: ci
     image: node:22-bookworm-slim

@@ -2,7 +2,7 @@
 # Immutable architectural constraints that MUST never be violated
 
 version: 1.1.0
-last_updated: 2026-03-08
+last_updated: 2026-10-22
 
 invariants:
   # ARCHITECTURAL INVARIANTS
@@ -800,6 +800,18 @@ invariants:
     validation: "metrics/route.test.ts verifies memory bounds"
     rationale: "Prevents invalid memory metrics from causing display errors"
     related_terms: []
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-API-014
+    name: Response_Envelope_Contract
+    category: api
+    severity: CRITICAL
+    description: All API responses must use the standard envelope - failures carry success:false with an error field, successes carry success:true merged into the payload
+    constraint: "createErrorResponse(message, status=500) returns {success:false, error:message} with default status 500; createSuccessResponse(data, schema?) returns {...data, success:true} and converts Zod schema violations to a 400 error response"
+    validation: "src/lib/api/response.error.test.ts, src/lib/api/response.success.test.ts, src/lib/api/response.types.test.ts verify envelope shape, default and custom status codes"
+    rationale: "Frontend error handling and data access depend on a uniform response shape across all endpoints"
+    related_terms: ["APIResponseBuilder"]
     status: "stable"
     strength: "hard"
 

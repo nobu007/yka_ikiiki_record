@@ -1,15 +1,14 @@
 import type { BackupRepository, BackupQuery } from "@/domain/repositories/BackupRepository";
-import type { RecordRepository } from "@/domain/repositories/IRecordRepository";
+import type { IRecordRepository } from "@/domain/repositories/IRecordRepository";
 import type { StatsRepository } from "@/domain/repositories/StatsRepository";
 import type { AuditLogRepository } from "@/domain/repositories/AuditLogRepository";
 import {
-  createBackup,
   createPendingBackup,
   markBackupCompleted,
   markBackupFailed,
   isBackupRestorable,
   type Backup,
-  type BackupMetadata,
+  type BackupMetadataInput,
 } from "@/domain/entities/Backup";
 import { createHash } from "crypto";
 
@@ -78,7 +77,7 @@ export class BackupService {
    */
   constructor(
     private readonly backupRepository: BackupRepository,
-    private readonly recordRepository: RecordRepository,
+    private readonly recordRepository: IRecordRepository,
     private readonly statsRepository: StatsRepository,
     private readonly auditLogRepository: AuditLogRepository,
   ) {}
@@ -105,7 +104,7 @@ export class BackupService {
    * ```
    */
   async createBackup(
-    metadata: BackupMetadata,
+    metadata: BackupMetadataInput,
     triggeredBy: string = "system",
   ): Promise<Backup> {
     try {
@@ -113,10 +112,13 @@ export class BackupService {
       await this.backupRepository.save(pendingBackup);
 
       const records = await this.recordRepository.findAll();
-      const stats = await this.statsRepository.findAll();
-      const auditLogs = await this.auditLogRepository.findAll();
+      const stats = await this.statsRepository.getStats();
+      const auditLogs = (await this.auditLogRepository.query({})).logs;
 
-      const recordCount = records.length + stats.length + auditLogs.length;
+      const recordCount =
+        records.length +
+        auditLogs.length +
+        (stats.overview.count > 0 ? 1 : 0);
 
       const dataString = JSON.stringify({ records, stats, auditLogs });
       const checksum = `sha256:${createHash("sha256").update(dataString).digest("hex")}`;
@@ -131,7 +133,8 @@ export class BackupService {
 
       await this.backupRepository.save(completedBackup);
 
-      await this.auditLogRepository.create({
+      await this.auditLogRepository.save({
+        id: `audit-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
         timestamp: Date.now(),
         entityType: "Backup",
         entityId: completedBackup.id,
@@ -148,7 +151,9 @@ export class BackupService {
         },
         metadata: {
           source: metadata.source,
-          correlationId: metadata.correlationId,
+          ...(metadata.correlationId !== undefined
+            ? { correlationId: metadata.correlationId }
+            : {}),
         },
       });
 
@@ -195,7 +200,8 @@ export class BackupService {
 
     const restoreResult = await this.backupRepository.restore(backupId);
 
-    await this.auditLogRepository.create({
+    await this.auditLogRepository.save({
+      id: `audit-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       timestamp: Date.now(),
       entityType: "Backup",
       entityId: backupId,

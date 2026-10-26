@@ -162,7 +162,7 @@ describe("InMemoryBackupRepository", () => {
 
       expect(result.backups).toHaveLength(1);
       expect(result.totalCount).toBe(1);
-      expect(result.backups[0].metadata.source).toBe("manual");
+      expect(result.backups[0]!.metadata.source).toBe("manual");
     });
 
     it("should filter by triggeredBy", async () => {
@@ -204,19 +204,19 @@ describe("InMemoryBackupRepository", () => {
 
       expect(result.backups).toHaveLength(1);
       expect(result.totalCount).toBe(1);
-      expect(result.backups[0].metadata.source).toBe("scheduled");
-      expect(result.backups[0].metadata.triggeredBy).toBe("system");
-      expect(result.backups[0].status).toBe("completed");
+      expect(result.backups[0]!.metadata.source).toBe("scheduled");
+      expect(result.backups[0]!.metadata.triggeredBy).toBe("system");
+      expect(result.backups[0]!.status).toBe("completed");
     });
 
     it("should sort results by timestamp descending", async () => {
       const result = await repository.query({});
 
-      expect(result.backups[0].timestamp).toBeGreaterThanOrEqual(
-        result.backups[1].timestamp,
+      expect(result.backups[0]!.timestamp).toBeGreaterThanOrEqual(
+        result.backups[1]!.timestamp,
       );
-      expect(result.backups[1].timestamp).toBeGreaterThanOrEqual(
-        result.backups[2].timestamp,
+      expect(result.backups[1]!.timestamp).toBeGreaterThanOrEqual(
+        result.backups[2]!.timestamp,
       );
     });
 

@@ -209,7 +209,9 @@ describe("InMemoryUserRepository", () => {
       expect(result.name).toBe("田中先生（更新）");
       expect(result.createdAt).toEqual(saved.createdAt);
       expect(result.updatedAt).not.toEqual(saved.updatedAt);
-      expect(result.updatedAt.getTime()).toBeGreaterThan(saved.updatedAt.getTime());
+      expect(result.updatedAt!.getTime()).toBeGreaterThan(
+        saved.updatedAt!.getTime(),
+      );
     });
 
     it("should reject invalid email", async () => {

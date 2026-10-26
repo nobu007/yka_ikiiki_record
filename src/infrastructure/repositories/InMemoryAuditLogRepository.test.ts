@@ -150,14 +150,18 @@ describe("InMemoryAuditLogRepository", () => {
       const result = await repository.query({ entityType: "Record" });
       expect(result.logs).toHaveLength(4);
       expect(result.totalCount).toBe(4);
-      expect(result.logs.every((log) => log.entityType === "Record")).toBe(true);
+      expect(
+        result.logs.every((log: AuditLog) => log.entityType === "Record"),
+      ).toBe(true);
     });
 
     it("should filter by entityId", async () => {
       const result = await repository.query({ entityId: "record-1" });
       expect(result.logs).toHaveLength(2);
       expect(result.totalCount).toBe(2);
-      expect(result.logs.every((log) => log.entityId === "record-1")).toBe(
+      expect(
+        result.logs.every((log: AuditLog) => log.entityId === "record-1"),
+      ).toBe(
         true,
       );
     });
@@ -166,14 +170,18 @@ describe("InMemoryAuditLogRepository", () => {
       const result = await repository.query({ operation: "create" });
       expect(result.logs).toHaveLength(3);
       expect(result.totalCount).toBe(3);
-      expect(result.logs.every((log) => log.operation === "create")).toBe(true);
+      expect(
+        result.logs.every((log: AuditLog) => log.operation === "create"),
+      ).toBe(true);
     });
 
     it("should filter by actor", async () => {
       const result = await repository.query({ actor: "user-1" });
       expect(result.logs).toHaveLength(2);
       expect(result.totalCount).toBe(2);
-      expect(result.logs.every((log) => log.actor === "user-1")).toBe(true);
+      expect(
+        result.logs.every((log: AuditLog) => log.actor === "user-1"),
+      ).toBe(true);
     });
 
     it("should filter by time range (startTime)", async () => {
@@ -212,7 +220,7 @@ describe("InMemoryAuditLogRepository", () => {
       });
       expect(result.logs).toHaveLength(1);
       expect(result.totalCount).toBe(1);
-      expect(result.logs[0].id).toBe("audit-5");
+      expect(result.logs[0]!.id).toBe("audit-5");
     });
 
     it("should return empty array when no logs match filters", async () => {
@@ -243,7 +251,7 @@ describe("InMemoryAuditLogRepository", () => {
 
     it("should sort results by timestamp descending", async () => {
       const result = await repository.query({});
-      const timestamps = result.logs.map((log) => log.timestamp);
+      const timestamps = result.logs.map((log: AuditLog) => log.timestamp);
       const sortedTimestamps = [...timestamps].sort((a, b) => b - a);
       expect(timestamps).toEqual(sortedTimestamps);
     });
@@ -410,13 +418,9 @@ describe("InMemoryAuditLogRepository", () => {
     });
 
     it("should ignore limit and offset parameters", async () => {
-      const count = await repository.count(
-        {
-          entityType: "Record",
-        },
-        1,
-        1,
-      );
+      const count = await repository.count({
+        entityType: "Record",
+      });
       expect(count).toBe(2);
     });
   });

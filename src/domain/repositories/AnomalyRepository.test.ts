@@ -173,10 +173,6 @@ describe("AnomalyRepository Interface", () => {
       // This is a compile-time check that the interface is well-typed
       // If the interface is malformed, this will cause a TypeScript error
 
-      type MethodSignatures = {
-        [K in keyof AnomalyRepository]: AnomalyRepository[K];
-      };
-
       // If we get here without TypeScript errors, the interface is valid
       expect(true).toBe(true);
     });
@@ -247,7 +243,9 @@ describe("AnomalyRepository Interface", () => {
 
   describe("Filter Options Validation", () => {
     it("should support sorting by different fields", () => {
-      const sortFields: Array<AnomalyFilterOptions["sortBy"]> = [
+      const sortFields: Array<
+        NonNullable<AnomalyFilterOptions["sortBy"]>
+      > = [
         "detectedAt",
         "type",
         "severity",

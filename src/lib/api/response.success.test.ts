@@ -38,7 +38,7 @@ describe('createSuccessResponse', () => {
 
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockResponse);
 
-      const result = createSuccessResponse(mockData);
+      createSuccessResponse(mockData);
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -84,7 +84,7 @@ describe('createSuccessResponse', () => {
       const mockErrorResponse = { success: false, error: 'Validation failed' };
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockErrorResponse);
 
-      const result = createSuccessResponse(invalidData, schema);
+      createSuccessResponse(invalidData, schema as z.ZodSchema);
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -107,7 +107,7 @@ describe('createSuccessResponse', () => {
       const mockErrorResponse = { success: false, error: 'Multiple errors' };
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockErrorResponse);
 
-      const result = createSuccessResponse(invalidData, schema);
+      createSuccessResponse(invalidData, schema as z.ZodSchema);
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -134,7 +134,7 @@ describe('createSuccessResponse', () => {
       const mockErrorResponse = { success: false, error: 'Validation failed' };
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockErrorResponse);
 
-      const result = createSuccessResponse(mockData, schema);
+      createSuccessResponse(mockData, schema);
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -169,7 +169,7 @@ describe('createSuccessResponse', () => {
       const mockResponse = { success: true, data: mockData };
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockResponse);
 
-      const result = createSuccessResponse(mockData, schema);
+      createSuccessResponse(mockData, schema);
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -198,7 +198,7 @@ describe('createSuccessResponse', () => {
       const mockResponse = { success: true, data: mockData };
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockResponse);
 
-      const result = createSuccessResponse(mockData, schema);
+      createSuccessResponse(mockData, schema);
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         expect.objectContaining({

@@ -65,13 +65,24 @@ export interface Backup {
 }
 
 /**
+ * Metadata accepted by the createBackup/createPendingBackup factories.
+ * triggeredBy and formatVersion are filled in by the factories themselves.
+ */
+export interface BackupMetadataInput {
+  source: string;
+  entities: string[];
+  correlationId?: string;
+  [key: string]: unknown;
+}
+
+/**
  * Factory function to create a Backup entity.
  */
 export function createBackup(
   size: number,
   recordCount: number,
   checksum: string,
-  metadata: Backup["metadata"],
+  metadata: BackupMetadataInput,
   triggeredBy: string = "system",
 ): Backup {
   const timestamp = Date.now();
@@ -94,7 +105,7 @@ export function createBackup(
  * Factory function to create a pending Backup entity (for tracking in-progress backups).
  */
 export function createPendingBackup(
-  metadata: Backup["metadata"],
+  metadata: BackupMetadataInput,
   triggeredBy: string = "system",
 ): Backup {
   const timestamp = Date.now();

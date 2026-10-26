@@ -127,7 +127,10 @@ describe("GET /api/backup", () => {
 
     mockCreateBackupService.mockReturnValue(backupService);
 
-    await backupService.createBackup({ source: "manual" }, "test-user");
+    await backupService.createBackup(
+      { source: "manual", entities: [] },
+      "test-user",
+    );
   });
 
   test("returns list of all backups", async () => {
@@ -157,7 +160,9 @@ describe("GET /api/backup", () => {
 
     expect(response.status).toBe(200);
     expect(data.success).toBe(true);
-    expect(data.data.every((b: any) => b.status === "completed")).toBe(true);
+    expect(
+      data.data.every((b: { status: string }) => b.status === "completed"),
+    ).toBe(true);
   });
 
   test("filters backups by source query parameter", async () => {
@@ -170,7 +175,9 @@ describe("GET /api/backup", () => {
 
     expect(response.status).toBe(200);
     expect(data.success).toBe(true);
-    expect(data.data.every((b: any) => b.metadata.source === "manual")).toBe(true);
+    expect(
+      data.data.every((b: { metadata: { source: string } }) => b.metadata.source === "manual"),
+    ).toBe(true);
   });
 
   test("returns empty array when no backups match filter", async () => {
@@ -187,8 +194,14 @@ describe("GET /api/backup", () => {
   });
 
   test("supports limit query parameter", async () => {
-    await backupService.createBackup({ source: "manual" }, "test-user");
-    await backupService.createBackup({ source: "manual" }, "test-user");
+    await backupService.createBackup(
+      { source: "manual", entities: [] },
+      "test-user",
+    );
+    await backupService.createBackup(
+      { source: "manual", entities: [] },
+      "test-user",
+    );
 
     const request = new NextRequest("http://localhost:3000/api/backup?limit=2", {
       method: "GET",
@@ -203,8 +216,14 @@ describe("GET /api/backup", () => {
   });
 
   test("supports offset query parameter for pagination", async () => {
-    await backupService.createBackup({ source: "manual" }, "test-user");
-    await backupService.createBackup({ source: "manual" }, "test-user");
+    await backupService.createBackup(
+      { source: "manual", entities: [] },
+      "test-user",
+    );
+    await backupService.createBackup(
+      { source: "manual", entities: [] },
+      "test-user",
+    );
 
     const firstRequest = new NextRequest("http://localhost:3000/api/backup?limit=1", {
       method: "GET",

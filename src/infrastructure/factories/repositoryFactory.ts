@@ -243,8 +243,7 @@ export function createAnomalyRepository(): AnomalyRepository {
  */
 export function createNotificationService(): NotificationService {
   const providerRepository = createNotificationProviderRepository();
-  const anomalyRepository = createAnomalyRepository();
-  const anomalyDetectionService = new AnomalyDetectionService(anomalyRepository);
+  const anomalyDetectionService = new AnomalyDetectionService();
 
   return new NotificationService(
     providerRepository,

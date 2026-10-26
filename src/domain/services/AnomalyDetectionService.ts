@@ -218,7 +218,7 @@ export class AnomalyDetectionService {
     let patternStart: Record | null = null;
 
     for (let i = 0; i < records.length; i++) {
-      const record = records[i];
+      const record = records[i]!;
       const isAboveMean = record.emotion > mean;
 
       if (isAboveMean) {
@@ -278,8 +278,8 @@ export class AnomalyDetectionService {
     const anomalies: Anomaly[] = [];
 
     for (let i = 1; i < records.length; i++) {
-      const prevRecord = records[i - 1];
-      const currRecord = records[i];
+      const prevRecord = records[i - 1]!;
+      const currRecord = records[i]!;
       const daysDiff =
         (currRecord.date.getTime() - prevRecord.date.getTime()) /
         (1000 * 60 * 60 * 24);
@@ -316,14 +316,13 @@ export class AnomalyDetectionService {
   /**
    * Group records by student name
    */
-  private groupRecordsByStudent(records: Record[]): Record<string, Record[]> {
-    const grouped: Record<string, Record[]> = {};
+  private groupRecordsByStudent(records: Record[]): { [student: string]: Record[] } {
+    const grouped: { [student: string]: Record[] } = {};
 
     for (const record of records) {
-      if (!grouped[record.student]) {
-        grouped[record.student] = [];
-      }
-      grouped[record.student].push(record);
+      const list = grouped[record.student] ?? [];
+      list.push(record);
+      grouped[record.student] = list;
     }
 
     return grouped;

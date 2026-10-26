@@ -1,6 +1,6 @@
 import { AuthenticationService, AuthenticationError } from "./AuthenticationService";
 import type { UserRepository } from "@/domain/repositories/UserRepository";
-import type { User, UserRole } from "@/schemas/api";
+import { type User, UserRole } from "@/schemas/api";
 
 describe("AuthenticationService", () => {
   let mockUserRepository: jest.Mocked<UserRepository>;
@@ -155,7 +155,7 @@ describe("AuthenticationService", () => {
       email: "newteacher@example.com",
       password: "securePassword123",
       name: "Jane Smith",
-      role: "TEACHER" as UserRole,
+      role: UserRole.Enum.TEACHER,
     };
 
     it("should register a new user successfully", async () => {
@@ -490,8 +490,8 @@ describe("AuthenticationService", () => {
 
       await authService.changePassword(mockUser.id!, "oldPassword", "newPassword");
 
-      const savedUser = mockUserRepository.save.mock.calls[0][0];
-      expect(savedUser.updatedAt.getTime()).toBeGreaterThanOrEqual(
+      const savedUser = mockUserRepository.save.mock.calls[0]![0];
+      expect(savedUser.updatedAt?.getTime()).toBeGreaterThanOrEqual(
         originalUpdatedAt.getTime(),
       );
     });
@@ -504,7 +504,7 @@ describe("AuthenticationService", () => {
 
       await authService.changePassword(mockUser.id!, "oldPassword", "newPassword");
 
-      const savedUser = mockUserRepository.save.mock.calls[0][0];
+      const savedUser = mockUserRepository.save.mock.calls[0]![0];
       expect(savedUser.id).toBe(mockUser.id);
       expect(savedUser.email).toBe(mockUser.email);
       expect(savedUser.name).toBe(mockUser.name);

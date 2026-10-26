@@ -495,6 +495,7 @@ describe("TrendAnalysis", () => {
           startEmotion: 3.0,
           endEmotion: 4.0,
           volatility: 0.5,
+          totalRecords: 0,
         },
       };
 
@@ -513,6 +514,9 @@ describe("TrendAnalysis", () => {
           startEmotion: 3.0,
           endEmotion: 4.0,
           volatility: 0.5,
+          totalStudents: 0,
+          topPerformers: [],
+          needsSupport: [],
         },
       };
 

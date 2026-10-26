@@ -55,14 +55,14 @@ describe("DataVisualization Pagination Integration", () => {
 
     it("should display correct page information", () => {
       const mockStats = createMockStats(25);
-      const { container } = render(<DataVisualization data={mockStats} />);
+      render(<DataVisualization data={mockStats} />);
 
       expect(screen.getByText("Page 1 of 3")).toBeInTheDocument();
     });
 
     it("should render Previous and Next buttons", () => {
       const mockStats = createMockStats(25);
-      const { container } = render(<DataVisualization data={mockStats} />);
+      render(<DataVisualization data={mockStats} />);
 
       expect(screen.getByText("Previous")).toBeInTheDocument();
       expect(screen.getByText("Next")).toBeInTheDocument();
@@ -70,7 +70,7 @@ describe("DataVisualization Pagination Integration", () => {
 
     it("should render page number buttons", () => {
       const mockStats = createMockStats(25);
-      const { container } = render(<DataVisualization data={mockStats} />);
+      render(<DataVisualization data={mockStats} />);
 
       const pageButtons = screen.getAllByRole("button").filter((button) => {
         const text = button.textContent;
@@ -92,7 +92,7 @@ describe("DataVisualization Pagination Integration", () => {
 
     it("should navigate to next page when Next button is clicked", () => {
       const mockStats = createMockStats(25);
-      const { container } = render(<DataVisualization data={mockStats} />);
+      render(<DataVisualization data={mockStats} />);
 
       const nextButton = screen.getByText("Next");
       fireEvent.click(nextButton);
@@ -102,7 +102,7 @@ describe("DataVisualization Pagination Integration", () => {
 
     it("should navigate to previous page when Previous button is clicked", () => {
       const mockStats = createMockStats(25);
-      const { container } = render(<DataVisualization data={mockStats} />);
+      render(<DataVisualization data={mockStats} />);
 
       const nextButton = screen.getByText("Next");
       fireEvent.click(nextButton);

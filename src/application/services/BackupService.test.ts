@@ -1,10 +1,28 @@
 import { BackupService } from "./BackupService";
-import type { Backup, BackupMetadata } from "@/domain/entities/Backup";
-import type { RestoreResult } from "@/domain/repositories/BackupRepository";
+import type { Backup, BackupMetadataInput } from "@/domain/entities/Backup";
+import type {
+  BackupRepository,
+  RestoreResult,
+} from "@/domain/repositories/BackupRepository";
 import type { BackupQuery, BackupQueryResult } from "@/domain/repositories/BackupRepository";
 import type { Record } from "@/domain/entities/Record";
 import type { Stats } from "@/domain/entities/Stats";
 import type { AuditLog } from "@/domain/entities/AuditLog";
+import type { IRecordRepository } from "@/domain/repositories/IRecordRepository";
+import type { StatsRepository } from "@/domain/repositories/StatsRepository";
+import type {
+  AuditLogRepository,
+  AuditLogQuery,
+  AuditLogQueryResult,
+} from "@/domain/repositories/AuditLogRepository";
+
+/** Legacy row shape used to seed the mock stats store in these tests. */
+interface StatsRow {
+  id: number;
+  date?: string;
+  totalRecords?: number;
+  moodDistribution?: { [key: string]: number };
+}
 
 describe("BackupService", () => {
   let backupService: BackupService;
@@ -13,7 +31,9 @@ describe("BackupService", () => {
   let mockStatsRepository: ReturnType<typeof createMockStatsRepository>;
   let mockAuditLogRepository: ReturnType<typeof createMockAuditLogRepository>;
 
-  function createMockBackupRepository() {
+  function createMockBackupRepository(): BackupRepository & {
+    _getBackups: () => Backup[];
+  } {
     const backups: Backup[] = [];
     return {
       save: jest.fn(async (backup: Backup) => {
@@ -78,7 +98,7 @@ describe("BackupService", () => {
         const completed = backups.filter((b) => b.status === "completed");
         if (completed.length === 0) return null;
         completed.sort((a, b) => b.timestamp - a.timestamp);
-        return completed[0];
+        return completed[0] ?? null;
       }),
       count: jest.fn(async () => backups.length),
       getTotalSize: jest.fn(async () => backups.reduce((sum, b) => sum + b.size, 0)),
@@ -86,50 +106,104 @@ describe("BackupService", () => {
     };
   }
 
-  function createMockRecordRepository() {
+  function createMockRecordRepository(): IRecordRepository & {
+    create: (record: Omit<Record, "id">) => Promise<Record>;
+    _addRecord: (record: Record) => number;
+    _clear: () => void;
+  } {
     const records: Record[] = [];
     return {
+      findById: jest.fn(
+        async (id: number) => records.find((r) => r.id === id) ?? null,
+      ),
       create: jest.fn(async (record: Omit<Record, "id">) => {
         const newRecord: Record = { ...record, id: records.length + 1 };
         records.push(newRecord);
         return newRecord;
       }),
       findAll: jest.fn(async () => [...records]),
-      save: jest.fn(),
+      findByDateRange: jest.fn(async (startDate: Date, endDate: Date) =>
+        records.filter((r) => r.date >= startDate && r.date <= endDate),
+      ),
+      findByStudent: jest.fn(async (student: string) =>
+        records.filter((r) => r.student === student),
+      ),
+      save: jest.fn(async (record: Record) => record),
+      saveMany: jest.fn(async (newRecords: Record[]) => newRecords),
       delete: jest.fn(async (id: number) => {
         const index = records.findIndex((r) => r.id === id);
         if (index !== -1) records.splice(index, 1);
       }),
+      deleteAll: jest.fn(async () => {
+        records.length = 0;
+      }),
+      count: jest.fn(async () => records.length),
+      disconnect: jest.fn(async () => {}),
       _addRecord: (record: Record) => records.push(record),
       _clear: () => records.length = 0,
     };
   }
 
-  function createMockStatsRepository() {
-    const stats: Stats[] = [];
+  function createMockStatsRepository(): StatsRepository & {
+    create: (stat: Omit<StatsRow, "id">) => Promise<StatsRow>;
+    findAll: () => Promise<StatsRow[]>;
+    save: () => Promise<void>;
+    _addStats: (stat: StatsRow) => number;
+    _clear: () => void;
+  } {
+    const stats: StatsRow[] = [];
     return {
-      create: jest.fn(async (stat: Omit<Stats, "id">) => {
-        const newStat: Stats = { ...stat, id: stats.length + 1 };
+      getStats: jest.fn(async (): Promise<Stats> => ({
+        overview: { count: stats.length, avgEmotion: 0 },
+        monthlyStats: [],
+        studentStats: [],
+        dayOfWeekStats: [],
+        emotionDistribution: [],
+        timeOfDayStats: { morning: 0, afternoon: 0, evening: 0 },
+      })),
+      saveStats: jest.fn(async () => {}),
+      generateSeedData: jest.fn(async () => {}),
+      create: jest.fn(async (stat: Omit<StatsRow, "id">) => {
+        const newStat: StatsRow = { ...stat, id: stats.length + 1 };
         stats.push(newStat);
         return newStat;
       }),
       findAll: jest.fn(async () => [...stats]),
-      save: jest.fn(),
-      _addStats: (stat: Stats) => stats.push(stat),
+      save: jest.fn(async () => {}),
+      _addStats: (stat: StatsRow) => stats.push(stat),
       _clear: () => stats.length = 0,
     };
   }
 
-  function createMockAuditLogRepository() {
+  function createMockAuditLogRepository(): AuditLogRepository & {
+    create: (log: Omit<AuditLog, "id">) => Promise<AuditLog>;
+    findAll: () => Promise<AuditLog[]>;
+    _addLog: (log: AuditLog) => number;
+    _clear: () => void;
+  } {
     const logs: AuditLog[] = [];
+    const create = jest.fn(async (log: Omit<AuditLog, "id">) => {
+      const newLog: AuditLog = { ...log, id: `audit-${logs.length + 1}` };
+      logs.push(newLog);
+      return newLog;
+    });
     return {
-      create: jest.fn(async (log: Omit<AuditLog, "id">) => {
-        const newLog: AuditLog = { ...log, id: `audit-${logs.length + 1}` };
-        logs.push(newLog);
-        return newLog;
+      create,
+      save: jest.fn(async (log: AuditLog) => {
+        await create(log);
       }),
+      findById: jest.fn(
+        async (id: string) => logs.find((l) => l.id === id) ?? null,
+      ),
+      query: jest.fn(
+        async (query: AuditLogQuery): Promise<AuditLogQueryResult> => {
+          void query;
+          return { logs: [...logs], totalCount: logs.length };
+        },
+      ),
+      deleteOlderThan: jest.fn(async () => 0),
+      count: jest.fn(async () => logs.length),
       findAll: jest.fn(async () => [...logs]),
-      save: jest.fn(),
       _addLog: (log: AuditLog) => logs.push(log),
       _clear: () => logs.length = 0,
     };
@@ -142,16 +216,16 @@ describe("BackupService", () => {
     mockAuditLogRepository = createMockAuditLogRepository();
 
     backupService = new BackupService(
-      mockBackupRepository as any,
-      mockRecordRepository as any,
-      mockStatsRepository as any,
-      mockAuditLogRepository as any,
+      mockBackupRepository,
+      mockRecordRepository,
+      mockStatsRepository,
+      mockAuditLogRepository,
     );
   });
 
   describe("createBackup", () => {
     it("should create a backup with all data repositories", async () => {
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "manual",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -169,7 +243,7 @@ describe("BackupService", () => {
     });
 
     it("should create a backup with default system actor", async () => {
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "scheduled",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -181,7 +255,7 @@ describe("BackupService", () => {
     });
 
     it("should create a backup with custom correlation ID", async () => {
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "pre-deployment",
         entities: ["Record", "Stats", "AuditLog"],
         correlationId: "deploy-abc-123",
@@ -194,17 +268,17 @@ describe("BackupService", () => {
 
     it("should calculate correct record count across all repositories", async () => {
       await mockRecordRepository.create({
-        date: "2026-03-30",
-        studentName: "John Doe",
+        date: new Date("2026-03-30"),
+        student: "John Doe",
         comment: "Great work today",
-        mood: "happy",
+        emotion: 4,
       });
 
       await mockRecordRepository.create({
-        date: "2026-03-30",
-        studentName: "Jane Smith",
+        date: new Date("2026-03-30"),
+        student: "Jane Smith",
         comment: "Excellent participation",
-        mood: "focused",
+        emotion: 4,
       });
 
       await mockStatsRepository.create({
@@ -213,7 +287,7 @@ describe("BackupService", () => {
         moodDistribution: { happy: 1, focused: 1 },
       });
 
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "manual",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -229,20 +303,20 @@ describe("BackupService", () => {
       mockAuditLogRepository = createMockAuditLogRepository();
 
       backupService = new BackupService(
-        mockBackupRepository as any,
-        mockRecordRepository as any,
-        mockStatsRepository as any,
-        mockAuditLogRepository as any,
+        mockBackupRepository,
+        mockRecordRepository,
+        mockStatsRepository,
+        mockAuditLogRepository,
       );
 
       await mockRecordRepository.create({
-        date: "2026-03-30",
-        studentName: "John Doe",
+        date: new Date("2026-03-30"),
+        student: "John Doe",
         comment: "Great work today",
-        mood: "happy",
+        emotion: 4,
       });
 
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "manual",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -254,7 +328,7 @@ describe("BackupService", () => {
     });
 
     it("should save backup to repository", async () => {
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "manual",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -267,7 +341,7 @@ describe("BackupService", () => {
     });
 
     it("should handle empty repositories gracefully", async () => {
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "manual",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -279,7 +353,7 @@ describe("BackupService", () => {
     });
 
     it("should log backup creation in audit log", async () => {
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "manual",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -303,7 +377,7 @@ describe("BackupService", () => {
     let existingBackup: Backup;
 
     beforeEach(async () => {
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "manual",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -372,13 +446,13 @@ describe("BackupService", () => {
       mockAuditLogRepository = createMockAuditLogRepository();
 
       backupService = new BackupService(
-        mockBackupRepository as any,
-        mockRecordRepository as any,
-        mockStatsRepository as any,
-        mockAuditLogRepository as any,
+        mockBackupRepository,
+        mockRecordRepository,
+        mockStatsRepository,
+        mockAuditLogRepository,
       );
 
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "manual",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -400,7 +474,7 @@ describe("BackupService", () => {
       });
 
       expect(manualBackups.length).toBeGreaterThanOrEqual(1);
-      expect(manualBackups[0].metadata.source).toBe("manual");
+      expect(manualBackups[0]?.metadata.source).toBe("manual");
     });
 
     it("should filter backups by status", async () => {
@@ -454,13 +528,13 @@ describe("BackupService", () => {
       mockAuditLogRepository = createMockAuditLogRepository();
 
       backupService = new BackupService(
-        mockBackupRepository as any,
-        mockRecordRepository as any,
-        mockStatsRepository as any,
-        mockAuditLogRepository as any,
+        mockBackupRepository,
+        mockRecordRepository,
+        mockStatsRepository,
+        mockAuditLogRepository,
       );
 
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "scheduled",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -488,15 +562,15 @@ describe("BackupService", () => {
       mockAuditLogRepository = createMockAuditLogRepository();
 
       backupService = new BackupService(
-        mockBackupRepository as any,
-        mockRecordRepository as any,
-        mockStatsRepository as any,
-        mockAuditLogRepository as any,
+        mockBackupRepository,
+        mockRecordRepository,
+        mockStatsRepository,
+        mockAuditLogRepository,
       );
     });
 
     it("should return backup if found", async () => {
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "manual",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -525,7 +599,7 @@ describe("BackupService", () => {
 
   describe("getLatestBackup", () => {
     it("should return the most recent completed backup", async () => {
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "scheduled",
         entities: ["Record", "Stats", "AuditLog"],
       };
@@ -560,13 +634,13 @@ describe("BackupService", () => {
       mockAuditLogRepository = createMockAuditLogRepository();
 
       backupService = new BackupService(
-        mockBackupRepository as any,
-        mockRecordRepository as any,
-        mockStatsRepository as any,
-        mockAuditLogRepository as any,
+        mockBackupRepository,
+        mockRecordRepository,
+        mockStatsRepository,
+        mockAuditLogRepository,
       );
 
-      const metadata: BackupMetadata = {
+      const metadata: BackupMetadataInput = {
         source: "scheduled",
         entities: ["Record", "Stats", "AuditLog"],
       };

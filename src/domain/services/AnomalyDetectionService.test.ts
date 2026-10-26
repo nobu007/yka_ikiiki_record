@@ -56,8 +56,8 @@ describe("AnomalyDetectionService", () => {
         (a) => a.type === AnomalyType.EMOTION_SPIKE,
       );
       expect(spikeAnomalies).toHaveLength(1);
-      expect(spikeAnomalies[0].context.student).toBe("Test Student");
-      expect(spikeAnomalies[0].context.actualValue).toBe(5.0);
+      expect(spikeAnomalies[0]!.context.student).toBe("Test Student");
+      expect(spikeAnomalies[0]!.context.actualValue).toBe(5.0);
     });
 
     it("should not detect spikes with insufficient records", async () => {
@@ -129,8 +129,8 @@ describe("AnomalyDetectionService", () => {
         (a) => a.type === AnomalyType.EMOTION_DROP,
       );
       expect(dropAnomalies).toHaveLength(1);
-      expect(dropAnomalies[0].context.student).toBe("Test Student");
-      expect(dropAnomalies[0].context.actualValue).toBe(1.0);
+      expect(dropAnomalies[0]!.context.student).toBe("Test Student");
+      expect(dropAnomalies[0]!.context.actualValue).toBe(1.0);
     });
   });
 
@@ -181,7 +181,7 @@ describe("AnomalyDetectionService", () => {
         (a) => a.type === AnomalyType.UNUSUAL_PATTERN,
       );
       expect(patternAnomalies).toHaveLength(1);
-      expect(patternAnomalies[0].context.student).toBe("Test Student");
+      expect(patternAnomalies[0]!.context.student).toBe("Test Student");
     });
 
     it("should not detect pattern with fewer than 3 consecutive records", async () => {
@@ -262,8 +262,8 @@ describe("AnomalyDetectionService", () => {
         (a) => a.type === AnomalyType.DATA_GAP,
       );
       expect(gapAnomalies).toHaveLength(1);
-      expect(gapAnomalies[0].context.student).toBe("Test Student");
-      expect(gapAnomalies[0].context.metadata?.gapDays).toBe(9);
+      expect(gapAnomalies[0]!.context.student).toBe("Test Student");
+      expect(gapAnomalies[0]!.context.metadata?.gapDays).toBe(9);
     });
 
     it("should not detect gaps within threshold", async () => {
@@ -378,7 +378,7 @@ describe("AnomalyDetectionService", () => {
       );
 
       expect(studentAAnomalies.length).toBeGreaterThan(0);
-      expect(studentAAnomalies[0].type).toBe(AnomalyType.EMOTION_SPIKE);
+      expect(studentAAnomalies[0]!.type).toBe(AnomalyType.EMOTION_SPIKE);
 
       expect(studentBAnomalies.length).toBeGreaterThan(0);
       expect(studentBAnomalies.some((a) => a.type === AnomalyType.EMOTION_DROP)).toBe(true);
@@ -582,7 +582,7 @@ describe("AnomalyDetectionService", () => {
       // mean = 3.22, stdDev ≈ 0.65
       // deviation = 5.0 - 3.22 = 1.78
       // numStdDevs = 1.78 / 0.65 ≈ 2.74 (>= 2.5, so HIGH severity)
-      expect(anomalies[0].severity).toBe(AnomalySeverity.HIGH);
+      expect(anomalies[0]!.severity).toBe(AnomalySeverity.HIGH);
     });
 
     it("should assign appropriate severity for data gaps", async () => {
@@ -631,7 +631,7 @@ describe("AnomalyDetectionService", () => {
         (a) => a.type === AnomalyType.DATA_GAP,
       );
       expect(gapAnomalies.length).toBeGreaterThan(0);
-      expect(gapAnomalies[0].severity).toBe(AnomalySeverity.CRITICAL);
+      expect(gapAnomalies[0]!.severity).toBe(AnomalySeverity.CRITICAL);
     });
   });
 
@@ -682,9 +682,9 @@ describe("AnomalyDetectionService", () => {
         (a) => a.type === AnomalyType.EMOTION_SPIKE,
       );
       expect(spikeAnomalies.length).toBeGreaterThan(0);
-      expect(spikeAnomalies[0].recommendations.length).toBeGreaterThan(0);
+      expect(spikeAnomalies[0]!.recommendations.length).toBeGreaterThan(0);
       expect(
-        spikeAnomalies[0].recommendations.some((r) =>
+        spikeAnomalies[0]!.recommendations.some((r) =>
           r.includes("Verify the accuracy"),
         ),
       ).toBe(true);
@@ -736,9 +736,9 @@ describe("AnomalyDetectionService", () => {
         (a) => a.type === AnomalyType.EMOTION_DROP,
       );
       expect(dropAnomalies.length).toBeGreaterThan(0);
-      expect(dropAnomalies[0].recommendations.length).toBeGreaterThan(0);
+      expect(dropAnomalies[0]!.recommendations.length).toBeGreaterThan(0);
       expect(
-        dropAnomalies[0].recommendations.some((r) =>
+        dropAnomalies[0]!.recommendations.some((r) =>
           r.includes("stressors"),
         ),
       ).toBe(true);
@@ -784,9 +784,9 @@ describe("AnomalyDetectionService", () => {
         (a) => a.type === AnomalyType.DATA_GAP,
       );
       expect(gapAnomalies.length).toBeGreaterThan(0);
-      expect(gapAnomalies[0].recommendations.length).toBeGreaterThan(0);
+      expect(gapAnomalies[0]!.recommendations.length).toBeGreaterThan(0);
       expect(
-        gapAnomalies[0].recommendations.some((r) =>
+        gapAnomalies[0]!.recommendations.some((r) =>
           r.includes("consistent daily recording"),
         ),
       ).toBe(true);

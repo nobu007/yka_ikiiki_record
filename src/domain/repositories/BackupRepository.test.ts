@@ -282,8 +282,8 @@ describe("BackupRepository Interface", () => {
         totalCount: 1,
       };
 
-      expect(result.backups[0].id).toBe("backup-1");
-      expect(result.backups[0].status).toBe("completed");
+      expect(result.backups[0]?.id).toBe("backup-1");
+      expect(result.backups[0]?.status).toBe("completed");
     });
 
     it("should ensure RestoreResult contains backup reference", () => {

@@ -15,6 +15,7 @@ export const RecordSchema = z.object({
   emotion: z.number().min(EMOTION_RANGES.MIN).max(EMOTION_RANGES.MAX),
   date: z.date(),
   student: z.string().min(1).max(100),
+  class: z.string().optional(),
   comment: z.string().max(500).optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
@@ -23,6 +24,8 @@ export const RecordSchema = z.object({
 export type Record = z.infer<typeof RecordSchema>;
 
 export const UserRole = z.enum(["TEACHER", "ADMIN"]);
+
+export type UserRole = z.infer<typeof UserRole>;
 
 export const UserSchema = z.object({
   id: z.number().int().positive().optional(),

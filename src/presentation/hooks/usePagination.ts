@@ -20,7 +20,7 @@ const DEFAULT_PAGE_SIZE = 10;
 /**
  * Options for configuring the usePagination hook.
  */
-interface UsePaginationOptions<T> extends PaginationOptions {
+interface UsePaginationOptions extends PaginationOptions {
   /** Initial page size (default: 10) */
   pageSize?: number;
   /** Initial page number (default: 1) */
@@ -100,7 +100,7 @@ interface UsePaginationReturn<T> {
  */
 export function usePagination<T>(
   data: T[],
-  options: UsePaginationOptions<T> = {}
+  options: UsePaginationOptions = {}
 ): UsePaginationReturn<T> {
   const { pageSize: initialPageSize = DEFAULT_PAGE_SIZE, initialPage = 1 } = options;
 

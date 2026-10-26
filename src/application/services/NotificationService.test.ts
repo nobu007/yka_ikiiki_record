@@ -8,10 +8,46 @@ import {
   NotificationPriority,
   NotificationDeliveryStatus,
   type NotificationProvider,
-  type Notification,
   type NotificationConfig,
 } from "@/domain/entities/NotificationProvider";
-import type { Anomaly } from "@/domain/entities/Anomaly";
+import {
+  AnomalySeverity,
+  AnomalyType,
+  type Anomaly,
+} from "@/domain/entities/Anomaly";
+
+/**
+ * Structural view of NotificationService's private methods, declared as a
+ * plain object type so jest.spyOn's overload resolution can accept them
+ * without `as any` (private members are hidden from keyof, which would
+ * resolve the spy to `never`). The cast is compile-time only; runtime
+ * behavior is unchanged.
+ */
+type NotificationServiceInternals = {
+  findProviderForChannel: (
+    channel: NotificationChannel,
+  ) => Promise<NotificationProvider | null>;
+  sendViaProvider: (
+    provider: NotificationProvider,
+    recipients: string[],
+    subject: string,
+    body: string,
+    priority: NotificationPriority,
+    channel: NotificationChannel,
+    metadata?: Record<string, unknown>,
+  ) => Promise<{ notificationId: string; recipientsCount: number }>;
+  checkRateLimit: (channel: NotificationChannel) => boolean;
+  isWithinQuietHours: () => boolean;
+};
+
+function internalsOf(
+  service: NotificationService,
+): NotificationServiceInternals {
+  // Private methods are invisible to the structural type system (no honest
+  // structural assertion to the internals view exists), so route through
+  // `never`, which is assignable to every type — a single assertion, no `any`.
+  return service as never;
+}
 
 describe("NotificationService", () => {
   let notificationService: NotificationService;
@@ -82,10 +118,10 @@ describe("NotificationService", () => {
       };
 
       jest
-        .spyOn(notificationService as any, "findProviderForChannel")
+        .spyOn(internalsOf(notificationService), "findProviderForChannel")
         .mockResolvedValue(mockEmailProvider);
       jest
-        .spyOn(notificationService as any, "sendViaProvider")
+        .spyOn(internalsOf(notificationService), "sendViaProvider")
         .mockResolvedValue(mockSendResult);
 
       const result = await notificationService.sendNotification({
@@ -106,7 +142,7 @@ describe("NotificationService", () => {
 
     it("should fail when no active provider found for channel", async () => {
       jest
-        .spyOn(notificationService as any, "findProviderForChannel")
+        .spyOn(internalsOf(notificationService), "findProviderForChannel")
         .mockResolvedValue(null);
 
       const result = await notificationService.sendNotification({
@@ -157,7 +193,7 @@ describe("NotificationService", () => {
       notificationService.updateConfig(config);
 
       jest
-        .spyOn(notificationService as any, "checkRateLimit")
+        .spyOn(internalsOf(notificationService), "checkRateLimit")
         .mockReturnValue(false);
 
       const result = await notificationService.sendNotification({
@@ -194,7 +230,7 @@ describe("NotificationService", () => {
       notificationService.updateConfig(config);
 
       jest
-        .spyOn(notificationService as any, "isWithinQuietHours")
+        .spyOn(internalsOf(notificationService), "isWithinQuietHours")
         .mockReturnValue(true);
 
       const result = await notificationService.sendNotification({
@@ -231,7 +267,7 @@ describe("NotificationService", () => {
       notificationService.updateConfig(config);
 
       jest
-        .spyOn(notificationService as any, "isWithinQuietHours")
+        .spyOn(internalsOf(notificationService), "isWithinQuietHours")
         .mockReturnValue(true);
 
       const mockSendResult = {
@@ -242,10 +278,10 @@ describe("NotificationService", () => {
       };
 
       jest
-        .spyOn(notificationService as any, "findProviderForChannel")
+        .spyOn(internalsOf(notificationService), "findProviderForChannel")
         .mockResolvedValue(mockEmailProvider);
       jest
-        .spyOn(notificationService as any, "sendViaProvider")
+        .spyOn(internalsOf(notificationService), "sendViaProvider")
         .mockResolvedValue(mockSendResult);
 
       const result = await notificationService.sendNotification({
@@ -261,10 +297,10 @@ describe("NotificationService", () => {
 
     it("should retry failed notifications up to max attempts", async () => {
       jest
-        .spyOn(notificationService as any, "findProviderForChannel")
+        .spyOn(internalsOf(notificationService), "findProviderForChannel")
         .mockResolvedValue(mockEmailProvider);
       jest
-        .spyOn(notificationService as any, "sendViaProvider")
+        .spyOn(internalsOf(notificationService), "sendViaProvider")
         .mockRejectedValue(new Error("Failed to send"));
 
       const result = await notificationService.sendNotification({
@@ -284,15 +320,18 @@ describe("NotificationService", () => {
     it("should send notification for detected anomaly", async () => {
       const anomaly: Anomaly = {
         id: "anomaly-1",
-        type: "emotion_spike" as any,
-        severity: "high" as any,
+        type: AnomalyType.EMOTION_SPIKE,
+        severity: AnomalySeverity.HIGH,
         description: "Unusual emotion spike detected",
         detectedAt: new Date(),
         context: {
-          studentName: "John Doe",
-          date: "2026-03-30",
-          emotionAverage: 85,
-          threshold: 70,
+          student: "John Doe",
+          startDate: new Date("2026-03-30"),
+          endDate: new Date("2026-03-30"),
+          actualValue: 85,
+          expectedValue: 70,
+          deviation: 15,
+          metadata: { date: "2026-03-30", emotionAverage: 85, threshold: 70 },
         },
         recommendations: ["Check student wellbeing", "Review recent records"],
         acknowledged: false,
@@ -306,10 +345,10 @@ describe("NotificationService", () => {
       };
 
       jest
-        .spyOn(notificationService as any, "findProviderForChannel")
+        .spyOn(internalsOf(notificationService), "findProviderForChannel")
         .mockResolvedValue(mockEmailProvider);
       jest
-        .spyOn(notificationService as any, "sendViaProvider")
+        .spyOn(internalsOf(notificationService), "sendViaProvider")
         .mockResolvedValue(mockSendResult);
 
       const result = await notificationService.sendAnomalyAlert(anomaly, [
@@ -323,15 +362,18 @@ describe("NotificationService", () => {
     it("should format anomaly details into notification content", async () => {
       const anomaly: Anomaly = {
         id: "anomaly-1",
-        type: "emotion_drop" as any,
-        severity: "critical" as any,
+        type: AnomalyType.EMOTION_DROP,
+        severity: AnomalySeverity.CRITICAL,
         description: "Severe emotion drop detected",
         detectedAt: new Date(),
         context: {
-          studentName: "Jane Smith",
-          date: "2026-03-30",
-          emotionAverage: 25,
-          threshold: 40,
+          student: "Jane Smith",
+          startDate: new Date("2026-03-30"),
+          endDate: new Date("2026-03-30"),
+          actualValue: 25,
+          expectedValue: 40,
+          deviation: -15,
+          metadata: { date: "2026-03-30", emotionAverage: 25, threshold: 40 },
         },
         recommendations: ["Immediate attention required"],
         acknowledged: false,
@@ -345,18 +387,18 @@ describe("NotificationService", () => {
       };
 
       const sendViaProviderSpy = jest
-        .spyOn(notificationService as any, "sendViaProvider")
+        .spyOn(internalsOf(notificationService), "sendViaProvider")
         .mockResolvedValue(mockSendResult);
 
       jest
-        .spyOn(notificationService as any, "findProviderForChannel")
+        .spyOn(internalsOf(notificationService), "findProviderForChannel")
         .mockResolvedValue(mockEmailProvider);
 
       await notificationService.sendAnomalyAlert(anomaly, [
         "teacher@example.com",
       ]);
 
-      const callArgs = sendViaProviderSpy.mock.calls[0];
+      const callArgs = sendViaProviderSpy.mock.calls[0]!;
       expect(callArgs[2]).toContain("EMOTION DROP");
       expect(callArgs[3]).toContain("Severe emotion drop detected");
     });
@@ -364,14 +406,18 @@ describe("NotificationService", () => {
     it("should handle multiple recipients for anomaly alerts", async () => {
       const anomaly: Anomaly = {
         id: "anomaly-1",
-        type: "data_gap" as any,
-        severity: "medium" as any,
+        type: AnomalyType.DATA_GAP,
+        severity: AnomalySeverity.MEDIUM,
         description: "Missing data detected",
         detectedAt: new Date(),
         context: {
-          studentName: "Bob Johnson",
-          date: "2026-03-30",
-          missingDays: 5,
+          student: "Bob Johnson",
+          startDate: new Date("2026-03-25"),
+          endDate: new Date("2026-03-30"),
+          actualValue: 5,
+          expectedValue: 0,
+          deviation: 5,
+          metadata: { date: "2026-03-30", missingDays: 5 },
         },
         recommendations: ["Contact student"],
         acknowledged: false,
@@ -385,10 +431,10 @@ describe("NotificationService", () => {
       };
 
       jest
-        .spyOn(notificationService as any, "findProviderForChannel")
+        .spyOn(internalsOf(notificationService), "findProviderForChannel")
         .mockResolvedValue(mockEmailProvider);
       jest
-        .spyOn(notificationService as any, "sendViaProvider")
+        .spyOn(internalsOf(notificationService), "sendViaProvider")
         .mockResolvedValue(mockSendResult);
 
       const result = await notificationService.sendAnomalyAlert(anomaly, [
@@ -541,9 +587,9 @@ describe("NotificationService", () => {
       const status = await notificationService.getProviderStatus();
 
       expect(status).toHaveLength(2);
-      expect(status[0].id).toBe("provider-1");
-      expect(status[0].status).toBe(NotificationProviderStatus.ACTIVE);
-      expect(status[1].status).toBe(NotificationProviderStatus.INACTIVE);
+      expect(status[0]!.id).toBe("provider-1");
+      expect(status[0]!.status).toBe(NotificationProviderStatus.ACTIVE);
+      expect(status[1]!.status).toBe(NotificationProviderStatus.INACTIVE);
     });
 
     it("should filter providers by channel", async () => {
@@ -558,7 +604,7 @@ describe("NotificationService", () => {
       );
 
       expect(status).toHaveLength(1);
-      expect(status[0].channels).toContain(
+      expect(status[0]!.channels).toContain(
         NotificationChannel.ANOMALY_DETECTION,
       );
     });
@@ -671,7 +717,7 @@ describe("NotificationService", () => {
       await expect(
         notificationService.enableChannel(
           mockEmailProvider.id,
-          NotificationChannel.REPORTS as any,
+          NotificationChannel.REPORTS,
         ),
       ).rejects.toThrow("Channel not supported by provider");
     });
@@ -712,7 +758,7 @@ describe("NotificationService", () => {
         NotificationProviderStatus.SUSPENDED,
       );
 
-      expect(updated.status).toBe(NotificationProviderStatus.SUSPENDED);
+      expect(updated!.status).toBe(NotificationProviderStatus.SUSPENDED);
       expect(mockProviderRepository.updateStatus).toHaveBeenCalledWith(
         mockEmailProvider.id,
         NotificationProviderStatus.SUSPENDED,

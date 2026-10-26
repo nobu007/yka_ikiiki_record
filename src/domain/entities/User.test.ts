@@ -1,5 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-import { UserSchema, UserRole } from "@/schemas/api";
+import { UserSchema } from "@/schemas/api";
 
 const validUser = {
   id: 1,
@@ -30,7 +30,7 @@ describe("User Entity", () => {
       const result = UserSchema.safeParse(invalidUser);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].path).toContain("email");
+        expect(result.error.issues[0]?.path).toContain("email");
       }
     });
 
@@ -59,16 +59,17 @@ describe("User Entity", () => {
     });
 
     it("should accept user without id (for creation)", () => {
-      const userWithoutId = { ...validUser };
-      delete (userWithoutId as any).id;
+      const { id: _omittedId, ...userWithoutId } = validUser;
       const result = UserSchema.safeParse(userWithoutId);
       expect(result.success).toBe(true);
     });
 
     it("should accept user without createdAt and updatedAt (for creation)", () => {
-      const userWithoutTimestamps = { ...validUser };
-      delete (userWithoutTimestamps as any).createdAt;
-      delete (userWithoutTimestamps as any).updatedAt;
+      const {
+        createdAt: _omittedCreatedAt,
+        updatedAt: _omittedUpdatedAt,
+        ...userWithoutTimestamps
+      } = validUser;
       const result = UserSchema.safeParse(userWithoutTimestamps);
       expect(result.success).toBe(true);
     });
@@ -203,7 +204,7 @@ describe("User Entity", () => {
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data.createdAt).toBeInstanceOf(Date);
-        expect(result.data.createdAt.toISOString()).toBe(
+        expect(result.data.createdAt?.toISOString()).toBe(
           "2026-01-01T00:00:00.000Z"
         );
       }
@@ -218,7 +219,7 @@ describe("User Entity", () => {
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data.updatedAt).toBeInstanceOf(Date);
-        expect(result.data.updatedAt.toISOString()).toBe(
+        expect(result.data.updatedAt?.toISOString()).toBe(
           "2026-01-01T12:00:00.000Z"
         );
       }
@@ -239,19 +240,19 @@ describe("User Entity", () => {
     });
 
     it("should have email as string", () => {
-      const userWithNumberEmail = { ...validUser, email: 123 as any };
+      const userWithNumberEmail: unknown = { ...validUser, email: 123 };
       const result = UserSchema.safeParse(userWithNumberEmail);
       expect(result.success).toBe(false);
     });
 
     it("should have name as string", () => {
-      const userWithNumberName = { ...validUser, name: 123 as any };
+      const userWithNumberName: unknown = { ...validUser, name: 123 };
       const result = UserSchema.safeParse(userWithNumberName);
       expect(result.success).toBe(false);
     });
 
     it("should have passwordHash as string", () => {
-      const userWithNumberHash = { ...validUser, passwordHash: 123 as any };
+      const userWithNumberHash: unknown = { ...validUser, passwordHash: 123 };
       const result = UserSchema.safeParse(userWithNumberHash);
       expect(result.success).toBe(false);
     });

@@ -501,12 +501,27 @@ describe("LoginForm", () => {
   describe("Edge Cases", () => {
     it("should handle empty response body", async () => {
       const user = userEvent.setup();
-      mockFetch.mockResolvedValueOnce({
+      const invalidJsonResponse: Response = {
         ok: true,
         json: async () => {
           throw new Error("Invalid JSON");
         },
-      } as Response);
+        headers: new Headers(),
+        redirected: false,
+        status: 200,
+        statusText: "OK",
+        type: "basic",
+        url: "",
+        body: null,
+        bodyUsed: false,
+        arrayBuffer: async () => new ArrayBuffer(0),
+        blob: async () => new Blob(),
+        bytes: async () => new Uint8Array(),
+        formData: async () => new FormData(),
+        text: async () => "",
+        clone: () => invalidJsonResponse,
+      };
+      mockFetch.mockResolvedValueOnce(invalidJsonResponse);
 
       const onError = jest.fn();
       render(<LoginForm onSuccess={jest.fn()} onError={onError} />);

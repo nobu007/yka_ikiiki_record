@@ -59,10 +59,10 @@ describe("InMemoryAnomalyRepository", () => {
       expect(found).toEqual(saved);
     });
 
-    it("should return null if not found", async () => {
+    it("should return undefined if not found", async () => {
       const found = await repository.findById("non-existent-id");
 
-      expect(found).toBeNull();
+      expect(found).toBeUndefined();
     });
   });
 
@@ -103,7 +103,7 @@ describe("InMemoryAnomalyRepository", () => {
       const found = await repository.findByType(AnomalyType.EMOTION_SPIKE);
 
       expect(found).toHaveLength(1);
-      expect(found[0].type).toBe(AnomalyType.EMOTION_SPIKE);
+      expect(found[0]!.type).toBe(AnomalyType.EMOTION_SPIKE);
     });
 
     it("should return empty array if no match", async () => {
@@ -130,7 +130,7 @@ describe("InMemoryAnomalyRepository", () => {
       const found = await repository.findBySeverity(AnomalySeverity.HIGH);
 
       expect(found).toHaveLength(1);
-      expect(found[0].severity).toBe(AnomalySeverity.HIGH);
+      expect(found[0]!.severity).toBe(AnomalySeverity.HIGH);
     });
 
     it("should return empty array if no match", async () => {
@@ -158,7 +158,7 @@ describe("InMemoryAnomalyRepository", () => {
       const found = await repository.findRecent(7);
 
       expect(found).toHaveLength(1);
-      expect(found[0].id).toBe(savedRecent.id);
+      expect(found[0]!.id).toBe(savedRecent.id);
     });
 
     it("should return empty array for days=0", async () => {
@@ -184,7 +184,7 @@ describe("InMemoryAnomalyRepository", () => {
 
       expect(deleted).toBe(true);
       const found = await repository.findById(saved.id!);
-      expect(found).toBeNull();
+      expect(found).toBeUndefined();
     });
 
     it("should return false for non-existent id", async () => {
@@ -221,9 +221,21 @@ describe("InMemoryAnomalyRepository", () => {
   });
 });
 
-function createMockAnomaly(overrides?: Partial<Anomaly>): Anomaly {
-  return {
-    id: overrides?.id,
+/**
+ * Overrides accept `id: undefined` to mean "no id yet" (the repository
+ * auto-assigns one). exactOptionalPropertyTypes forbids passing explicit
+ * `undefined` through `Partial<Anomaly>`, so the id slot is declared
+ * `string | undefined` explicitly.
+ */
+type MockAnomalyOverrides = Omit<Partial<Anomaly>, "id"> & {
+  id?: string | undefined;
+};
+
+function createMockAnomaly(overrides?: MockAnomalyOverrides): Anomaly {
+  const id = overrides?.id;
+  const metadata = overrides?.context?.metadata;
+
+  const base: Omit<Anomaly, "id"> = {
     type: overrides?.type ?? AnomalyType.EMOTION_SPIKE,
     severity: overrides?.severity ?? AnomalySeverity.MEDIUM,
     description: overrides?.description ?? "Test anomaly",
@@ -235,9 +247,12 @@ function createMockAnomaly(overrides?: Partial<Anomaly>): Anomaly {
       actualValue: overrides?.context?.actualValue ?? 4.5,
       expectedValue: overrides?.context?.expectedValue ?? 3.0,
       deviation: overrides?.context?.deviation ?? 1.5,
-      metadata: overrides?.context?.metadata,
+      ...(metadata !== undefined && { metadata }),
     },
     recommendations: overrides?.recommendations ?? ["Recommendation 1"],
     acknowledged: overrides?.acknowledged ?? false,
   };
+
+  // Omit the id key entirely when unset — never pass explicit undefined.
+  return id !== undefined ? { ...base, id } : (base as Anomaly);
 }

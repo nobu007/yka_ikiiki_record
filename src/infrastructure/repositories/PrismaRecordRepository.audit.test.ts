@@ -1,6 +1,7 @@
 import { setupTest, createMockRecord, createMockPrismaRecord } from "./PrismaRecordRepository.setup";
 import { AuditService } from "@/application/services/AuditService";
 import { InMemoryAuditLogRepository } from "@/infrastructure/repositories/InMemoryAuditLogRepository";
+import type { AuditLogMetadata } from "@/domain/entities/AuditLog";
 import { Record } from "@/domain/entities/Record";
 
 describe("PrismaRecordRepository - audit logging integration", () => {
@@ -56,12 +57,12 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       expect(auditLogs.logs).toHaveLength(1);
-      expect(auditLogs.logs[0].entityType).toBe("Record");
-      expect(auditLogs.logs[0].entityId).toBe("1");
-      expect(auditLogs.logs[0].operation).toBe("create");
-      expect(auditLogs.logs[0].actor).toBe("test-user");
-      expect(auditLogs.logs[0].changes.after).toEqual(record);
-      expect(auditLogs.logs[0].changes.before).toBeNull();
+      expect(auditLogs.logs[0]!.entityType).toBe("Record");
+      expect(auditLogs.logs[0]!.entityId).toBe("1");
+      expect(auditLogs.logs[0]!.operation).toBe("create");
+      expect(auditLogs.logs[0]!.actor).toBe("test-user");
+      expect(auditLogs.logs[0]!.changes.after).toEqual(record);
+      expect(auditLogs.logs[0]!.changes.before).toBeNull();
     });
 
     it("should log update operations when saving an existing record", async () => {
@@ -109,12 +110,12 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       expect(auditLogs.logs).toHaveLength(1);
-      expect(auditLogs.logs[0].entityType).toBe("Record");
-      expect(auditLogs.logs[0].entityId).toBe("1");
-      expect(auditLogs.logs[0].operation).toBe("update");
-      expect(auditLogs.logs[0].actor).toBe("test-user");
-      expect(auditLogs.logs[0].changes.before).toEqual(existingRecord);
-      expect(auditLogs.logs[0].changes.after).toEqual(updatedRecord);
+      expect(auditLogs.logs[0]!.entityType).toBe("Record");
+      expect(auditLogs.logs[0]!.entityId).toBe("1");
+      expect(auditLogs.logs[0]!.operation).toBe("update");
+      expect(auditLogs.logs[0]!.actor).toBe("test-user");
+      expect(auditLogs.logs[0]!.changes.before).toEqual(existingRecord);
+      expect(auditLogs.logs[0]!.changes.after).toEqual(updatedRecord);
     });
 
     it("should include metadata in audit logs", async () => {
@@ -157,7 +158,7 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       expect(auditLogs.logs).toHaveLength(1);
-      expect(auditLogs.logs[0].metadata).toEqual(metadata);
+      expect(auditLogs.logs[0]!.metadata).toEqual(metadata);
     });
   });
 
@@ -190,12 +191,12 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       expect(auditLogs.logs).toHaveLength(1);
-      expect(auditLogs.logs[0].entityType).toBe("Record");
-      expect(auditLogs.logs[0].entityId).toBe("1");
-      expect(auditLogs.logs[0].operation).toBe("delete");
-      expect(auditLogs.logs[0].actor).toBe("test-user");
-      expect(auditLogs.logs[0].changes.before).toEqual(existingRecord);
-      expect(auditLogs.logs[0].changes.after).toBeNull();
+      expect(auditLogs.logs[0]!.entityType).toBe("Record");
+      expect(auditLogs.logs[0]!.entityId).toBe("1");
+      expect(auditLogs.logs[0]!.operation).toBe("delete");
+      expect(auditLogs.logs[0]!.actor).toBe("test-user");
+      expect(auditLogs.logs[0]!.changes.before).toEqual(existingRecord);
+      expect(auditLogs.logs[0]!.changes.after).toBeNull();
     });
   });
 
@@ -248,8 +249,8 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       expect(auditLogs.logs).toHaveLength(2);
-      expect(auditLogs.logs[0].metadata.source).toBe("batch-test");
-      expect(auditLogs.logs[1].metadata.source).toBe("batch-test");
+      expect(auditLogs.logs[0]!.metadata.source).toBe("batch-test");
+      expect(auditLogs.logs[1]!.metadata.source).toBe("batch-test");
     });
   });
 
@@ -276,7 +277,11 @@ describe("PrismaRecordRepository - audit logging integration", () => {
 
       expect(auditLogs.logs).toHaveLength(3);
       expect(auditLogs.totalCount).toBe(3);
-      expect(auditLogs.logs.every((log) => log.entityType === "Record")).toBe(true);
+      expect(
+        auditLogs.logs.every(
+          (log: { entityType: string }) => log.entityType === "Record",
+        ),
+      ).toBe(true);
     });
 
     it("should query audit logs by operation type", async () => {
@@ -285,7 +290,7 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       expect(createLogs.logs).toHaveLength(1);
-      expect(createLogs.logs[0].operation).toBe("create");
+      expect(createLogs.logs[0]!.operation).toBe("create");
     });
 
     it("should query audit logs by actor", async () => {
@@ -294,7 +299,11 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       expect(user1Logs.logs).toHaveLength(2);
-      expect(user1Logs.logs.every((log) => log.actor === "user-1")).toBe(true);
+      expect(
+        user1Logs.logs.every(
+          (log: { actor: string }) => log.actor === "user-1",
+        ),
+      ).toBe(true);
     });
 
     it("should query audit logs with time range", async () => {
@@ -326,8 +335,8 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       for (let i = 0; i < auditLogs.logs.length - 1; i++) {
-        expect(auditLogs.logs[i].timestamp).toBeGreaterThanOrEqual(
-          auditLogs.logs[i + 1].timestamp,
+        expect(auditLogs.logs[i]!.timestamp).toBeGreaterThanOrEqual(
+          auditLogs.logs[i + 1]!.timestamp,
         );
       }
     });
@@ -399,7 +408,7 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       expect(auditLogs.logs).toHaveLength(1);
-      expect(auditLogs.logs[0].metadata).toEqual(invalidMetadata);
+      expect(auditLogs.logs[0]!.metadata).toEqual(invalidMetadata);
     });
   });
 
@@ -411,14 +420,14 @@ describe("PrismaRecordRepository - audit logging integration", () => {
         student: "学生1",
       });
 
-      await auditService.logCreate("Record", "1", record, {}, "test-user");
+      await auditService.logCreate("Record", "1", record, {} as AuditLogMetadata, "test-user");
 
       const auditLogs = await auditLogRepository.query({
         entityType: "Record",
       });
 
       expect(auditLogs.logs).toHaveLength(1);
-      expect(auditLogs.logs[0].metadata).toEqual({});
+      expect(auditLogs.logs[0]!.metadata).toEqual({});
     });
 
     it("should accept complex nested metadata", async () => {
@@ -449,7 +458,7 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       expect(auditLogs.logs).toHaveLength(1);
-      expect(auditLogs.logs[0].metadata).toEqual(complexMetadata);
+      expect(auditLogs.logs[0]!.metadata).toEqual(complexMetadata);
     });
   });
 
@@ -469,7 +478,7 @@ describe("PrismaRecordRepository - audit logging integration", () => {
       });
 
       expect(auditLogs.logs).toHaveLength(2);
-      expect(auditLogs.logs[0].id).not.toBe(auditLogs.logs[1].id);
+      expect(auditLogs.logs[0]!.id).not.toBe(auditLogs.logs[1]!.id);
     });
 
     it("should generate IDs with correct format", async () => {
@@ -485,7 +494,7 @@ describe("PrismaRecordRepository - audit logging integration", () => {
         entityType: "Record",
       });
 
-      expect(auditLogs.logs[0].id).toMatch(/^audit-\d+-[a-z0-9]+$/);
+      expect(auditLogs.logs[0]!.id).toMatch(/^audit-\d+-[a-z0-9]+$/);
     });
   });
 
@@ -505,8 +514,8 @@ describe("PrismaRecordRepository - audit logging integration", () => {
         entityType: "Record",
       });
 
-      expect(auditLogs.logs[0].timestamp).toBeGreaterThanOrEqual(beforeTime);
-      expect(auditLogs.logs[0].timestamp).toBeLessThanOrEqual(afterTime);
+      expect(auditLogs.logs[0]!.timestamp).toBeGreaterThanOrEqual(beforeTime);
+      expect(auditLogs.logs[0]!.timestamp).toBeLessThanOrEqual(afterTime);
     });
   });
 });

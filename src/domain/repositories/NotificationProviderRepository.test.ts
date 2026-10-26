@@ -340,8 +340,8 @@ describe("NotificationProviderRepository Interface", () => {
       });
 
       expect(results).toHaveLength(1);
-      expect(results[0].type).toBe(NotificationProviderType.EMAIL);
-      expect(results[0].status).toBe(NotificationProviderStatus.ACTIVE);
+      expect(results[0]?.type).toBe(NotificationProviderType.EMAIL);
+      expect(results[0]?.status).toBe(NotificationProviderStatus.ACTIVE);
     });
   });
 });

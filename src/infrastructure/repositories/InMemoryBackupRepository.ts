@@ -122,7 +122,7 @@ export class InMemoryBackupRepository implements BackupRepository {
     }
 
     completed.sort((a, b) => b.timestamp - a.timestamp);
-    return completed[0];
+    return completed[0] ?? null;
   }
 
   async count(

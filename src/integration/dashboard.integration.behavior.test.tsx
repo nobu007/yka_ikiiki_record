@@ -26,6 +26,7 @@ const createTestWrapper = () => {
 
 describe("Dashboard Integration - Behavior", () => {
   const mockHandleInitialGeneration = jest.fn();
+  const mockClearNotification = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -35,6 +36,7 @@ describe("Dashboard Integration - Behavior", () => {
       isGenerating: false,
       notification: { show: false, message: "", type: "success" },
       handleGenerate: mockHandleInitialGeneration,
+      clearNotification: mockClearNotification,
       isLoadingMessage: null,
     });
   });
@@ -92,6 +94,7 @@ describe("Dashboard Integration - Behavior", () => {
         notification: { show: false, message: "", type: "success" },
         handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
+        clearNotification: mockClearNotification,
       });
 
       const { unmount } = render(
@@ -114,6 +117,7 @@ describe("Dashboard Integration - Behavior", () => {
         notification: { show: false, message: "", type: "success" },
         handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: LOADING_MESSAGES.GENERATING_DATA,
+        clearNotification: mockClearNotification,
       });
 
       render(
@@ -143,6 +147,7 @@ describe("Dashboard Integration - Behavior", () => {
         },
         handleGenerate: mockHandleInitialGeneration,
         isLoadingMessage: null,
+        clearNotification: mockClearNotification,
       });
 
       render(

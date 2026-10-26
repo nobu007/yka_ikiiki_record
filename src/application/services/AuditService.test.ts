@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeEach, jest } from "@jest/globals";
-import type { AuditLogRepository } from "@/domain/repositories/AuditLogRepository";
+import type {
+  AuditLogQuery,
+  AuditLogQueryResult,
+  AuditLogRepository,
+} from "@/domain/repositories/AuditLogRepository";
 import { AuditService } from "./AuditService";
 import type { AuditLog } from "@/domain/entities/AuditLog";
 import { AuditOperation } from "@/domain/entities/AuditLog";
@@ -15,10 +19,21 @@ describe("AuditService", () => {
       save: jest.fn(async (log: AuditLog) => {
         savedLogs.push(log);
       }),
-      findById: jest.fn(),
-      query: jest.fn(),
-      deleteOlderThan: jest.fn(),
-      count: jest.fn(),
+      findById: jest.fn(async (_id: string): Promise<AuditLog | null> => null),
+      query: jest.fn(
+        async (_query: AuditLogQuery): Promise<AuditLogQueryResult> => ({
+          logs: [],
+          totalCount: 0,
+        }),
+      ),
+      deleteOlderThan: jest.fn(
+        async (_beforeTimestamp: number): Promise<number> => 0,
+      ),
+      count: jest.fn(
+        async (
+          _query: Omit<AuditLogQuery, "limit" | "offset">,
+        ): Promise<number> => 0,
+      ),
     };
     auditService = new AuditService(mockRepository);
   });
@@ -33,7 +48,7 @@ describe("AuditService", () => {
       await auditService.logCreate(entityType, entityId, after, metadata);
 
       expect(mockRepository.save).toHaveBeenCalledTimes(1);
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.entityType).toBe(entityType);
       expect(savedLog.entityId).toBe(entityId);
       expect(savedLog.operation).toBe("create");
@@ -54,7 +69,7 @@ describe("AuditService", () => {
         actor,
       );
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.actor).toBe(actor);
     });
 
@@ -68,7 +83,7 @@ describe("AuditService", () => {
         { source: "api", correlationId },
       );
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.metadata.correlationId).toBe(correlationId);
     });
 
@@ -80,7 +95,7 @@ describe("AuditService", () => {
         source: "api",
       });
 
-      expect(savedLogs[0].id).not.toBe(savedLogs[1].id);
+      expect(savedLogs[0]!.id).not.toBe(savedLogs[1]!.id);
     });
 
     it("should set timestamp to current time", async () => {
@@ -90,7 +105,7 @@ describe("AuditService", () => {
       });
       const afterTime = Date.now();
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.timestamp).toBeGreaterThanOrEqual(beforeTime);
       expect(savedLog.timestamp).toBeLessThanOrEqual(afterTime);
     });
@@ -107,7 +122,7 @@ describe("AuditService", () => {
       await auditService.logUpdate(entityType, entityId, before, after, metadata);
 
       expect(mockRepository.save).toHaveBeenCalledTimes(1);
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.entityType).toBe(entityType);
       expect(savedLog.entityId).toBe(entityId);
       expect(savedLog.operation).toBe("update");
@@ -128,7 +143,7 @@ describe("AuditService", () => {
         actor,
       );
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.actor).toBe(actor);
     });
 
@@ -144,7 +159,7 @@ describe("AuditService", () => {
         { source: "api", ipAddress, userAgent },
       );
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.metadata.ipAddress).toBe(ipAddress);
       expect(savedLog.metadata.userAgent).toBe(userAgent);
     });
@@ -160,7 +175,7 @@ describe("AuditService", () => {
       await auditService.logDelete(entityType, entityId, before, metadata);
 
       expect(mockRepository.save).toHaveBeenCalledTimes(1);
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.entityType).toBe(entityType);
       expect(savedLog.entityId).toBe(entityId);
       expect(savedLog.operation).toBe("delete");
@@ -180,7 +195,7 @@ describe("AuditService", () => {
         actor,
       );
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.actor).toBe(actor);
     });
   });
@@ -196,7 +211,7 @@ describe("AuditService", () => {
         { source: "test" },
       );
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.operation).toBe("create");
       expect(savedLog.changes.before).toBeNull();
       expect(savedLog.changes.after).toEqual({ id: 1, student: "John" });
@@ -212,7 +227,7 @@ describe("AuditService", () => {
         { source: "test" },
       );
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.operation).toBe("update");
       expect(savedLog.changes.before).toEqual({ id: 1, comment: "Old" });
       expect(savedLog.changes.after).toEqual({ id: 1, comment: "New" });
@@ -228,7 +243,7 @@ describe("AuditService", () => {
         { source: "test" },
       );
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.operation).toBe("delete");
       expect(savedLog.changes.before).toEqual({ id: 1, student: "John" });
       expect(savedLog.changes.after).toBeNull();
@@ -247,7 +262,7 @@ describe("AuditService", () => {
         actor,
       );
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.actor).toBe(actor);
     });
   });
@@ -293,7 +308,7 @@ describe("AuditService", () => {
         customMetadata,
       );
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.metadata).toEqual(customMetadata);
     });
 
@@ -302,7 +317,7 @@ describe("AuditService", () => {
         source: "test",
       });
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.metadata.source).toBe("test");
     });
   });
@@ -313,7 +328,7 @@ describe("AuditService", () => {
         source: "api",
       });
 
-      const savedLog = savedLogs[0];
+      const savedLog = savedLogs[0]!;
       expect(savedLog.id).toMatch(/^audit-\d+-[a-z0-9]+$/);
     });
 

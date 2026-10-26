@@ -209,9 +209,9 @@ const TrendReportChartComponent = memo<TrendReportChartProps>(
     }, [showMovingAverage, seriesData, movingAverageWindow]);
 
     const annotations = useMemo(() => {
-      if (!showAnnotations) return undefined;
+      if (!showAnnotations) return { points: [] };
 
-      const points: { x: number; y: number; label: string }[] = [];
+      const points: { x: number; y: number; label: { text: string } }[] = [];
 
       if (isClass) {
         const classAnalysis = analysis as ClassTrendAnalysis;
@@ -223,7 +223,8 @@ const TrendReportChartComponent = memo<TrendReportChartProps>(
             (s) => s.student === topPerformers[0],
           );
           if (topStudent && topStudent.dataPoints.length > 0) {
-            const lastPoint = topStudent.dataPoints[topStudent.dataPoints.length - 1];
+            const lastPoint =
+              topStudent.dataPoints[topStudent.dataPoints.length - 1]!;
             const index = sortedData.findIndex(
               (dp) => dp.date.getTime() === lastPoint.date.getTime(),
             );
@@ -231,7 +232,7 @@ const TrendReportChartComponent = memo<TrendReportChartProps>(
               points.push({
                 x: index,
                 y: lastPoint.emotion,
-                label: `Top: ${topPerformers[0]}`,
+                label: { text: `Top: ${topPerformers[0]}` },
               });
             }
           }
@@ -243,7 +244,7 @@ const TrendReportChartComponent = memo<TrendReportChartProps>(
           );
           if (supportStudent && supportStudent.dataPoints.length > 0) {
             const lastPoint =
-              supportStudent.dataPoints[supportStudent.dataPoints.length - 1];
+              supportStudent.dataPoints[supportStudent.dataPoints.length - 1]!;
             const index = sortedData.findIndex(
               (dp) => dp.date.getTime() === lastPoint.date.getTime(),
             );
@@ -251,14 +252,14 @@ const TrendReportChartComponent = memo<TrendReportChartProps>(
               points.push({
                 x: index,
                 y: lastPoint.emotion,
-                label: `Support: ${needsSupport[0]}`,
+                label: { text: `Support: ${needsSupport[0]}` },
               });
             }
           }
         }
       }
 
-      if (points.length === 0) return undefined;
+      if (points.length === 0) return { points: [] };
 
       return {
         points,
@@ -311,7 +312,7 @@ const TrendReportChartComponent = memo<TrendReportChartProps>(
         },
         colors: [
           CHART_COLORS.PRIMARY,
-          showMovingAverage ? CHART_COLORS.SECONDARY : CHART_COLORS.PRIMARY,
+          showMovingAverage ? CHART_COLORS.BLUE : CHART_COLORS.PRIMARY,
         ],
         fill: {
           type: "gradient" as const,

@@ -17,14 +17,16 @@ describe("TrendAnalysisService", () => {
 
   beforeEach(() => {
     mockRepository = {
-      saveStudentTrend: jest.fn(),
-      saveClassTrend: jest.fn(),
-      getStudentTrend: jest.fn(),
-      getClassTrend: jest.fn(),
-      queryStudentTrends: jest.fn(),
-      queryClassTrends: jest.fn(),
-      deleteStudentTrend: jest.fn(),
-      deleteClassTrend: jest.fn(),
+      saveStudentTrend: jest.fn<TrendAnalysisRepository["saveStudentTrend"]>(),
+      saveClassTrend: jest.fn<TrendAnalysisRepository["saveClassTrend"]>(),
+      getStudentTrend: jest.fn<TrendAnalysisRepository["getStudentTrend"]>(),
+      getClassTrend: jest.fn<TrendAnalysisRepository["getClassTrend"]>(),
+      queryStudentTrends:
+        jest.fn<TrendAnalysisRepository["queryStudentTrends"]>(),
+      queryClassTrends: jest.fn<TrendAnalysisRepository["queryClassTrends"]>(),
+      deleteStudentTrend:
+        jest.fn<TrendAnalysisRepository["deleteStudentTrend"]>(),
+      deleteClassTrend: jest.fn<TrendAnalysisRepository["deleteClassTrend"]>(),
     };
     trendService = new TrendAnalysisService(mockRepository);
   });
@@ -42,7 +44,7 @@ describe("TrendAnalysisService", () => {
 
       expect(result.student).toBe(studentName);
       expect(result.dataPoints).toHaveLength(3);
-      expect(result.dataPoints[0].emotion).toBe(3.5);
+      expect(result.dataPoints[0]!.emotion).toBe(3.5);
       expect(result.metrics.averageEmotion).toBeCloseTo(3.73, 1);
       expect(result.metrics.totalRecords).toBe(3);
     });
@@ -59,10 +61,10 @@ describe("TrendAnalysisService", () => {
       const result = await trendService.analyzeStudentTrend(studentName, records);
 
       expect(result.dataPoints).toHaveLength(2);
-      expect(result.dataPoints[0].recordCount).toBe(3);
-      expect(result.dataPoints[0].emotion).toBeCloseTo(3.5, 1);
-      expect(result.dataPoints[1].recordCount).toBe(1);
-      expect(result.dataPoints[1].emotion).toBe(3.8);
+      expect(result.dataPoints[0]!.recordCount).toBe(3);
+      expect(result.dataPoints[0]!.emotion).toBeCloseTo(3.5, 1);
+      expect(result.dataPoints[1]!.recordCount).toBe(1);
+      expect(result.dataPoints[1]!.emotion).toBe(3.8);
     });
 
     it("should handle empty records array", async () => {
@@ -81,9 +83,9 @@ describe("TrendAnalysisService", () => {
 
       const result = await trendService.analyzeStudentTrend(studentName, records);
 
-      expect(result.dataPoints[0].date).toEqual(new Date("2026-03-01"));
-      expect(result.dataPoints[1].date).toEqual(new Date("2026-03-02"));
-      expect(result.dataPoints[2].date).toEqual(new Date("2026-03-03"));
+      expect(result.dataPoints[0]!.date).toEqual(new Date("2026-03-01"));
+      expect(result.dataPoints[1]!.date).toEqual(new Date("2026-03-02"));
+      expect(result.dataPoints[2]!.date).toEqual(new Date("2026-03-03"));
     });
 
     it("should calculate correct trend direction", async () => {
@@ -267,8 +269,8 @@ describe("TrendAnalysisService", () => {
       const anomalies = trendService.detectAnomalies(values, 2);
 
       expect(anomalies).toHaveLength(1);
-      expect(anomalies[0].value).toBe(5.0);
-      expect(anomalies[0].index).toBe(4);
+      expect(anomalies[0]!.value).toBe(5.0);
+      expect(anomalies[0]!.index).toBe(4);
     });
 
     it("should return empty array when no anomalies detected", () => {
@@ -403,7 +405,7 @@ describe("TrendAnalysisService", () => {
         ],
       });
 
-      (mockRepository.saveStudentTrend as jest.Mock).mockResolvedValue(
+      jest.mocked(mockRepository.saveStudentTrend).mockResolvedValue(
         analysis,
       );
 
@@ -425,7 +427,7 @@ describe("TrendAnalysisService", () => {
       });
 
       const error = new Error("Repository save failed");
-      (mockRepository.saveStudentTrend as jest.Mock).mockRejectedValue(error);
+      jest.mocked(mockRepository.saveStudentTrend).mockRejectedValue(error);
 
       await expect(trendService.saveStudentTrend(analysis)).rejects.toThrow(
         "Repository save failed",
@@ -474,7 +476,7 @@ describe("TrendAnalysisService", () => {
         ],
       });
 
-      (mockRepository.saveClassTrend as jest.Mock).mockResolvedValue(analysis);
+      jest.mocked(mockRepository.saveClassTrend).mockResolvedValue(analysis);
 
       const result = await trendService.saveClassTrend(analysis);
 
@@ -495,7 +497,7 @@ describe("TrendAnalysisService", () => {
         ],
       });
 
-      (mockRepository.getStudentTrend as jest.Mock).mockResolvedValue(analysis);
+      jest.mocked(mockRepository.getStudentTrend).mockResolvedValue(analysis);
 
       const result = await trendService.getStudentTrend("Alice");
 
@@ -504,7 +506,7 @@ describe("TrendAnalysisService", () => {
     });
 
     it("should return null when student trend not found", async () => {
-      (mockRepository.getStudentTrend as jest.Mock).mockResolvedValue(null);
+      jest.mocked(mockRepository.getStudentTrend).mockResolvedValue(null);
 
       const result = await trendService.getStudentTrend("NonExistent");
 
@@ -530,7 +532,7 @@ describe("TrendAnalysisService", () => {
         ],
       });
 
-      (mockRepository.getClassTrend as jest.Mock).mockResolvedValue(analysis);
+      jest.mocked(mockRepository.getClassTrend).mockResolvedValue(analysis);
 
       const result = await trendService.getClassTrend("Class 3-A");
 
@@ -539,7 +541,7 @@ describe("TrendAnalysisService", () => {
     });
 
     it("should return null when class trend not found", async () => {
-      (mockRepository.getClassTrend as jest.Mock).mockResolvedValue(null);
+      jest.mocked(mockRepository.getClassTrend).mockResolvedValue(null);
 
       const result = await trendService.getClassTrend("NonExistent");
 

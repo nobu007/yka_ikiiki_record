@@ -198,11 +198,11 @@ export class TrendAnalysisService {
     const anomalies: AnomalyDataPoint[] = [];
 
     for (let i = 0; i < values.length; i++) {
-      const deviation = Math.abs(values[i] - mean);
+      const deviation = Math.abs(values[i]! - mean);
       if (deviation > threshold) {
         anomalies.push({
           index: i,
-          value: values[i],
+          value: values[i]!,
           deviation,
         });
       }
@@ -251,8 +251,8 @@ export class TrendAnalysisService {
     let sumSq2 = 0;
 
     for (let i = 0; i < n; i++) {
-      const diff1 = series1[i] - mean1;
-      const diff2 = series2[i] - mean2;
+      const diff1 = series1[i]! - mean1;
+      const diff2 = series2[i]! - mean2;
       numerator += diff1 * diff2;
       sumSq1 += diff1 * diff1;
       sumSq2 += diff2 * diff2;
@@ -320,7 +320,7 @@ export class TrendAnalysisService {
     const dateMap = new Map<string, { emotions: number[]; recordCount: number }>();
 
     for (const record of records) {
-      const dateKey = record.date.toISOString().split("T")[0];
+      const dateKey = record.date.toISOString().split("T")[0]!;
 
       if (!dateMap.has(dateKey)) {
         dateMap.set(dateKey, { emotions: [], recordCount: 0 });

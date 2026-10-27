@@ -1,10 +1,12 @@
 version: "1.0"
 budget:
   terms_max: 80
+  invariants_max: 60
   draft_ratio_max: 0.30
   unmapped_ratio_max: 0.20
 current_usage:
-  terms_count: 43
+  terms_count: 51
+  invariants_count: 60
   draft_count: 0
   unmapped_count: 0
 status: "HEALTHY"

@@ -1,8 +1,10 @@
 # PROJECT INVARIANTS
 # Immutable architectural constraints that MUST never be violated
+# GC cycle-229: reduced 100 -> 60 entries (B-10 cap). Duplicates merged into
+# surviving IDs (merge map recorded in ontology_metrics.json gc_actions).
 
 version: 1.1.0
-last_updated: 2026-03-08
+last_updated: 2026-10-15
 
 invariants:
   # ARCHITECTURAL INVARIANTS
@@ -86,11 +88,13 @@ invariants:
     name: Emotion_Value_Range
     category: domain
     severity: CRITICAL
-    description: Emotion scores must always be within valid range
-    constraint: "Emotion values must be between 1.0 and 5.0 inclusive"
-    validation: "All Record entities and generated stats enforce 1.0-5.0 range"
+    description: Emotion scores must always be within valid range across records, generation, and stats
+    constraint: "All emotion values - Record entities, EmotionGenerator output, StatsService-generated avgEmotion - must be between 1.0 and 5.0 inclusive"
+    validation: "Record.test.ts, EmotionGenerator.test.ts, and StatsService.test.ts enforce 1.0-5.0 range"
     rationale: "Emotion scores are normalized to 1-5 scale for consistency"
-    related_terms: ["Record", "Stats", "EmotionGenerator"]
+    related_terms: ["Record", "Stats", "EmotionGenerator", "DataGenerationConfig", "StatsService"]
+    status: "stable"
+    strength: "hard"
 
   - id: INV-DOM-002
     name: Stats_Structure_Completeness
@@ -98,21 +102,12 @@ invariants:
     severity: CRITICAL
     description: Stats entity must contain all required subsections
     constraint: "Stats must have overview, monthlyStats, studentStats, dayOfWeekStats, emotionDistribution, timeOfDayStats"
-    validation: "StatsRepository and StatsService ensure complete structure"
+    validation: "StatsService.test.ts and StatsRepository ensure complete structure"
     rationale: "Dashboard and UI depend on complete stats structure"
     related_terms: ["Stats", "StatsRepository", "StatsService"]
+    status: "stable"
+    strength: "hard"
 
-  - id: INV-DOM-003
-    name: Record_Optional_Fields
-    category: domain
-    severity: HIGH
-    description: Record entity must allow optional comment and metadata
-    constraint: "id, comment, createdAt, updatedAt are optional; emotion, date, student are required"
-    validation: "Record.test.ts verifies creation with and without optional fields"
-    rationale: "Supports flexible record creation and persistence lifecycle"
-    related_terms: ["Record"]
-
-  # RESILIENCE INVARIANTS
   - id: INV-RES-001
     name: CircuitBreaker_State_Transitions
     category: resilience
@@ -122,16 +117,20 @@ invariants:
     validation: "CircuitBreaker.test.ts verifies state transitions and reset behavior"
     rationale: "Prevents cascading failures in distributed systems"
     related_terms: ["CircuitBreaker", "AppError"]
+    status: "stable"
+    strength: "hard"
 
   - id: INV-RES-002
     name: CircuitBreaker_Failure_Counting
     category: resilience
     severity: HIGH
     description: CircuitBreaker must accurately track failures and reset on success
-    constraint: "Failure count resets to 0 on successful operation or manual reset"
-    validation: "CircuitBreaker tracks failureCount and resets appropriately"
+    constraint: "Failure count increments on failure and resets to 0 on successful operation or manual reset"
+    validation: "CircuitBreaker.test.ts verifies failure count tracking and reset"
     rationale: "Accurate failure tracking enables correct circuit state management"
     related_terms: ["CircuitBreaker"]
+    status: "stable"
+    strength: "hard"
 
   # REPOSITORY INVARIANTS
   - id: INV-REP-001
@@ -143,6 +142,8 @@ invariants:
     validation: "StatsRepository.contract.test.ts enforces interface compliance"
     rationale: "Ensures swappable repository implementations (Prisma, Mock)"
     related_terms: ["StatsRepository", "IRecordRepository", "PrismaRecordRepository", "MockStatsRepository"]
+    status: "stable"
+    strength: "hard"
 
   - id: INV-REP-002
     name: Repository_Data_Isolation
@@ -153,48 +154,34 @@ invariants:
     validation: "Repository tests verify no state leakage between operations"
     rationale: "Prevents data corruption in concurrent scenarios"
     related_terms: ["StatsRepository", "IRecordRepository"]
+    status: "stable"
+    strength: "hard"
 
   # UTILITY INVARIANTS
   - id: INV-UTIL-001
     name: Math_Function_Boundary_Conditions
     category: utility
     severity: HIGH
-    description: Math utilities must handle edge cases (empty arrays, equal bounds, out-of-range)"
-    constraint: "clamp, average, and other math functions handle edge cases gracefully"
-    validation: "statsCalculator.basic.test.ts verifies boundary conditions"
+    description: Math utilities must handle edge cases (empty arrays, equal bounds, out-of-range)
+    constraint: "clamp(value, min, max) enforces range boundaries (min when below, max when above); average([]) returns 0 (not NaN/undefined); other math functions handle edge cases gracefully"
+    validation: "statsCalculator.basic.test.ts verifies clamp, average, and boundary conditions"
     rationale: "Prevents NaN and undefined errors in calculations"
     related_terms: ["StatsCalculator"]
-
-  - id: INV-UTIL-002
-    name: Average_Empty_Array_Handling
-    category: utility
-    severity: MEDIUM
-    description: Average function must return 0 for empty arrays
-    constraint: "average([]) === 0, not NaN or undefined"
-    validation: "statsCalculator.basic.test.ts verifies empty array behavior"
-    rationale: "Provides predictable behavior for empty datasets"
-    related_terms: ["StatsCalculator"]
-
-  - id: INV-UTIL-003
-    name: Clamp_Function_Range_Enforcement
-    category: utility
-    severity: HIGH
-    description: Clamp function must enforce value boundaries
-    constraint: "clamp(value, min, max) returns value when within range, min when below, max when above"
-    validation: "statsCalculator.basic.test.ts verifies clamp behavior with edge cases"
-    rationale: "Ensures predictable value range enforcement"
-    related_terms: ["StatsCalculator"]
+    status: "stable"
+    strength: "hard"
 
   # LOGGING INVARIANTS
   - id: INV-LOG-001
-    name: Structured_Logging_Required_Fields
+    name: Structured_Logging_Contract
     category: logging
     severity: HIGH
-    description: All log entries must contain required structured fields
-    constraint: "Log entries must have: level, category, operation, timestamp, correlationId, metadata, visibility"
-    validation: "structured-logger.test.ts verifies all required fields are present"
-    rationale: "Ensures log entries are queryable and traceable"
+    description: All log entries must contain required structured fields; logger must expose level convenience methods
+    constraint: "Log entries must have: level, category, operation, timestamp, correlationId, metadata, visibility; logger must provide debug(), info(), warn(), error(), fatal() convenience methods"
+    validation: "structured-logger.test.ts verifies required fields and convenience methods"
+    rationale: "Ensures log entries are queryable, traceable, and ergonomic"
     related_terms: ["StructuredLogger"]
+    status: "stable"
+    strength: "hard"
 
   - id: INV-LOG-002
     name: Log_Level_Visibility_Mapping
@@ -205,6 +192,8 @@ invariants:
     validation: "structured-logger.test.ts verifies visibility mapping for convenience methods"
     rationale: "Prevents sensitive information leakage in debug logs"
     related_terms: ["StructuredLogger"]
+    status: "stable"
+    strength: "hard"
 
   - id: INV-LOG-003
     name: Log_Correlation_ID_Tracking
@@ -215,6 +204,8 @@ invariants:
     validation: "structured-logger.correlation.test.ts verifies correlation ID generation"
     rationale: "Enables distributed tracing and debugging"
     related_terms: ["StructuredLogger"]
+    status: "stable"
+    strength: "hard"
 
   - id: INV-LOG-004
     name: Log_Size_Management
@@ -225,6 +216,8 @@ invariants:
     validation: "structured-logger.sizemanagement.test.ts verifies size limits"
     rationale: "Prevents memory leaks from unbounded log growth"
     related_terms: ["StructuredLogger"]
+    status: "stable"
+    strength: "hard"
 
   # TIMEOUT INVARIANTS
   - id: INV-TIME-001
@@ -236,6 +229,8 @@ invariants:
     validation: "timeout.test.ts verifies DEFAULT_TIMEOUTS values"
     rationale: "Provides consistent timeout behavior across operations"
     related_terms: ["APITimeout", "TimeoutError"]
+    status: "stable"
+    strength: "hard"
 
   - id: INV-TIME-002
     name: Timeout_Error_Propagation
@@ -246,58 +241,34 @@ invariants:
     validation: "timeout.test.ts verifies error propagation before timeout"
     rationale: "Prevents masking actual operation failures with timeout errors"
     related_terms: ["TimeoutError", "APITimeout"]
+    status: "stable"
+    strength: "hard"
 
   # LOOP DETECTION INVARIANTS
   - id: INV-LOOP-001
-    name: Loop_Detection_Maximum_Iterations
+    name: Loop_Detector_Contract
     category: loop_detection
     severity: CRITICAL
-    description: Loop detectors must enforce maximum iteration limits
-    constraint: "Default max iterations = 1000; custom limits allowed but must be enforced"
-    validation: "loop-detector.test.ts verifies InfiniteLoopError thrown on exceeded iterations"
-    rationale: "Prevents infinite loops from hanging the application"
+    description: Loop detectors must enforce maximum iteration limits with per-operation tracking and time-window reset
+    constraint: "Default max iterations = 1000 (custom limits must be enforced); each operation ID has an independent iteration counter; counters reset after time window (default 30000ms)"
+    validation: "loop-detector.test.ts verifies InfiniteLoopError, per-operation counters, and time-window reset"
+    rationale: "Prevents infinite loops from hanging the application without blocking legitimate long operations"
     related_terms: ["LoopDetector", "InfiniteLoopError"]
-
-  - id: INV-LOOP-002
-    name: Loop_Detection_Per_Operation_Tracking
-    category: loop_detection
-    severity: HIGH
-    description: Loop detectors must track iteration counts independently for each operation ID
-    constraint: "Each operation ID has independent iteration counter"
-    validation: "loop-detector.test.ts verifies different operation IDs don't interfere"
-    rationale: "Prevents false positives from multiple concurrent loops"
-    related_terms: ["LoopDetector"]
-
-  - id: INV-LOOP-003
-    name: Loop_Detection_Time_Window_Reset
-    category: loop_detection
-    severity: MEDIUM
-    description: Loop detectors must reset counters after time window expires
-    constraint: "Counters reset after time window (default 30000ms)"
-    validation: "loop-detector.test.ts verifies counter reset after timeout"
-    rationale: "Allows legitimate long-running operations to complete"
-    related_terms: ["LoopDetector"]
+    status: "stable"
+    strength: "hard"
 
   # MEMORY MONITORING INVARIANTS
   - id: INV-MEM-001
-    name: Memory_Monitor_Lifecycle_Management
+    name: Memory_Monitor_Contract
     category: memory
     severity: HIGH
-    description: Memory monitors must support proper start/stop/destroy lifecycle
-    constraint: "Multiple start calls must be idempotent; destroy must cleanup resources"
-    validation: "memory-monitor.lifecycle.test.ts verifies lifecycle methods"
-    rationale: "Prevents resource leaks and duplicate monitoring"
+    description: Memory monitors must support proper lifecycle and provide accurate heap usage metrics
+    constraint: "Multiple start calls must be idempotent; destroy must cleanup resources; usage returns heapUsed, heapTotal, external, arrayBuffers, rss"
+    validation: "memory-monitor.lifecycle.test.ts verifies lifecycle methods and usage object structure"
+    rationale: "Prevents resource leaks and enables accurate memory tracking and alerting"
     related_terms: ["MemoryMonitor"]
-
-  - id: INV-MEM-002
-    name: Memory_Monitor_Usage_Calculation
-    category: memory
-    severity: MEDIUM
-    description: Memory monitors must provide accurate heap usage metrics
-    constraint: "Must return heapUsed, heapTotal, external, arrayBuffers, rss"
-    validation: "memory-monitor.lifecycle.test.ts verifies usage object structure"
-    rationale: "Enables accurate memory tracking and alerting"
-    related_terms: ["MemoryMonitor"]
+    status: "stable"
+    strength: "hard"
 
   # GLOBAL SINGLETONS INVARIANTS
   - id: INV-SINGLETON-001
@@ -309,6 +280,8 @@ invariants:
     validation: "Resilience test suites verify global instances exist"
     rationale: "Provides shared resilience state across application"
     related_terms: ["CircuitBreaker", "StructuredLogger", "LoopDetector", "MemoryMonitor"]
+    status: "stable"
+    strength: "soft"
 
   # WORKFLOW INVARIANTS
   - id: INV-WORK-001
@@ -331,12 +304,12 @@ invariants:
 
   # DOMAIN INVARIANTS (EXTRACTED FROM TESTS)
   - id: INV-DOM-004
-    name: Record_Required_Fields
+    name: Record_Field_Contract
     category: domain
     severity: CRITICAL
-    description: Record entity must have required fields (emotion, date, student) and optional fields (id, comment, createdAt, updatedAt)
-    constraint: "emotion, date, student are required; id, comment, createdAt, updatedAt are optional"
-    validation: "Record.test.ts verifies creation with and without optional fields"
+    description: Record entity must have required fields (emotion, date, student) and optional fields (id, comment, createdAt, updatedAt); student accepts various identifier formats
+    constraint: "emotion, date, student are required; id, comment, createdAt, updatedAt are optional; student accepts Japanese text, English text, and alphanumeric values"
+    validation: "Record.test.ts verifies creation with and without optional fields and identifier formats ('学生1', 'Student A', '生徒1')"
     rationale: "Ensures data integrity for emotion records while supporting flexible creation and persistence lifecycle"
     related_terms: ["Record"]
     status: "stable"
@@ -347,24 +320,12 @@ invariants:
     category: domain
     severity: CRITICAL
     description: Emotion values must support decimal precision to 1 decimal place for calculations
-    constraint: "Emotion values accept decimal numbers with 1 decimal place precision"
+    constraint: "Emotion values accept decimal numbers with 1 decimal place precision (e.g., 3.7, 4.5); decimals are preserved, statsCalculator rounds to 1 decimal"
     validation: "Record.test.ts accepts 3.7, 4.5; statsCalculator rounds to 1 decimal"
     rationale: "Enables precise emotion tracking and statistical analysis"
     related_terms: ["Record", "EmotionGenerator", "StatsCalculator"]
     status: "stable"
     strength: "hard"
-
-  - id: INV-DOM-006
-    name: Student_Identifier_Flexibility
-    category: domain
-    severity: MEDIUM
-    description: Student field must accept various identifier formats (Japanese, English, alphanumeric)
-    constraint: "student field accepts Japanese text, English text, and alphanumeric values"
-    validation: "Record.test.ts tests '学生1', 'Student A', '生徒1'"
-    rationale: "Supports flexible student identification across different systems"
-    related_terms: ["Record"]
-    status: "stable"
-    strength: "soft"
 
   - id: INV-DOM-007
     name: Date_Range_Handling
@@ -394,10 +355,10 @@ invariants:
     name: Seasonal_Effect_Bounds
     category: domain
     severity: CRITICAL
-    description: Seasonal and event impact factors must be within [0, 1] range
-    constraint: "SEASONAL_IMPACT in [0, 1], MAX_EVENT_IMPACT in [0, 1]"
-    validation: "DataGeneration.config.test.ts verifies impact bounds"
-    rationale: "Prevents excessive emotion modifications from seasonal/event effects"
+    description: Seasonal and event impact factors must be within [0, 1] range; seasonal effect values must be non-negative
+    constraint: "SEASONAL_IMPACT in [0, 1], MAX_EVENT_IMPACT in [0, 1]; seasonalEffect.spring/summer/autumn/winter >= 0"
+    validation: "DataGeneration.config.test.ts and DataGeneration.seasonal.test.ts verify impact bounds and non-negative values"
+    rationale: "Prevents excessive or invalid seasonal/event emotion modifications"
     related_terms: ["DataGenerationConfig", "EmotionGenerator"]
     status: "stable"
     strength: "hard"
@@ -406,11 +367,11 @@ invariants:
     name: Emotion_Pattern_Generation
     category: domain
     severity: CRITICAL
-    description: All emotion distribution patterns (normal, bimodal, stress, happy) must generate values within [1.0, 5.0] range
-    constraint: "All patterns return values in range [1.0, 5.0]"
-    validation: "EmotionGenerator.test.ts and statsCalculator.emotion.test.ts verify pattern bounds"
-    rationale: "Ensures pattern-based generation respects emotion bounds"
-    related_terms: ["EmotionDistributionPattern", "EmotionGenerator"]
+    description: All emotion distribution patterns must be supported and generate values within [1.0, 5.0] range
+    constraint: "All 4 patterns (normal, bimodal, stress, happy) are supported and return values in range [1.0, 5.0]"
+    validation: "EmotionGenerator.test.ts and statsCalculator.emotion.test.ts verify pattern support and bounds"
+    rationale: "Ensures pattern-based generation is complete and respects emotion bounds"
+    related_terms: ["EmotionDistributionPattern", "EmotionGenerator", "DataGenerationConfig"]
     status: "stable"
     strength: "hard"
 
@@ -423,18 +384,6 @@ invariants:
     validation: "StatsOverview.test.ts verifies zero count handling"
     rationale: "Provides predictable behavior for empty datasets"
     related_terms: ["StatsOverview", "Stats"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-DOM-012
-    name: Seasonal_Effect_Non_Negative
-    category: domain
-    severity: CRITICAL
-    description: SeasonalEffect values (spring, summer, autumn, winter) must be non-negative
-    constraint: "seasonalEffect.spring/summer/autumn/winter >= 0"
-    validation: "DataGeneration.seasonal.test.ts verifies non-negative values"
-    rationale: "Prevents invalid negative seasonal adjustments"
-    related_terms: ["DataGenerationConfig"]
     status: "stable"
     strength: "hard"
 
@@ -512,26 +461,14 @@ invariants:
     strength: "hard"
 
   # UTILITY INVARIANTS (EXTRACTED FROM TESTS)
-  - id: INV-UTL-004
-    name: Trendline_Null_Handling
-    category: utility
-    severity: CRITICAL
-    description: calculateTrendline must handle null/undefined values by converting them to 0
-    constraint: "Null/undefined values converted to 0 in trendline calculation"
-    validation: "statsCalculator.stats.test.ts verifies null becomes 0.0"
-    rationale: "Prevents NaN propagation in trend calculations"
-    related_terms: ["StatsCalculator"]
-    status: "stable"
-    strength: "hard"
-
   - id: INV-UTL-005
-    name: Trendline_Length_Limit
+    name: Trendline_Contract
     category: utility
     severity: CRITICAL
-    description: calculateTrendline must return maximum 7 most recent values
-    constraint: "Trendline returns at most 7 most recent values"
-    validation: "statsCalculator.stats.test.ts verifies 10-element input returns 7-element output"
-    rationale: "Maintains manageable trendline size for UI rendering"
+    description: calculateTrendline must handle null/undefined values and cap output length
+    constraint: "Null/undefined values converted to 0; returns at most 7 most recent values"
+    validation: "statsCalculator.stats.test.ts verifies null becomes 0.0 and 10-element input returns 7-element output"
+    rationale: "Prevents NaN propagation and maintains manageable trendline size for UI rendering"
     related_terms: ["StatsCalculator"]
     status: "stable"
     strength: "hard"
@@ -590,7 +527,7 @@ invariants:
     category: ui
     severity: CRITICAL
     description: ChartWrapper must provide proper ARIA labels for loading (role="status"), error (role="alert"), and chart region (role="region")
-    constraint: "ARIA labels required: loading (role=status), error (role=alert), chart (role=region)"
+    constraint: "ARIA labels required: loading (role=status), error (role=alert), chart (role=region); error state must include an aria-label describing the error"
     validation: "ChartWrapper.accessibility.test.tsx verifies all ARIA labels"
     rationale: "Ensures accessibility for screen readers"
     related_terms: ["ChartWrapper"]
@@ -601,48 +538,24 @@ invariants:
     name: Chart_Error_Resilience
     category: ui
     severity: CRITICAL
-    description: DynamicBarChart must handle data transformation errors (property access throws, null/undefined values) without crashing
+    description: Chart components must handle data transformation errors (property access throws, null/undefined values) without crashing
     constraint: "Chart handles data errors: property throws, null values, undefined values without crash"
     validation: "DynamicBarChart.errorHandling.test.tsx verifies multiple error scenarios"
     rationale: "Prevents UI crashes from malformed data"
-    related_terms: ["DynamicBarChart"]
+    related_terms: ["DynamicBarChart", "ChartWrapper"]
     status: "stable"
     strength: "hard"
 
   # ERROR HANDLING INVARIANTS (EXTRACTED FROM TESTS)
   - id: INV-ERR-001
-    name: AppError_Type_Guard_Contract
+    name: Error_Type_Guard_Contract
     category: error_handling
     severity: CRITICAL
-    description: Type guards must accurately identify AppError instances and reject non-AppError values
-    constraint: "isAppError() returns true for AppError subclasses, false for Error/null/undefined/string"
-    validation: "error-handler.guards.test.ts verifies type guard contract"
-    rationale: "Enables type narrowing and safe error handling"
+    description: Type guards must accurately identify AppError instances and error subclasses
+    constraint: "isAppError() returns true for AppError subclasses, false for Error/null/undefined/string; isNetworkError() returns true for statusCode=0 or ERROR_CODES.NETWORK; ValidationError instances have statusCode=400 and code=VALIDATION"
+    validation: "error-handler.guards.test.ts verifies type guard contracts"
+    rationale: "Enables type narrowing and standardized error identification across the application"
     related_terms: ["AppError", "ValidationError", "NetworkError"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-ERR-002
-    name: NetworkError_StatusCode_Zero
-    category: error_handling
-    severity: CRITICAL
-    description: NetworkError must be identified by statusCode 0 or ERROR_CODES.NETWORK
-    constraint: "isNetworkError() returns true for statusCode=0 or ERROR_CODES.NETWORK"
-    validation: "error-handler.guards.test.ts verifies statusCode 0 detection"
-    rationale: "Standardizes network error identification across the application"
-    related_terms: ["NetworkError", "AppError"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-ERR-003
-    name: ValidationError_StatusCode_400
-    category: error_handling
-    severity: CRITICAL
-    description: ValidationError must have statusCode 400 and ERROR_CODES.VALIDATION
-    constraint: "ValidationError instances have statusCode=400 and code=VALIDATION"
-    validation: "error-handler.guards.test.ts verifies ValidationError properties"
-    rationale: "Standardizes validation error HTTP mapping"
-    related_terms: ["ValidationError", "AppError"]
     status: "stable"
     strength: "hard"
 
@@ -651,22 +564,10 @@ invariants:
     name: Analytics_Response_Structure
     category: api
     severity: CRITICAL
-    description: GET /api/analytics must return trend, summary, and distribution properties
-    constraint: "Response JSON contains trend[], summary{}, distribution{}"
-    validation: "analytics/route.basic.test.ts verifies response structure"
+    description: GET /api/analytics must return trend, summary, and distribution properties with a valid trend direction enum
+    constraint: "Response JSON contains trend[], summary{}, distribution{}; summary.trendDirection in ['up', 'down', 'stable']"
+    validation: "analytics/route.basic.test.ts verifies response structure and trend direction enum"
     rationale: "Ensures frontend can depend on complete analytics data"
-    related_terms: ["Stats"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-API-002
-    name: Analytics_Trend_Direction_Enum
-    category: api
-    severity: CRITICAL
-    description: "Analytics summary trendDirection must be one of: up, down, stable"
-    constraint: "summary.trendDirection in ['up', 'down', 'stable']"
-    validation: "analytics/route.basic.test.ts verifies trend direction enum"
-    rationale: "Prevents invalid trend direction values in UI"
     related_terms: ["Stats"]
     status: "stable"
     strength: "hard"
@@ -708,73 +609,25 @@ invariants:
     strength: "hard"
 
   - id: INV-API-006
-    name: Export_CSV_Escaping_Commas
+    name: Export_CSV_RFC4180_Escaping
     category: api
     severity: CRITICAL
-    description: CSV export must escape field values containing commas by wrapping in quotes
-    constraint: "Fields with commas are wrapped in double quotes"
-    validation: "export/route.csv.test.ts verifies comma escaping"
-    rationale: "Prevents CSV parsing errors for names/comments with commas"
-    related_terms: ["Record"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-API-007
-    name: Export_CSV_Escaping_Quotes
-    category: api
-    severity: CRITICAL
-    description: CSV export must escape quotes by doubling them within quoted fields
-    constraint: "Quotes within fields are escaped as double quotes (\"\")"
-    validation: "export/route.csv.test.ts verifies quote escaping"
-    rationale: "Follows RFC 4180 CSV standard for quote escaping"
-    related_terms: ["Record"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-API-008
-    name: Export_CSV_Escaping_Newlines
-    category: api
-    severity: CRITICAL
-    description: CSV export must escape newlines in field values by wrapping in quotes
-    constraint: "Newlines in fields are preserved with quoted wrapping"
-    validation: "export/route.csv.test.ts verifies newline escaping"
-    rationale: "Preserves multi-line comments in CSV format"
-    related_terms: ["Record"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-API-009
-    name: Export_Content_Type_Header
-    category: api
-    severity: CRITICAL
-    description: CSV export must set Content-Type header to 'text/csv; charset=utf-8'
-    constraint: "Response Content-Type is 'text/csv; charset=utf-8'"
-    validation: "export/route.headers.test.ts verifies Content-Type header"
-    rationale: "Ensures proper CSV MIME type for browser download"
+    description: CSV export must escape commas, quotes, and newlines per RFC 4180
+    constraint: "Fields containing commas or newlines are wrapped in double quotes; quotes within fields are escaped as double quotes (\"\")"
+    validation: "export/route.csv.test.ts verifies comma, quote, and newline escaping"
+    rationale: "Prevents CSV parsing errors and follows RFC 4180 standard"
     related_terms: ["Record"]
     status: "stable"
     strength: "hard"
 
   - id: INV-API-010
-    name: Export_Content_Disposition_Header
+    name: Export_Response_Headers
     category: api
     severity: CRITICAL
-    description: CSV export must set Content-Disposition header with attachment and timestamped filename
-    constraint: "Content-Disposition matches 'attachment; filename=\"records-{timestamp}.csv\"'"
-    validation: "export/route.headers.test.ts verifies Content-Disposition format"
-    rationale: "Triggers browser download with unique filename"
-    related_terms: ["Record"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-API-011
-    name: Export_Unique_Filename_Generation
-    category: api
-    severity: HIGH
-    description: CSV export must generate unique filenames with different timestamps
-    constraint: "Each export request generates filename with unique timestamp"
-    validation: "export/route.headers.test.ts verifies filename uniqueness"
-    rationale: "Prevents filename collisions for multiple exports"
+    description: CSV export must set Content-Type and Content-Disposition headers with a unique timestamped filename
+    constraint: "Content-Type is 'text/csv; charset=utf-8'; Content-Disposition matches 'attachment; filename=\"records-{timestamp}.csv\"'; each request generates a unique timestamp"
+    validation: "export/route.headers.test.ts verifies header formats and filename uniqueness"
+    rationale: "Ensures proper CSV MIME type and triggers browser download without filename collisions"
     related_terms: ["Record"]
     status: "stable"
     strength: "hard"
@@ -805,361 +658,67 @@ invariants:
 
   # INFRASTRUCTURE INVARIANTS (EXTRACTED FROM TESTS)
   - id: INV-INF-001
-    name: Repository_Factory_Default_Provider
+    name: Repository_Factory_Config_Contract
     category: infrastructure
     severity: CRITICAL
-    description: Repository factory must default to MockStatsRepository when DATABASE_PROVIDER not set
-    constraint: "Missing DATABASE_PROVIDER returns MockStatsRepository"
-    validation: "repositoryFactory.test.ts verifies default provider"
-    rationale: "Ensures test environment works without configuration"
-    related_terms: ["StatsRepository", "MockStatsRepository"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-INF-002
-    name: Repository_Factory_Prisma_Validation
-    category: infrastructure
-    severity: CRITICAL
-    description: Repository factory must require DATABASE_URL when using Prisma provider
-    constraint: "DATABASE_PROVIDER=prisma requires DATABASE_URL to be set"
-    validation: "repositoryFactory.test.ts verifies Prisma validation"
-    rationale: "Prevents runtime errors from missing database connection string"
-    related_terms: ["StatsRepository", "PrismaStatsRepository"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-INF-003
-    name: Repository_Factory_Invalid_Provider_Rejection
-    category: infrastructure
-    severity: CRITICAL
-    description: Repository factory must throw error for invalid DATABASE_PROVIDER values
-    constraint: "Invalid DATABASE_PROVIDER values throw error"
-    validation: "repositoryFactory.test.ts verifies error on invalid provider"
-    rationale: "Fails fast on configuration errors"
-    related_terms: ["StatsRepository"]
+    description: Repository factory must resolve provider configuration deterministically and fail fast on errors
+    constraint: "Missing DATABASE_PROVIDER defaults to MockStatsRepository; DATABASE_PROVIDER=prisma requires DATABASE_URL to be set; invalid DATABASE_PROVIDER values throw error"
+    validation: "repositoryFactory.test.ts verifies default provider, Prisma validation, and invalid provider rejection"
+    rationale: "Ensures test environments work without configuration and prevents runtime errors from misconfiguration"
+    related_terms: ["StatsRepository", "MockStatsRepository", "PrismaStatsRepository"]
     status: "stable"
     strength: "hard"
 
   # HOOK INVARIANTS (EXTRACTED FROM TESTS)
   - id: INV-HOOK-001
-    name: useAsync_Initial_State
+    name: useAsync_Contract
     category: hook
     severity: HIGH
-    description: useAsync hook must initialize with correct default state
-    constraint: "Initial state must be: isLoading=false, error=null, data=null"
-    validation: "useAsync.test.ts verifies initial state values"
-    rationale: "Ensures predictable hook initialization"
-    related_terms: ["useAsync"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-HOOK-002
-    name: useAsync_State_Transitions
-    category: hook
-    severity: HIGH
-    description: useAsync hook must properly transition through loading states
-    constraint: "isLoading must be true during execution, false after completion"
-    validation: "useAsync.test.ts verifies state transitions during async operations"
-    rationale: "Ensures accurate loading state tracking"
-    related_terms: ["useAsync"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-HOOK-003
-    name: useAsync_Error_Handling
-    category: hook
-    severity: HIGH
-    description: useAsync hook must capture and store errors from failed operations
-    constraint: "On error, data must be null and error must be set"
-    validation: "useAsync.test.ts verifies error state after rejection"
-    rationale: "Ensures errors are properly surfaced to UI"
+    description: useAsync hook must initialize correctly, transition through loading states, and capture errors
+    constraint: "Initial state is isLoading=false, error=null, data=null; isLoading true during execution and false after completion; on error data=null and error set"
+    validation: "useAsync.test.ts verifies initial state, transitions, and error handling"
+    rationale: "Ensures predictable hook lifecycle and accurate loading/error state tracking"
     related_terms: ["useAsync", "AppError"]
     status: "stable"
     strength: "hard"
 
   - id: INV-HOOK-004
-    name: useNotification_Initial_State
+    name: useNotification_Contract
     category: hook
     severity: MEDIUM
-    description: useNotification hook must initialize with default notification state
-    constraint: "Initial state must be: show=false, message='', type='success'"
-    validation: "useNotification.test.ts verifies initial notification state"
-    rationale: "Ensures predictable notification initialization"
+    description: useNotification hook must initialize with default state and support all notification types
+    constraint: "Initial state is show=false, message='', type='success'; supports success, error, warning, info types"
+    validation: "useNotification.test.ts verifies initial state and all notification types"
+    rationale: "Ensures predictable notification behavior"
     related_terms: ["useNotification"]
     status: "stable"
     strength: "soft"
 
-  - id: INV-HOOK-005
-    name: useNotification_Type_Support
-    category: hook
-    severity: MEDIUM
-    description: useNotification hook must support all notification types
-    constraint: "Must support: success, error, warning, info types"
-    validation: "useNotification.test.ts verifies all notification types"
-    rationale: "Ensures comprehensive notification coverage"
-    related_terms: ["useNotification"]
-    status: "stable"
-    strength: "soft"
-
-  # CHART COMPONENT INVARIANTS
-  - id: INV-CHART-001
-    name: DynamicBarChart_Error_Resilience
-    category: chart
-    severity: HIGH
-    description: Chart components must handle data transformation errors gracefully
-    constraint: "Chart must not crash when data properties throw during access"
-    validation: "DynamicBarChart.errorHandling.test.ts verifies error handling"
-    rationale: "Ensures UI stability with malformed data"
-    related_terms: ["DynamicBarChart", "EmotionChart"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-CHART-002
-    name: ChartWrapper_Null_Undefined_Handling
-    category: chart
-    severity: HIGH
-    description: Chart components must handle null and undefined data values
-    constraint: "Charts must filter out null/undefined without crashing"
-    validation: "DynamicBarChart.errorHandling.test.ts verifies null handling"
-    rationale: "Ensures robustness with incomplete data"
-    related_terms: ["DynamicBarChart", "ChartWrapper"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-CHART-003
-    name: ChartWrapper_Loading_State_Priority
-    category: chart
-    severity: MEDIUM
-    description: ChartWrapper must prioritize loading state over error state
-    constraint: "When both loading and error are true, show loading UI"
-    validation: "ChartWrapper.loading.test.ts verifies loading priority"
-    rationale: "Prevents flickering during data fetch"
-    related_terms: ["ChartWrapper"]
-    status: "stable"
-    strength: "soft"
-
-  - id: INV-CHART-004
-    name: ChartWrapper_Accessibility_Labels
-    category: chart
-    severity: MEDIUM
-    description: ChartWrapper must provide proper ARIA labels for error states
-    constraint: "Error state must have aria-label describing the error"
-    validation: "ChartWrapper.accessibility.test.ts verifies ARIA labels"
-    rationale: "Ensures screen reader compatibility"
-    related_terms: ["ChartWrapper"]
-    status: "stable"
-    strength: "soft"
-
-  # DATA GENERATION INVARIANTS
-  - id: INV-GEN-001
-    name: EmotionGenerator_Range_Validation
+  # GENERATION INVARIANTS (EMOTION PATTERN HANDLING)
+  - id: INV-GEN-004
+    name: EmotionGenerator_Effects_Application
     category: generation
-    severity: HIGH
-    description: Generated emotion values must always be within valid range
-    constraint: "EmotionGenerator must output values between 1.0 and 5.0"
-    validation: "EmotionGenerator.test.ts verifies range enforcement"
-    rationale: "Prevents invalid emotion data in generated datasets"
+    severity: MEDIUM
+    description: EmotionGenerator must apply seasonal, event, and class-characteristic effects when configured
+    constraint: "When seasonalEffects=true, adjust emotion based on date; adjust emotion when date is within event start/end range; use classCharacteristics.volatility and baselineEmotion in generation"
+    validation: "EmotionGenerator.test.ts verifies seasonal/event effects and class characteristics"
+    rationale: "Enables realistic emotion variation for seasons, events, and class dynamics"
     related_terms: ["EmotionGenerator", "DataGenerationConfig"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-GEN-002
-    name: DataGeneration_Defaults_Existence
-    category: generation
-    severity: MEDIUM
-    description: DataGenerationConfig must have sensible defaults
-    constraint: "All optional config fields must have default values"
-    validation: "DataGeneration.defaults.test.ts verifies default values"
-    rationale: "Ensures config can be used without explicit values"
-    related_terms: ["DataGenerationConfig"]
-    status: "stable"
-    strength: "soft"
-
-  # BROWSER INVARIANTS (EXTRACTED FROM TESTS)
-  - id: INV-BRW-001
-    name: Browser_Reload_Idempotence
-    category: browser
-    severity: MEDIUM
-    description: reloadPage function must be callable multiple times without errors
-    constraint: "reloadPage() can be called multiple times without throwing"
-    validation: "browser.test.ts verifies multiple calls succeed"
-    rationale: "Ensures page reload functionality is robust"
-    related_terms: []
     status: "stable"
     strength: "soft"
 
   # SERVICE LAYER INVARIANTS
-  - id: INV-SVC-001
-    name: StatsService_Complete_Stats_Structure
-    category: service
-    severity: CRITICAL
-    description: StatsService must generate stats with all required subsections
-    constraint: "Generated stats must include: overview, monthlyStats, studentStats, dayOfWeekStats, emotionDistribution, timeOfDayStats"
-    validation: "StatsService.test.ts verifies all subsections exist"
-    rationale: "UI components depend on complete stats structure"
-    related_terms: ["StatsService", "Stats"]
-    status: "stable"
-    strength: "hard"
-
   - id: INV-SVC-002
-    name: StatsService_Default_Config_Fallback
+    name: StatsService_Defaults_Contract
     category: service
     severity: HIGH
-    description: StatsService must use default config when none provided
-    constraint: "generateSeedData() must work without config parameter"
-    validation: "StatsService.test.ts verifies default config usage"
-    rationale: "Ensures service can be called without configuration"
+    description: StatsService and DataGenerationConfig must work without explicit configuration
+    constraint: "generateSeedData() must work without config parameter; all optional DataGenerationConfig fields must have default values"
+    validation: "StatsService.test.ts and DataGeneration.defaults.test.ts verify default usage"
+    rationale: "Ensures service and config can be used without explicit values"
     related_terms: ["StatsService", "DataGenerationConfig"]
     status: "stable"
     strength: "hard"
-
-  - id: INV-SVC-003
-    name: StatsService_Emotion_Range_Validation
-    category: service
-    severity: HIGH
-    description: StatsService must ensure generated emotion values are in valid range
-    constraint: "Generated avgEmotion must be between 1.0 and 5.0"
-    validation: "StatsService.test.ts verifies emotion range constraints"
-    rationale: "Prevents invalid emotion data in seed data"
-    related_terms: ["StatsService", "EmotionGenerator"]
-    status: "stable"
-    strength: "hard"
-
-  # GENERATION INVARIANTS (EMOTION PATTERN HANDLING)
-  - id: INV-GEN-003
-    name: EmotionGenerator_Distribution_Pattern_Support
-    category: generation
-    severity: HIGH
-    description: EmotionGenerator must support all distribution patterns
-    constraint: "Must handle: normal, bimodal, stress, happy patterns"
-    validation: "EmotionGenerator.test.ts verifies all patterns produce valid emotions"
-    rationale: "Ensures flexible emotion data generation for different scenarios"
-    related_terms: ["EmotionGenerator", "DataGenerationConfig"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-GEN-004
-    name: EmotionGenerator_Seasonal_Effects_Application
-    category: generation
-    severity: MEDIUM
-    description: EmotionGenerator must apply seasonal effects when enabled
-    constraint: "When seasonalEffects=true, must adjust emotion based on date"
-    validation: "EmotionGenerator.test.ts verifies seasonal effects produce different values"
-    rationale: "Enables realistic emotion variation throughout the year"
-    related_terms: ["EmotionGenerator", "DataGenerationConfig"]
-    status: "stable"
-    strength: "soft"
-
-  - id: INV-GEN-005
-    name: EmotionGenerator_Event_Effects_Application
-    category: generation
-    severity: MEDIUM
-    description: EmotionGenerator must apply event effects during event periods
-    constraint: "Must adjust emotion when date is within event start/end range"
-    validation: "EmotionGenerator.test.ts verifies event effects modify emotion values"
-    rationale: "Enables modeling of special events (tests, festivals, etc.)"
-    related_terms: ["EmotionGenerator", "DataGenerationConfig"]
-    status: "stable"
-    strength: "soft"
-
-  - id: INV-GEN-006
-    name: EmotionGenerator_Class_Characteristics_Respect
-    category: generation
-    severity: MEDIUM
-    description: EmotionGenerator must respect class characteristics (volatility, baseline)
-    constraint: "Must use classCharacteristics.volatility and baselineEmotion in generation"
-    validation: "EmotionGenerator.test.ts verifies different volatility produces different distributions"
-    rationale: "Enables modeling different class dynamics and personalities"
-    related_terms: ["EmotionGenerator", "DataGenerationConfig"]
-    status: "stable"
-    strength: "soft"
-
-  # CIRCUIT BREAKER INVARIANTS
-  - id: INV-CIRCUIT-003
-    name: CircuitBreaker_Failure_Count_Accuracy
-    category: resilience
-    severity: HIGH
-    description: CircuitBreaker must accurately track and reset failure count
-    constraint: "Failure count must increment on failure, reset on success or manual reset"
-    validation: "CircuitBreaker.test.ts verifies failure count tracking"
-    rationale: "Accurate failure counting is essential for circuit state transitions"
-    related_terms: ["CircuitBreaker"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-CIRCUIT-004
-    name: CircuitBreaker_Global_Singleton_Provision
-    category: resilience
-    severity: MEDIUM
-    description: CircuitBreaker must provide a global singleton instance
-    constraint: "globalCircuitBreaker must be a shared CircuitBreaker instance"
-    validation: "CircuitBreaker.test.ts verifies globalCircuitBreaker exists"
-    rationale: "Provides convenient access to shared circuit breaker state"
-    related_terms: ["CircuitBreaker"]
-    status: "stable"
-    strength: "soft"
-
-  # STRUCTURED LOGGING INVARIANTS
-  - id: INV-LOG-005
-    name: StructuredLogger_Required_Fields_Presence
-    category: logging
-    severity: HIGH
-    description: All log entries must contain all required fields
-    constraint: "Log entries must have: level, category, operation, timestamp, correlationId, metadata, visibility"
-    validation: "structured-logger.test.ts verifies all required fields are present"
-    rationale: "Ensures log entries are queryable and traceable"
-    related_terms: ["StructuredLogger"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-LOG-006
-    name: StructuredLogger_Convenience_Methods_Complete
-    category: logging
-    severity: MEDIUM
-    description: StructuredLogger must provide convenience methods for all log levels
-    constraint: "Must provide: debug(), info(), warn(), error(), fatal() methods"
-    validation: "structured-logger.test.ts verifies all convenience methods create correct log levels"
-    rationale: "Provides ergonomic API for common logging scenarios"
-    related_terms: ["StructuredLogger"]
-    status: "stable"
-    strength: "soft"
-
-  - id: INV-LOG-007
-    name: StructuredLogger_Global_Singleton_Provision
-    category: logging
-    severity: MEDIUM
-    description: StructuredLogger must provide a global singleton instance
-    constraint: "globalLogger must be a shared StructuredLogger instance"
-    validation: "structured-logger.test.ts verifies globalLogger exists"
-    rationale: "Provides convenient access to shared logger state"
-    related_terms: ["StructuredLogger"]
-    status: "stable"
-    strength: "soft"
-
-  # RECORD ENTITY INVARIANTS
-  - id: INV-REC-001
-    name: Record_Optional_Fields_Flexibility
-    category: domain
-    severity: HIGH
-    description: Record entity must allow optional fields (id, comment, timestamps)
-    constraint: "id, comment, createdAt, updatedAt must be optional; emotion, date, student required"
-    validation: "Record.test.ts verifies creation with and without optional fields"
-    rationale: "Supports flexible record creation and persistence lifecycle"
-    related_terms: ["Record"]
-    status: "stable"
-    strength: "hard"
-
-  - id: INV-REC-002
-    name: Record_Emotion_Decimal_Support
-    category: domain
-    severity: MEDIUM
-    description: Record must support decimal emotion values
-    constraint: "Emotion field must accept decimal values (e.g., 3.7, 4.2)"
-    validation: "Record.test.ts verifies decimal emotion values are preserved"
-    rationale: "Enables granular emotion scoring rather than integer-only"
-    related_terms: ["Record"]
-    status: "stable"
-    strength: "soft"
 
 violation_handling:
   critical:

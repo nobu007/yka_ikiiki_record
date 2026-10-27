@@ -657,7 +657,7 @@ canonical_terms:
 
   AuthorizationService:
     id: "TERM-122"
-    layer: "application"
+    layer: "domain"
     status: "stable"
     definition: "認可を行うアプリケーションサービス。ロールベースアクセス制御（RBAC）と権限チェックを担当"
     synonyms: ["RBAC", "PermissionChecker"]
@@ -696,3 +696,79 @@ canonical_terms:
     evidence:
       - source: "src/components/auth/LoginForm.tsx"
         quote: "const LoginForm = memo(function LoginForm({ onSubmit, isLoading, error }: LoginFormProps)"
+
+  Backup:
+    id: "TERM-125"
+    layer: "domain"
+    status: "stable"
+    definition: "記録データの時点スナップショットを表すドメインエンティティ（バックアップ/リストア操作の単位）"
+    synonyms: ["Snapshot", "BackupData"]
+    boundaries:
+      includes: ["時点スナップショット", "checksum検証", "状態遷移 pending/in_progress/completed/failed"]
+      excludes: ["DB永続化（prismaモデルなし・InMemory運用）", "リストア後のドメイン操作"]
+    related_terms: ["Record", "RepositoryFactory", "APIRouteHandler"]
+    evidence:
+      - source: ".spec-workflow/specs/Backup/Backup_spec.md"
+        quote: "責務: バックアップデータの不変的な表現（時点スナップショット）"
+      - source: "src/domain/entities/Backup.ts"
+        quote: "export type BackupStatus = \"pending\" | \"in_progress\" | \"completed\" | \"failed\";"
+  NotificationProvider:
+    id: "TERM-126"
+    layer: "domain"
+    status: "stable"
+    definition: "通知プロバイダー（Email/SMS/Webhook/In-App/Slack）の設定・チャンネル・状態を管理するドメインエンティティ"
+    synonyms: ["通知プロバイダー", "NotificationChannelConfig"]
+    boundaries:
+      includes: ["プロバイダー設定", "チャンネル管理", "感情値アラート連携"]
+      excludes: ["UI通知トースト（src/components/common/Notification.tsx = UIComponentsのsynonym）", "useNotificationフック"]
+    related_terms: ["UIComponents", "DataService", "EmotionChart"]
+    evidence:
+      - source: ".spec-workflow/specs/NotificationProvider/NotificationProvider_spec.md"
+        quote: "通知プロバイダー（Email、SMS、Webhook、In-App、Slack）の設定、チャンネル、ステータスを管理するドメインエンティティ"
+      - source: "src/domain/entities/NotificationProvider.ts"
+        quote: "export enum NotificationProviderType"
+  TrendAnalysis:
+    id: "TERM-127"
+    layer: "domain"
+    status: "stable"
+    definition: "生徒・クラスの感情データの長期トレンド分析を表すドメイン概念（データポイント生成と分析結果）"
+    synonyms: ["トレンド分析", "TrendReport"]
+    boundaries:
+      includes: ["時系列データポイント", "感情値1.0-5.0", "生徒/クラス単位分析"]
+      excludes: ["個別レコードのCRUD", "DB永続化（InMemory運用）"]
+    related_terms: ["Stats", "StatsService", "EmotionChart"]
+    evidence:
+      - source: ".spec-workflow/specs/TrendAnalysis/TrendAnalysis_spec.md"
+        quote: "生徒およびクラスの感情データの長期的トレンド分析を提供する"
+      - source: "src/domain/entities/TrendAnalysis.ts"
+        quote: "export interface TrendDataPoint"
+  Anomaly:
+    id: "TERM-128"
+    layer: "domain"
+    status: "stable"
+    definition: "感情記録の統計的異常（急変・異常パターン・データ欠落）を表すドメインエンティティとその検知サービス"
+    synonyms: ["異常検知", "AnomalyDetection"]
+    boundaries:
+      includes: ["統計的異常検知", "stdDevThreshold=2既定", "データ欠落検出"]
+      excludes: ["通常統計集計（StatsService管轄）", "DB永続化（InMemory運用）"]
+    related_terms: ["Stats", "StatsService", "Record"]
+    evidence:
+      - source: ".spec-workflow/specs/AnomalyDetectionService/AnomalyDetectionService_spec.md"
+        quote: "学生の感情記録に対する統計的異常検知を行い、急激な変動、異常パターン、データの欠落を検出するドメインサービス"
+      - source: "src/domain/entities/Anomaly.ts"
+        quote: "export interface Anomaly"
+  AuditLog:
+    id: "TERM-129"
+    layer: "domain"
+    status: "stable"
+    definition: "ドメインデータの作成・更新・削除操作の監査証跡を提供するドメインエンティティ"
+    synonyms: ["監査ログ", "AuditTrail"]
+    boundaries:
+      includes: ["create/update/delete操作記録", "コンプライアンス証跡", "データ整合性検証"]
+      excludes: ["DB永続化（InMemory運用）", "アプリケーションログ（StructuredLogger管轄）"]
+    related_terms: ["StructuredLogger", "Record", "User"]
+    evidence:
+      - source: ".spec-workflow/specs/AuditLog/AuditLog_spec.md"
+        quote: "すべてのデータ変異操作をキャプチャする"
+      - source: "src/domain/entities/AuditLog.ts"
+        quote: "export type AuditOperation = \"create\" | \"update\" | \"delete\";"

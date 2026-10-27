@@ -24,3 +24,6 @@ Maximum 200 lines - this file can be regenerated and truncated.
 - README.md
 - .concept/invariants.yml
 - prisma/schema.prisma
+
+### 2026-10-12T19:35:37Z - cycle-227 concept sync (AUTO)
+- AUTO:NotificationProvider.boundary:domain_entity_vs_ui_toast (ACTIVE, expires 20 runs): NotificationProvider=domain entity; Notification=UI toast (UIComponents synonym); useNotification=hook. Linked: AMB-001. Revert triggers: primary_evidence_contradiction, ui_rename.

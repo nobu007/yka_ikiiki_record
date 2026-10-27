@@ -396,3 +396,118 @@ mappings:
       - "src/integration/"
     db: []
     api: []
+
+  User:
+    code_symbols:
+      - "src/domain/entities/User.ts"
+      - "src/infrastructure/repositories/PrismaUserRepository.ts"
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts"
+    db:
+      - "prisma/schema.prisma::model User"
+    api: []
+
+  UserRepository:
+    code_symbols:
+      - "src/domain/repositories/UserRepository.ts::interface UserRepository"
+    db: []
+    api: []
+
+  AuthenticationService:
+    code_symbols:
+      - "src/domain/services/AuthenticationService.ts::class AuthenticationService"
+    db: []
+    api:
+      - "GET+POST /api/auth/login"
+      - "GET+POST /api/auth/logout"
+      - "GET /api/auth/session"
+
+  AuthorizationService:
+    code_symbols:
+      - "src/application/services/AuthorizationService.ts::class AuthorizationService"
+    db: []
+    api: []
+
+  InMemoryUserRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts"
+    db: []
+    api: []
+
+  LoginForm:
+    code_symbols:
+      - "src/components/auth/LoginForm.tsx"
+    db: []
+    api: []
+
+  AuditLog:
+    code_symbols:
+      - "src/domain/entities/AuditLog.ts"
+      - "src/domain/repositories/AuditLogRepository.ts"
+      - "src/application/services/AuditService.ts"
+      - "src/infrastructure/repositories/InMemoryAuditLogRepository.ts"
+    db: []
+    api: []
+
+  Backup:
+    code_symbols:
+      - "src/domain/entities/Backup.ts"
+      - "src/domain/repositories/BackupRepository.ts"
+      - "src/application/services/BackupService.ts"
+      - "src/infrastructure/repositories/InMemoryBackupRepository.ts"
+    db: []
+    api:
+      - "POST /api/backup"
+      - "POST /api/restore"
+
+  Anomaly:
+    code_symbols:
+      - "src/domain/entities/Anomaly.ts"
+      - "src/domain/repositories/AnomalyRepository.ts"
+      - "src/domain/services/AnomalyDetectionService.ts"
+      - "src/infrastructure/storage/InMemoryAnomalyRepository.ts"
+    db: []
+    api: []
+
+  Notification:
+    code_symbols:
+      - "src/domain/entities/NotificationProvider.ts"
+      - "src/domain/repositories/NotificationProviderRepository.ts"
+      - "src/application/services/NotificationService.ts"
+      - "src/infrastructure/services/EmailNotificationProvider.ts"
+    db: []
+    api:
+      - "GET+POST /api/notifications/settings"
+      - "GET /api/notifications/history"
+
+  TrendAnalysis:
+    code_symbols:
+      - "src/domain/entities/TrendAnalysis.ts"
+      - "src/domain/repositories/TrendAnalysisRepository.ts"
+      - "src/application/services/TrendAnalysisService.ts"
+      - "src/components/charts/TrendReportChart.tsx"
+    db: []
+    api:
+      - "GET /api/trends"
+
+  Pagination:
+    code_symbols:
+      - "src/utils/pagination.ts"
+      - "src/types/pagination.ts"
+      - "src/presentation/hooks/usePagination.ts"
+      - "src/components/common/PaginationControl.tsx"
+    db: []
+    api: []
+
+  CsvExport:
+    code_symbols:
+      - "src/lib/export/csv.ts"
+      - "src/components/common/ExportButton.tsx"
+    db: []
+    api:
+      - "GET /api/export"
+
+  PerformanceMonitor:
+    code_symbols:
+      - "src/lib/resilience/performance-monitor.ts"
+    db: []
+    api: []

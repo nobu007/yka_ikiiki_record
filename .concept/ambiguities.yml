@@ -1,1 +1,85 @@
-ambiguities: []
+ambiguities:
+  - id: "AMB-AUTH-001"
+    term: "AuthorizationService"
+    topic: "データ変更系APIエンドポイントの認可方針"
+    severity: "high"
+    uncertainty: 0.72
+    candidates:
+      - "全データ変更系エンドポイントは認証+認可必須（RBAC適用）"
+      - "現状コードの通り認証なしで公開（意図的）"
+    missing_info:
+      - "認証なし公開が意図的か、実装漏れかを決める一次資料が存在しない"
+      - "本番デプロイ前にmiddleware/guardを追加する計画の所在"
+    linked_conflicts: ["CFLT-AUTH-001"]
+    auto_decision:
+      status: "applied"
+      decision_key: "AUTO:api.endpoints:auth_required"
+      chosen: "全データ変更系エンドポイントは認証+認可必須として概念上扱う（safety側）"
+      policy: "safety + reversibility"
+      confidence_auto: 0.7
+      decided_at_run: "2026-10-13T02:16:00+09:00"
+      expires_after_runs: 10
+      revert_triggers:
+        - "primary_evidence_contradiction"
+        - "security_risk"
+    last_touched_run: "2026-10-13T02:16:00+09:00"
+    evidence:
+      - source: "src/app/api/restore/route.ts#L11-L40"
+        quote: "POST /api/restore executes restoreBackup with no auth check in handler"
+
+  - id: "AMB-AUDIT-001"
+    term: "AuditLog"
+    topic: "restore操作の監査ログ型への包含"
+    severity: "medium"
+    uncertainty: 0.45
+    candidates:
+      - "AuditOperationに'restore'を追加する"
+      - "restoreを'update'として記録するようにBackupServiceを修正する"
+    missing_info:
+      - "監査ログの消費側（コンプライアンス要件）でoperation語彙の约定が未定義"
+    linked_conflicts: ["CFLT-AUDIT-001"]
+    auto_decision:
+      status: "applied"
+      decision_key: "AUTO:AuditLog.operation:include_restore"
+      chosen: "'restore'を正当な監査対象操作として概念に含める（union型の拡張を推奨）"
+      policy: "reversibility + industry_convention"
+      confidence_auto: 0.75
+      decided_at_run: "2026-10-13T02:16:00+09:00"
+      expires_after_runs: 20
+      revert_triggers:
+        - "primary_evidence_contradiction"
+    last_touched_run: "2026-10-13T02:16:00+09:00"
+    evidence:
+      - source: "src/domain/entities/AuditLog.ts#L22"
+        quote: "export type AuditOperation = \"create\" | \"update\" | \"delete\";"
+      - source: "src/application/services/BackupService.ts#L198-L203"
+        quote: "operation: \"restore\""
+
+  - id: "AMB-QUAL-001"
+    term: "CleanArchitecture"
+    topic: "ドキュメント品質主張と実コードの齟齬の扱い"
+    severity: "high"
+    uncertainty: 0.78
+    candidates:
+      - "コード実測を正とする（409 TS errors, 2490/2490 tests passing）"
+      - "ドキュメント主張を正とする（TS strict完全準拠・1393 tests, 2026-03-21時点）"
+    missing_info:
+      - "3月以降に追加された機能のコードが型検査を通過した記録が存在しない"
+    linked_conflicts: ["CFLT-QUAL-001"]
+    auto_decision:
+      status: "applied"
+      decision_key: "AUTO:quality.claims:trust_code_evidence"
+      chosen: "実測値を正とする。ドキュメントの品質主張は2026-03-21時点のスナップショットとして扱い、更新をNEXT_ACTIONSへ回す"
+      policy: "measurement_first + reversibility"
+      confidence_auto: 0.85
+      decided_at_run: "2026-10-13T02:16:00+09:00"
+      expires_after_runs: 10
+      revert_triggers:
+        - "primary_evidence_contradiction"
+        - "critical_test_failures"
+    last_touched_run: "2026-10-13T02:16:00+09:00"
+    evidence:
+      - source: "pnpm exec tsc --noEmit (2026-10-13)"
+        quote: "409 errors across 15+ files"
+      - source: "pnpm test (2026-10-13)"
+        quote: "Test Suites: 227 passed, 227 total; Tests: 2490 passed, 2490 total"

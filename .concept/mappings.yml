@@ -396,3 +396,110 @@ mappings:
       - "src/integration/"
     db: []
     api: []
+
+  User:
+    code_symbols:
+      - "src/domain/entities/User.ts::interface User"
+    db: []
+    api:
+      - "src/app/api/auth/login/route.ts"
+      - "src/app/api/auth/session/route.ts"
+
+  UserRepository:
+    code_symbols:
+      - "src/domain/repositories/UserRepository.ts::interface UserRepository"
+    db: []
+    api: []
+
+  AuthenticationService:
+    code_symbols:
+      - "src/domain/services/AuthenticationService.ts::class AuthenticationService"
+    db: []
+    api:
+      - "src/app/api/auth/login/route.ts"
+      - "src/app/api/auth/logout/route.ts"
+
+  AuthorizationService:
+    code_symbols:
+      - "src/application/services/AuthorizationService.ts::class AuthorizationService"
+    db: []
+    api: []
+
+  InMemoryUserRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts::class InMemoryUserRepository"
+    db: []
+    api: []
+
+  LoginForm:
+    code_symbols:
+      - "src/components/auth/LoginForm.tsx::LoginForm"
+    db: []
+    api: []
+
+  AuditLog:
+    code_symbols:
+      - "src/domain/entities/AuditLog.ts"
+      - "src/application/services/AuditService.ts::class AuditService"
+      - "src/domain/repositories/AuditLogRepository.ts"
+    db: []
+    api: []
+
+  Backup:
+    code_symbols:
+      - "src/domain/entities/Backup.ts"
+      - "src/application/services/BackupService.ts::class BackupService"
+      - "src/domain/repositories/BackupRepository.ts"
+    db: []
+    api:
+      - "src/app/api/backup/route.ts"
+      - "src/app/api/restore/route.ts"
+
+  NotificationProvider:
+    code_symbols:
+      - "src/domain/entities/NotificationProvider.ts"
+      - "src/application/services/NotificationService.ts::class NotificationService"
+      - "src/domain/repositories/NotificationProviderRepository.ts"
+    db: []
+    api:
+      - "src/app/api/notifications/history/route.ts"
+      - "src/app/api/notifications/settings/route.ts"
+
+  Anomaly:
+    code_symbols:
+      - "src/domain/entities/Anomaly.ts"
+      - "src/domain/services/AnomalyDetectionService.ts::class AnomalyDetectionService"
+      - "src/domain/repositories/AnomalyRepository.ts"
+    db: []
+    api: []
+
+  TrendAnalysis:
+    code_symbols:
+      - "src/domain/entities/TrendAnalysis.ts"
+      - "src/application/services/TrendAnalysisService.ts::class TrendAnalysisService"
+      - "src/domain/repositories/TrendAnalysisRepository.ts"
+      - "src/components/charts/TrendReportChart.tsx"
+    db: []
+    api:
+      - "src/app/api/trends/route.ts"
+
+  Pagination:
+    code_symbols:
+      - "src/utils/pagination.ts"
+      - "src/presentation/hooks/usePagination.ts::usePagination"
+      - "src/components/common/PaginationControl.tsx"
+    db: []
+    api: []
+
+  CsvExport:
+    code_symbols:
+      - "src/lib/export/csv.ts"
+      - "src/components/common/ExportButton.tsx"
+    db: []
+    api: []
+
+  PerformanceMonitor:
+    code_symbols:
+      - "src/lib/resilience/performance-monitor.ts::class PerformanceMonitor"
+    db: []
+    api: []

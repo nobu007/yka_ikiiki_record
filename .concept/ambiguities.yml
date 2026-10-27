@@ -1,1 +1,34 @@
-ambiguities: []
+ambiguities:
+  - id: "AMB-BACKUP-001"
+    term: "Backup"
+    topic: "restoreBackupの上書きセマンティクス"
+    severity: "medium"
+    uncertainty: 0.52
+    candidates:
+      - "復元は全レコードを置換する"
+      - "復元は欠損レコードのみ補完する"
+    missing_info:
+      - "restoreBackupの実装本体でのレコード置換/補完の分岐"
+    linked_conflicts: []
+    last_touched_run: "2026-10-15T20:31:30Z"
+    evidence:
+      - source: "src/application/services/BackupService.ts"
+        quote: "async restoreBackup(backupId: string): Promise<{ backupId: string; backupTimestamp: number; recordCount: number; size: number }>"
+    note: "戻り値のrecordCountは全件復元を示唆するが未検証（hypothesis）。破壊的操作に隣接するため、実装確認までAUTO決定を留保"
+
+  - id: "AMB-NOTIF-001"
+    term: "NotificationProvider"
+    topic: "実配送トランスポートの実装状況"
+    severity: "low"
+    uncertainty: 0.41
+    candidates:
+      - "SMTP/Webhook等の実配送を実装済み"
+      - "設定モデルと配送記録のみで、実配送は未実装"
+    missing_info:
+      - "sendNotification本体の配送経路（外部I/Oの有無）"
+    linked_conflicts: []
+    last_touched_run: "2026-10-15T20:31:30Z"
+    evidence:
+      - source: "src/domain/entities/NotificationProvider.ts"
+        quote: "export interface EmailProviderConfig; export interface WebhookProviderConfig; export interface SmsProviderConfig"
+    note: "設定型の存在は配送意図を示すが実装は未読。金銭/認可リスクなし、low判定"

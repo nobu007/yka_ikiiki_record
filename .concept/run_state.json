@@ -1,6 +1,15 @@
 {
-  "run_index": 226,
-  "last_run_id": "cycle-226-maintenance",
-  "last_run_timestamp": "2026-03-22T15:22:00+09:00",
-  "phase": "maintenance"
+  "run_index": 228,
+  "last_run_id": "2026-10-15T20:45:52Z",
+  "last_run_timestamp": "2026-10-16T05:45:52+09:00",
+  "phase": "sync",
+  "last_substantive_sync": {
+    "run_id": "2026-10-15T20:45:52Z",
+    "since_commit": "3e904f7c",
+    "claims_added": 0,
+    "terms_added": 0,
+    "mappings_added": 0,
+    "ambiguities_added": 0,
+    "note": "evidence quality fixes: TERM-122 definition + real quotes, term_queue 16 real quotes + ID normalization (TERM-000125..132 -> TERM-125..132), DECISION-007/008, trailing newlines"
+  }
 }

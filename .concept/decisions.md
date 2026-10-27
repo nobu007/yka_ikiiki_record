@@ -24,3 +24,7 @@ Maximum 200 lines - this file can be regenerated and truncated.
 - README.md
 - .concept/invariants.yml
 - prisma/schema.prisma
+
+### 2026-10-16 - Layer field semantics and ID notation
+- DECISION-007: ontology.yml の `layer` は 10_concept_sync_system B-7 の重要度階層（core/domain/aux）を意味し、Clean Architecture の物理レイヤ（domain/application/infrastructure）を意味しない。物理配置は evidence/mappings の source パスで表現する。AuthorizationService (TERM-122) は物理配置が src/application/services/ だが、概念の重要度階層として layer: domain を維持する
+- DECISION-008: term_queue.yml の accepted_as_term_id は ontology.yml の正規 ID 表記（TERM-<n>、ゼロ埋めなし）に一致させる（例: TERM-125。TERM-000125 不可）

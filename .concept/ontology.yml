@@ -696,3 +696,24 @@ canonical_terms:
     evidence:
       - source: "src/components/auth/LoginForm.tsx"
         quote: "const LoginForm = memo(function LoginForm({ onSubmit, isLoading, error }: LoginFormProps)"
+
+  SessionToken:
+    id: "TERM-125"
+    layer: "aux"
+    status: "draft"
+    definition: "認証セッションを表すベアラートークン。形式 session_<userId>_<timestamp>_<random> をログイン発行側とセッション検証側が共有する契約（暫定）"
+    synonyms: ["session token", "Bearer token"]
+    boundaries:
+      includes: ["session_プレフィックス", "userId埋め込み", "発行時タイムスタンプ", "ランダムサフィックス", "Authorization: Bearerヘッダ運用"]
+      excludes: ["パスワードハッシュ", "HTTP Cookie", "JWT署名"]
+    related_terms: ["AuthenticationService", "User", "LoginForm"]
+    assumptions:
+      - id: "ASM-SESSIONTOKEN-001"
+        text: "AUTO: トークンはステートレス（サーバ側でセッション状態を保持しない）として扱う"
+        decision_key: "AUTO:SessionToken.definition:stateless"
+        expires_after_runs: 20
+    evidence:
+      - source: "src/app/api/auth/login/route.ts"
+        quote: "return `session_${user.id}_${timestamp}_${random}`"
+      - source: "src/app/api/auth/session/route.ts"
+        quote: "const tokenMatch = token.match(/^session_(\\d+)_/)"

@@ -49,3 +49,7 @@ chain_checkpoints/
 
 # AI Hub audit results (auto-generated)
 .audit/
+
+# AI Hub dispatch-time LLM analysis artifacts (timestamped, regenerated per run;
+# already-produced files remain tracked)
+data/llm_analysis_*.md

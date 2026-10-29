@@ -1,0 +1,155 @@
+meta:
+  generated_at: '2026-10-26T21:33:31.918282+00:00'
+  source_inputs:
+  - SYSTEM_CONSTITUTION.md
+  - PURPOSE.md
+  - README.md
+  - codebase-inventory
+  - recent-commits
+  - constitution-audit
+  - docs/llm-wiki/relations.md
+  - docs/llm-wiki/index.md and bounded direct wiki links
+  - docs/owner-decisions.json
+  version: 1
+  relations_digest: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  wiki_digest: fe7f51e740c7c859e2a5f189929e4796f846d5bba0465677178262230abadeae
+  owner_decisions_digest: 4a4118e0ecab6220c555a0d67780ad65339722921740d42afd6cb9bcecb27362
+  business_objective_revision: null
+north_star: Build the educational infrastructure that visualizes student growth and
+  classroom culture for Japanese schools, delivered as a production service running
+  on Vercel + PostgreSQL that real classrooms can actually use.
+current_milestone: 'Complete P1: verified production operation on Vercel + PostgreSQL
+  (seed API 200, stats JSON, dashboard rendering, data persisted). The final account/credential
+  steps are Human Operator actions, so the autonomous share is proving the deploy
+  path end-to-end against a real PostgreSQL and restoring the currently failing quality-gate
+  anchor; all quality claims in the snapshot are ~7 months old and must be re-baselined
+  before being trusted.'
+work_axes:
+- id: AX-1
+  title: Production-parity verification of the deploy path (Prisma migrations, seed,
+    stats against real PostgreSQL)
+  rationale: Deploy tooling exists (deploy-production.sh, verify-deployment.sh), but
+    the snapshot records no verified run of migrations/seed/stats against a real PostgreSQL
+    with the prisma provider; deployment is the milestone and its last mile is external,
+    so proving the path locally is the autonomous, goal-advancing work that de-risks
+    the actual deploy moment.
+  constitution_link: Automation Standards (build optimization verified, automated
+    testing on every commit); Autonomous Resilience Protocols (mandatory timeout enforcement
+    on all async operations)
+  acceptance_criteria: From a clean checkout, a reproducible preflight boots a disposable
+    PostgreSQL, applies prisma migrations, runs the production build with DATABASE_PROVIDER=prisma,
+    and asserts seed API 200, schema-valid stats JSON, and dashboard 200 under constitution
+    timeout budgets, exiting non-zero with structured logs on failure; evidence recorded
+    under data/ without cloud credentials.
+  deliverable_type: feat
+- id: AX-2
+  title: Restore the constitution audit gate to passing (three open divergences, failing
+    streak)
+  rationale: 'The audit history shows three consecutive FAILs (latest score 48, constitution_stable
+    false), including a critical divergence: the anchor north_star is still an uncustomized
+    template placeholder. A failing anchor corrupts the autonomous loop''s steering,
+    so resolving these specific divergences is gate repair, not docs churn.'
+  constitution_link: Metrics & Monitoring — Quality Gates and Automated Reviews (JudgmentScore
+    tracking via meta_checker.py); Autonomous AI Development Protocols (self-validation)
+  acceptance_criteria: All open divergence entries are resolved at their source (template
+    placeholder removed from the anchor charter text, version/last-updated metadata
+    added to the anchor documents, explicit prohibitions aligned with the constitution's
+    forbidden-patterns list per the audit axis); a fresh audit run records zero unresolved
+    critical/warning divergences and at least one consecutive pass; no state files
+    are edited to fake the result.
+  deliverable_type: fix
+- id: AX-3
+  title: Re-baseline quality evidence after the ~7-month snapshot gap
+  rationale: All recorded metrics (tests, coverage, JudgmentScore) and the audit state
+    date to late March while the current date is late October; no snapshot evidence
+    shows they still hold. Direction built on unverified claims drifts, so a fresh
+    reproducible measurement is required before any further prioritization.
+  constitution_link: Absolute Automation Primacy (all development processes fully
+    automated and reproducible); Metrics & Monitoring
+  acceptance_criteria: Full test suite, coverage run, and meta_checker.py execute
+    successfully on the current checkout with results recorded and dated in data/meta_report.md;
+    drift from previously claimed numbers is documented; PURPOSE.md is touched only
+    if one of its own documented update triggers fires, with no resume-style enumeration.
+  deliverable_type: fix
+feature_gaps:
+- Teacher authentication/authorization (NextAuth.js per P2-priority-1) — no auth appears
+  in README features or the inventory; required before real classroom/student data,
+  unverified whether any auth code exists.
+- Multi-class support with per-class data isolation (P2-priority-1) — absent from
+  README and inventory.
+- Data export (CSV/Excel) via API endpoints (P2-priority-1) — absent.
+- 'Runtime-proven production data path: PostgreSQL migration + seed + stats verification
+  is scripted and documented but unverified in the snapshot.'
+- Long-term trend reports and pagination/performance for large datasets (P2-priority-2)
+  — absent.
+- 'Operational readiness for real use: backup/restore, audit logging, anomaly notifications
+  (P2-priority-3) — absent.'
+anti_patterns:
+- Re-recording stable quality metrics (JudgmentScore 100/100, test counts) or re-running
+  the full multi-directory scan to re-enumerate file counts — PURPOSE update guardrails
+  explicitly forbid metric re-listing and resume-style commit enumeration.
+- Docs-only commits reacting to docs (e.g., refreshing PURPOSE.md because a prior
+  docs commit exists) — forbidden by the loop's own SOP.
+- 'Adding tests to already-covered code: coverage is ~99% statements / ~96% branches;
+  new tests only for a demonstrated uncovered branch, never to inflate numbers.'
+- 'Cosmetic sweeps with no behavior change: Prettier reformat batches (one already
+  landed), import re-ordering, sprinkling React.memo/useCallback on stable components.'
+- Editing chain_checkpoints state, streak.json, or divergence_log.json to flip scores/passes
+  without actually resolving the underlying divergence.
+- Rewriting the deploy/quality scripts (deploy-production.sh, verify-deployment.sh,
+  meta_checker.py) without a failing run or concrete defect motivating the change.
+- Importing fleet/model-routing concerns from owner decisions that scope other repositories
+  into this product's direction.
+- Starting P2 feature builds (auth, multi-class, export) before P1 deployment completes
+  — PURPOSE sequences them post-deployment.
+next_deliverables:
+- id: D-1
+  title: Resolve the three open constitution-audit divergences (template north_star,
+    missing version metadata, prohibition-count axis)
+  type: fix
+  classification: A
+  constitution_link: Metrics & Monitoring — Quality Gates/Automated Reviews; Autonomous
+    AI Development Protocols (self-validation)
+  acceptance: Anchor charter north_star states the actual PURPOSE mission with no
+    template placeholders; anchor documents carry version and last-updated metadata;
+    explicit prohibitions reflect the constitution's forbidden patterns and satisfy
+    the audit axis threshold; a fresh audit records zero unresolved critical/warning
+    divergences and at least one consecutive pass. Changes only restate what the constitution
+    and PURPOSE already establish.
+- id: D-2
+  title: 'Production-parity preflight: verify Prisma migrations, seed and stats against
+    real PostgreSQL'
+  type: feat
+  classification: B
+  constitution_link: Automation Standards (build verified, automated testing per commit);
+    Autonomous Resilience Protocols (timeout enforcement)
+  acceptance: 'A reproducible preflight (script and/or CI job; the disposable-PostgreSQL
+    mechanism is chosen and documented as part of the task) runs prisma generate +
+    migrate deploy, starts the production build with DATABASE_PROVIDER=prisma, and
+    asserts: /api/seed returns 200, /api/stats returns schema-valid JSON, dashboard
+    route returns 200 — all under constitution timeout budgets; failures exit non-zero
+    with structured logs; a green run''s evidence is recorded under data/ without
+    any cloud credentials.'
+- id: D-3
+  title: 'Re-baseline evidence: fresh test suite, coverage and meta_checker run after
+    the evidence gap'
+  type: fix
+  classification: A
+  constitution_link: Absolute Automation Primacy (reproducible processes); Metrics
+    & Monitoring
+  acceptance: Test suite, coverage, and meta_checker.py execute successfully on the
+    current checkout; results recorded with a current date in data/meta_report.md;
+    drift from previously claimed metrics is documented; PURPOSE.md updated only if
+    a documented trigger fires, with no resume-style enumeration or docs-only reaction.
+- id: D-4
+  title: Execute and verify the production deployment (Vercel + PostgreSQL)
+  type: feat
+  classification: C
+  constitution_link: PURPOSE P1 / North star (production operation for real schools);
+    Automation Standards (deploy automation)
+  acceptance: 'After the Human Operator completes account linking, database creation,
+    and environment variables, deploy via the existing script and pass verification:
+    public URL returns 200 on /api/seed, JSON on /api/stats, renders the dashboard,
+    and records persist in PostgreSQL; verification evidence stored under data/.'
+stagnation_signals:
+  max_age_days: 7

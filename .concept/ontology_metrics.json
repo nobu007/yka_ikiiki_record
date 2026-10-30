@@ -1,71 +1,41 @@
 {
-  "version": "1.0",
-  "last_updated": "2026-03-22T15:22:00.000000+09:00",
-  "run_index": 226,
-  "phase": "maintenance",
-  "terms": {
-    "total": 43,
-    "core": 7,
-    "domain": 18,
-    "aux": 18,
-    "draft": 0,
-    "stable": 43
+  "total_terms": 49,
+  "by_layer": {
+    "core": 8,
+    "domain": 21,
+    "aux": 20
   },
-  "mappings": {
-    "total": 43,
-    "with_code_symbols": 43,
-    "with_db": 3,
-    "with_api": 6,
-    "unmapped": 0
+  "draft_ratio": 0.10204081632653061,
+  "invariants": 60,
+  "invariant_ids": 100,
+  "mappings": 49,
+  "ambiguities": 6,
+  "conflicts": 6,
+  "queue_pending": 0,
+  "claims_retained_lines": 70,
+  "decisions_md_lines": 49,
+  "run_id": "2026-10-15T15:46:15Z",
+  "gc_actions": {
+    "merged": 0,
+    "deleted": 0,
+    "deprecated": 0,
+    "invariant_contracts_consolidated": 40
   },
-  "invariants": {
-    "total": 100,
-    "hard": 54,
-    "soft": 14,
-    "stable": 68,
-    "draft": 0
+  "gc_age_status": "Legacy update ages unknown; baseline established at run_index 227",
+  "repository_checks": {
+    "jest": {
+      "passed": 2490,
+      "failed": 0,
+      "suites_passed": 227,
+      "command": "LC_ALL=ja_JP.UTF-8 TZ=Asia/Tokyo npm test -- --runInBand"
+    },
+    "eslint": {
+      "status": "FAIL",
+      "errors": 43,
+      "warnings": 0,
+      "command": "node_modules/.bin/eslint .",
+      "scope": "Existing application errors; no application code changed"
+    }
   },
-  "quality_metrics": {
-    "ontology_coverage": "36.4%",
-    "mapping_saturation": "100%",
-    "draft_ratio": "0%",
-    "unmapped_ratio": "0%",
-    "evidence_coverage": "100%",
-    "invariant_extraction_rate": "56.5%"
-  },
-  "test_results": {
-    "test_suites": 177,
-    "tests_passed": 1312,
-    "timestamp": "2026-03-22T12:45:00.000000+00:00"
-  },
-  "consolidation_summary": {
-    "previous_terms": 129,
-    "current_terms": 43,
-    "terms_removed": 86,
-    "consolidation_ratio": "66.7%"
-  },
-  "notes": {
-    "q1_coverage_rationale": "36.4% raw coverage (43 terms / 118 non-test source files). This appears low but is healthy for this codebase because: (1) All domain entities, services, repositories, and major architectural components are covered, (2) The remaining files are primarily small utilities, types, and component implementations that are appropriately consolidated into broader concepts, (3) Adding more terms would violate the consolidation principle stated in the autopilot instruction. The 43 terms represent the canonical concepts after consolidation from 129 original terms (66.7% reduction).",
-    "maintenance_cycle_206": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_207": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_208": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_209": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 276 lines, well under 300-line limit).",
-    "maintenance_cycle_210": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 276 lines, well under 300-line limit).",
-    "maintenance_cycle_211": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_212": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_213": "Health check completed. All quality metrics remain stable. All recent code changes (trend.ts split, logWithLevel extraction, averageEmotion helper, etc.) are already reflected in the ontology. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_214": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_215": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_216": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_217": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_218": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_219": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_220": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_221": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_222": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_223": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_224": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_225": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_226": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors."
-  }
+  "open_conflicts": 3
 }

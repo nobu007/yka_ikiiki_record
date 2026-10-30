@@ -6,15 +6,12 @@ product_goal:
     - id: "MET-001"
       name: "テストカバレッジ"
       target: "≥ 90%"
-      current: "100% (2245 tests passing)"
     - id: "MET-002"
       name: "不変条件準拠率"
       target: "100%"
-      current: "100% (20/20 invariants stable)"
     - id: "MET-003"
       name: "単一責務原則準拠"
       target: "100% (全ファイル300行以下)"
-      current: "100% (0/308 files over 300 lines)"
   non_goals:
     - "実際のAI/MLモデルの実装（デモ用モックデータのみ）"
     - "本番環境向けの認証・認可システム"
@@ -280,9 +277,6 @@ work_policy:
   default_mode: "commit"
   iteration_budget:
     max_cycles: 5
-  quality_gates:
-    must_pass: ["lint", "test"]
-
     max_files_changed: 25
   quality_gates:
     must_pass: ["lint", "test"]

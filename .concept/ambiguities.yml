@@ -1,1 +1,195 @@
-ambiguities: []
+ambiguities:
+- id: AMB-AUTH-BOUNDARY
+  term: AuthenticationService
+  topic: Domain/API token contracts differ; signature/expiry checks are absent
+  severity: high
+  uncertainty: 0.252
+  candidates: [Production session authentication, Prototype-only token parsing]
+  missing_info: ['Shared token contract, cryptographic verification and expiry/revocation guarantees']
+  linked_conflicts: [CFLT-AUTH-TOKEN]
+  auto_decision:
+    status: applied
+    decision_key: AUTO:AuthenticationService.boundary:demo_only
+    chosen: Treat as prototype only; do not infer production access protection from the presence of auth classes
+    policy: safety + reversibility + locality
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T15:46:15Z'
+    expires_after_runs: 20
+    revert_triggers: [primary_evidence_contradiction, security_risk, repeated_critical_test_failure]
+    decided_at_run_index: 227
+  last_touched_run: '2026-10-15T15:46:15Z'
+  evidence:
+  - source: src/domain/services/AuthenticationService.ts#L333
+    quote: const parts = token.split("-");
+  - source: src/app/api/auth/session/route.ts#L24
+    quote: const tokenMatch = token.match(/^session_(\d+)_/);
+  about: boundary
+  uncertainty_inputs:
+    related_claims: 4
+    unknown: 1
+    contradictions: 1
+    independent_sources: 2
+    artifact_weights: [0.7, 0.7]
+    evidence_strength: 0.28
+- id: AMB-EMPTY-STATS
+  term: StatsOverview
+  topic: Zero-record domain values versus response schema
+  severity: low
+  uncertainty: 0.297
+  candidates: [Empty mean is zero in domain, Transport schema requires mean >=1]
+  missing_info: [Authoritative empty-response representation]
+  linked_conflicts: [CFLT-EMPTY-STATS]
+  auto_decision:
+    status: applied
+    decision_key: AUTO:StatsOverview.data_constraint:empty_schema_unverified
+    chosen: Keep INV-DOM-011 draft; transport compatibility remains unresolved
+    policy: safety + reversibility + locality
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T15:46:15Z'
+    expires_after_runs: 20
+    revert_triggers: [primary_evidence_contradiction, security_risk, repeated_critical_test_failure]
+    decided_at_run_index: 227
+  last_touched_run: '2026-10-15T15:46:15Z'
+  evidence:
+  - source: src/schemas/api.ts#L98
+    quote: 'avgEmotion: z.number().min(1).max(5),'
+  - source: src/utils/statsCalculator/math.ts#L37
+    quote: values.length === 0
+  about: data_constraint
+  uncertainty_inputs:
+    related_claims: 3
+    unknown: 1
+    contradictions: 1
+    independent_sources: 2
+    artifact_weights: [0.7, 0.7]
+    evidence_strength: 0.28
+- id: AMB-GC-BASELINE
+  term: CleanArchitecture
+  topic: Historical term update ages are unavailable
+  severity: low
+  uncertainty: 0.305
+  candidates: [Delete terms using guessed historic ages, Start observable age tracking without inventing earlier
+      activity]
+  missing_info: [Per-term historical last_touched_run values]
+  linked_conflicts: []
+  auto_decision:
+    status: applied
+    decision_key: AUTO:CleanArchitecture.lifecycle:gc_baseline
+    chosen: Start TTL accounting at run_index 227 for legacy terms lacking update markers; existing IDs/mappings
+      retained
+    policy: safety + reversibility + locality
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T15:46:15Z'
+    expires_after_runs: 20
+    revert_triggers: [primary_evidence_contradiction, security_risk, repeated_critical_test_failure]
+    decided_at_run_index: 227
+  last_touched_run: '2026-10-15T15:46:15Z'
+  evidence:
+  - source: .concept/ontology.yml#L2
+    quote: 'canonical_terms:'
+  about: lifecycle
+  uncertainty_inputs:
+    related_claims: 1
+    unknown: 1
+    contradictions: 0
+    independent_sources: 1
+    artifact_weights: [1.0]
+    evidence_strength: 0.2
+- id: AMB-EXPORT-FILENAME
+  term: Record
+  topic: Repository fixed-filename rule and timestamped download responses
+  severity: low
+  uncertainty: 0.291
+  candidates: [Fixed repository artifacts, Timestamped download headers]
+  missing_info: [Whether the fixed-filename policy covers client download names]
+  linked_conflicts: []
+  auto_decision:
+    status: applied
+    decision_key: AUTO:Record.boundary:download_filename_scope
+    chosen: Keep repository artifacts fixed; record download behavior without granting a repository-policy exception
+    policy: safety + reversibility + locality
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T15:46:15Z'
+    expires_after_runs: 20
+    revert_triggers: [primary_evidence_contradiction, security_risk, repeated_critical_test_failure]
+    decided_at_run_index: 227
+  last_touched_run: '2026-10-15T15:46:15Z'
+  evidence:
+  - source: src/app/api/export/route.ts#L39
+    quote: const timestamp = Date.now();
+  - source: AGENTS.md#L286
+    quote: '- ✅ **固定パスで上書きが絶対原則**'
+  about: boundary
+  uncertainty_inputs:
+    related_claims: 1
+    unknown: 1
+    contradictions: 0
+    independent_sources: 2
+    artifact_weights: [0.7, 1.0]
+    evidence_strength: 0.34
+- id: AMB-REPOSITORY-CONTRACT
+  term: IRecordRepository
+  about: boundary
+  topic: Passing fixture contracts do not establish Prisma/InMemory implementation equivalence
+  severity: low
+  uncertainty: 0.291
+  candidates: [All implementations satisfy fixture behavior, Fixture contracts and implementations differ]
+  missing_info: [Authoritative ordering and save/ID semantics shared by real implementations]
+  linked_conflicts: [CFLT-REPOSITORY-CONTRACT]
+  auto_decision:
+    status: applied
+    decision_key: AUTO:IRecordRepository.boundary:fixture_not_implementation
+    chosen: Keep the four affected invariants draft; do not assert sequential IDs, save assignment, filtering or
+      ordering behavior across implementations
+    policy: safety + reversibility + locality
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T15:46:15Z'
+    decided_at_run_index: 227
+    expires_after_runs: 20
+    revert_triggers: [primary_evidence_contradiction, security_risk, repeated_critical_test_failure]
+  last_touched_run: '2026-10-15T15:46:15Z'
+  evidence:
+  - source: src/domain/repositories/IRecordRepository.findByFilters.test.ts#L101
+    quote: it("should return all records for a student in chronological order", async () => {
+  - source: src/infrastructure/repositories/PrismaRecordRepository.ts#L36
+    quote: 'orderBy: { date: "desc" },'
+  uncertainty_inputs:
+    related_claims: 3
+    unknown: 1
+    contradictions: 1
+    independent_sources: 2
+    artifact_weights: [1, 0.7]
+    evidence_strength: 0.34
+- id: AMB-HISTORICAL-IDS
+  term: CleanArchitecture
+  about: boundary
+  topic: Historical tombstone IDs were reused by active concepts
+  severity: low
+  uncertainty: 0.21
+  candidates: [Globally unique IDs across all history, Composite tombstone identity and current ontology namespace]
+  missing_info: [Whether any external consumer assumes global historical ID uniqueness]
+  linked_conflicts: []
+  auto_decision:
+    status: applied
+    decision_key: AUTO:CleanArchitecture.boundary:historical_id_namespace
+    chosen: Preserve existing IDs; identify tombstones by term plus former_id and current concepts by ontology ID.
+      Do not infer identity across the two namespaces
+    policy: reversibility + locality
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T15:46:15Z'
+    decided_at_run_index: 227
+    expires_after_runs: 20
+    revert_triggers: [primary_evidence_contradiction, security_risk, repeated_critical_test_failure]
+  last_touched_run: '2026-10-15T15:46:15Z'
+  evidence:
+  - source: .concept/tombstones.yml#L499
+    quote: 'former_id: TERM-119'
+  - source: .concept/ontology.yml#L646
+    quote: 'id: TERM-119'
+  uncertainty_inputs:
+    related_claims: 2
+    unknown: 1
+    contradictions: 0
+    independent_sources: 2
+    artifact_weights: [1, 1]
+    evidence_strength: 0.4

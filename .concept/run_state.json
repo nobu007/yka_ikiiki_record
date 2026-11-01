@@ -1,6 +1,8 @@
 {
-  "run_index": 226,
-  "last_run_id": "cycle-226-maintenance",
-  "last_run_timestamp": "2026-03-22T15:22:00+09:00",
-  "phase": "maintenance"
+  "run_index": 228,
+  "last_run_id": "cycle-228-metrics-integrity",
+  "last_run_timestamp": "2026-10-14T09:15:00+09:00",
+  "phase": "maintenance",
+  "claims_retained_lines": 24,
+  "claims_archived_until_run_id": null
 }

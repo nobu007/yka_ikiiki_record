@@ -657,7 +657,7 @@ canonical_terms:
 
   AuthorizationService:
     id: "TERM-122"
-    layer: "application"
+    layer: "domain"
     status: "stable"
     definition: "認可を行うアプリケーションサービス。ロールベースアクセス制御（RBAC）と権限チェックを担当"
     synonyms: ["RBAC", "PermissionChecker"]
@@ -696,3 +696,39 @@ canonical_terms:
     evidence:
       - source: "src/components/auth/LoginForm.tsx"
         quote: "const LoginForm = memo(function LoginForm({ onSubmit, isLoading, error }: LoginFormProps)"
+
+  Pagination:
+    id: "TERM-125"
+    layer: "aux"
+    status: "stable"
+    definition: "配列データを指定サイズのページへ分割するユーティリティと、そのUI状態管理フック。pageSize/pageのクランプ、totalPages計算、前後ページ判定を担当"
+    synonyms: ["paginate", "usePagination", "PaginationResult", "PaginationOptions"]
+    boundaries:
+      includes: ["ページ分割", "ページ状態管理", "totalPages計算", "ページ範囲クランプ", "hasNextPage/hasPreviousPage判定"]
+      excludes: ["データ取得", "ソート", "無限スクロール", "サーバーサイドページネーション"]
+    related_terms: ["UIComponents", "ApplicationConstants"]
+    evidence:
+      - source: "src/utils/pagination.ts"
+        quote: "export function paginate<T>(data: T[], options: PaginationOptions = {}): PaginationResult<T>"
+      - source: "src/presentation/hooks/usePagination.ts"
+        quote: "hook managing pagination state via useState/useCallback/useMemo"
+      - source: "src/utils/pagination.test.ts"
+        quote: "unit tests for clamping and pagination metadata"
+
+  CsvExport:
+    id: "TERM-126"
+    layer: "aux"
+    status: "stable"
+    definition: "統計データをCSV形式へ変換する機能。CSV値のエスケープ規則、Section,Key,Valueヘッダ行、セクション別行変換、日付書式（ISO/JP）を担当"
+    synonyms: ["CSV", "csv export", "escapeCSVValue", "convertStatsToCsvRows"]
+    boundaries:
+      includes: ["CSV値エスケープ", "行変換", "ヘッダ行生成", "日付書式変換"]
+      excludes: ["XLSX生成", "APIルーティング", "リポジリアクセス", "データ取得"]
+    related_terms: ["APIRouteHandler", "IRecordRepository", "ResilientHandler"]
+    evidence:
+      - source: "src/lib/export/csv.ts"
+        quote: "function escapeCSVValue / convertStatsToCsvRows"
+      - source: "src/app/api/export/route.ts"
+        quote: "format: z.enum([\"csv\", \"xlsx\"]).default(\"csv\")"
+      - source: "src/lib/export/csv.test.ts"
+        quote: "CSV conversion unit tests"

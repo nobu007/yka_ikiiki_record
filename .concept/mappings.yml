@@ -396,3 +396,62 @@ mappings:
       - "src/integration/"
     db: []
     api: []
+
+  Pagination:
+    code_symbols:
+      - "src/utils/pagination.ts::function paginate"
+      - "src/presentation/hooks/usePagination.ts::function usePagination"
+      - "src/types/pagination.ts::interface PaginationResult"
+      - "src/types/pagination.ts::interface PaginationOptions"
+    db: []
+    api: []
+
+  CsvExport:
+    code_symbols:
+      - "src/lib/export/csv.ts::function escapeCSVValue"
+      - "src/lib/export/csv.ts::function convertStatsToCsvRows"
+      - "src/lib/export/index.ts"
+    db: []
+    api:
+      - "GET /api/export?format=csv"
+
+  User:
+    code_symbols:
+      - "src/domain/entities/User.ts::type User"
+    db:
+      - "prisma/schema.prisma::model User"
+    api: []
+
+  UserRepository:
+    code_symbols:
+      - "src/domain/repositories/UserRepository.ts::interface UserRepository"
+    db: []
+    api: []
+
+  AuthenticationService:
+    code_symbols:
+      - "src/domain/services/AuthenticationService.ts::class AuthenticationService"
+      - "src/domain/services/AuthenticationService.ts::interface PasswordHasher"
+      - "src/domain/services/AuthenticationService.ts::interface TokenGenerator"
+    db: []
+    api:
+      - "POST /api/auth/login"
+
+  AuthorizationService:
+    code_symbols:
+      - "src/application/services/AuthorizationService.ts::class AuthorizationService"
+      - "src/application/services/AuthorizationService.ts::const PERMISSIONS"
+    db: []
+    api: []
+
+  InMemoryUserRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts::class InMemoryUserRepository"
+    db: []
+    api: []
+
+  LoginForm:
+    code_symbols:
+      - "src/components/auth/LoginForm.tsx::const LoginForm"
+    db: []
+    api: []

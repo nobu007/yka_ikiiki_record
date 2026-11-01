@@ -164,7 +164,7 @@ canonical_terms:
     boundaries:
       includes: ["Prismaリポジトリ実装", "MirageJSモック", "Next.js APIルート"]
       excludes: ["ドメインロジック"]
-    related_terms: ["CleanArchitecture", "PrismaRecordRepository", "MirageJS"]
+    related_terms: ["CleanArchitecture", "PrismaRecordRepository", "MirageServer"]
     evidence:
       - source: "src/infrastructure/"
         quote: "src/infrastructure/├── api/ # API clients└── storage/ # Data storage"
@@ -178,7 +178,7 @@ canonical_terms:
     boundaries:
       includes: ["全ソースファイル", "全テストファイル"]
       excludes: []
-    related_terms: ["Invariant"]
+    related_terms: []
     evidence:
       - source: ".concept/invariants.yml"
         quote: "INV-ARCH-001: 100% of files must be under 300 lines"
@@ -284,7 +284,7 @@ canonical_terms:
     boundaries:
       includes: ["チャート描画", "データフィルタリング", "エラー境界"]
       excludes: ["データ取得ロジック"]
-    related_terms: ["EmotionChart", "ChartData"]
+    related_terms: ["EmotionChart"]
     evidence:
       - source: "src/components/charts/DynamicBarChart.tsx"
         quote: "const DynamicBarChart = memo(function DynamicBarChart({ data, height, title, isDark })"
@@ -298,7 +298,7 @@ canonical_terms:
     boundaries:
       includes: ["複数チャートタイプ", "レスポンシブデザイン", "動的インポート", "トレンド表示", "学生別表示", "月次表示", "曜日別表示", "時間帯別表示", "分布表示"]
       excludes: ["データ変換ロジック"]
-    related_terms: ["DynamicBarChart", "ChartData", "Stats"]
+    related_terms: ["DynamicBarChart", "Stats"]
     evidence:
       - source: "src/components/charts/EmotionChart.tsx"
         quote: "export interface EmotionChartProps { type?: 'line' | 'bar' | 'area' | 'pie' | 'donut'; }"
@@ -326,7 +326,7 @@ canonical_terms:
     boundaries:
       includes: ["ループ検出", "反復回数カウント"]
       excludes: []
-    related_terms: ["InfiniteLoopError"]
+    related_terms: ["AppError"]
     evidence:
       - source: "src/lib/resilience/loop-detector.ts"
         quote: "export class LoopDetector"
@@ -454,7 +454,7 @@ canonical_terms:
     boundaries:
       includes: ["スキーマ検証", "型安全", "RecordSchema", "DataGenerationConfigSchema"]
       excludes: ["実装ロジック"]
-    related_terms: ["ValidationError", "Record", "DataGenerationConfig"]
+    related_terms: ["AppError", "Record", "DataGenerationConfig"]
     evidence:
       - source: "src/lib/api/validation.ts, src/schemas/api.ts"
         quote: "export function validateData<T>, export const RecordSchema"
@@ -566,7 +566,7 @@ canonical_terms:
     boundaries:
       includes: ["テーマ管理", "サイドバー状態"]
       excludes: []
-    related_terms: ["UIConstants"]
+    related_terms: ["ApplicationConstants"]
     evidence:
       - source: "src/context/ThemeContext.tsx, src/context/SidebarContext.tsx"
         quote: "export const ThemeContext, SidebarContext"
@@ -657,9 +657,9 @@ canonical_terms:
 
   AuthorizationService:
     id: "TERM-122"
-    layer: "application"
+    layer: "domain"
     status: "stable"
-    definition: "認可を行うアプリケーションサービス。ロールベースアクセス制御（RBAC）と権限チェックを担当"
+    definition: "認可（RBAC）の概念。ロール階層（ADMIN>TEACHER）に基づく権限チェックを担い、src/application/services/AuthorizationService.ts に実装される"
     synonyms: ["RBAC", "PermissionChecker"]
     boundaries:
       includes: ["ロールチェック", "権限チェック", "リソースアクション権限", "ロール階層（管理者>教員）"]
@@ -667,7 +667,9 @@ canonical_terms:
     related_terms: ["User", "AuthenticationService"]
     evidence:
       - source: "src/application/services/AuthorizationService.ts"
-        quote: "export class AuthorizationService { hasRole(user: User, role: UserRole): boolean; can(user: User, resource: string, action: string): boolean; }"
+        quote: "export class AuthorizationService {"
+      - source: "src/application/services/AuthorizationService.ts"
+        quote: "async hasRole(userId: number, role: UserRole): Promise<boolean> {"
 
   InMemoryUserRepository:
     id: "TERM-123"
@@ -696,3 +698,131 @@ canonical_terms:
     evidence:
       - source: "src/components/auth/LoginForm.tsx"
         quote: "const LoginForm = memo(function LoginForm({ onSubmit, isLoading, error }: LoginFormProps)"
+
+  AuditLog:
+    id: "TERM-125"
+    layer: "domain"
+    status: "stable"
+    definition: "監査ログ。レコードの作成・更新・削除操作を記録するドメインエンティティ。AuditLogRepositoryで永続化され、AuditServiceが高レベル記録インターフェースを提供する"
+    synonyms: ["AuditTrail", "操作ログ"]
+    boundaries:
+      includes: ["AuditOperation(create/update/delete)", "操作の自動記録", "AuditLogRepository永続化"]
+      excludes: ["レコード本体の変更", "認証処理"]
+    related_terms: ["Record", "User", "Backup"]
+    evidence:
+      - source: "src/domain/entities/AuditLog.ts"
+        quote: "export type AuditOperation = \"create\" | \"update\" | \"delete\"; export interface AuditLog"
+      - source: "src/application/services/AuditService.ts"
+        quote: "export class AuditService { async logCreate(...); async logUpdate(...); async logDelete(...); }"
+
+  Backup:
+    id: "TERM-126"
+    layer: "domain"
+    status: "stable"
+    definition: "記録データのバックアップ。pending/in_progress/completed/failedの状態遷移を持ち、BackupServiceが作成・復元・一覧・期限切れ削除を担い、backup/restore APIで公開される"
+    synonyms: ["BackupRecord", "バックアップ"]
+    boundaries:
+      includes: ["状態遷移(pending→in_progress→completed/failed)", "復元(restoreBackup)", "ハッシュによる完全性", "期限切れ削除(deleteOldBackups)", "REST API(backup/restore)"]
+      excludes: ["リアルタイム複製", "Recordエンティティ自体の変更"]
+    related_terms: ["Record", "AuditLog"]
+    evidence:
+      - source: "src/domain/entities/Backup.ts"
+        quote: "export type BackupStatus = \"pending\" | \"in_progress\" | \"completed\" | \"failed\"; export function isBackupRestorable(backup: Backup): boolean"
+      - source: "src/application/services/BackupService.ts"
+        quote: "async restoreBackup(backupId: string): Promise<{ backupId: string; backupTimestamp: number; recordCount: number; size: number }>"
+
+  NotificationProvider:
+    id: "TERM-127"
+    layer: "domain"
+    status: "stable"
+    definition: "通知プロバイダ。email/webhook/sms/slack/in_appのチャネル設定と配信状態を管理し、NotificationServiceが異常アラート送信・履歴・設定APIを提供する"
+    synonyms: ["Notification", "通知設定"]
+    boundaries:
+      includes: ["プロバイダタイプ(email/webhook/sms/slack/in_app)", "配信状態(NotificationDeliveryStatus)", "異常アラート(sendAnomalyAlert)", "履歴API", "設定API"]
+      excludes: ["異常の検知ロジック", "統計計算"]
+    related_terms: ["Anomaly", "User"]
+    evidence:
+      - source: "src/domain/entities/NotificationProvider.ts"
+        quote: "export enum NotificationProviderType; export interface NotificationProvider; export interface Notification"
+      - source: "src/application/services/NotificationService.ts"
+        quote: "export class NotificationService { async sendAnomalyAlert(...); async getNotificationHistory(...); }"
+
+  Anomaly:
+    id: "TERM-128"
+    layer: "domain"
+    status: "stable"
+    definition: "感情記録の異常。重大度と種別を持ち、AnomalyDetectionServiceが検出し、AnomalyRepositoryが永続化する。通知アラートとトレンド分析の入力となる"
+    synonyms: ["異常検知", "AnomalyEvent"]
+    boundaries:
+      includes: ["AnomalySeverity", "AnomalyType", "検出設定(AnomalyDetectionConfig)", "Zodスキーマ検証"]
+      excludes: ["通知の配送", "トレンド方向の計算"]
+    related_terms: ["NotificationProvider", "TrendAnalysis", "Stats"]
+    evidence:
+      - source: "src/domain/entities/Anomaly.ts"
+        quote: "export enum AnomalySeverity; export enum AnomalyType; export const AnomalySchema = z.object"
+      - source: "src/domain/services/AnomalyDetectionService.ts"
+        quote: "export class AnomalyDetectionService { async detectAnomalies(...) }"
+
+  TrendAnalysis:
+    id: "TERM-129"
+    layer: "domain"
+    status: "stable"
+    definition: "感情記録のトレンド分析。学生別・クラス別の方向(up/down/stable)、移動平均、相関を計算し、TrendAnalysisServiceが保存・取得し、trends APIとTrendReportChartで公開する"
+    synonyms: ["トレンド", "TrendReport"]
+    boundaries:
+      includes: ["TrendDirection(up/down/stable)", "学生別分析", "クラス別分析", "移動平均", "相関計算", "GET /api/trends"]
+      excludes: ["生の記録データ", "通知配送"]
+    related_terms: ["Anomaly", "Stats", "Record"]
+    evidence:
+      - source: "src/domain/entities/TrendAnalysis.ts"
+        quote: "export type TrendDirection = \"up\" | \"down\" | \"stable\"; export function calculateMovingAverage"
+      - source: "src/application/services/TrendAnalysisService.ts"
+        quote: "export class TrendAnalysisService { async analyzeStudentTrend(...); async analyzeClassTrend(...); }"
+
+  Pagination:
+    id: "TERM-130"
+    layer: "aux"
+    status: "stable"
+    definition: "ページネーション。大量データの分割表示ユーティリティ(getPageNumbers等)、usePaginationフック、PaginationControl UIコンポーネントの群"
+    synonyms: ["ページング", "Pager"]
+    boundaries:
+      includes: ["ページ番号計算", "状態管理フック", "データスライス", "UIコントロール"]
+      excludes: ["データの永続化", "統計計算"]
+    related_terms: ["Dashboard", "UIComponents"]
+    evidence:
+      - source: "src/utils/pagination.ts"
+        quote: "Pagination utility functions for dividing large datasets into manageable pages."
+      - source: "src/presentation/hooks/usePagination.ts"
+        quote: "React hook for managing pagination state and logic."
+
+  CsvExport:
+    id: "TERM-131"
+    layer: "aux"
+    status: "stable"
+    definition: "統計データのCSV出力。exportStatsToCSVによる変換、ファイル名生成、ExportButtonによるダウンロードUIを含む"
+    synonyms: ["CSV", "エクスポート", "ExportButton"]
+    boundaries:
+      includes: ["exportStatsToCSV", "generateCSVFilename", "ExportButton(ローディング/エラー状態)"]
+      excludes: ["JSON出力", "データ変更"]
+    related_terms: ["Stats", "UIComponents"]
+    evidence:
+      - source: "src/lib/export/csv.ts"
+        quote: "export function exportStatsToCSV(...); export function generateCSVFilename(...)"
+      - source: "src/components/common/ExportButton.tsx"
+        quote: "import { API_ENDPOINTS } from \"@/lib/constants/api\""
+
+  PerformanceMonitor:
+    id: "TERM-132"
+    layer: "aux"
+    status: "stable"
+    definition: "パフォーマンス計測ユーティリティ。レンダリング計測(trackRender)、メトリクス統計取得、サマリ出力をStructuredLoggerと連携して行う"
+    synonyms: ["RenderMonitor", "計測"]
+    boundaries:
+      includes: ["trackRender", "メトリクス統計", "レンダリング統計", "サマリ", "StructuredLogger連携"]
+      excludes: ["ビジネスロジック", "永続化"]
+    related_terms: ["StructuredLogger", "MemoryMonitor"]
+    evidence:
+      - source: "src/lib/resilience/performance-monitor.ts"
+        quote: "export class PerformanceMonitor { trackRender(...); getStats(...); getSummary(...) }"
+      - source: "src/lib/resilience/performance-monitor.ts"
+        quote: "import { globalLogger } from \"./structured-logger\""

@@ -1,5 +1,15 @@
 # AGENTS.md - 汎用開発指示書
 
+## リポジトリ固有の品質運用
+
+- 2026-10-16 の実測: Jest 227スイート・2,493テスト通過。全体lintは43エラー、型チェックは416エラーで未達。カバレッジは今回未測定。PURPOSE.mdの過去の数値を現在の品質証明として扱わない。
+- 日付入力から作る `ClassEvent` は `new Date("YYYY-MM-DD")` によりUTCとして解析される。日付表示では `ja-JP` と `timeZone: "UTC"` を明示し、入力した暦日を保持する。
+- 日付表示の変更時は `EventManager.rendering.test.tsx` の回帰を確認する。既定ロケールとタイムゾーンだけを模擬し、実際のIntlによる表示結果を年越し・うるう日でも検証する。
+- 検証は `npm test -- --runInBand`、`node_modules/.bin/eslint . --max-warnings 0`、`node_modules/.bin/tsc --noEmit --incremental false`。lintの診断では自動修正を使わず、既存エラーと変更由来のエラーを区別する。
+- 再発条件・検証結果・未解決事項の正本は [.module/FEEDBACK.md](.module/FEEDBACK.md) を参照する。
+- 分類Aタスクの枯渇と品質トレンドは未判定。古い計画やコミットの接頭辞だけで停滞を断定しない。分析基点 `4c662448` から30件のコード系接頭辞は9件だが、同コミットは `chore:` でも実装変更を含む。
+- 23系はPURPOSE.mdの更新条件に従う。外部待ちや稼働状況を未確認のまま計画リセット・再発火を行わない。TAS状態確認がDB権限で失敗した場合は未確認として報告する。
+
 # エラー予防プロトコル - SDEC×2SCV×ACR統合版
 
 ## 1. SDEC×2SCV×ACR コアロジック

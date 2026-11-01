@@ -1,5 +1,34 @@
 # FEEDBACK.md - イキイキレコード フィードバックループ管理
 
+## イベント日付表示の再発防止
+
+観測日: 2026-10-16。対象: `EventManager.tsx` と `EventManager.rendering.test.tsx`。
+
+- 要求: イベントの日付表示が実行環境の言語設定に依存する問題の再発を防ぐ。
+- 仮定と反証: `ja-JP` 指定だけで十分という仮定を、UTCより西の既定タイムゾーンで検査した。`new Date("2026-01-15")` が `America/Los_Angeles` では `2026/1/14` と表示され、仮定は棄却された。
+- 対応: 日付入力はUTCとして解析されるため、表示にもUTCを明示する。新しい日付変換層は作らず、既存のIntl呼び出しに共通のオプションを渡す。
+- 回帰条件: en-US/UTC、ja-JP/Asia/Tokyo、en-US/America/Los_Angeles、ar-EG/Pacific/Kiritimati。期待値は日付入力から定めた固定文字列とし、通常日・同日範囲・年越し・うるう日を検査する。
+- モック境界: `toLocaleDateString` の未指定の既定値のみを補い、実際のIntl実装へ委譲する。製品コードが指定したロケールとタイムゾーンを上書きしない。各テスト後にspyを復元する。
+- 直接の結果: 修正前は描画テスト8件中1件失敗（米国西海岸で前日にずれる）。修正後はイベント管理5スイート・21件通過。全体は `npm test -- --runInBand` で227スイート・2,493件通過。
+- 静的検証: 変更した2ファイルのESLintはエラー・警告なし。全体ESLintは43エラー（18ファイル）、`tsc --noEmit --incremental false` は416エラー（54ファイル）。全エラー発生ファイルはHEADと同一であり、HEAD版に戻した型チェックの診断全文も修正後と一致した。既存の静的検証は未解決で、全品質ゲート達成とは判定しない。
+- 再現コマンド: `node_modules/.bin/jest --selectProjects jsdom --runInBand --testPathPattern=EventManager`。期待: 5スイート・21件通過。
+
+利用場面に基づく自己レビュー（同一Codexセッション。独立したペルソナ応答・署名は未取得）:
+
+- EventManager.tsx sha256: `fecbc7de0e4a7d1f3e1cd0f04870db8d36d45de61359f604faa0794b69d4cb50`
+- EventManager.rendering.test.tsx sha256: `394f1c6a3dcab70a846ca2194842785c39c1544298f3f7a9df4236171bc0a23f`
+
+| 観点 | 反応・粗指摘 | 反論と判定・反映 |
+| --- | --- | --- |
+| 学級の予定を入力する教員 | 日本語表記でも入力日と表示日が異なれば予定を確認できない | 日本の環境だけなら見えにくいが、米国西海岸で実際に再現。採用し、UTC表示を指定した |
+| 環境差を検証する保守担当 | 中旬の日付だけでは年・月の境界のずれを見落とす | 通常日でもずれは検出できるが、暦日の境界を明示する価値がある。採用し、年越しとうるう日を追加した |
+
+停滞診断は `deferred`: TASの `cp-repo check`、`runs`、`cost --recorded` はいずれも初期化時に `sqlite3.OperationalError: attempt to write a readonly database`。cadence・他runの所有権・記録済み費用は未確認であり、停滞分析や計画の書き換えは行っていない。次回は通常のハーネス経路でTAS状態が取得できる時点で再観測する。
+
+保存状態: `git add` が対象worktreeのGit管理領域で `index.lock` を作成できず `Read-only file system`。Task Packetの例外規則に従い再試行・迂回せず、検証済みの6ファイルを未コミットで保持した。push・マージ・タスク操作・worktree削除は行っていない。
+
+MS-012のE2E検証完了はこのJest回帰では証明できず、マイルストーンの完了状態は変更しない。次の独立作業は既存のlint・型エラーの原因調査。AGENTS.mdの既存テンプレートには参照先 `../../COMMON_MODULE_CATEGORIZATION.md` の欠落もある。カバレッジ・ビルド・ブラウザE2Eは今回未検証。
+
 ## ドキュメントメタ情報
 
 - **文書ID**: FEEDBACK-YKA-IR-001

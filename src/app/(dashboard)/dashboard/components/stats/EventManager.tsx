@@ -26,6 +26,8 @@ interface Props {
   onRemoveEvent: (index: number) => void;
 }
 
+const EVENT_DATE_FORMAT_OPTIONS = { timeZone: "UTC" } as const;
+
 const EventManager = memo(function EventManager({
   events,
   onAddEvent,
@@ -117,8 +119,15 @@ const EventManager = memo(function EventManager({
             className="flex items-center justify-between p-2 bg-gray-100 dark:bg-gray-700 rounded"
           >
             <span className="text-sm">
-              {event.name} ({new Date(event.startDate).toLocaleDateString()} 〜{" "}
-              {new Date(event.endDate).toLocaleDateString()})
+              {event.name} (
+              {new Date(event.startDate).toLocaleDateString(
+                "ja-JP",
+                EVENT_DATE_FORMAT_OPTIONS,
+              )} 〜{" "}
+              {new Date(event.endDate).toLocaleDateString(
+                "ja-JP",
+                EVENT_DATE_FORMAT_OPTIONS,
+              )})
             </span>
             <button
               onClick={() => onRemoveEvent(index)}

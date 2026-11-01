@@ -1,1 +1,40 @@
-ambiguities: []
+ambiguities:
+- id: AMB-AUTH-001
+  term: AuthenticationService
+  topic: ドメインとHTTP APIのセッショントークン契約・本番認証の成立条件
+  severity: high
+  uncertainty: 0.222
+  tags:
+  - auth
+  - pii
+  candidates:
+  - APIとドメインのトークンを共通契約として扱う
+  - 互換性未保証のデモ実装として扱う
+  missing_info:
+  - 署名・有効期限・失効を含む本番セッション契約と、その統合検証がない
+  linked_conflicts:
+  - CFLT-AUTH-001
+  auto_decision:
+    status: applied
+    decision_key: AUTO:AuthenticationService.transition:keep_demo_only
+    chosen: 互換性と本番認証は未検証。デモ実装の記述に限定し、本runでデプロイや認証挙動を変更しない。
+    policy: security_safety + reversibility + local_change
+    confidence_auto: 0.4
+    decided_at_run: '2026-10-15T16:41:59Z'
+    expires_after_runs: 20
+    revert_triggers:
+    - primary_evidence_contradiction
+    - security_risk
+    - verified_session_contract
+  last_touched_run: '2026-10-15T16:41:59Z'
+  evidence:
+  - source: src/domain/services/AuthenticationService.ts#L332-L345
+    quote: const parts = token.split("-");
+  - source: src/app/api/auth/login/route.ts#L54-L60
+    quote: return `session_${user.id}_${timestamp}_${random}`;
+  uncertainty_basis:
+    related_claims: 2
+    contradictions: 1
+    unknown: 0
+    evidence_sources: 2
+    average_weight: 0.7

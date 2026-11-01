@@ -1161,6 +1161,30 @@ invariants:
     status: "stable"
     strength: "soft"
 
+  - id: INV-AUTH-101
+    name: Auth_Session_Route_Graceful_Unauthenticated
+    category: security
+    severity: HIGH
+    description: Session route must express missing/invalid credentials as unauthenticated, never as an error
+    constraint: "GET /api/auth/session returns HTTP 200 with { success: true, authenticated: false } when the Authorization header is missing, not Bearer, the token does not match /^session_\\d+_/, or the user does not exist"
+    validation: "src/app/api/auth/session/route.test.ts asserts authenticated:false with 200 for non-Bearer, invalid format, and nonexistent user cases"
+    rationale: "セッション状態確認をエラーではなく未認証として表現することで、クライアントのログイン状態判定を単純化し、存在しないユーザの情報漏えいを防ぐ"
+    related_terms: ["SessionToken", "AuthenticationService"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-AUTH-102
+    name: Auth_Token_Format_Shared_Contract
+    category: security
+    severity: HIGH
+    description: Login-issued token format is a cross-route contract shared with session verification
+    constraint: "Login tokens follow session_<userId>_<timestamp>_<random>; the session route parser (/^session_(\\d+)_/) must remain compatible with the generator format"
+    validation: "src/app/api/auth/login/route.test.ts and src/app/api/auth/session/route.test.ts cover the shared format on both sides"
+    rationale: "発行と検証の形式が乖離すると既存セッションが全て即時無効化されるため、契約として不変に保つ"
+    related_terms: ["SessionToken"]
+    status: "stable"
+    strength: "hard"
+
 violation_handling:
   critical:
     action: "BLOCK_COMMIT"

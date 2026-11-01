@@ -396,3 +396,51 @@ mappings:
       - "src/integration/"
     db: []
     api: []
+
+  SessionToken:
+    code_symbols:
+      - "src/app/api/auth/login/route.ts::class SimpleTokenGenerator"
+      - "src/app/api/auth/session/route.ts::function GET (token parse /^session_(\\d+)_/)"
+      - "src/domain/services/AuthenticationService.ts::interface AuthenticationResult"
+    db: []
+    api:
+      - "src/app/api/auth/login/route.ts::POST /api/auth/login"
+      - "src/app/api/auth/session/route.ts::GET /api/auth/session"
+
+  User:
+    code_symbols:
+      - "src/domain/entities/User.ts::type User"
+    db:
+      - "prisma/schema.prisma::model User"
+    api: []
+
+  UserRepository:
+    code_symbols:
+      - "src/domain/repositories/UserRepository.ts::interface UserRepository"
+    db: []
+    api: []
+
+  AuthenticationService:
+    code_symbols:
+      - "src/domain/services/AuthenticationService.ts::class AuthenticationService"
+    db: []
+    api:
+      - "src/app/api/auth/login/route.ts::POST /api/auth/login"
+
+  AuthorizationService:
+    code_symbols:
+      - "src/application/services/AuthorizationService.ts::class AuthorizationService"
+    db: []
+    api: []
+
+  InMemoryUserRepository:
+    code_symbols:
+      - "src/infrastructure/repositories/InMemoryUserRepository.ts::class InMemoryUserRepository"
+    db: []
+    api: []
+
+  LoginForm:
+    code_symbols:
+      - "src/components/auth/LoginForm.tsx::const LoginForm"
+    db: []
+    api: []

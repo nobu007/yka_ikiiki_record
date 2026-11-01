@@ -1,1 +1,13 @@
-queue: []
+queue:
+  - id: "TP-000227-02"
+    proposed_canonical: "PlaywrightE2eConfig"
+    proposed_layer: "aux"
+    term_raw_examples: ["playwright webServer", "E2E config"]
+    reason: "E2E起動方式(webServer auto-start)は運用上重要だが一次出典がconfig 1件のみ"
+    evidence:
+      - source: "playwright.config.ts"
+        quote: "webServer: {"
+    auto_merge_candidates: []
+    decision: "pending"
+    expires_after_runs: 10
+    created_run: "2026-10-14T18:49:28Z"

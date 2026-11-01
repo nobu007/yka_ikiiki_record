@@ -60,6 +60,10 @@ describe("EMOTION_CONFIG", () => {
 });
 
 describe("UI_CONFIG", () => {
+  it("uses the Japanese business timezone for calendar dates", () => {
+    expect(UI_CONFIG.businessTimeZone).toBe("Asia/Tokyo");
+  });
+
   it("defines morning/afternoon/evening time ranges", () => {
     expect(UI_CONFIG.timeRanges.morning).toEqual({ start: 5, end: 12 });
     expect(UI_CONFIG.timeRanges.afternoon).toEqual({ start: 12, end: 18 });

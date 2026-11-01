@@ -48,6 +48,106 @@ describe("GET /api/analytics - Granularity options", () => {
     expect(data.trend[0].period).toMatch(/^\d{4}-\d{2}$/);
   });
 
+  test("groups periods by Japanese calendar boundaries", async () => {
+    const now = new Date();
+    const businessDateParts = new Intl.DateTimeFormat("en-US-u-ca-gregory", {
+      timeZone: "Asia/Tokyo",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+      .formatToParts(now)
+      .reduce<Record<string, string>>((parts, part) => {
+        parts[part.type] = part.value;
+        return parts;
+      }, {});
+    const businessDate = new Date(
+      Date.UTC(
+        Number(businessDateParts.year),
+        Number(businessDateParts.month) - 1,
+        Number(businessDateParts.day),
+      ),
+    );
+    const currentMonthStart = new Date(
+      Date.UTC(
+        businessDate.getUTCFullYear(),
+        businessDate.getUTCMonth(),
+        1,
+        -9,
+      ),
+    );
+    const previousMonthEnd = new Date(currentMonthStart.getTime() - 1);
+    const currentSunday = new Date(businessDate);
+    currentSunday.setUTCDate(
+      currentSunday.getUTCDate() - currentSunday.getUTCDay(),
+    );
+    const currentWeekStart = new Date(
+      Date.UTC(
+        currentSunday.getUTCFullYear(),
+        currentSunday.getUTCMonth(),
+        currentSunday.getUTCDate(),
+        -9,
+      ),
+    );
+    const previousWeekEnd = new Date(currentWeekStart.getTime() - 1);
+    const makeRecord = (id: number, date: Date) => ({
+      id,
+      emotion: 3 + (id % 3),
+      date,
+      student: `Student${id}`,
+      comment: "Boundary",
+      createdAt: date,
+      updatedAt: date,
+    });
+    mockRepository.findAll.mockResolvedValue([
+      makeRecord(1, previousMonthEnd),
+      makeRecord(2, currentMonthStart),
+    ]);
+
+    const monthResponse = (await GET(
+      createMockRequest(
+        "http://localhost:3000/api/analytics?months=24&granularity=month",
+      ) as never,
+    )) as Response;
+    const monthData = await monthResponse.json();
+    const expectedMonth = new Intl.DateTimeFormat("en-US-u-ca-gregory", {
+      timeZone: "Asia/Tokyo",
+      year: "numeric",
+      month: "2-digit",
+    });
+    const expectedMonths = [previousMonthEnd, currentMonthStart].map((date) => {
+      const parts = expectedMonth.formatToParts(date);
+      const year = parts.find(({ type }) => type === "year")?.value;
+      const month = parts.find(({ type }) => type === "month")?.value;
+      return `${year}-${month}`;
+    });
+
+    expect(monthData.trend.map(({ period }: { period: string }) => period)).toEqual(
+      expectedMonths,
+    );
+    expect(monthData.trend.map(({ count }: { count: number }) => count)).toEqual([
+      1, 1,
+    ]);
+
+    const previousSunday = new Date(currentSunday);
+    previousSunday.setUTCDate(previousSunday.getUTCDate() - 7);
+    mockRepository.findAll.mockResolvedValue([
+      makeRecord(3, previousWeekEnd),
+      makeRecord(4, currentWeekStart),
+    ]);
+
+    const weekResponse = (await GET(
+      createMockRequest(
+        "http://localhost:3000/api/analytics?months=24&granularity=week",
+      ) as never,
+    )) as Response;
+    const weekData = await weekResponse.json();
+    expect(weekData.trend.map(({ period }: { period: string }) => period)).toEqual([
+      previousSunday.toISOString().slice(0, 10),
+      currentSunday.toISOString().slice(0, 10),
+    ]);
+  });
+
   test("returns different trend lengths for different granularities", async () => {
     const manyRecords = Array.from({ length: 100 }, (_, i) => ({
       id: i + 1,

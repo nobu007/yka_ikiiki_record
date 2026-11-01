@@ -5,6 +5,17 @@ import {
 
 describe("statsCalculator Effect Calculations", () => {
   describe("calculateSeasonalEffect", () => {
+    test("uses the Japanese calendar month independently of the host timezone", () => {
+      const tokyoApril = calculateSeasonalEffect(
+        new Date("2025-03-31T16:00:00.000Z"),
+      );
+      const april = calculateSeasonalEffect(
+        new Date("2025-04-01T12:00:00.000Z"),
+      );
+
+      expect(tokyoApril).toBe(april);
+    });
+
     test("季節効果を計算する", () => {
       const date = new Date("2025-05-23");
       const effect = calculateSeasonalEffect(date);

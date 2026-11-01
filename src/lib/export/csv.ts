@@ -1,4 +1,5 @@
 import { type StatsData } from "@/schemas/api";
+import { formatDateInBusinessTimeZone } from "@/utils/calendar";
 
 export interface CsvExportOptions {
   includeHeaders?: boolean;
@@ -10,7 +11,7 @@ function formatDate(date: Date, format: "ISO" | "JP"): string {
   if (format === "ISO") {
     return date.toISOString().split("T")[0] ?? date.toISOString();
   }
-  return date.toLocaleDateString("ja-JP");
+  return formatDateInBusinessTimeZone(date, "ja-JP");
 }
 
 function escapeCSVValue(value: string): string {

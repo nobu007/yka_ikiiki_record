@@ -12,6 +12,7 @@ import { CHART_COLORS } from "@/lib/config";
 import { ACCESSIBILITY_MESSAGES } from "@/lib/constants/messages";
 import { UI_CONSTANTS } from "@/lib/constants/ui";
 import { normalizeError, type AppError } from "@/lib/error-handler";
+import { formatDateInBusinessTimeZone } from "@/utils/calendar";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -183,7 +184,10 @@ const TrendReportChartComponent = memo<TrendReportChartProps>(
     const categories = useMemo(
       () =>
         sortedData.map((dp) =>
-          dp.date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+          formatDateInBusinessTimeZone(dp.date, "en-US", {
+            month: "short",
+            day: "numeric",
+          }),
         ),
       [sortedData],
     );

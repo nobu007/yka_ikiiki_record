@@ -1,6 +1,7 @@
 import { EMOTION_CONFIG, UI_CONFIG } from "@/lib/config";
 import { EMOTION_CALCULATION_PARAMS } from "@/lib/constants";
 import { clamp } from "./math";
+import { getBusinessCalendarMonthIndex } from "../calendar";
 
 type EmotionData = {
   date: Date;
@@ -92,7 +93,7 @@ export const generateBaseEmotion = (
  * ```
  */
 export const calculateSeasonalEffect = (date: Date): number => {
-  const monthIndex = date.getMonth();
+  const monthIndex = getBusinessCalendarMonthIndex(date);
   const factor =
     EMOTION_CONFIG.seasonalFactors[monthIndex] ??
     EMOTION_CALCULATION_PARAMS.SEASONAL.FACTOR_FALLBACK;

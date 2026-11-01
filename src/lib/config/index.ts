@@ -32,6 +32,7 @@ export const EMOTION_CONFIG = {
 } as const;
 
 export const UI_CONFIG = {
+  businessTimeZone: "Asia/Tokyo",
   timeRanges: {
     morning: { start: 5, end: 12 },
     afternoon: { start: 12, end: 18 },

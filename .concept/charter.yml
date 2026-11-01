@@ -10,7 +10,7 @@ product_goal:
     - id: "MET-002"
       name: "不変条件準拠率"
       target: "100%"
-      current: "100% (20/20 invariants stable)"
+      current: "100% (60/60 invariants stable)"
     - id: "MET-003"
       name: "単一責務原則準拠"
       target: "100% (全ファイル300行以下)"

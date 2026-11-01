@@ -1,1 +1,39 @@
-queue: []
+queue:
+  - id: "TP-000001"
+    proposed_canonical: "PlaywrightE2E"
+    proposed_layer: "aux"
+    term_raw_examples: ["Playwright webServer", "e2e tests"]
+    reason: "E2E 実行基盤（webServer 自動起動・通知タイムアウト等の設定が反復出現）。TestUtilities への統合か独立概念か要審査"
+    evidence:
+      - source: "playwright.config.ts"
+        quote: "webServer: { command: 'npm run dev', url: 'http://127.0.0.1:3000', reuseExistingServer: true, timeout: 120 * 1000 }"
+    decision: "accepted"
+    review_note: "cycle-228 承認。一次出典2つ以上（playwright.config.ts / package.json test:e2e scripts / playwright/*.spec.ts）、TestUtilities とは境界が分離（モック/ヘルパー vs ブラウザE2E）、mappings.yml に4シンボル登録。TERM-125 として ontology へ投入"
+    expires_after_runs: 10
+    created_run: "2026-10-14T15:43:24Z"
+
+  - id: "TP-000002"
+    proposed_canonical: "ZeroTrustPackagePolicy"
+    proposed_layer: "aux"
+    term_raw_examples: ["ignore-scripts", "axios_check repo guard", "zero-trust package install policy"]
+    reason: "セキュリティポリシー概念。ansible 管理ブロックとしてルートと packages/ui の両方に適用され、tags:security の不変条件候補"
+    evidence:
+      - source: ".npmrc"
+        quote: "ignore-scripts=true / save-exact=true / audit-level=high / fund=false (ANSIBLE MANAGED BLOCK axios_check repo guard)"
+    decision: "accepted"
+    review_note: "cycle-228 承認。一次出典2つ（root .npmrc / packages/ui/.npmrc、同一ポリシーブロック）、mappings.yml に2パス登録。TERM-126 として ontology へ投入（tags: security）"
+    expires_after_runs: 10
+    created_run: "2026-10-14T15:43:24Z"
+
+  - id: "TP-000003"
+    proposed_canonical: "AuditScoreRecord"
+    proposed_layer: "aux"
+    term_raw_examples: ["s-00X score records", ".audit/spec/runs/old/scores"]
+    reason: "監査スコア記録の正規 ID 体系（lowercase s-00X が正本、大文字は大文字小文字衝突として削除済み）。.audit データ整合の概念候補"
+    evidence:
+      - source: ".audit/spec/runs/old/scores (commit 50f6ecc9)"
+        quote: "chore(audit): drop case-colliding uppercase score records (s-00X are canonical)"
+    decision: "pending"
+    review_note: "cycle-228 審査: B-8 条件不足（mappings.yml に貼れる追跡対象の code/db/api パスがない — .audit は gitignore 対象のローカル成果物のため）。追跡可能な出典が増えない限り rejected 寄り。TTL 10 runs 内に再審査"
+    expires_after_runs: 10
+    created_run: "2026-10-14T15:43:24Z"

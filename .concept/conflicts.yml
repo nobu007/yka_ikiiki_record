@@ -1,1 +1,45 @@
-conflicts: []
+conflicts:
+  - id: "CFLT-QUAL-001"
+    term: "CleanArchitecture"
+    about: "invariant"
+    severity: "high"
+    nli: "contradiction"
+    items:
+      - claim: "TypeScript strict mode fully compliant, zero 'any' (PURPOSE.md, 2026-03-21)"
+        source: "PURPOSE.md#L29-L31"
+      - claim: "tsc --noEmit reports 409 TS errors across 15+ files (notifications/backup/audit/trend/authorization services, routes, tests)"
+        source: "pnpm exec tsc --noEmit (measured 2026-10-13)"
+    status: "open"
+    active_workaround:
+      decision_key: "AUTO:quality.claims:trust_code_evidence"
+      summary: "AUTO: treat document quality claims as stale; trust measured code evidence until re-verified"
+
+  - id: "CFLT-AUDIT-001"
+    term: "AuditLog"
+    about: "data_constraint"
+    severity: "medium"
+    nli: "contradiction"
+    items:
+      - claim: "AuditOperation = 'create' | 'update' | 'delete'"
+        source: "src/domain/entities/AuditLog.ts#L22"
+      - claim: "BackupService writes audit entries with operation:'restore'"
+        source: "src/application/services/BackupService.ts#L198-L203"
+    status: "open"
+    active_workaround:
+      decision_key: "AUTO:AuditLog.operation:include_restore"
+      summary: "AUTO: conceptually treat 'restore' as a valid audit operation; implementation should extend the union type"
+
+  - id: "CFLT-AUTH-001"
+    term: "AuthorizationService"
+    about: "boundary"
+    severity: "high"
+    nli: "contradiction"
+    items:
+      - claim: "RBAC exists (AuthorizationService with role hierarchy admin>teacher) as a feature"
+        source: "src/application/services/AuthorizationService.ts"
+      - claim: "No API route imports/invokes AuthorizationService or any auth guard; no middleware.ts exists; destructive POST /api/restore and POST /api/backup are unauthenticated"
+        source: "src/app/api/restore/route.ts, src/app/api/backup/route.ts, grep evidence (empty hits), find middleware (empty)"
+    status: "open"
+    active_workaround:
+      decision_key: "AUTO:api.endpoints:auth_required"
+      summary: "AUTO: treat all data-mutating API endpoints as auth-required by concept (safety side); implementation gap is recorded as OPEN_RISK"

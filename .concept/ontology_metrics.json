@@ -1,21 +1,22 @@
 {
   "version": "1.0",
-  "last_updated": "2026-03-22T15:22:00.000000+09:00",
-  "run_index": 226,
+  "last_updated": "2026-10-13T04:40:30+09:00",
+  "run_index": 228,
   "phase": "maintenance",
   "terms": {
-    "total": 43,
-    "core": 7,
-    "domain": 18,
-    "aux": 18,
+    "total": 54,
+    "core": 8,
+    "domain": 26,
+    "aux": 20,
+    "other": 0,
     "draft": 0,
-    "stable": 43
+    "stable": 54
   },
   "mappings": {
-    "total": 43,
-    "with_code_symbols": 43,
-    "with_db": 3,
-    "with_api": 6,
+    "total": 54,
+    "with_code_symbols": 54,
+    "with_db": 4,
+    "with_api": 13,
     "unmapped": 0
   },
   "invariants": {
@@ -26,7 +27,7 @@
     "draft": 0
   },
   "quality_metrics": {
-    "ontology_coverage": "36.4%",
+    "ontology_coverage": "33.8%",
     "mapping_saturation": "100%",
     "draft_ratio": "0%",
     "unmapped_ratio": "0%",
@@ -36,36 +37,19 @@
   "test_results": {
     "test_suites": 177,
     "tests_passed": 1312,
-    "timestamp": "2026-03-22T12:45:00.000000+00:00"
+    "timestamp": "2026-03-22T12:45:00.000000+00:00",
+    "note": "carried over from cycle 226; not re-run this cycle (concept/docs-only change)"
   },
   "consolidation_summary": {
     "previous_terms": 129,
-    "current_terms": 43,
-    "terms_removed": 86,
-    "consolidation_ratio": "66.7%"
+    "current_terms": 54,
+    "terms_removed": 75,
+    "consolidation_ratio": "66.7% (at cycle 45; net +5 terms in cycle 227 for post-sync feature areas; net +0 terms in cycle 228 — mappings-only completion for the auth feature)"
   },
   "notes": {
-    "q1_coverage_rationale": "36.4% raw coverage (43 terms / 118 non-test source files). This appears low but is healthy for this codebase because: (1) All domain entities, services, repositories, and major architectural components are covered, (2) The remaining files are primarily small utilities, types, and component implementations that are appropriately consolidated into broader concepts, (3) Adding more terms would violate the consolidation principle stated in the autopilot instruction. The 43 terms represent the canonical concepts after consolidation from 129 original terms (66.7% reduction).",
-    "maintenance_cycle_206": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_207": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_208": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_209": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 276 lines, well under 300-line limit).",
-    "maintenance_cycle_210": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 276 lines, well under 300-line limit).",
-    "maintenance_cycle_211": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_212": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_213": "Health check completed. All quality metrics remain stable. All recent code changes (trend.ts split, logWithLevel extraction, averageEmotion helper, etc.) are already reflected in the ontology. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_214": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_215": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_216": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit).",
-    "maintenance_cycle_217": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_218": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_219": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_220": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_221": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_222": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_223": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_224": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_225": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors.",
-    "maintenance_cycle_226": "Health check completed. All quality metrics remain stable. No code changes detected requiring concept synchronization. Test suite: 177 suites, 1312 tests passing. All files comply with SRP (max 283 lines, well under 300-line limit). Lint passes with no errors."
+    "q1_coverage_rationale": "54 terms / 160 non-test source files. Consolidation-first policy retained; cycle 227 added 5 domain terms (Backup, NotificationProvider, TrendAnalysis, Anomaly, AuditLog) that were introduced in code after the 2026-03-22 sync and are evidenced by .spec-workflow specs + tests + routes.",
+    "maintenance_cycle_226": "Health check completed. All quality metrics remain stable.",
+    "maintenance_cycle_227": "Concept sync after 7-month gap. Ingested 28 claims from specs/code/db of 5 post-sync feature areas. GC: 0 (all budget metrics within limits: terms 54/80, draft 0%, unmapped 1.9%). New AUTO decision AMB-001 (NotificationProvider vs UI Notification naming). prisma schema confirmed to persist only Record and User; other feature areas are in-memory.",
+    "maintenance_cycle_228": "Unmapped regression 0→6 explained and closed: the 6 MS-011 auth terms (User, UserRepository, AuthenticationService, AuthorizationService, InMemoryUserRepository, LoginForm) were added directly to ontology.yml by milestone work on 2026-03-30 without mappings; the cycle-227 recount exposed them as unmapped. Cycle 228 added mappings for all 6 (User includes prisma model + /api/auth/session; AuthenticationService includes /api/auth/login|logout|session), reclassified AuthorizationService layer application→domain (v0.3 layer vocabulary is core|domain|aux only), and fixed the ontology_budget.yml vs ontology_metrics.json unmapped contradiction (budget said 1, metrics said 6 — both now 0 after completion). unmapped_ratio denominator is total terms (54), so cycle-227 values 6/54=11.1% and 48/54=88.9% were internally consistent; the same basis is retained."
   }
 }

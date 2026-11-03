@@ -1,0 +1,20 @@
+# Canonical PR checks: self-hosted, documentation/CI policy has a bounded lane.
+# Application changes retain build, lint, existing unit and browser checks.
+when:
+  - event: [pull_request, manual]
+labels:
+  platform: linux/amd64
+# This repository has no .gitmodules; its legacy template gitlink is not a submodule.
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      recursive: false
+      partial: false
+      depth: 50
+steps:
+  - name: ci
+    image: node:22-bookworm-slim
+    commands:
+      - apt-get update && apt-get install -y --no-install-recommends ca-certificates git python3 python3-yaml
+      - bash scripts/ci/check.sh

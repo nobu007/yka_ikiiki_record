@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-26T17:05:00.720328+00:00",
+  "long_term": {
+    "summary": "教育現場で生徒の心の成長と学級文化を可視化し、本番利用・PostgreSQL永続化・耐久性・品質監視を実際の証拠で満たす。既存P1→P2→P3の順を維持する。",
+    "source": "PURPOSE.md",
+    "source_hash": "git-blob:a9a79921b770dd9cdaafd30737010e01dd0e8f18",
+    "updated_at": "2026-10-26"
+  },
+  "short_term": {
+    "summary": "約30分の読み取り照合で、現行コミット・停止した評価/着地段階・既存P1のデプロイ前提と受入証拠を対応づけ、不明と不足を記録する。停止解除やデプロイは行わない。",
+    "source": "docs/MILESTONES.md",
+    "source_hash": "git-blob:ff064e0f63a1cc702ec90060877d356ea3930f0d",
+    "updated_at": "2026-10-26",
+    "status": "not_started"
+  }
+}

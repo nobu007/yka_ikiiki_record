@@ -225,7 +225,7 @@ describe("UserRepository Interface", () => {
         email: "test@example.com",
         passwordHash: "hashed_password_123456789012345678901234567890123456789012345678901234567890",
         name: "Test Teacher",
-        role: UserRole.TEACHER,
+        role: UserRole.Enum.TEACHER,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -321,7 +321,7 @@ describe("UserRepository Interface", () => {
         email: "teacher@example.com",
         passwordHash: "hashed_password_123456789012345678901234567890123456789012345678901234567890",
         name: "Test Teacher",
-        role: UserRole.TEACHER,
+        role: UserRole.Enum.TEACHER,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -374,7 +374,7 @@ describe("UserRepository Interface", () => {
         email: "new@example.com",
         passwordHash: "hashed_password_123456789012345678901234567890123456789012345678901234567890",
         name: "New Teacher",
-        role: UserRole.TEACHER,
+        role: UserRole.Enum.TEACHER,
       };
       const created = await mockRepository.save(newUser);
       expect(created.id).toBeDefined();

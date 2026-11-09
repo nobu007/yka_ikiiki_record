@@ -4,8 +4,6 @@ import {
   AnomalyType,
   DEFAULT_ANOMALY_DETECTION_CONFIG,
   type Anomaly,
-  type AnomalyContext,
-  type AnomalyDetectionConfig,
 } from "@/domain/entities/Anomaly";
 
 describe("Anomaly Domain Entity", () => {

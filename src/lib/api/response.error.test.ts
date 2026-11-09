@@ -43,7 +43,7 @@ describe('createErrorResponse', () => {
       const mockResponse = { success: false, error: 'Bad request' };
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockResponse);
 
-      const result = createErrorResponse('Bad request', 400);
+      createErrorResponse('Bad request', 400);
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         { success: false, error: 'Bad request' },
@@ -55,7 +55,7 @@ describe('createErrorResponse', () => {
       const mockResponse = { success: false, error: 'Unauthorized' };
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockResponse);
 
-      const result = createErrorResponse('Unauthorized', 401);
+      createErrorResponse('Unauthorized', 401);
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         { success: false, error: 'Unauthorized' },
@@ -69,7 +69,7 @@ describe('createErrorResponse', () => {
       const mockResponse = { success: false, error: '' };
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockResponse);
 
-      const result = createErrorResponse('');
+      createErrorResponse('');
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         { success: false, error: '' },
@@ -82,7 +82,7 @@ describe('createErrorResponse', () => {
       const mockResponse = { success: false, error: longMessage };
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockResponse);
 
-      const result = createErrorResponse(longMessage);
+      createErrorResponse(longMessage);
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         { success: false, error: longMessage },
@@ -95,7 +95,7 @@ describe('createErrorResponse', () => {
       const mockResponse = { success: false, error: specialMessage };
       (NextResponse.json as jest.Mock).mockReturnValueOnce(mockResponse);
 
-      const result = createErrorResponse(specialMessage);
+      createErrorResponse(specialMessage);
 
       expect(NextResponse.json).toHaveBeenCalledWith(
         { success: false, error: specialMessage },

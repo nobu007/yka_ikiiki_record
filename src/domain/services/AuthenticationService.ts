@@ -336,7 +336,7 @@ export class AuthenticationService {
       return null;
     }
 
-    const userId = parseInt(parts[1], 10);
+    const userId = parseInt(parts[1]!, 10);
 
     if (isNaN(userId) || userId <= 0) {
       return null;

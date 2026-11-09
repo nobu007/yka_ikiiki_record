@@ -42,8 +42,8 @@ identified_gaps:
       - "playwright/statistics-display.spec.ts (16 tests)"
     root_cause_hypotheses:
       - hypothesis_1: "Success notification state not being set after seed API completes"
-      hypothesis_2: "Success notification component not rendering even when state is set"
-      hypothesis_3: "Success message appears too briefly (< 1s) and disappears before E2E test can detect it"
+      - hypothesis_2: "Success notification component not rendering even when state is set"
+      - hypothesis_3: "Success message appears too briefly (< 1s) and disappears before E2E test can detect it"
     proposed_solution: "PR-003: Add diagnostic logging + fix success message display"
     status: "ready_for_fix"
     related_pr: "PR-002 (timeout fix was insufficient)"

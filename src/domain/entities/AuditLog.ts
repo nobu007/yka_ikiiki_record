@@ -19,7 +19,9 @@
  * ```
  */
 
-export type AuditOperation = "create" | "update" | "delete";
+export type AuditOperation = "create" | "update" | "delete" | "restore";
+
+export type AuditLogMetadata = AuditLog["metadata"];
 
 export interface AuditLog {
   /** Unique identifier for this audit entry */

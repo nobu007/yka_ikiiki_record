@@ -1,4 +1,4 @@
-import type { Anomaly, AnomalyContext } from "@/domain/entities/Anomaly";
+import type { Anomaly } from "@/domain/entities/Anomaly";
 
 /**
  * Repository interface for Anomaly persistence and retrieval.

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach } from "@jest/globals";
 import { EmailNotificationProvider } from "./EmailNotificationProvider";
 import type { NotificationProvider, Notification } from "@/domain/entities/NotificationProvider";
 import {

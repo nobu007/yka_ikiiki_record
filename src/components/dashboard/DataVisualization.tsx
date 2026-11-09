@@ -1,4 +1,4 @@
-import { useMemo, useCallback, memo } from "react";
+import { useCallback, memo } from "react";
 import {
   MonthlyEmotionChart,
   DayOfWeekChart,
@@ -86,8 +86,6 @@ export const DataVisualization = memo<DataVisualizationProps>(({ data }) => {
     currentPage,
     totalPages,
     goToPage,
-    goToNextPage,
-    goToPreviousPage,
   } = usePagination(data.studentStats, {
     pageSize: DEFAULT_STUDENTS_PER_PAGE,
   });

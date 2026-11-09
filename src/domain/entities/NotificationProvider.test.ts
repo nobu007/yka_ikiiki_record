@@ -7,6 +7,8 @@ import {
   NotificationPriority,
   NotificationProviderSchema,
   type NotificationProviderDTO,
+  type WebhookProviderConfig,
+  type InAppProviderConfig,
 } from "./NotificationProvider";
 
 describe("NotificationProvider", () => {
@@ -100,7 +102,10 @@ describe("NotificationProvider", () => {
       };
 
       expect(provider.type).toBe(NotificationProviderType.WEBHOOK);
-      expect(provider.config.url).toBe("https://hooks.slack.com/services/XXX/YYY/ZZZ");
+      const webhookConfig = provider.config as WebhookProviderConfig;
+      expect(webhookConfig.url).toBe(
+        "https://hooks.slack.com/services/XXX/YYY/ZZZ",
+      );
     });
 
     it("should create an in-app notification provider", () => {
@@ -127,8 +132,9 @@ describe("NotificationProvider", () => {
       };
 
       expect(provider.type).toBe(NotificationProviderType.IN_APP);
-      expect(provider.config.retentionDays).toBe(30);
-      expect(provider.config.maxNotifications).toBe(100);
+      const inAppConfig = provider.config as InAppProviderConfig;
+      expect(inAppConfig.retentionDays).toBe(30);
+      expect(inAppConfig.maxNotifications).toBe(100);
     });
   });
 
@@ -160,43 +166,43 @@ describe("NotificationProvider", () => {
     });
 
     it("should require id field", () => {
-      const { id, ...invalidProvider } = validProvider;
+      const { id: _id, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require type field", () => {
-      const { type, ...invalidProvider } = validProvider;
+      const { type: _type, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require status field", () => {
-      const { status, ...invalidProvider } = validProvider;
+      const { status: _status, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require name field", () => {
-      const { name, ...invalidProvider } = validProvider;
+      const { name: _name, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require config field", () => {
-      const { config, ...invalidProvider } = validProvider;
+      const { config: _config, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require channels field", () => {
-      const { channels, ...invalidProvider } = validProvider;
+      const { channels: _channels, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require enabledChannels field", () => {
-      const { enabledChannels, ...invalidProvider } = validProvider;
+      const { enabledChannels: _enabledChannels, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
@@ -239,7 +245,7 @@ describe("NotificationProvider", () => {
     });
 
     it("should allow optional lastUsedAt field", () => {
-      const { lastUsedAt, ...providerWithoutLastUsed } = validProvider;
+      const { lastUsedAt: _lastUsedAt, ...providerWithoutLastUsed } = validProvider;
       const result = NotificationProviderSchema.safeParse(providerWithoutLastUsed);
       expect(result.success).toBe(true);
     });

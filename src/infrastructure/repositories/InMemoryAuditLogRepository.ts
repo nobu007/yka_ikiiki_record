@@ -1,9 +1,9 @@
+import type { AuditLog } from "../../domain/entities/AuditLog";
 import type {
-  AuditLog,
+  AuditLogRepository,
   AuditLogQuery,
   AuditLogQueryResult,
-} from "../../domain/entities/AuditLog";
-import type { AuditLogRepository } from "../../domain/repositories/AuditLogRepository";
+} from "../../domain/repositories/AuditLogRepository";
 
 /**
  * In-memory implementation of AuditLogRepository for development and testing.

@@ -1,0 +1,3 @@
+# Wiki log
+
+- 2026-11-10 — Recorded the ai-hub monitoring-writer relationship after the TAS self-push failure `post_dispatch: target worktree is dirty after dispatch`. Root cause: ai-hub's `tools/monitoring/llm_analyzer.py` writes `llm_analysis_<UTC>.md` into `~/yka_ikiiki_record/data/`, and ai-hub's monitoring unit tests trigger that writer without redirecting `Path.home()`, so the generated files appear as untracked paths in this checkout. Added the `data/llm_analysis_*.md` ignore rule, quarantined the two stray report files under the TAS dirty-care state directory, and opened the upstream follow-up in [relations.md](relations.md).

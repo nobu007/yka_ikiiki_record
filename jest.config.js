@@ -9,6 +9,15 @@
  *
  * @type {import('jest').Config}
  */
+// Pin the test timezone to Asia/Tokyo (this product operates in JST).
+// Date-dependent assertions assume JST: calculateDayOfWeekStats maps a
+// UTC timestamp to its JST calendar day, and EventManager renders event
+// date ranges with JST-local dates. UTC CI runners therefore failed
+// statsCalculator.aggregation and EventManager.rendering while the whole
+// suite was green locally. Setting TZ in the jest parent process (before
+// the workers spawn) makes local and CI runs identical and deterministic.
+process.env.TZ = 'Asia/Tokyo';
+
 module.exports = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],

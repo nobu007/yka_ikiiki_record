@@ -166,43 +166,43 @@ describe("NotificationProvider", () => {
     });
 
     it("should require id field", () => {
-      const { id, ...invalidProvider } = validProvider;
+      const { id: _id, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require type field", () => {
-      const { type, ...invalidProvider } = validProvider;
+      const { type: _type, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require status field", () => {
-      const { status, ...invalidProvider } = validProvider;
+      const { status: _status, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require name field", () => {
-      const { name, ...invalidProvider } = validProvider;
+      const { name: _name, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require config field", () => {
-      const { config, ...invalidProvider } = validProvider;
+      const { config: _config, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require channels field", () => {
-      const { channels, ...invalidProvider } = validProvider;
+      const { channels: _channels, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
 
     it("should require enabledChannels field", () => {
-      const { enabledChannels, ...invalidProvider } = validProvider;
+      const { enabledChannels: _enabledChannels, ...invalidProvider } = validProvider;
       const result = NotificationProviderSchema.safeParse(invalidProvider);
       expect(result.success).toBe(false);
     });
@@ -245,7 +245,7 @@ describe("NotificationProvider", () => {
     });
 
     it("should allow optional lastUsedAt field", () => {
-      const { lastUsedAt, ...providerWithoutLastUsed } = validProvider;
+      const { lastUsedAt: _lastUsedAt, ...providerWithoutLastUsed } = validProvider;
       const result = NotificationProviderSchema.safeParse(providerWithoutLastUsed);
       expect(result.success).toBe(true);
     });

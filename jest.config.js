@@ -18,6 +18,7 @@
 // the workers spawn) makes local and CI runs identical and deterministic.
 process.env.TZ = 'Asia/Tokyo';
 
+
 module.exports = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],

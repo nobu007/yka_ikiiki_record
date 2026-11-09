@@ -10,7 +10,6 @@ import { createNotificationService } from "@/infrastructure/factories/repository
 import { NotificationService } from "@/application/services/NotificationService";
 import { InMemoryNotificationProviderRepository } from "@/infrastructure/storage/InMemoryNotificationProviderRepository";
 import { AnomalyDetectionService } from "@/domain/services/AnomalyDetectionService";
-import { InMemoryAnomalyRepository } from "@/infrastructure/storage/InMemoryAnomalyRepository";
 import {
   NotificationChannel,
   NotificationPriority,
@@ -18,9 +17,80 @@ import {
   NotificationProviderStatus,
   NotificationDeliveryStatus,
 } from "@/domain/entities/NotificationProvider";
-import type { Anomaly } from "@/domain/entities/Anomaly";
+import {
+  AnomalyType,
+  AnomalySeverity,
+  type Anomaly,
+} from "@/domain/entities/Anomaly";
+import type { NotificationProviderRepository } from "@/domain/repositories/NotificationProviderRepository";
 
 const mockCreateNotificationService = createNotificationService as jest.Mock;
+
+/**
+ * Adapt the storage-layer in-memory repository (which returns `null` and
+ * omits a few query helpers) to the full domain repository contract.
+ */
+function toProviderRepository(
+  repo: InMemoryNotificationProviderRepository,
+): NotificationProviderRepository {
+  const findAllProviders = async () => repo.findAll();
+  const mostUsed = (record: Record<string, number>) =>
+    Object.entries(record).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "";
+
+  return {
+    save: (provider) => repo.save(provider),
+    findById: async (id) => (await repo.findById(id)) ?? undefined,
+    findAll: () => findAllProviders(),
+    findByType: async (type) =>
+      (await findAllProviders()).filter((p) => p.type === type),
+    findByStatus: async (status) =>
+      (await findAllProviders()).filter((p) => p.status === status),
+    findByChannel: async (channel) =>
+      (await findAllProviders()).filter((p) => p.channels.includes(channel)),
+    findActiveProviders: async () =>
+      (await findAllProviders()).filter(
+        (p) => p.status === NotificationProviderStatus.ACTIVE,
+      ),
+    findProvidersByChannel: (channel) =>
+      repo.findProvidersByChannel(channel),
+    updateStatus: async (id, status) =>
+      (await repo.updateStatus(id, status)) ?? undefined,
+    updateLastUsed: async (id, lastUsedAt) =>
+      (await repo.updateLastUsed(id, lastUsedAt)) ?? undefined,
+    delete: (id) => repo.delete(id),
+    getStatistics: async () => {
+      const providers = await findAllProviders();
+      const byType: Record<string, number> = {};
+      const byChannel: Record<string, number> = {};
+      let active = 0;
+      let inactive = 0;
+      let suspended = 0;
+      for (const p of providers) {
+        byType[p.type] = (byType[p.type] ?? 0) + 1;
+        for (const channel of p.channels) {
+          byChannel[channel] = (byChannel[channel] ?? 0) + 1;
+        }
+        if (p.status === NotificationProviderStatus.ACTIVE) {
+          active += 1;
+        } else if (p.status === NotificationProviderStatus.INACTIVE) {
+          inactive += 1;
+        } else {
+          suspended += 1;
+        }
+      }
+      return {
+        total: providers.length,
+        active,
+        inactive,
+        suspended,
+        byType,
+        byChannel,
+        mostUsedType: mostUsed(byType),
+        mostUsedChannel: mostUsed(byChannel),
+      };
+    },
+  };
+}
 
 describe("GET /api/notifications/history", () => {
   let notificationService: NotificationService;
@@ -40,17 +110,17 @@ describe("GET /api/notifications/history", () => {
       config: {
         host: "smtp.example.com",
         port: 587,
+        secure: false,
         auth: { user: "test@example.com", pass: "password" },
       },
       createdAt: new Date(),
       updatedAt: new Date(),
     });
 
-    const anomalyRepository = new InMemoryAnomalyRepository();
-    const anomalyDetectionService = new AnomalyDetectionService(anomalyRepository);
+    const anomalyDetectionService = new AnomalyDetectionService();
 
     notificationService = new NotificationService(
-      providerRepository,
+      toProviderRepository(providerRepository),
       anomalyDetectionService,
     );
 
@@ -59,11 +129,19 @@ describe("GET /api/notifications/history", () => {
     // Send some test notifications to populate history
     const testAnomaly: Anomaly = {
       id: "anomaly-1",
-      type: "performance_degradation",
-      severity: "high",
+      type: AnomalyType.UNUSUAL_PATTERN,
+      severity: AnomalySeverity.HIGH,
       description: "Test anomaly",
       detectedAt: new Date(),
+      context: {
+        startDate: new Date(),
+        endDate: new Date(),
+        actualValue: 1,
+        expectedValue: 0,
+        deviation: 1,
+      },
       recommendations: ["Fix it"],
+      acknowledged: false,
     };
 
     await notificationService.sendAnomalyAlert(testAnomaly, ["test@example.com"]);

@@ -95,7 +95,7 @@ describe("PerformanceMonitor", () => {
       expect(stats?.avgDuration).toBeGreaterThan(0);
       expect(stats?.minDuration).toBeGreaterThan(0);
       expect(stats?.maxDuration).toBeGreaterThan(0);
-      expect(stats?.maxDuration).toBeGreaterThanOrEqual(stats?.minDuration);
+      expect(stats?.maxDuration).toBeGreaterThanOrEqual(stats!.minDuration);
     });
 
     it("should attach metadata to measurements", () => {

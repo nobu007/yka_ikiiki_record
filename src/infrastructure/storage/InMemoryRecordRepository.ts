@@ -52,6 +52,32 @@ export class InMemoryRecordRepository implements IRecordRepository {
     return this.records.length;
   }
 
+  async findByDateRange(startDate: Date, endDate: Date): Promise<Record[]> {
+    return this.records.filter(
+      (r) => r.date >= startDate && r.date <= endDate,
+    );
+  }
+
+  async findByStudent(student: string): Promise<Record[]> {
+    return this.records.filter((r) => r.student === student);
+  }
+
+  async saveMany(records: Record[]): Promise<Record[]> {
+    const saved: Record[] = [];
+    for (const record of records) {
+      saved.push(await this.save(record));
+    }
+    return saved;
+  }
+
+  async deleteAll(): Promise<void> {
+    this.records.length = 0;
+  }
+
+  async disconnect(): Promise<void> {
+    return;
+  }
+
   /**
    * Helper method for tests to add records directly.
    */

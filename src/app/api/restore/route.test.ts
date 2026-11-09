@@ -42,7 +42,10 @@ describe("POST /api/restore", () => {
   });
 
   test("restores from backup and returns restore result", async () => {
-    const backup = await backupService.createBackup({ source: "manual" }, "test-user");
+    const backup = await backupService.createBackup(
+      { source: "manual", entities: ["Record", "Stats", "AuditLog"] },
+      "test-user",
+    );
 
     const request = new NextRequest("http://localhost:3000/api/restore", {
       method: "POST",
@@ -116,14 +119,15 @@ describe("POST /api/restore", () => {
       id: "pending-backup",
       timestamp: Date.now(),
       status: "pending",
-      source: "manual",
-      triggeredBy: "test-user",
-      entities: ["Record", "Stats", "AuditLog"],
       recordCount: 0,
       size: 0,
       checksum: "",
-      errorMessage: undefined,
-      metadata: {},
+      metadata: {
+        source: "manual",
+        triggeredBy: "test-user",
+        formatVersion: "1.0",
+        entities: ["Record", "Stats", "AuditLog"],
+      },
     });
 
     mockCreateBackupService.mockReturnValue(testService);
@@ -176,14 +180,16 @@ describe("POST /api/restore", () => {
       id: "failed-backup",
       timestamp: Date.now(),
       status: "failed",
-      source: "manual",
-      triggeredBy: "test-user",
-      entities: ["Record", "Stats", "AuditLog"],
       recordCount: 0,
       size: 0,
       checksum: "",
-      errorMessage: "Backup failed",
-      metadata: {},
+      error: "Backup failed",
+      metadata: {
+        source: "manual",
+        triggeredBy: "test-user",
+        formatVersion: "1.0",
+        entities: ["Record", "Stats", "AuditLog"],
+      },
     });
 
     mockCreateBackupService.mockReturnValue(testService);

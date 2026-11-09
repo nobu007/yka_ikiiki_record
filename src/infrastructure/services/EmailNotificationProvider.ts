@@ -3,7 +3,6 @@ import {
   NotificationProviderType,
   NotificationProviderStatus,
   NotificationChannel,
-  NotificationDeliveryStatus,
 } from "@/domain/entities/NotificationProvider";
 
 /**
@@ -165,7 +164,9 @@ export class EmailNotificationProvider {
         to: recipients,
         subject: notification.subject,
         body: notification.body,
-        metadata: notification.metadata,
+        ...(notification.metadata !== undefined
+          ? { metadata: notification.metadata }
+          : {}),
       });
 
       return {
@@ -290,7 +291,9 @@ export class EmailNotificationProvider {
       status: this.provider.status,
       channels: this.provider.channels,
       enabledChannels: this.provider.enabledChannels,
-      lastUsedAt: this.provider.lastUsedAt,
+      ...(this.provider.lastUsedAt !== undefined
+        ? { lastUsedAt: this.provider.lastUsedAt }
+        : {}),
     };
   }
 
@@ -328,7 +331,9 @@ export class EmailNotificationProvider {
         healthy: false,
         latencyMs: Date.now() - startTime,
         error: error instanceof Error ? error.message : "Unknown error",
-        details: error,
+        ...(error instanceof Error
+          ? { details: { name: error.name, message: error.message } }
+          : {}),
       };
     }
   }
@@ -403,7 +408,7 @@ export class EmailNotificationProvider {
    *
    * @param params - SMTP parameters
    */
-  private async simulateSmtpSend(params: {
+  private async simulateSmtpSend(_params: {
     from: string;
     to: string[];
     replyTo: string;

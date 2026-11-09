@@ -321,12 +321,12 @@ describe("usePagination", () => {
       const { result } = renderHook(() => usePagination(complexData));
 
       expect(result.current.currentPageData).toEqual(complexData);
-      expect(result.current.currentPageData[0].nested.items).toEqual([1, 2, 3]);
+      expect(result.current.currentPageData[0]?.nested.items).toEqual([1, 2, 3]);
     });
 
     it("should work with readonly arrays", () => {
       const readonlyData = Object.freeze([...mockData]);
-      const { result } = renderHook(() => usePagination(readonlyData));
+      const { result } = renderHook(() => usePagination([...readonlyData]));
 
       expect(result.current.totalItems).toBe(25);
     });

@@ -1,7 +1,6 @@
-import { z } from "zod";
 import type { NotificationProviderRepository } from "@/domain/repositories/NotificationProviderRepository";
 import type { AnomalyDetectionService } from "@/domain/services/AnomalyDetectionService";
-import type { Anomaly, AnomalyContext } from "@/domain/entities/Anomaly";
+import type { Anomaly } from "@/domain/entities/Anomaly";
 import {
   NotificationProviderType,
   NotificationProviderStatus,
@@ -105,14 +104,12 @@ const rateLimitTracker: Map<string, { count: number; resetAt: number }> =
 export class NotificationService {
   private config: NotificationConfig;
   private providerRepository: NotificationProviderRepository;
-  private anomalyDetectionService: AnomalyDetectionService;
 
   constructor(
     providerRepository: NotificationProviderRepository,
-    anomalyDetectionService: AnomalyDetectionService,
+    _anomalyDetectionService: AnomalyDetectionService,
   ) {
     this.providerRepository = providerRepository;
-    this.anomalyDetectionService = anomalyDetectionService;
     this.config = DEFAULT_NOTIFICATION_CONFIG;
   }
 
@@ -319,7 +316,7 @@ export class NotificationService {
       status: p.status,
       channels: p.channels,
       enabledChannels: p.enabledChannels,
-      lastUsedAt: p.lastUsedAt,
+      ...(p.lastUsedAt !== undefined ? { lastUsedAt: p.lastUsedAt } : {}),
       healthy: p.status === NotificationProviderStatus.ACTIVE,
     }));
   }
@@ -564,7 +561,7 @@ export class NotificationService {
       return null;
     }
 
-    return activeProviders[0];
+    return activeProviders[0] ?? null;
   }
 
   private async sendViaProvider(
@@ -589,7 +586,7 @@ export class NotificationService {
       subject,
       body,
       recipients,
-      metadata,
+      ...(metadata !== undefined ? { metadata } : {}),
       sentAt: new Date(),
       status: NotificationDeliveryStatus.SENT,
       attempts: 1,

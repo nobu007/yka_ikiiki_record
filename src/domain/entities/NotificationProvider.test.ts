@@ -7,6 +7,8 @@ import {
   NotificationPriority,
   NotificationProviderSchema,
   type NotificationProviderDTO,
+  type WebhookProviderConfig,
+  type InAppProviderConfig,
 } from "./NotificationProvider";
 
 describe("NotificationProvider", () => {
@@ -100,7 +102,10 @@ describe("NotificationProvider", () => {
       };
 
       expect(provider.type).toBe(NotificationProviderType.WEBHOOK);
-      expect(provider.config.url).toBe("https://hooks.slack.com/services/XXX/YYY/ZZZ");
+      const webhookConfig = provider.config as WebhookProviderConfig;
+      expect(webhookConfig.url).toBe(
+        "https://hooks.slack.com/services/XXX/YYY/ZZZ",
+      );
     });
 
     it("should create an in-app notification provider", () => {
@@ -127,8 +132,9 @@ describe("NotificationProvider", () => {
       };
 
       expect(provider.type).toBe(NotificationProviderType.IN_APP);
-      expect(provider.config.retentionDays).toBe(30);
-      expect(provider.config.maxNotifications).toBe(100);
+      const inAppConfig = provider.config as InAppProviderConfig;
+      expect(inAppConfig.retentionDays).toBe(30);
+      expect(inAppConfig.maxNotifications).toBe(100);
     });
   });
 

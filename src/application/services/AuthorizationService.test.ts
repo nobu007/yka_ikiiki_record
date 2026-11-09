@@ -68,8 +68,8 @@ class MockUserRepository implements UserRepository {
 describe("AuthorizationService", () => {
   let authService: AuthorizationService;
   let mockRepo: MockUserRepository;
-  let teacherUser: User;
-  let adminUser: User;
+  let teacherUser: User & { id: number };
+  let adminUser: User & { id: number };
 
   beforeEach(() => {
     mockRepo = new MockUserRepository();

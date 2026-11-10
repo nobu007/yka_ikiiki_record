@@ -10,3 +10,8 @@ boundaries.
   repository's receipt, the contracts `local-artifacts-gitignored` rule for
   host-local `.audit` state, and the GitHub Actions check suite that gates the
   landing path (the CI `node-version` pin and the tracked-YAML parse requirement).
+
+- [Repository relations](relations.md) — the ai-hub monitoring writer that generates
+  report artifacts inside this checkout, with the open upstream follow-up for the
+  `Path.home()` defect and the in-repo regression guard
+  `scripts/monitoring-report-ignore.test.ts` that keeps the ignore rule from regressing.

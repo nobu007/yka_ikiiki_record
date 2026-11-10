@@ -155,3 +155,64 @@ Repository: yka_ikiiki_record
   (18706 bytes). After that move `git status --porcelain` in the target
   checkout `/home/jinno/yka_ikiiki_record` is empty, and the `/.audit/` rule
   keeps the artifact ignored once this branch lands on the base branch.
+- Observation: The repair commit `9d9bdc88` (lock quarantine, `jest.setup.js`
+  syntax, `/.audit/` rule, this memo) existed only locally on
+  `tas/auto-care/20261110`; the remote branch was still at `21eefaa8`, so PR #50
+  did not contain the repair. The repository-side blockers were therefore
+  still red in the landing path even though the local checkout was clean.
+- Follow-up: [ ] tas_autopilot — the repair only reaches the landing path when
+  the care branch is published (PR #50, `tas/auto-care/20261110`). Completion
+  condition: the repair commit is present in PR #50 and the PR's checks report
+  the state recorded in the `github-actions-ci` section below.
+
+## github-actions-ci
+- Status: confirmed
+- Relationship: consumer — GitHub Actions is the required check suite for the
+  TAS landing path (the PR body states "TAS will merge it after checks pass");
+  this repository owns the workflow definitions and the tracked files those
+  workflows parse.
+- Responsibility: GitHub Actions owns the runner images and the Node.js
+  toolchain it provisions; this repository owns the pinned `node-version`, the
+  YAML/JSON files the validate job parses, and the tracked sources the build
+  and unit-test jobs consume.
+- Canonical sources: yka_ikiiki_record:`.github/workflows/ci.yml`,
+  yka_ikiiki_record:`.github/workflows/infrastructure.yml`.
+- Change rule: when the CI workflows change, re-run the same two local checks
+  (`python -c "import yaml; yaml.safe_load(...)"` over the tracked YAML files
+  and `node --check` over the tracked `.js` files) before opening or updating a
+  care PR, so a failing check is not discovered only after publication.
+- Evidence: yka_ikiiki_record:.github/workflows/ci.yml sha256:8157e67ab944f3e349a926beb6484a1d171fc2430f0d556dba669499df76d5f6
+- Evidence: yka_ikiiki_record:.github/workflows/infrastructure.yml sha256:d0d46f67f59427af10b9a6f2010dc0efc88aa91341ed81d3a422a4ca9375e312
+- Evidence: yka_ikiiki_record:.audit/analysis/gap.yml sha256:923ad1f479d45d7d38bea69b7c0f295a4fffd562d3a413fce0d95f1d612904cd
+- Evidence: yka_ikiiki_record:package.json sha256:da52a31c97129222080aa9451d8f04597c170e7ff92581bb4d806a50b145eeb1
+- Observation: PR #50 (`tas/auto-care/20261110` → `main`) was OPEN with
+  `mergeStateStatus: UNSTABLE`; the `build` job of workflow `CI` and the
+  `validate` job of workflow `Infrastructure CI/CD` both reported FAILURE, so
+  the landing path could not complete.
+- Observation: Verbatim `build` job output (2026-11-10, run 42788298910):
+  `You are using Node.js 18.20.8. For Next.js, Node.js version ">=20.9.0" is required.`
+  ` ELIFECYCLE  Command failed with exit code 1.`
+  The workflow pinned `node-version: 18`; the pin is raised to `20` in this
+  branch.
+- Observation: Verbatim `validate` job output (2026-11-10, run 42788298789):
+  `##[error]Process completed with exit code 123.`
+  `xargs -I {}` exits 123 when one of the parsed files fails. The failing file
+  was `.audit/analysis/gap.yml`, whose `root_cause_hypotheses` list mixed a
+  sequence entry (`- hypothesis_1: ...`) with sibling keys at the sequence
+  indentation. The local reproduction on the base commit was
+  `yaml.parser.ParserError: while parsing a block collection in ".audit/analysis/gap.yml", line 44, column 7`
+  `expected <block end>, but found '?' in ".audit/analysis/gap.yml", line 45, column 7`.
+  The two sibling keys are now indented into the same mapping, and the file
+  parses: `yaml.safe_load` returns the mapping
+  `{"hypothesis_1": ..., "hypothesis_2": ..., "hypothesis_3": ...}` with its
+  content unchanged.
+- Observation: The tracked-file sweep that the validate job performs
+  (`git ls-files '*.yml' '*.yaml'` and `git ls-files '*.json'`) now reports no
+  failing file: `.audit/analysis/gap.yml` was the only YAML file that failed
+  and no tracked JSON file fails `json.load`.
+- Follow-up: [ ] yka_ikiiki_record maintainers — keep the CI `node-version` at
+  or above the minimum required by the pinned Next.js release and keep every
+  tracked `.audit` YAML file parseable; the Infrastructure CI/CD validate job
+  parses the whole tree, so a syntax error in a tracked audit file blocks the
+  landing of unrelated changes. Completion condition: the `build` and
+  `validate` jobs of PR #50 report SUCCESS.

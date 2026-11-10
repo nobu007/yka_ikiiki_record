@@ -233,3 +233,7 @@ playwright-report/
 /prisma/*.db
 /prisma/*.db-journal
 /dev.db
+
+# Host-local audit output. Historical tracked .audit files stay in git until
+# a separately authorized untracking migration; new audit files are ignored.
+/.audit/

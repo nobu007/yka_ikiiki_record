@@ -5,7 +5,7 @@
 ## MS-001: 停止段階とデプロイ前提を約30分で照合
 Outcome: 現行コミット、元実行の評価/着地段階、P1の前提を証拠付きで対応づける。
 Acceptance: 読み取りのみでGitHub mainと既存実行copyのHEAD差分、元失敗実行とのsource binding、失敗した段階、根拠の所在、再現手順、Vercel/DB設定の有無（秘密値なし）、本番受入証拠の有無を表にし、不明をunknownで残す。ネットワークへの変更操作・デプロイ・停止解除はしない。
-Evidence: pending。停止時点の既知事実はPURPOSE.mdの2026-10-26評価を参照。
+Evidence: pending。停止時点の既知事実はPURPOSE.mdの2026-11-11評価を参照。
 Status: planned
 依存: 既存の実行・着地記録への読取権。次の作業: 上記照合を実施し、欠ける証拠と必要な判断を明記する。
 

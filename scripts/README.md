@@ -36,6 +36,13 @@ This directory contains automation scripts for deployment, verification, and qua
   - Runs full Playwright E2E test suite
   - Usage: `npm run test:e2e:local`
 
+### Repository Tree Integrity
+
+- **`check_tracked_tree.py`** (NEW - 91 lines)
+  - Fails when a tracked gitlink has no `.gitmodules` mapping, or a tracked path is a directory in the worktree
+  - These entries abort the ai-hub verification copy (`verification_copy_special_input`), so no candidate is ever judged
+  - Usage: `python3 scripts/check_tracked_tree.py`
+
 ### Monitoring
 
 - **`meta_checker.py`** (474 lines)

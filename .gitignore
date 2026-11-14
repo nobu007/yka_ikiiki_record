@@ -44,7 +44,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-/lib64/
+lib/
+lib64/
 parts/
 sdist/
 var/
@@ -233,3 +234,16 @@ playwright-report/
 /prisma/*.db
 /prisma/*.db-journal
 /dev.db
+
+# AI Hub chain checkpoints
+chain_checkpoints/
+
+# AI Hub audit results (auto-generated)
+.audit/
+
+# AI Hub monitoring analysis output (ai-hub tools/monitoring/llm_analyzer.py)
+/data/llm_analysis_*.md
+
+# The distribution standard ignores any directory named lib/; keep the
+# tracked sources under src/lib visible for new files.
+!src/lib/

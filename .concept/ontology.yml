@@ -696,3 +696,135 @@ canonical_terms:
     evidence:
       - source: "src/components/auth/LoginForm.tsx"
         quote: "const LoginForm = memo(function LoginForm({ onSubmit, isLoading, error }: LoginFormProps)"
+
+  AuditLog:
+    id: "TERM-125"
+    layer: "aux"
+    status: "stable"
+    definition: "データ変更の監査ログ。create/update/delete操作をentityType/entityId/actor/before-afterスナップショット付きで記録する"
+    synonyms: ["AuditEntry", "OperationLog"]
+    boundaries:
+      includes: ["操作種別(create/update/delete)", "対象エンティティ", "実行者", "変更前後スナップショット", "タイムスタンプ"]
+      excludes: ["データ本体の永続化", "認可判断"]
+    related_terms: ["Backup", "Record"]
+    evidence:
+      - source: "src/domain/entities/AuditLog.ts#L18-L50"
+        quote: "export interface AuditLog { id; timestamp; entityType; entityId; operation: AuditOperation; actor; changes: { before; after } }"
+      - source: "src/application/services/AuditService.ts#L1-L32"
+        quote: "Application service for automatic audit logging... wrapping the domain entity factory functions and repository operations"
+
+  Backup:
+    id: "TERM-126"
+    layer: "aux"
+    status: "stable"
+    definition: "障害復旧用のデータバックアップ。Record/Stats/AuditLogを対象にSHA-256チェックサム付きで作成・復元する"
+    synonyms: ["Snapshot", "DataBackup"]
+    boundaries:
+      includes: ["BackupStatus(pending/in_progress/completed/failed)", "SHA-256チェックサム", "recordCount", "backup/restoreオーケストレーション", "監査ログ記録"]
+      excludes: ["差分バックアップ", "外部ストレージ転送"]
+    related_terms: ["AuditLog", "Record", "Stats"]
+    evidence:
+      - source: "src/domain/entities/Backup.ts#L14-L45"
+        quote: "export type BackupStatus = \"pending\" | \"in_progress\" | \"completed\" | \"failed\"; checksum: \"sha256:...\""
+      - source: "src/application/services/BackupService.ts#L34-L56"
+        quote: "Orchestrates backup creation and restoration across all data repositories (Records, Stats, AuditLogs)"
+      - source: "src/app/api/backup/route.ts"
+        quote: "POST creates backup via createBackupService(); POST /api/restore calls restoreBackup(backupId)"
+
+  Anomaly:
+    id: "TERM-127"
+    layer: "aux"
+    status: "stable"
+    definition: "生徒の感情記録から統計的に検出された異常。スパイク・ドロップ・欠損等をseverity付きで表す"
+    synonyms: ["AnomalyDetection", "異常検知"]
+    boundaries:
+      includes: ["severity(low..critical)", "type(emotion_spike/drop/unusual_pattern/data_gap/outlier)", "acknowledgedフラグ", "推奨アクション"]
+      excludes: ["通知の配送処理", "記録データそのもの"]
+    related_terms: ["Record", "Notification"]
+    evidence:
+      - source: "src/domain/entities/Anomaly.ts#L7-L33"
+        quote: "enum AnomalySeverity { LOW..CRITICAL }; enum AnomalyType { EMOTION_SPIKE, EMOTION_DROP, UNUSUAL_PATTERN, DATA_GAP, OUTLIER }"
+      - source: "src/domain/services/AnomalyDetectionService.ts#L24-L60"
+        quote: "Emotion Spike/Drop: Uses standard deviation from historical mean; Data Gap: Detects missing data periods"
+
+  Notification:
+    id: "TERM-128"
+    layer: "aux"
+    status: "stable"
+    definition: "異常検知やシステムアラートを外部チャネルへ通知する機能。プロバイダ抽象と配信履歴を管理する"
+    synonyms: ["NotificationProvider", "アラート通知"]
+    boundaries:
+      includes: ["プロバイダ型(email/sms/slack/webhook/in_app)", "チャネル/優先度", "配信履歴照会", "設定管理"]
+      excludes: ["異常の検出ロジック", "バックアップ操作"]
+    related_terms: ["Anomaly", "Backup"]
+    evidence:
+      - source: "src/domain/entities/NotificationProvider.ts#L7-L33"
+        quote: "enum NotificationProviderType { EMAIL, SMS, SLACK, WEBHOOK, IN_APP }; enum NotificationChannel { ANOMALY_DETECTION, SYSTEM_ALERTS, ... }"
+      - source: "src/application/services/NotificationService.ts#L22-L66"
+        quote: "SendNotificationOptions { channel; priority; subject; body; recipients }; NotificationHistoryOptions with filters"
+      - source: "src/infrastructure/services/EmailNotificationProvider.ts"
+        quote: "Only email provider implemented in infrastructure"
+
+  TrendAnalysis:
+    id: "TERM-129"
+    layer: "aux"
+    status: "stable"
+    definition: "感情データの時系列トレンド分析。移動平均・ボラティリティ・方向性(up/down/stable)を学生/学級単位で算出する"
+    synonyms: ["Trend", "トレンド分析"]
+    boundaries:
+      includes: ["TrendDataPoint", "TrendMetrics(方向/平均/開始終了/ボラティリティ)", "移動平均", "相関分析"]
+      excludes: ["異常検知の分類", "統計ダッシュボードの描画全般"]
+    related_terms: ["Stats", "Anomaly"]
+    evidence:
+      - source: "src/domain/entities/TrendAnalysis.ts#L16-L40"
+        quote: "export type TrendDirection = \"up\" | \"down\" | \"stable\"; interface TrendMetrics { trendDirection; averageEmotion; volatility }"
+      - source: "src/application/services/TrendAnalysisService.ts#L23-L42"
+        quote: "Moving average smoothing, Anomaly detection using standard deviation, Trend correlation analysis"
+
+  Pagination:
+    id: "TERM-130"
+    layer: "aux"
+    status: "stable"
+    definition: "一覧データのページネーション。ユーティリティ・型・フック・UIコンポーネントの4層で構成される"
+    synonyms: ["PageControl"]
+    boundaries:
+      includes: ["ページ計算ユーティリティ", "usePaginationフック", "PaginationControl UI"]
+      excludes: ["データ取得APIのフィルタ意味論"]
+    related_terms: ["UIComponents", "Dashboard"]
+    evidence:
+      - source: "src/utils/pagination.ts"
+        quote: "pagination core logic (142 lines, added with 270-line test)"
+      - source: "src/presentation/hooks/usePagination.ts"
+        quote: "presentation hook consuming pagination utils"
+
+  CsvExport:
+    id: "TERM-131"
+    layer: "aux"
+    status: "stable"
+    definition: "記録データのCSVエクスポート。ユーティリティとExportButton UIで構成される"
+    synonyms: ["DataExport", "CSV"]
+    boundaries:
+      includes: ["CSV変換ユーティリティ", "ExportButton UI"]
+      excludes: ["Excel形式", "PDF出力"]
+    related_terms: ["Record", "UIComponents"]
+    evidence:
+      - source: "src/lib/export/csv.ts"
+        quote: "CSV export utility with dedicated csv.test.ts"
+      - source: "src/components/common/ExportButton.tsx"
+        quote: "export button UI component"
+
+  PerformanceMonitor:
+    id: "TERM-132"
+    layer: "aux"
+    status: "stable"
+    definition: "実行時パフォーマンス計測コンポーネント。resilience系(circuit-breaker, loop-detector, memory-monitor)と同じ層に属する"
+    synonyms: ["PerfMonitor"]
+    boundaries:
+      includes: ["計測・レポート", "resilience統合"]
+      excludes: ["メモリリーク検出(memory-monitorの責務)", "ループ検出"]
+    related_terms: ["CircuitBreaker", "MemoryMonitor", "LoopDetector"]
+    evidence:
+      - source: "src/lib/resilience/performance-monitor.ts"
+        quote: "performance-monitor added to src/lib/resilience/ family"
+      - source: "src/lib/resilience/performance-monitor.test.ts"
+        quote: "dedicated test suite for performance monitoring"

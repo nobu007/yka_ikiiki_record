@@ -88,14 +88,14 @@ global.fetch = jest.fn(() =>
 beforeEach(() => {
   jest.clearAllMocks();
   if (global.fetch) {
-    (global.fetch as jest.MockedFunction<typeof fetch>).mockClear();
+    global.fetch.mockClear();
   }
 });
 
 // Clean up fetch mocks after each test (but preserve Next.js mocks)
 afterEach(() => {
   if (global.fetch) {
-    (global.fetch as jest.MockedFunction<typeof fetch>).mockReset();
+    global.fetch.mockReset();
   }
 });
 

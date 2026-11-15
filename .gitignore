@@ -233,3 +233,13 @@ playwright-report/
 /prisma/*.db
 /prisma/*.db-journal
 /dev.db
+
+# AI Hub harness chain worktrees (git worktree add under /worktrees/).
+# Kept in sync with .gitignore.local (merge script scripts_python/gitignore_manager.py
+# is not present in this repo); never commit these — deleting them would kill
+# active chain runs.
+/worktrees/
+
+# auto-added by instructions/10_storage/100_audit_storage_policy.md
+.audit/development_direction.yml
+

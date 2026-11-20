@@ -49,3 +49,6 @@ chain_checkpoints/
 
 # AI Hub audit results (auto-generated)
 .audit/
+
+# ai-hub monitoring drop (llm_analyzer.py writes a new timestamped file per run)
+data/llm_analysis_*.md

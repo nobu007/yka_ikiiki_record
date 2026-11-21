@@ -3,7 +3,9 @@
   "devCommand": "npx next dev",
   "installCommand": "pnpm install --no-frozen-lockfile",
   "framework": "nextjs",
-  "regions": ["hnd1"],
+  "regions": [
+    "hnd1"
+  ],
   "env": {
     "DATABASE_PROVIDER": "prisma"
   },
@@ -11,5 +13,6 @@
     "env": {
       "DATABASE_PROVIDER": "prisma"
     }
-  }
+  },
+  "ignoreCommand": "node scripts/ci/routing.cjs vercel-ignore"
 }

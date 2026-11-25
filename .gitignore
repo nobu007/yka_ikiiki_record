@@ -233,3 +233,10 @@ playwright-report/
 /prisma/*.db
 /prisma/*.db-journal
 /dev.db
+
+# auto-added by instructions/10_storage/100_audit_storage_policy.md
+# host-local artifacts stay local (local-artifacts-gitignored contract);
+# tas/auto-care/20261117 untracked them to unblock post_dispatch auto_merge_blocked
+.audit/
+/worktrees/
+

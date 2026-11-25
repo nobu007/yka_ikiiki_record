@@ -26,11 +26,34 @@ describe("EventManager - rendering", () => {
     expect(screen.getByText("運動会", { exact: false })).toBeInTheDocument();
   });
 
-  it("should display event date ranges correctly", () => {
-    render(<EventManager {...defaultProps} />);
+  it("should display event date ranges consistently across timezones", () => {
+    const originalTimezone = process.env.TZ;
+    const dateFormatterSpy = jest.spyOn(
+      Date.prototype,
+      "toLocaleDateString",
+    );
+    process.env.TZ = "America/Los_Angeles";
 
-    expect(screen.getByText(/2026\/1\/15 〜 2026\/1\/20/)).toBeInTheDocument();
-    expect(screen.getByText(/2026\/2\/10 〜 2026\/2\/10/)).toBeInTheDocument();
+    try {
+      render(<EventManager {...defaultProps} />);
+
+      expect(screen.getByText(/2026\/1\/15 〜 2026\/1\/20/)).toBeInTheDocument();
+      expect(screen.getByText(/2026\/2\/10 〜 2026\/2\/10/)).toBeInTheDocument();
+      expect(dateFormatterSpy).toHaveBeenCalledTimes(4);
+      expect(
+        dateFormatterSpy.mock.calls.every(
+          ([locale, options]) =>
+            locale === "ja-JP" && options?.timeZone === "UTC",
+        ),
+      ).toBe(true);
+    } finally {
+      dateFormatterSpy.mockRestore();
+      if (originalTimezone === undefined) {
+        delete process.env.TZ;
+      } else {
+        process.env.TZ = originalTimezone;
+      }
+    }
   });
 
   it("should render delete buttons for each event", () => {

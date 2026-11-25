@@ -1161,6 +1161,31 @@ invariants:
     status: "stable"
     strength: "soft"
 
+  # SECURITY INVARIANTS (added 2026-10-13 concept sync run 227)
+  - id: INV-AUTH-001
+    name: Password_Hash_Only_Storage
+    category: security
+    severity: CRITICAL
+    description: Plaintext passwords must never be persisted
+    constraint: "User persistence stores passwordHash only; plaintext exists only as transient input to PasswordHasher.hash/verify"
+    validation: "User.test.ts and PrismaUserRepository tests verify only passwordHash is written/read"
+    rationale: "Leak containment for teacher accounts (pii/auth safety side)"
+    related_terms: ["User", "AuthenticationService"]
+    status: "stable"
+    strength: "hard"
+
+  - id: INV-AUDIT-001
+    name: Backup_Restore_Audit_Logging
+    category: audit
+    severity: HIGH
+    description: Backup creation and restore operations must write audit log entries
+    constraint: "Every createBackup and restoreBackup call persists an AuditLog entry with actor and context"
+    validation: "BackupService.ts writes audit entries in createBackup (operation:create, actor:triggeredBy) and restoreBackup (operation:restore, actor:system); BackupService tests assert the writes"
+    rationale: "Destructive data operations require traceability (audit safety)"
+    related_terms: ["Backup", "AuditLog"]
+    status: "stable"
+    strength: "hard"
+
 violation_handling:
   critical:
     action: "BLOCK_COMMIT"

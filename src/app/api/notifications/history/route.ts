@@ -11,13 +11,13 @@ import {
 } from "@/domain/entities/NotificationProvider";
 
 interface NotificationHistoryQuery {
-  channel?: string;
-  status?: string;
-  priority?: string;
+  channel?: NotificationChannel;
+  status?: NotificationDeliveryStatus;
+  priority?: NotificationPriority;
   limit?: number;
   offset?: number;
-  startDate?: string;
-  endDate?: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
@@ -27,28 +27,37 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
       const query: NotificationHistoryQuery = {};
 
-      if (searchParams.get("channel")) {
-        const channel = searchParams.get("channel")!;
-        if (!Object.values(NotificationChannel).includes(channel as NotificationChannel)) {
+      const channel = searchParams.get("channel");
+      if (channel) {
+        const validChannel = Object.values(NotificationChannel).find(
+          (value) => value === channel,
+        );
+        if (!validChannel) {
           throw createError.badRequest(`Invalid channel: ${channel}`);
         }
-        query.channel = channel;
+        query.channel = validChannel;
       }
 
-      if (searchParams.get("status")) {
-        const status = searchParams.get("status")!;
-        if (!Object.values(NotificationDeliveryStatus).includes(status as NotificationDeliveryStatus)) {
+      const status = searchParams.get("status");
+      if (status) {
+        const validStatus = Object.values(NotificationDeliveryStatus).find(
+          (value) => value === status,
+        );
+        if (!validStatus) {
           throw createError.badRequest(`Invalid status: ${status}`);
         }
-        query.status = status;
+        query.status = validStatus;
       }
 
-      if (searchParams.get("priority")) {
-        const priority = searchParams.get("priority")!;
-        if (!Object.values(NotificationPriority).includes(priority as NotificationPriority)) {
+      const priority = searchParams.get("priority");
+      if (priority) {
+        const validPriority = Object.values(NotificationPriority).find(
+          (value) => value === priority,
+        );
+        if (!validPriority) {
           throw createError.badRequest(`Invalid priority: ${priority}`);
         }
-        query.priority = priority;
+        query.priority = validPriority;
       }
 
       if (searchParams.get("limit")) {

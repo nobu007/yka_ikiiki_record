@@ -1,0 +1,276 @@
+meta:
+  generated_at: '2026-11-03T08:12:19.686146+00:00'
+  source_inputs:
+  - SYSTEM_CONSTITUTION.md
+  - PURPOSE.md
+  - README.md
+  - codebase-inventory
+  - recent-commits
+  - constitution-audit
+  - docs/llm-wiki/relations.md
+  - docs/llm-wiki/index.md and bounded direct wiki links
+  - docs/owner-decisions.json
+  version: 1
+  relations_digest: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  wiki_digest: fe7f51e740c7c859e2a5f189929e4796f846d5bba0465677178262230abadeae
+  owner_decisions_digest: bce6f3482a558018f8c568b0485770bf40cd9b35991f94c5a7f2fa408f19734b
+  business_objective_revision: null
+north_star: Build educational infrastructure for Japanese schools that turns each
+  student's daily one-minute record into visible growth and classroom culture, on
+  a strictly-enforced Clean Architecture / type-safe TypeScript base with autonomous
+  durability (timeouts, circuit breaker, structured logging) and continuous quality
+  monitoring, deployed as a live Vercel + PostgreSQL service.
+current_milestone: 'Convert ''technically production-ready'' into *evidenced, version-bound*
+  production readiness on the current HEAD: prove the PostgreSQL/Prisma data path
+  (migrations → seed → stats read-back), prove a machine-checkable deployment verification
+  path, and record that evidence at the bound revision so the paused deployment step
+  can resume on solid ground instead of on 2026-03-era metrics claims.'
+work_axes:
+- id: AX-1
+  title: Version-bound proof of the production (Prisma/PostgreSQL) data path
+  rationale: 'Every readiness claim in the repo (README ''Prisma provider coverage:
+    100%'', PURPOSE ''本番稼働可能'') rests on the mock/Mirage path plus an asserted Prisma
+    branch. The paused deployment can only resume once the prisma branch is actually
+    exercised — schema applies, records persist, stats read back — with results bound
+    to the current revision rather than to a historical count.'
+  constitution_link: §3 Type Supremacy + Zod boundary validation, §Testing Mandates
+    (integration tier), §Autonomous Resilience (timeout/circuit-breaker on DB ops,
+    forbidden business timers)
+  acceptance_criteria: An automated, repeatable check applies the committed Prisma
+    migration to a real PostgreSQL instance, seeds records through the same repository-factory
+    branch selected by DATABASE_PROVIDER=prisma, reads aggregate stats back through
+    the application layer, and asserts equality of seeded vs read data; every DB call
+    in that path is wrapped by the constitution's withDatabaseTimeout and is covered
+    by a failing-path assertion (DB down → typed error, no unhandled rejection, no
+    fixed-delay polling); the run emits its bound revision, schema/migration identifier
+    and result as machine-readable output that can be re-run against any target revision.
+  deliverable_type: feat
+- id: AX-2
+  title: Close the open constitution-audit divergences and make the charter/charter
+    docs non-templated
+  rationale: 'The constitution audit is failing with streak 0 over three audits (scores
+    72/44/48) and three unresolved divergences: a critical ''template_not_customized''
+    where the charter''s north_star still carries a ''（推定）'' placeholder, a warning
+    that the constitution lists fewer than five prohibited patterns, and a warning
+    that the governing documents carry no version or Last Updated metadata. A constitution
+    that fails its own audit undercuts every other quality claim in the repo.'
+  constitution_link: §2 Rigorous Architectural Discipline, §Absolute Automation Primacy
+    (documentation exists for AI consumption and maintenance), governance divergence-log
+    discipline
+  acceptance_criteria: The charter's north_star states the product mission as implemented
+    in this repository, with no placeholder or inference markers; the constitution's
+    forbidden-patterns section enumerates at least five repo-specific prohibitions;
+    both governing documents carry a version identifier and Last Updated date that
+    change only when their content changes; the next constitution audit returns a
+    pass with a score above the prior best and the divergence log shows the three
+    entries resolved with evidence rather than by deletion.
+  deliverable_type: refactor
+- id: AX-3
+  title: Machine-checkable deployment acceptance surface (health/readiness + verification
+    script)
+  rationale: The blocked deployment step needs an objective pass/fail gate rather
+    than a checklist that only a human can eyeball. Today acceptance is 'visit the
+    URL, hit /api/seed, hit /api/stats, look at /dashboard' — unstructured, unrecorded,
+    and unbound to a revision. A liveness/readiness endpoint plus a scripted verifier
+    makes deployment success a reproducible fact.
+  constitution_link: §Security Standards (validate at the boundary, rate-limit endpoints),
+    §Autonomous Resilience (timeout enforcement, circuit breaker), §CI/CD Requirements
+    (all commits pass automated checks)
+  acceptance_criteria: A health endpoint reports application/DB readiness without
+    leaking environment values or secrets, returns a typed error body when the database
+    is unreachable, and completes within the constitution's API timeout budget; the
+    deployment verification script checks the bound revision, health, seed, stats
+    and dashboard rendering, prints a per-check PASS/FAIL table with the target URL
+    and revision, and exits non-zero on any failed check; the script is idempotent
+    and safe to run repeatedly against the same deployment.
+  deliverable_type: feat
+- id: AX-4
+  title: 'School-ready capability baseline: teacher identity, class scoping, data
+    export'
+  rationale: 'PURPOSE''s P2 priority-1 list is the difference between a demo that
+    works and a service a school can use: without teacher accounts and per-class separation,
+    one class''s data pollutes another''s, and there is no way to take records out
+    for the school''s own analysis. These are design-level gaps that must be shaped
+    before they are coded, and they change the domain model and schema.'
+  constitution_link: §2 Architectural Discipline (layer boundaries, interface segregation),
+    §3 Zod validation of all external data, §Security Standards (authentication/authorization,
+    input sanitization), §Repository Pattern
+  acceptance_criteria: A written domain design defines a teacher/role entity, a class
+    entity with ownership scoping, and the export contract (CSV/Excel fields, ordering,
+    timezone), showing exactly which layer each new concept lives in and how repository
+    interfaces change; every new external boundary (auth inputs, class filter parameters,
+    export query) is covered by a Zod schema with runtime rejection tests; repository
+    reads are demonstrably scoped so one class cannot read another class's records;
+    the design is approved against the constitution before implementation begins.
+  deliverable_type: feat
+- id: AX-5
+  title: Single-source truth for repo facts, and separation of product code from leftover
+    scaffolding
+  rationale: 'The snapshot contains contradictory self-descriptions (README: 1312
+    tests / 177 suites / 99.64% statements; PURPOSE: 1393 tests / 195 suites / 99.18%;
+    file/scan counts 226 vs 273 vs 18 directories; script line totals 746 vs 779)
+    and a large volume of non-product material (.md count 1828 vs ~6.8k TypeScript
+    LOC; auditing/reporting/checkpoint directories, a vendored third-party admin dashboard
+    tree, a firmware directory). Contradictory numbers make automated acceptance impossible,
+    and a third-party dashboard tree inside the repo invites wasted autonomous effort
+    on code unrelated to the north star.'
+  constitution_link: §1 Absolute Automation Primacy (documentation is machine-consumable),
+    §Metrics & Monitoring (single maintained metric set), §Directory Creation Policy
+    (canonical structure, no unlisted top-level product surface)
+  acceptance_criteria: Exactly one file carries the authoritative quality/test/coverage
+    figures and every other document references it instead of restating numbers; all
+    cited counts equal what the current tooling actually reports at the bound revision;
+    the vendored third-party dashboard tree and non-product directories are either
+    removed or explicitly recorded as out-of-product-scope with a stated owner and
+    no path-level entanglement with src/; no new top-level product directory appears
+    outside the constitution's canonical structure.
+  deliverable_type: fix
+feature_gaps:
+- No executed evidence that the Prisma/PostgreSQL production branch (repository factory
+  with DATABASE_PROVIDER=prisma, committed migration, seed path) actually works against
+  a live database; all recorded passing evidence is from the mock/Mirage path or asserted
+  in prose.
+- No liveness/readiness endpoint and no machine-readable deployment acceptance report,
+  so deployment success can only be judged by a human checklist.
+- 'No authentication or authorization: no teacher accounts, no roles, no session handling
+  — anyone reaching the deployed URL can read and seed class data.'
+- 'No class (classroom) concept or data scoping: records are not partitioned per class,
+  so multiple classes cannot be served without cross-contamination.'
+- 'No data export: there is no way for a school to take records (CSV/Excel) into its
+  own analysis.'
+- No individual-level or long-horizon trend reporting (per-student and per-class longitudinal
+  views are listed in PURPOSE P2 but absent from the described feature set).
+- No pagination or virtualization for large record volumes, so dashboard rendering
+  has no stated behavior as data grows.
+- No backup/restore or audit-log facility for operation history and change traceability
+  (P2 priority 3).
+- No automated alerting on anomalous values (outlier detection / notification), which
+  PURPOSE lists as a planned operational capability.
+- Repository-level relation wiki is missing, so peer-contract compatibility and follow-ups
+  for this repo are undocumented.
+anti_patterns:
+- Re-scoring, re-tuning or refactoring the quality/meta-checker or judgment-score
+  machinery to move the score instead of changing product behavior; a metric loop
+  that can raise the number without improving the product is the classic garbage task
+  here.
+- 'Adding more unit tests to already-covered domain/application code: coverage is
+  already far above the constitution floor, so extra tests are not a gap-closing activity
+  — reserve ''test'' work for the untested prisma/PostgreSQL production path and the
+  auth boundary.'
+- Updating PURPOSE.md/README by re-listing recent commits or restating stable metric
+  numbers (explicitly forbidden by the repo's own 23系 SOP §6, and it creates the documentation
+  drift this repo already suffers from).
+- Docs-only pull requests that react to documentation churn rather than to a code
+  change; and broad Prettier/ESLint formatting sweeps across many files (one such
+  sweep already touched 24 files) that consume the autonomous budget without changing
+  behavior.
+- 'Refactoring, vendoring, or extending the bundled third-party admin dashboard tree
+  into the product: it is not the education north star, and any autonomy spent there
+  is unreachable work.'
+- 'Adding more deploy/verify shell scripts to ''unblock'' the deployment: the actual
+  blocker is external account/database credentials and operator action — scripting
+  further cannot satisfy it and produces scripts nobody has executed.'
+- Polling with fixed timers or retries in the business layer to wait for database/deployment
+  readiness, which the constitution explicitly forbids (business-logic timers) — use
+  the existing timeout/circuit-breaker primitives instead.
+- Cosmetic UI/chart/landing-page polish and new dashboard widgets before authentication,
+  class scoping and production persistence exist.
+- Relaxing or deleting the constitution's strict rules (type assertions, any usage,
+  zero-tolerance checks) to make an automated score or a failing audit go green instead
+  of fixing the code.
+- 'Treating the whole repository as the unit of quality work: the product source is
+  a small subset of the tree, while auditing/reporting/checkpoint/firmware/vendored
+  trees dominate file counts and can easily absorb the loop.'
+next_deliverables:
+- id: D-1
+  title: 'Production-path verification harness: apply the Prisma migration to PostgreSQL,
+    seed, read stats back, assert equality'
+  type: feat
+  classification: A
+  constitution_link: §Testing Mandates (integration tier, domain/application coverage
+    minima), §3 Zod runtime validation at the boundary, §Autonomous Resilience — timeout
+    enforcement and circuit-breaker on database operations, forbidden business-logic
+    timers
+  acceptance: A single command applies the committed PostgreSQL migration to a scratch
+    database, selects the prisma repository branch through the existing factory, writes
+    seeded records, reads the statistics back through the application layer, and asserts
+    seeded-vs-read equality; all database calls in the path run under withDatabaseTimeout
+    and the circuit breaker; a failure case with the database unreachable yields the
+    constitution's typed error class with no unhandled rejection and no polling loop;
+    output records the bound revision, the migration identifier and per-step PASS/FAIL,
+    and the whole run is repeatable and self-cleaning.
+- id: D-2
+  title: Close the three open constitution-audit divergences (customized charter north_star,
+    ≥5 prohibitions, document version/date metadata)
+  type: refactor
+  classification: A
+  constitution_link: §2 Rigorous Architectural Discipline, §1 Absolute Automation
+    Primacy (machine-consumable documentation), constitution audit streak/divergence-log
+    discipline
+  acceptance: The charter north_star contains no placeholder or inference markers
+    and describes the implemented product; the forbidden-patterns section lists at
+    least five concrete prohibitions with one-line examples; both governing documents
+    expose a version identifier and Last Updated date that only change with their
+    content; the subsequent constitution audit passes with a score above the prior
+    best and the divergence log records the three entries as resolved with evidence.
+- id: D-3
+  title: Health/readiness endpoint plus a deployment verification script that emits
+    a per-check PASS/FAIL table bound to a revision
+  type: feat
+  classification: A
+  constitution_link: §Security Standards — boundary validation, rate limiting, no
+    sensitive data in logs; §Autonomous Resilience — API timeout budget; §CI/CD Requirements
+    — automated gates
+  acceptance: GET /api/health reports liveness and database readiness, returns a typed
+    error body when the database is unreachable, completes inside the API timeout
+    budget, and exposes no environment values or secrets; the verification script
+    takes a target URL and a revision, checks health, seed, stats and dashboard rendering,
+    prints one PASS/FAIL line per check with the target and revision, and exits non-zero
+    if any check fails; running it twice against the same deployment produces the
+    same result and no duplicated records.
+- id: D-4
+  title: Domain design for teacher identity, class scoping, and the data-export contract
+  type: feat
+  classification: B
+  constitution_link: §2 Architectural Discipline and Repository Pattern (domain holds
+    interfaces, infrastructure implements them), §Security Standards — authentication
+    and authorization, input sanitization, §3 Zod validation of every external boundary
+  acceptance: A design document specifies the teacher/role entity, the class entity
+    and its ownership relation, how repository read/write operations are scoped per
+    class, and the export contract (fields, ordering, timezone, format); it states
+    which constitution layer each new concept and interface lives in and the resulting
+    repository-interface changes; it names the Zod schema each new boundary (auth
+    input, class filter, export query) requires and the corresponding runtime-rejection
+    test; no implementation code is written before this design is accepted.
+- id: D-5
+  title: Single authoritative metrics location and reconciliation of README/PURPOSE
+    claims against actual tooling output
+  type: fix
+  classification: A
+  constitution_link: §Metrics & Monitoring — a single maintained quality metric set;
+    §1 Absolute Automation Primacy — documentation for machine consumption; §Directory
+    Creation Policy — no unlisted top-level product surface
+  acceptance: One location carries the authoritative test counts, suite counts and
+    coverage percentages, and README and PURPOSE reference it rather than restating
+    numbers; every remaining figure in those documents matches what the current tooling
+    reports at the bound revision, and any figure that cannot be reproduced is either
+    re-derived or removed; the out-of-product directories and the vendored third-party
+    dashboard tree are explicitly recorded as out-of-scope with no import or build
+    path from src/ into them.
+- id: D-6
+  title: Class-scoped repository enforcement for the statistics read path (seam proven
+    before the full domain lands)
+  type: feat
+  classification: B
+  constitution_link: §Repository Pattern — domain-defined interfaces with infrastructure
+    implementations, §3 Type Supremacy — explicit constrained generics, no type assertions,
+    §Testing Mandates — domain coverage requirement
+  acceptance: A class identifier is part of the repository read contract, and the
+    statistics read path returns only records belonging to the requested class; a
+    test asserting cross-class isolation fails against a deliberately widened query
+    and passes against the scoped implementation; the scoping predicate is expressed
+    in the domain layer's repository interface and query parameters, with no type
+    assertion or untyped escape hatch; existing single-class behavior remains correct
+    with an explicit default scope.
+stagnation_signals:
+  max_age_days: 7

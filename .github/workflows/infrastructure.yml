@@ -1,14 +1,12 @@
 name: Infrastructure CI/CD
 
+# Normal PR checks run on the shared self-hosted Woodpecker route.
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
 
     steps:
     - uses: actions/checkout@v4
@@ -23,7 +21,7 @@ jobs:
 
   deploy:
     needs: validate
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
     steps:
